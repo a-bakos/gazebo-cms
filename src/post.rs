@@ -25,10 +25,12 @@ WP_POST
     public $comment_count = 0; // Cached comment count. A numeric string, for compatibility reasons.
 */
 
+use crate::user::UserID;
+
 #[derive(Debug)]
 pub struct Entry {
     id: EntryID,
-    id_author: AuthorID,
+    id_author: UserID,
     id_parent: EntryParentID,
     date_publish: String,
     date_modified: String,
@@ -52,9 +54,6 @@ pub enum EntryType {
 pub struct EntryID(u32);
 
 #[derive(Debug)]
-pub struct AuthorID(u32);
-
-#[derive(Debug)]
 pub struct EntryParentID(u32);
 
 fn get_next_available_id() -> EntryID {
@@ -65,12 +64,20 @@ fn get_current_date() -> String {
     "2023-02-28 21:13".to_string()
 }
 
+fn get_author_id() -> UserID {
+    UserID(0)
+}
+
+fn get_entry_parent_id() -> EntryParentID {
+    EntryParentID(0)
+}
+
 impl Entry {
-    pub fn create_empty(entry_type: EntryType) -> Self {
+    pub fn draft(entry_type: EntryType) -> Self {
         Self {
             id: get_next_available_id(),
-            id_author: AuthorID(0),
-            id_parent: EntryParentID(0),
+            id_author: get_author_id(),
+            id_parent: get_entry_parent_id(),
             date_publish: get_current_date(),
             date_modified: get_current_date(),
             slug: "".to_string(),
