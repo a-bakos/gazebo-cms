@@ -1,3 +1,10 @@
+mod post;
+
+use crate::post::{Entry, EntryType};
+
+const VERSION: &str = "0.0.1";
+
 fn main() {
-    println!("Hello, world!");
+    let mut post = Entry::create_empty( EntryType::Post );
+    dbg!(&post);
 }
