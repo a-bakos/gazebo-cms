@@ -25,13 +25,15 @@ WP_POST
     public $comment_count = 0; // Cached comment count. A numeric string, for compatibility reasons.
 */
 
-use crate::user::UserID;
+use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
+use crate::date;
+use crate::user::{User, UserID};
 
 #[derive(Debug)]
 pub struct Entry {
     id: EntryID,
     id_author: UserID,
-    id_parent: EntryParentID,
+    id_parent: Option<EntryID>,
     date_publish: String,
     date_modified: String,
     slug: String,
@@ -39,7 +41,7 @@ pub struct Entry {
     title: String,
     excerpt: String,
     content: String,
-    password: String,
+    password: Option<String>,
 }
 
 #[derive(Debug)]
@@ -53,39 +55,54 @@ pub enum EntryType {
 #[derive(Debug)]
 pub struct EntryID(u32);
 
-#[derive(Debug)]
-pub struct EntryParentID(u32);
-
-fn get_next_available_id() -> EntryID {
-    EntryID(1)
+impl EntryID {
+    // get current ID
+    fn get() -> Self {
+        EntryID(200)
+    }
 }
 
-fn get_current_date() -> String {
-    "2023-02-28 21:13".to_string()
+impl ID_Allocator for EntryID {
+    fn allocate() -> Self {
+        // resourcemanager to allocate entry ID
+        EntryID(200)
+    }
+}
+
+// Get current Entry ID
+fn get_the_id() -> EntryID {
+    EntryID::get()
 }
 
 fn get_author_id() -> UserID {
-    UserID(0)
+    UserID(100)
 }
 
-fn get_entry_parent_id() -> EntryParentID {
-    EntryParentID(0)
+fn get_next_available_entry_id() -> EntryID {
+    EntryID::allocate()
+}
+
+fn get_entry_parent_id() -> Option<EntryID> {
+    // if parent
+    // Some(EntryID(10))
+    // else
+    None
 }
 
 impl Entry {
     pub fn draft(entry_type: EntryType) -> Self {
         Self {
-            id: get_next_available_id(),
+            id: get_next_available_entry_id(),
             id_author: get_author_id(),
             id_parent: get_entry_parent_id(),
-            date_publish: get_current_date(),
-            date_modified: get_current_date(),
+            date_publish: date::get_current_date(),
+            date_modified: date::get_current_date(),
             slug: "".to_string(),
             the_type: entry_type,
             title: "".to_string(),
             excerpt: "".to_string(),
             content: "".to_string(),
-            password: "".to_string(),
+            password: None,
         }
     }
 }
