@@ -30,7 +30,7 @@ use crate::date;
 use crate::user::{User, UserID};
 
 #[derive(Debug)]
-pub struct Entry {
+pub struct OX_Post {
     id: EntryID,
     id_author: UserID,
     id_parent: Option<EntryID>,
@@ -89,7 +89,7 @@ fn get_entry_parent_id() -> Option<EntryID> {
     None
 }
 
-impl Entry {
+impl OX_Post {
     pub fn draft(entry_type: EntryType) -> Self {
         Self {
             id: get_next_available_entry_id(),
@@ -104,5 +104,13 @@ impl Entry {
             content: "".to_string(),
             password: None,
         }
+    }
+
+    pub fn update(mut self, entryData: Vec<String>) -> Self {
+        todo!();
+    }
+
+    pub fn store(&mut self) -> bool {
+        true
     }
 }

@@ -1,13 +1,15 @@
 mod allocator;
+mod consts;
 mod date;
+mod db;
 mod post;
 mod user;
 
-use crate::post::{Entry, EntryType};
-
-const VERSION: &str = "0.0.1";
+use crate::post::{EntryType, OX_Post};
 
 fn main() {
-    let mut post = Entry::draft(EntryType::Post);
+    let mut post = OX_Post::draft(EntryType::Post);
     dbg!(&post);
+
+    let _store = db::store();
 }
