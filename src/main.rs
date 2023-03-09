@@ -17,5 +17,7 @@ fn main() {
 
     dbg!(&post);
 
-    let _store = db::store(&post);
+    date::get_current_date();
+
+    //let _store = db::store(&post);
 }
