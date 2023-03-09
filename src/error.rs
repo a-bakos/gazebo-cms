@@ -10,7 +10,7 @@ pub enum Error {
 impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match *self {
-            Error::ParseError(&err) => {
+            Error::ParseError(ref err) => {
                 write!(f, "Cannot parse parameter {}", err)
             }
             Error::MissingParameters => {
