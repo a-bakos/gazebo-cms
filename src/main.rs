@@ -2,6 +2,7 @@ mod allocator;
 mod consts;
 mod date;
 mod db;
+mod error;
 mod post;
 mod user;
 

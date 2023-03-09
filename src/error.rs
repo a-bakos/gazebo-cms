@@ -1,0 +1,24 @@
+use std::fmt::Formatter;
+
+#[derive(Debug)]
+pub enum Error {
+    ParseError(std::num::ParseIntError),
+    MissingParameters,
+    OutOfBounds,
+}
+
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match *self {
+            Error::ParseError(&err) => {
+                write!(f, "Cannot parse parameter {}", err)
+            }
+            Error::MissingParameters => {
+                write!(f, "Missing parameter")
+            }
+            Error::OutOfBounds => {
+                write!(f, "Out of bounds")
+            }
+        }
+    }
+}
