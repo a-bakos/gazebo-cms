@@ -11,6 +11,7 @@ impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match *self {
             Error::ParseError(ref err) => {
+                // Why ref err?
                 write!(f, "Cannot parse parameter {}", err)
             }
             Error::MissingParameters => {

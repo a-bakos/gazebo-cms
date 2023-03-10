@@ -89,6 +89,10 @@ fn get_entry_parent_id() -> Option<EntryID> {
     None
 }
 
+pub fn get_post(post_id: EntryID) -> OX_Post {
+    todo!()
+}
+
 impl OX_Post {
     pub fn draft(entry_type: EntryType) -> Self {
         Self {
