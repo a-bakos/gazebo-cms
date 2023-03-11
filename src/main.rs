@@ -11,13 +11,12 @@ use crate::post::{EntryType, OX_Post};
 fn main() {
     // Start editing new post
     let mut post = OX_Post::draft(EntryType::Post);
-
-    // Update post with post data
-    // post = post.update();
-
     dbg!(&post);
+    // Update post with post data
+    //post = post.update();
 
-    date::get_current_date();
+    post.add_title("This is a new post".to_string(), true);
+    dbg!(&post);
 
     //let _store = db::store(&post);
 }

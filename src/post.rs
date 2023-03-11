@@ -114,6 +114,20 @@ impl OX_Post {
         todo!();
     }
 
+    pub fn add_title(&mut self, title: String, create_permalink: bool) {
+        self.title = title.clone();
+
+        if create_permalink {
+            let permalink = title.to_lowercase();
+            self.add_permalink(permalink);
+        }
+    }
+
+    pub fn add_permalink(&mut self, slug: String) {
+        let slug = slug.replace(" ", "_");
+        self.slug = slug;
+    }
+
     pub fn store(&mut self) -> bool {
         true
     }
