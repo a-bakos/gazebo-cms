@@ -13,12 +13,16 @@ pub fn parse_csv(path: &str) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-pub fn write_to_csv(path: &str) -> Result<(), Box<dyn Error>> {
+pub fn write_to_csv(path: &str, post: OX_Post) -> Result<(), Box<dyn Error>> {
     println!("Writing CSV: {path}");
     let mut writer = WriterBuilder::new().from_path(path)?;
     writer.write_record(["TEST K ".to_string(), "TEST V ".to_string()])?;
     writer.flush()?;
     Ok(())
+}
+
+pub fn store(post: &OX_Post) {
+    println!("Storing post: {post:?}");
 }
 
 use crate::consts;
