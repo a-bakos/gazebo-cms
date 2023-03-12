@@ -26,8 +26,8 @@ WP_POST
 */
 
 use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
-use crate::date;
 use crate::user::{User, UserID};
+use crate::{consts, date};
 
 #[derive(Debug)]
 pub struct OX_Post {
@@ -36,11 +36,11 @@ pub struct OX_Post {
     id_parent: Option<EntryID>,
     date_publish: String,
     date_modified: String,
-    slug: String,
+    slug: Option<String>,
     the_type: EntryType,
-    title: String,
-    excerpt: String,
-    content: String,
+    title: Option<String>,
+    excerpt: Option<String>,
+    content: Option<String>,
     password: Option<String>,
 }
 
@@ -101,11 +101,11 @@ impl OX_Post {
             id_parent: get_entry_parent_id(),
             date_publish: date::get_current_date(),
             date_modified: date::get_current_date(),
-            slug: "".to_string(),
+            slug: None,
             the_type: entry_type,
-            title: "".to_string(),
-            excerpt: "".to_string(),
-            content: "".to_string(),
+            title: None,
+            excerpt: None,
+            content: None,
             password: None,
         }
     }
@@ -115,7 +115,7 @@ impl OX_Post {
     }
 
     pub fn add_title(&mut self, title: String, create_permalink: bool) {
-        self.title = title.clone();
+        self.title = Some(title.clone());
 
         if create_permalink {
             let permalink = title.to_lowercase();
@@ -124,8 +124,8 @@ impl OX_Post {
     }
 
     pub fn add_permalink(&mut self, slug: String) {
-        let slug = slug.replace(" ", "_");
-        self.slug = slug;
+        let slug = slug.replace(" ", consts::PERMALINK_SEPARATOR);
+        self.slug = Some(slug);
     }
 
     pub fn store(&mut self) -> bool {
