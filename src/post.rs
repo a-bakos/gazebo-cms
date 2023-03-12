@@ -29,6 +29,7 @@ use std::fmt::Formatter;
 use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
 use crate::user::{User, UserID};
 use crate::{consts, date};
+use crate::app::App;
 
 #[derive(Debug)]
 pub struct OX_Post {
@@ -80,10 +81,10 @@ impl EntryID {
 }
 
 impl ID_Allocator for EntryID {
-    fn allocate() -> Self {
+    fn allocate(app: &mut App) -> Self {
         // resourcemanager to allocate entry ID
+        &app.resources.add_to_allocated(ResourceType::Entry, ResourceID::EntryID(200));
         EntryID(200)
-
     }
 }
 
@@ -96,8 +97,8 @@ fn get_author_id() -> UserID {
     UserID(100)
 }
 
-fn get_next_available_entry_id() -> EntryID {
-    EntryID::allocate()
+fn get_next_available_entry_id(app: &mut App) -> EntryID {
+    EntryID::allocate(app)
 }
 
 fn get_entry_parent_id() -> Option<EntryID> {
@@ -112,9 +113,9 @@ pub fn get_post(post_id: EntryID) -> OX_Post {
 }
 
 impl OX_Post {
-    pub fn draft(entry_type: EntryType) -> Self {
+    pub fn draft(app: &mut App, entry_type: EntryType) -> Self {
         Self {
-            id: get_next_available_entry_id(),
+            id: get_next_available_entry_id(app),
             id_author: get_author_id(),
             id_parent: get_entry_parent_id(),
             date_publish: date::get_current_date(),

@@ -1,5 +1,6 @@
 use std::fmt::Formatter;
 use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
+use crate::app::App;
 use crate::date;
 
 #[derive(Debug)]
@@ -13,8 +14,9 @@ impl std::fmt::Display for UserID {
 
 
 impl ID_Allocator for UserID {
-    fn allocate() -> Self {
+    fn allocate(app: &mut App) -> Self {
         // resourcemanager to allocate user ID
+        &app.resources.add_to_allocated(ResourceType::User, ResourceID::UserID(1));
         UserID(1)
     }
 }
@@ -66,6 +68,7 @@ pub struct User {
 
 impl User {
     fn new(
+        app: &mut App,
         first_name: String,
         last_name: String,
         login_name: String,
@@ -78,7 +81,7 @@ impl User {
             last_name,
             login_name,
             email,
-            id: get_next_available_user_id(),
+            id: get_next_available_user_id(app),
             role,
             password,
             registered: date::get_current_date(),
@@ -86,8 +89,8 @@ impl User {
     }
 }
 
-fn get_next_available_user_id() -> UserID {
-    UserID::allocate()
+fn get_next_available_user_id(app: &mut App) -> UserID {
+    UserID::allocate(app)
 }
 
 fn get_current_user() -> User {
