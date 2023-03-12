@@ -1,8 +1,16 @@
+use std::fmt::Formatter;
 use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
 use crate::date;
 
 #[derive(Debug)]
 pub struct UserID(pub u32);
+
+impl std::fmt::Display for UserID {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
 
 impl ID_Allocator for UserID {
     fn allocate() -> Self {

@@ -25,23 +25,24 @@ WP_POST
     public $comment_count = 0; // Cached comment count. A numeric string, for compatibility reasons.
 */
 
+use std::fmt::Formatter;
 use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
 use crate::user::{User, UserID};
 use crate::{consts, date};
 
 #[derive(Debug)]
 pub struct OX_Post {
-    id: EntryID,
-    id_author: UserID,
-    id_parent: Option<EntryID>,
-    date_publish: String,
-    date_modified: String,
-    slug: Option<String>,
-    the_type: EntryType,
-    title: Option<String>,
-    excerpt: Option<String>,
-    content: Option<String>,
-    password: Option<String>,
+    pub id: EntryID,
+    pub id_author: UserID,
+    pub id_parent: Option<EntryID>,
+    pub date_publish: String,
+    pub date_modified: String,
+    pub slug: Option<String>,
+    pub the_type: EntryType,
+    pub title: Option<String>,
+    pub excerpt: Option<String>,
+    pub content: Option<String>,
+    pub password: Option<String>,
 }
 
 #[derive(Debug)]
@@ -51,9 +52,25 @@ pub enum EntryType {
     Media,
 }
 
+impl std::fmt::Display for EntryType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            EntryType::Post => write!(f, "post"),
+            EntryType::Page => write!(f, "page"),
+            EntryType::Media => write!(f, "media"),
+        }
+    }
+}
+
 // New type patterns for IDs
-#[derive(Debug)]
+#[derive(Default, Debug, Copy, Clone)]
 pub struct EntryID(u32);
+
+impl std::fmt::Display for EntryID {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
 
 impl EntryID {
     // get current ID

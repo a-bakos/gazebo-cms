@@ -13,16 +13,29 @@ pub fn parse_csv(path: &str) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-pub fn write_to_csv(path: &str, post: OX_Post) -> Result<(), Box<dyn Error>> {
+pub fn write_to_csv(path: &str, post: &OX_Post) -> Result<(), Box<dyn Error>> {
     println!("Writing CSV: {path}");
     let mut writer = WriterBuilder::new().from_path(path)?;
-    writer.write_record(["TEST K ".to_string(), "TEST V ".to_string()])?;
+    writer.write_record([
+        post.id.to_string(),
+        post.id_author.to_string(),
+        post.id_parent.unwrap_or_default().to_string(),
+        post.date_publish.to_string(),
+        post.date_modified.to_string(),
+        post.slug.clone().unwrap_or_default().to_string(),
+        post.the_type.to_string(),
+        post.title.clone().unwrap_or_default().to_string(),
+        post.excerpt.clone().unwrap_or_default().to_string(),
+        post.content.clone().unwrap_or_default().to_string(),
+        post.password.clone().unwrap_or_default().to_string(),
+    ])?;
     writer.flush()?;
     Ok(())
 }
 
 pub fn store(post: &OX_Post) {
     println!("Storing post: {post:?}");
+    let _write = write_to_csv(consts::FILE_PATH, post);
 }
 
 use crate::consts;

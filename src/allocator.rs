@@ -14,6 +14,7 @@ pub struct ResourceManager {
     allocated_ID: HashMap<ResourceType, Vec<ResourceID>>,
 }
 
+#[allow(non_camel_case_types)]
 pub trait ID_Allocator {
     fn allocate() -> Self;
 }

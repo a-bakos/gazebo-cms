@@ -6,6 +6,7 @@ pub fn get_current_date() -> String {
     date.formatted
 }
 
+#[allow(non_camel_case_types)]
 struct OX_DateTime {
     utc: DateTime<Utc>,
     formatted: String,

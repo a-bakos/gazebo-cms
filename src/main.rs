@@ -19,8 +19,5 @@ fn main() {
     post.add_title("This is a new post".to_string(), true);
     dbg!(&post);
 
-    let _write = write_to_csv(consts::FILE_PATH);
-    let _read = parse_csv(consts::FILE_PATH);
-
     let _store = db::store(&post);
 }
