@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use crate::allocator::ResourceID::EntryID;
 use crate::app::App;
 
 #[derive(Debug, Eq, PartialEq, Hash)]
@@ -31,12 +32,13 @@ impl ResourceManager {
     }
 
     pub fn add_to_allocated(&mut self, resource_type: ResourceType, resource_id: ResourceID) {
+        let mut resource_id = resource_id;
         if self.allocated_ID.get(&resource_type).is_some() {
             let id_list = self.allocated_ID.get_mut(&resource_type).unwrap();
 
-            // check if value already exists in Vector
+            // Change ID if it's already in the list
             if id_list.contains(&resource_id) {
-                panic!("ID already exists");
+                resource_id = EntryID(300);
             }
 
             id_list.push(resource_id);
