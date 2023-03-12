@@ -10,19 +10,24 @@ mod user;
 use crate::post::{EntryType, OX_Post};
 
 fn main() {
+    // Start the App
     let mut app = app::App::init("Rusty CMS Experiment App".to_string());
 
-    // Start editing new post - imitate a new post
+    // Imitate editing a new post - Eg. User clicks a "new post" button
     let mut post = OX_Post::draft(&mut app, EntryType::Post);
-    // We add a title + permalink
+    // User adds a title to the post (permalink auto-generated)
     post.add_title("This is a new post".to_string(), true);
     dbg!(&post);
 
+    // Imitate editing a second new post - Eg. User clicks a "new post" button
     let mut post_2 = OX_Post::draft(&mut app, EntryType::Post);
+    // User adds a title to the post (permalink auto-generated)
     post_2.add_title("This is a second post".to_string(), true);
 
+    // Check the App state
     dbg!(&app.resources);
 
-    // Store the post
+    // Store the posts
     let _store = db::store(&post);
+    let _store = db::store(&post_2);
 }

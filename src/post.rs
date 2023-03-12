@@ -25,11 +25,12 @@ WP_POST
     public $comment_count = 0; // Cached comment count. A numeric string, for compatibility reasons.
 */
 
-use std::fmt::Formatter;
 use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
+use crate::app::App;
 use crate::user::{User, UserID};
 use crate::{consts, date};
-use crate::app::App;
+use std::collections::hash_map::Entry;
+use std::fmt::Formatter;
 
 #[derive(Debug)]
 pub struct OX_Post {
@@ -83,8 +84,10 @@ impl EntryID {
 impl ID_Allocator for EntryID {
     fn allocate(app: &mut App) -> Self {
         // resourcemanager to allocate entry ID
-        &app.resources.add_to_allocated(ResourceType::Entry, ResourceID::EntryID(200));
-        EntryID(200)
+        let entry_id: EntryID = &app.resources.get_next_available_id(ResourceType::Entry);
+        &app.resources
+            .add_to_allocated(ResourceType::Entry, ResourceID::entry_id.clone());
+        entry_id
     }
 }
 

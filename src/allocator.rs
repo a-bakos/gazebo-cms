@@ -1,6 +1,6 @@
-use std::collections::HashMap;
-use crate::allocator::ResourceID::EntryID;
+use crate::allocator::ResourceID::{EntryID, UserID};
 use crate::app::App;
+use std::collections::HashMap;
 
 #[derive(Debug, Eq, PartialEq, Hash)]
 pub enum ResourceType {
@@ -51,7 +51,7 @@ impl ResourceManager {
         todo!()
     }
 
-    pub fn get_next_available_id(resource_type: ResourceType) -> ResourceID {
+    pub fn get_next_available_id(&self, resource_type: ResourceType) -> ResourceID {
         match resource_type {
             ResourceType::User => {
                 // acquire next available ID
