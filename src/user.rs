@@ -89,3 +89,7 @@ impl User {
 fn get_next_available_user_id() -> UserID {
     UserID::allocate()
 }
+
+fn get_current_user() -> User {
+    todo!()
+}
