@@ -83,10 +83,14 @@ impl EntryID {
 
 impl ID_Allocator for EntryID {
     fn allocate(app: &mut App) -> Self {
-        // resourcemanager to allocate entry ID
-        let entry_id: EntryID = &app.resources.get_next_available_id(ResourceType::Entry);
+        let resource_entry_id = ResourceManager::get_next_available_id(&app, ResourceType::Entry);
+        dbg!(&resource_entry_id);
+        let entry_id = match resource_entry_id {
+            ResourceID::EntryID(id) => EntryID(id),
+            _ => EntryID(0),
+        };
         &app.resources
-            .add_to_allocated(ResourceType::Entry, ResourceID::entry_id.clone());
+            .add_to_allocated(ResourceType::Entry, resource_entry_id);
         entry_id
     }
 }

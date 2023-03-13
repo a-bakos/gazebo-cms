@@ -1,14 +1,16 @@
 use crate::allocator::ResourceID::{EntryID, UserID};
 use crate::app::App;
+use crate::consts;
 use std::collections::HashMap;
+use std::ops::Add;
 
-#[derive(Debug, Eq, PartialEq, Hash)]
+#[derive(Debug, Eq, PartialEq, Hash, Clone, Copy)]
 pub enum ResourceType {
     User,
     Entry,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum ResourceID {
     UserID(u32),
     EntryID(u32),
@@ -17,6 +19,7 @@ pub enum ResourceID {
 #[derive(Debug)]
 pub struct ResourceManager {
     allocated_ID: HashMap<ResourceType, Vec<ResourceID>>,
+    last_allocated_ID: HashMap<ResourceType, ResourceID>,
 }
 
 #[allow(non_camel_case_types)]
@@ -28,22 +31,26 @@ impl ResourceManager {
     pub fn new() -> Self {
         Self {
             allocated_ID: HashMap::new(),
+            last_allocated_ID: HashMap::new(),
         }
     }
 
     pub fn add_to_allocated(&mut self, resource_type: ResourceType, resource_id: ResourceID) {
         let mut resource_id = resource_id;
+
+        // If resource type exists
         if self.allocated_ID.get(&resource_type).is_some() {
             let id_list = self.allocated_ID.get_mut(&resource_type).unwrap();
 
-            // Change ID if it's already in the list
             if id_list.contains(&resource_id) {
-                resource_id = EntryID(300);
+                unreachable!()
             }
 
             id_list.push(resource_id);
+            self.last_allocated_ID.insert(resource_type, resource_id);
         } else {
             self.allocated_ID.insert(resource_type, vec![resource_id]);
+            self.last_allocated_ID.insert(resource_type, resource_id);
         }
     }
 
@@ -51,15 +58,27 @@ impl ResourceManager {
         todo!()
     }
 
-    pub fn get_next_available_id(&self, resource_type: ResourceType) -> ResourceID {
+    pub fn get_next_available_id(app: &App, resource_type: ResourceType) -> ResourceID {
         match resource_type {
             ResourceType::User => {
                 // acquire next available ID
                 ResourceID::UserID(2)
             }
             ResourceType::Entry => {
-                // acquire next available ID
-                ResourceID::EntryID(1)
+                // Check if we have last allocated ID stored otherwise start from 1
+                if let Some(id) = app.resources.last_allocated_ID.get(&resource_type) {
+                    // todo
+                    // https://stackoverflow.com/questions/41207885/using-generic-trait-methods-like-into-when-type-inference-is-impossible
+                    let try_id: u32 = id.into() + 1;
+
+                    if app.resources.allocated_ID.get(&resource_type).is_some() {
+                        return ResourceID::EntryID(try_id);
+                    } else {
+                        return ResourceID::EntryID(0);
+                    }
+                } else {
+                    return ResourceID::EntryID(consts::ID_START_VALUE);
+                }
             }
         }
     }

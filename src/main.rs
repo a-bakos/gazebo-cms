@@ -1,5 +1,7 @@
-mod app;
+extern crate core;
+
 mod allocator;
+mod app;
 mod consts;
 mod date;
 mod db;
@@ -17,7 +19,6 @@ fn main() {
     let mut post = OX_Post::draft(&mut app, EntryType::Post);
     // User adds a title to the post (permalink auto-generated)
     post.add_title("This is a new post".to_string(), true);
-    dbg!(&post);
 
     // Imitate editing a second new post - Eg. User clicks a "new post" button
     let mut post_2 = OX_Post::draft(&mut app, EntryType::Post);
