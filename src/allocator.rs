@@ -69,7 +69,7 @@ impl ResourceManager {
                 if let Some(id) = app.resources.last_allocated_ID.get(&resource_type) {
                     // todo
                     // https://stackoverflow.com/questions/41207885/using-generic-trait-methods-like-into-when-type-inference-is-impossible
-                    let try_id: u32 = id.into() + 1;
+                    let try_id = 1 + 1; //id.into() + 1;
 
                     if app.resources.allocated_ID.get(&resource_type).is_some() {
                         return ResourceID::EntryID(try_id);
