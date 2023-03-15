@@ -3,7 +3,7 @@ extern crate core;
 mod allocator;
 mod app;
 mod consts;
-mod date;
+mod dates;
 mod db;
 mod error;
 mod posts;
