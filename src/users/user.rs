@@ -2,6 +2,8 @@ use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
 use crate::app::App;
 use crate::dates::date;
 use crate::dates::date_functional;
+use crate::users::roles::UserRole;
+use crate::users::user_functional;
 use std::fmt::Formatter;
 
 #[derive(Debug)]
@@ -20,13 +22,6 @@ impl ID_Allocator for UserID {
             .add_to_allocated(ResourceType::User, ResourceID::UserID(1));
         UserID(1)
     }
-}
-
-#[derive(Debug)]
-pub enum UserRole {
-    Admin,   // read, write, delete, add ??
-    Editor,  // read, write, delete
-    Visitor, // read
 }
 
 /*
@@ -82,18 +77,10 @@ impl User {
             last_name,
             login_name,
             email,
-            id: get_next_available_user_id(app),
+            id: user_functional::get_next_available_user_id(app),
             role,
             password,
             registered: date_functional::get_current_date(),
         }
     }
-}
-
-fn get_next_available_user_id(app: &mut App) -> UserID {
-    UserID::allocate(app)
-}
-
-fn get_current_user() -> User {
-    todo!()
 }

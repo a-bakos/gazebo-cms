@@ -7,7 +7,7 @@ mod dates;
 mod db;
 mod error;
 mod posts;
-mod user;
+mod users;
 
 use crate::posts::entry_type::EntryType;
 use crate::posts::post::OX_Post;

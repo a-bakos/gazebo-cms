@@ -31,7 +31,7 @@ use crate::consts;
 use crate::dates::date;
 use crate::dates::date_functional;
 use crate::posts::entry_type::EntryType;
-use crate::user::{User, UserID};
+use crate::users::user::{User, UserID};
 use std::collections::hash_map::Entry;
 use std::fmt::Formatter;
 
