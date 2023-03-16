@@ -29,6 +29,10 @@ impl Database {
             table_prefix,
         }
     }
+
+    pub fn get_row(id: u32) {
+        todo!()
+    }
 }
 
 pub fn parse_csv(path: &str) -> Result<(), Box<dyn Error>> {
