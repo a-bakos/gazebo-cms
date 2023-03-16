@@ -2,6 +2,15 @@
 use csv::{Reader, StringRecord, WriterBuilder};
 use std::error::Error;
 
+struct database {
+    name: String,
+    user: String,
+    password: String,
+    host: String,
+    charset: String,
+    table_prefix: String,
+}
+
 pub fn parse_csv(path: &str) -> Result<(), Box<dyn Error>> {
     println!("Parsing CSV: {path}");
     let mut reader = Reader::from_path(path)?;
