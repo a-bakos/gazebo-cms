@@ -2,13 +2,33 @@
 use csv::{Reader, StringRecord, WriterBuilder};
 use std::error::Error;
 
-struct database {
+pub struct Database {
     name: String,
     user: String,
     password: String,
     host: String,
     charset: String,
     table_prefix: String,
+}
+
+impl Database {
+    pub fn new(
+        name: String,
+        user: String,
+        password: String,
+        host: String,
+        charset: String,
+        table_prefix: String,
+    ) -> Self {
+        Self {
+            name,
+            user,
+            password,
+            host,
+            charset,
+            table_prefix,
+        }
+    }
 }
 
 pub fn parse_csv(path: &str) -> Result<(), Box<dyn Error>> {
