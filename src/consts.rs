@@ -1,4 +1,4 @@
-pub const VERSION: &str = "0.0.1";
+pub const VERSION: &str = "0.0.2";
 pub const PERMALINK_SEPARATOR: &str = "-";
 
 pub const ID_START_VALUE: u32 = 0;
