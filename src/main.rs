@@ -32,7 +32,8 @@ fn main() {
     // Check the App state
     dbg!(&app.resources);
 
+    let to_store: Vec<&OX_Post> = vec![&post, &post_2];
+
     // Store the posts
-    let _store = db::store(&post);
-    let _store = db::store(&post_2);
+    let _store = db::store(to_store);
 }
