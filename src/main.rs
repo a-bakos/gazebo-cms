@@ -35,4 +35,7 @@ fn main() {
     // The storage methods will be part of the OX_Post routine
     let to_store: Vec<&OX_Post> = vec![&post, &post_2];
     let _store = db::store(to_store);
+
+    let _get_post: Option<OX_Post> = db::get_post_by_id(2).unwrap();
+    dbg!(&_get_post);
 }

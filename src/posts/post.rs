@@ -51,7 +51,7 @@ pub struct OX_Post {
 
 // New type patterns for IDs
 #[derive(Default, Debug, Copy, Clone)]
-pub struct EntryID(u32);
+pub struct EntryID(pub u32);
 
 impl std::fmt::Display for EntryID {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
