@@ -5,12 +5,12 @@ use csv::{Reader, WriterBuilder};
 use std::error::Error;
 
 pub struct Database {
-    name: String,
-    user: String,
-    password: String,
-    host: String,
-    charset: String,
-    table_prefix: String,
+    pub name: String,
+    pub user: String,
+    pub password: String,
+    pub host: String,
+    pub charset: String,
+    pub table_prefix: String,
 }
 
 impl Database {

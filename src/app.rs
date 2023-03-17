@@ -1,5 +1,5 @@
 use crate::allocator::ResourceManager;
-use crate::db::Database;
+use crate::database::db::Database;
 
 pub struct App {
     pub name: String,

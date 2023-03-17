@@ -3,12 +3,13 @@ extern crate core;
 mod allocator;
 mod app;
 mod consts;
+mod database;
 mod dates;
-mod db;
 mod error;
 mod posts;
 mod users;
 
+use crate::database::db;
 use crate::posts::post::OX_Post;
 
 fn main() {
