@@ -1,8 +1,6 @@
-use crate::allocator::ResourceID::{EntryID, UserID};
 use crate::app::App;
 use crate::consts;
 use std::collections::HashMap;
-use std::ops::Add;
 
 #[derive(Debug, Eq, PartialEq, Hash, Clone, Copy)]
 pub enum ResourceType {
@@ -17,6 +15,7 @@ pub enum ResourceID {
 }
 
 #[derive(Debug)]
+#[allow(non_snake_case)]
 pub struct ResourceManager {
     allocated_ID: HashMap<ResourceType, Vec<ResourceID>>,
     last_allocated_ID: HashMap<ResourceType, ResourceID>,
@@ -36,7 +35,7 @@ impl ResourceManager {
     }
 
     pub fn add_to_allocated(&mut self, resource_type: ResourceType, resource_id: ResourceID) {
-        let mut resource_id = resource_id;
+        let resource_id = resource_id;
 
         // If resource type exists
         if self.allocated_ID.get(&resource_type).is_some() {

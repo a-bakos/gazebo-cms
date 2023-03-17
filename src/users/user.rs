@@ -1,6 +1,5 @@
-use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
+use crate::allocator::{ID_Allocator, ResourceID, ResourceType};
 use crate::app::App;
-use crate::dates::date;
 use crate::dates::date_functional;
 use crate::users::roles::UserRole;
 use crate::users::user_functional;
@@ -17,8 +16,8 @@ impl std::fmt::Display for UserID {
 
 impl ID_Allocator for UserID {
     fn allocate(app: &mut App) -> Self {
-        // resourcemanager to allocate user ID
-        &app.resources
+        let _ = &app
+            .resources
             .add_to_allocated(ResourceType::User, ResourceID::UserID(1));
         UserID(1)
     }

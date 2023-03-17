@@ -28,14 +28,13 @@ WP_POST
 use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
 use crate::app::App;
 use crate::consts;
-use crate::dates::date;
 use crate::dates::date_functional;
 use crate::posts::entry_type::EntryType;
-use crate::users::user::{User, UserID};
-use std::collections::hash_map::Entry;
+use crate::users::user::UserID;
 use std::fmt::Formatter;
 
 #[derive(Debug)]
+#[allow(non_camel_case_types)]
 pub struct OX_Post {
     pub id: EntryID,
     pub id_author: UserID,
@@ -75,7 +74,8 @@ impl ID_Allocator for EntryID {
             ResourceID::EntryID(id) => EntryID(id),
             _ => EntryID(0),
         };
-        &app.resources
+        let _ = &app
+            .resources
             .add_to_allocated(ResourceType::Entry, resource_entry_id);
         entry_id
     }
@@ -122,7 +122,7 @@ impl OX_Post {
         }
     }
 
-    pub fn update(mut self, entryData: Vec<String>) -> Self {
+    pub fn update(mut self, entry_data: Vec<String>) -> Self {
         todo!();
     }
 

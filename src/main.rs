@@ -9,7 +9,6 @@ mod error;
 mod posts;
 mod users;
 
-use crate::posts::entry_type::EntryType;
 use crate::posts::post::OX_Post;
 
 fn main() {

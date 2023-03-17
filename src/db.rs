@@ -1,5 +1,7 @@
 // Mock CSV database
-use csv::{Reader, StringRecord, WriterBuilder};
+use crate::consts;
+use crate::posts::post::OX_Post;
+use csv::{Reader, WriterBuilder};
 use std::error::Error;
 
 pub struct Database {
@@ -36,7 +38,7 @@ impl Database {
 }
 
 pub fn parse_csv(path: &str) -> Result<(), Box<dyn Error>> {
-    println!("Parsing CSV: {path}");
+    println!("Parsing CSV: {:?}", path);
     let mut reader = Reader::from_path(path)?;
     for row in reader.records() {
         dbg!(row);
@@ -47,7 +49,7 @@ pub fn parse_csv(path: &str) -> Result<(), Box<dyn Error>> {
 }
 
 pub fn write_to_csv(path: &str, post: &OX_Post) -> Result<(), Box<dyn Error>> {
-    println!("Writing CSV: {path}");
+    println!("Writing CSV: {:?}", path);
     let mut writer = WriterBuilder::new().from_path(path)?;
     writer.write_record([
         post.id.to_string(),
@@ -70,9 +72,6 @@ pub fn store(post: &OX_Post) {
     println!("Storing posts: {:?}", post);
     let _write = write_to_csv(consts::FILE_PATH, post);
 }
-
-use crate::consts;
-use crate::posts::post::{EntryID, OX_Post};
 
 pub fn add(post: &OX_Post) {}
 pub fn update(post: &OX_Post) {}
