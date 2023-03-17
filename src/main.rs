@@ -14,7 +14,10 @@ use crate::posts::post::OX_Post;
 
 fn main() {
     // Start the App
-    let mut app = app::App::init("Rusty CMS Experiment App".to_string());
+    let mut app = app::App::init(
+        "Rusty CMS Experiment App".to_string(),
+        consts::VERSION.to_string(),
+    );
 
     // Imitate editing a new posts - Eg. User clicks a "new posts" button
     let mut post = OX_Post::draft(&mut app, posts::entry_type::EntryType::Post);
