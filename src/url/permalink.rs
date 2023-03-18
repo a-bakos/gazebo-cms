@@ -4,12 +4,17 @@ pub fn create_permalink_from(slug: String) -> String {
     let mut permalink = slug.trim().to_lowercase().to_string();
     permalink = slug.replace(' ', consts::PERMALINK_SEPARATOR);
 
+    // TODO - the below mapping removes uppercase chars
+
     // Get rid of unwanted characters
-    let permalink: String = permalink
+    permalink = permalink
         .chars()
         .map(|ch| match ch {
-            '@' | '#' => String::new(),
-            _ => ch.to_string(),
+            'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | 'k' | 'l' | 'm' | 'n'
+            | 'o' | 'p' | 'q' | 'r' | 's' | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z' | '-' | '_' => {
+                ch.to_string().to_lowercase().to_string()
+            }
+            _ => String::new(),
         })
         .collect();
 
