@@ -50,6 +50,7 @@ impl ID_Allocator for UserID {
  */
 
 #[derive(Debug)]
+#[allow(dead_code)]
 pub struct User {
     first_name: String,
     last_name: String,
@@ -62,6 +63,7 @@ pub struct User {
 }
 
 impl User {
+    #[allow(dead_code)]
     fn new(
         app: &mut App,
         first_name: String,

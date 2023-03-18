@@ -61,6 +61,7 @@ impl std::fmt::Display for EntryID {
 
 impl EntryID {
     // get current ID
+    #[allow(dead_code)]
     fn get() -> Self {
         EntryID(200)
     }
@@ -68,7 +69,7 @@ impl EntryID {
 
 impl ID_Allocator for EntryID {
     fn allocate(app: &mut App) -> Self {
-        let resource_entry_id = ResourceManager::get_next_available_id(&app, ResourceType::Entry);
+        let resource_entry_id = ResourceManager::get_next_available_id(app, ResourceType::Entry);
         dbg!(&resource_entry_id);
         let entry_id = match resource_entry_id {
             ResourceID::EntryID(id) => EntryID(id),
@@ -82,18 +83,22 @@ impl ID_Allocator for EntryID {
 }
 
 // Get current Entry ID
+#[allow(dead_code)]
 fn get_the_id() -> EntryID {
     EntryID::get()
 }
 
+#[allow(dead_code)]
 fn get_author_id() -> UserID {
     UserID(100)
 }
 
+#[allow(dead_code)]
 fn get_next_available_entry_id(app: &mut App) -> EntryID {
     EntryID::allocate(app)
 }
 
+#[allow(dead_code)]
 fn get_entry_parent_id() -> Option<EntryID> {
     // if parent
     // Some(EntryID(10))
@@ -101,7 +106,8 @@ fn get_entry_parent_id() -> Option<EntryID> {
     None
 }
 
-pub fn get_post(post_id: EntryID) -> OX_Post {
+#[allow(dead_code)]
+pub fn get_post(_post_id: EntryID) -> OX_Post {
     todo!()
 }
 
@@ -122,7 +128,8 @@ impl OX_Post {
         }
     }
 
-    pub fn update(mut self, entry_data: Vec<String>) -> Self {
+    #[allow(dead_code)]
+    pub fn update(self, _entry_data: Vec<String>) -> Self {
         todo!();
     }
 
@@ -136,10 +143,11 @@ impl OX_Post {
     }
 
     pub fn add_permalink(&mut self, slug: String) {
-        let slug = slug.replace(" ", consts::PERMALINK_SEPARATOR);
+        let slug = slug.replace(' ', consts::PERMALINK_SEPARATOR);
         self.slug = Some(slug);
     }
 
+    #[allow(dead_code)]
     pub fn store(&mut self) -> bool {
         true
     }

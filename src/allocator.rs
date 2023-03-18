@@ -53,11 +53,9 @@ impl ResourceManager {
     }
 
     pub fn add_to_allocated(&mut self, resource_type: ResourceType, resource_id: ResourceID) {
-        let resource_id = resource_id;
-
         // If resource type exists
         if self.allocated_ID.get(&resource_type).is_some() {
-            let id_list = self.allocated_ID.get_mut(&resource_type).unwrap();
+            let id_list: &mut Vec<ResourceID> = self.allocated_ID.get_mut(&resource_type).unwrap();
 
             if id_list.contains(&resource_id) {
                 unreachable!()
@@ -71,7 +69,8 @@ impl ResourceManager {
         }
     }
 
-    fn remove_from_allocated(&mut self, resource_type: ResourceType, resource_id: ResourceID) {
+    #[allow(dead_code)]
+    fn remove_from_allocated(&mut self, _resource_type: ResourceType, _resource_id: ResourceID) {
         todo!()
     }
 
@@ -87,12 +86,12 @@ impl ResourceManager {
                     let try_id: u32 = u32::from(id) + 1;
 
                     if app.resources.allocated_ID.get(&resource_type).is_some() {
-                        return ResourceID::EntryID(try_id);
+                        ResourceID::EntryID(try_id)
                     } else {
-                        return ResourceID::EntryID(0);
+                        ResourceID::EntryID(0)
                     }
                 } else {
-                    return ResourceID::EntryID(consts::ID_START_VALUE);
+                    ResourceID::EntryID(consts::ID_START_VALUE)
                 }
             }
         }

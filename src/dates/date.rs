@@ -3,6 +3,7 @@ use std::fmt::Formatter;
 
 #[allow(non_camel_case_types)]
 pub(crate) struct OX_DateTime {
+    #[allow(dead_code)]
     utc: DateTime<Utc>,
     pub formatted: String,
 }

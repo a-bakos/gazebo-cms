@@ -3,7 +3,7 @@ use crate::consts;
 use crate::posts::entry_type::EntryType;
 use crate::posts::post::{EntryID, OX_Post};
 use crate::users::user::UserID;
-use csv::{Reader, ReaderBuilder, StringRecord, WriterBuilder};
+use csv::{ReaderBuilder, StringRecord, WriterBuilder};
 use std::error::Error;
 
 pub struct Database {
@@ -34,14 +34,15 @@ impl Database {
         }
     }
 
-    pub fn get_row(id: u32) {
+    #[allow(dead_code)]
+    pub fn get_row(_id: u32) {
         todo!()
     }
 }
 
 pub fn get_post_by_id(post_id: u32) -> Result<Option<OX_Post>, Box<dyn Error>> {
     let csv_db = parse_csv(consts::FILE_PATH)?;
-    let mut found_post;
+    let found_post;
     let mut post = None;
     for row in csv_db.iter() {
         if let Some(id) = row.get(0) {
@@ -108,6 +109,9 @@ pub fn store(posts: Vec<&OX_Post>) {
     let _write = write_to_csv(consts::FILE_PATH, posts);
 }
 
-pub fn add(post: &OX_Post) {}
-pub fn update(post: &OX_Post) {}
-pub fn delete(post: &OX_Post) {}
+#[allow(dead_code)]
+pub fn add(_post: &OX_Post) {}
+#[allow(dead_code)]
+pub fn update(_post: &OX_Post) {}
+#[allow(dead_code)]
+pub fn delete(_post: &OX_Post) {}

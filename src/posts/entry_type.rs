@@ -3,7 +3,9 @@ use std::fmt::Formatter;
 #[derive(Debug)]
 pub enum EntryType {
     Post,
+    #[allow(dead_code)]
     Page,
+    #[allow(dead_code)]
     Media,
 }
 

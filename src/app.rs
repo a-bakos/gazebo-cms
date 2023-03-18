@@ -5,6 +5,7 @@ pub struct App {
     pub name: String,
     pub version: String,
     pub resources: ResourceManager,
+    #[allow(dead_code)]
     db: Database,
 }
 

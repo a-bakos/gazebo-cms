@@ -1,6 +1,8 @@
 use std::fmt::Formatter;
 
 #[derive(Debug)]
+#[allow(clippy::enum_variant_names)]
+#[allow(dead_code)]
 pub enum Error {
     ParseError(std::num::ParseIntError),
     MissingParameters,
