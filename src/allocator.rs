@@ -14,6 +14,24 @@ pub enum ResourceID {
     EntryID(u32),
 }
 
+impl From<ResourceID> for u32 {
+    fn from(resource_id: ResourceID) -> Self {
+        match resource_id {
+            ResourceID::UserID(id) => id,
+            ResourceID::EntryID(id) => id,
+        }
+    }
+}
+
+impl<'a> From<&'a ResourceID> for u32 {
+    fn from(resource_id: &'a ResourceID) -> Self {
+        match resource_id {
+            ResourceID::UserID(id) => *id,
+            ResourceID::EntryID(id) => *id,
+        }
+    }
+}
+
 #[derive(Debug)]
 #[allow(non_snake_case)]
 pub struct ResourceManager {
@@ -64,11 +82,9 @@ impl ResourceManager {
                 ResourceID::UserID(2)
             }
             ResourceType::Entry => {
-                // Check if we have last allocated ID stored otherwise start from 1
+                // Check if we have last allocated ID stored, increment if yes, otherwise start from 1
                 if let Some(id) = app.resources.last_allocated_ID.get(&resource_type) {
-                    // todo
-                    // https://stackoverflow.com/questions/41207885/using-generic-trait-methods-like-into-when-type-inference-is-impossible
-                    let try_id = 1 + 1; //id.into() + 1;
+                    let try_id: u32 = u32::from(id) + 1;
 
                     if app.resources.allocated_ID.get(&resource_type).is_some() {
                         return ResourceID::EntryID(try_id);
