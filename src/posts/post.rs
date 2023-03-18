@@ -27,9 +27,9 @@ WP_POST
 
 use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
 use crate::app::App;
-use crate::consts;
 use crate::dates::date_functional;
 use crate::posts::entry_type::EntryType;
+use crate::url;
 use crate::users::user::UserID;
 use std::fmt::Formatter;
 
@@ -137,13 +137,12 @@ impl OX_Post {
         self.title = Some(title.clone());
 
         if create_permalink {
-            let permalink = title.to_lowercase();
-            self.add_permalink(permalink);
+            self.add_permalink(title);
         }
     }
 
     pub fn add_permalink(&mut self, slug: String) {
-        let slug = slug.replace(' ', consts::PERMALINK_SEPARATOR);
+        let slug = url::permalink::create_permalink_from(slug);
         self.slug = Some(slug);
     }
 
