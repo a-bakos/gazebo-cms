@@ -149,4 +149,184 @@ function is_serialized_string( $data ) {
 		return true;
 	}
 }
+
+/**
+ * Uses RegEx to extract URLs from arbitrary content.
+ *
+ * @since 3.7.0
+ * @since 6.0.0 Fixes support for HTML entities (Trac 30580).
+ *
+ * @param string $content Content to extract URLs from.
+ * @return string[] Array of URLs found in passed string.
+ */
+function wp_extract_urls( $content ) {
+	preg_match_all(
+		"#([\"']?)("
+			. '(?:([\w-]+:)?//?)'
+			. '[^\s()<>]+'
+			. '[.]'
+			. '(?:'
+				. '\([\w\d]+\)|'
+				. '(?:'
+					. "[^`!()\[\]{}:'\".,<>«»“”‘’\s]|"
+					. '(?:[:]\d+)?/?'
+				. ')+'
+			. ')'
+		. ")\\1#",
+		$content,
+		$post_links
+	);
+
+	$post_links = array_unique(
+		array_map(
+			static function( $link ) {
+				// Decode to replace valid entities, like &amp;.
+				$link = html_entity_decode( $link );
+				// Maintain backward compatibility by removing extraneous semi-colons (`;`).
+				return str_replace( ';', '', $link );
+			},
+			$post_links[2]
+		)
+	);
+
+	return array_values( $post_links );
+}
+
+/**
+ * Builds URL query based on an associative and, or indexed array.
+ *
+ * This is a convenient function for easily building url queries. It sets the
+ * separator to '&' and uses _http_build_query() function.
+ *
+ * @since 2.3.0
+ *
+ * @see _http_build_query() Used to build the query
+ * @link https://www.php.net/manual/en/function.http-build-query.php for more on what
+ *       http_build_query() does.
+ *
+ * @param array $data URL-encode key/value pairs.
+ * @return string URL-encoded string.
+ */
+function build_query( $data ) {
+	return _http_build_query( $data, null, '&', '', false );
+}
+
+/**
+ * From php.net (modified by Mark Jaquith to behave like the native PHP5 function).
+ *
+ * @since 3.2.0
+ * @access private
+ *
+ * @see https://www.php.net/manual/en/function.http-build-query.php
+ *
+ * @param array|object $data      An array or object of data. Converted to array.
+ * @param string       $prefix    Optional. Numeric index. If set, start parameter numbering with it.
+ *                                Default null.
+ * @param string       $sep       Optional. Argument separator; defaults to 'arg_separator.output'.
+ *                                Default null.
+ * @param string       $key       Optional. Used to prefix key name. Default empty.
+ * @param bool         $urlencode Optional. Whether to use urlencode() in the result. Default true.
+ * @return string The query string.
+ */
+function _http_build_query( $data, $prefix = null, $sep = null, $key = '', $urlencode = true ) {
+	$ret = array();
+
+	foreach ( (array) $data as $k => $v ) {
+		if ( $urlencode ) {
+			$k = urlencode( $k );
+		}
+		if ( is_int( $k ) && null != $prefix ) {
+			$k = $prefix . $k;
+		}
+		if ( ! empty( $key ) ) {
+			$k = $key . '%5B' . $k . '%5D';
+		}
+		if ( null === $v ) {
+			continue;
+		} elseif ( false === $v ) {
+			$v = '0';
+		}
+
+		if ( is_array( $v ) || is_object( $v ) ) {
+			array_push( $ret, _http_build_query( $v, '', $sep, $k, $urlencode ) );
+		} elseif ( $urlencode ) {
+			array_push( $ret, $k . '=' . urlencode( $v ) );
+		} else {
+			array_push( $ret, $k . '=' . $v );
+		}
+	}
+
+	if ( null === $sep ) {
+		$sep = ini_get( 'arg_separator.output' );
+	}
+
+	return implode( $sep, $ret );
+}
 ```
+
+HTTP status codes
+
+			100 => 'Continue',
+			101 => 'Switching Protocols',
+			102 => 'Processing',
+			103 => 'Early Hints',
+
+			200 => 'OK',
+			201 => 'Created',
+			202 => 'Accepted',
+			203 => 'Non-Authoritative Information',
+			204 => 'No Content',
+			205 => 'Reset Content',
+			206 => 'Partial Content',
+			207 => 'Multi-Status',
+			226 => 'IM Used',
+
+			300 => 'Multiple Choices',
+			301 => 'Moved Permanently',
+			302 => 'Found',
+			303 => 'See Other',
+			304 => 'Not Modified',
+			305 => 'Use Proxy',
+			306 => 'Reserved',
+			307 => 'Temporary Redirect',
+			308 => 'Permanent Redirect',
+
+			400 => 'Bad Request',
+			401 => 'Unauthorized',
+			402 => 'Payment Required',
+			403 => 'Forbidden',
+			404 => 'Not Found',
+			405 => 'Method Not Allowed',
+			406 => 'Not Acceptable',
+			407 => 'Proxy Authentication Required',
+			408 => 'Request Timeout',
+			409 => 'Conflict',
+			410 => 'Gone',
+			411 => 'Length Required',
+			412 => 'Precondition Failed',
+			413 => 'Request Entity Too Large',
+			414 => 'Request-URI Too Long',
+			415 => 'Unsupported Media Type',
+			416 => 'Requested Range Not Satisfiable',
+			417 => 'Expectation Failed',
+			418 => 'I\'m a teapot',
+			421 => 'Misdirected Request',
+			422 => 'Unprocessable Entity',
+			423 => 'Locked',
+			424 => 'Failed Dependency',
+			426 => 'Upgrade Required',
+			428 => 'Precondition Required',
+			429 => 'Too Many Requests',
+			431 => 'Request Header Fields Too Large',
+			451 => 'Unavailable For Legal Reasons',
+
+			500 => 'Internal Server Error',
+			501 => 'Not Implemented',
+			502 => 'Bad Gateway',
+			503 => 'Service Unavailable',
+			504 => 'Gateway Timeout',
+			505 => 'HTTP Version Not Supported',
+			506 => 'Variant Also Negotiates',
+			507 => 'Insufficient Storage',
+			510 => 'Not Extended',
+			511 => 'Network Authentication Required',
