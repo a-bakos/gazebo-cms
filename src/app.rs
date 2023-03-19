@@ -7,6 +7,8 @@ pub struct App {
     pub resources: ResourceManager,
     #[allow(dead_code)]
     db: Database,
+    // todo: start of run timestamp
+    // todo: debug mode
 }
 
 impl App {
