@@ -262,6 +262,25 @@ function _http_build_query( $data, $prefix = null, $sep = null, $key = '', $urle
 
 	return implode( $sep, $ret );
 }
+
+/**
+ * Gets unique ID.
+ *
+ * This is a PHP implementation of Underscore's uniqueId method. A static variable
+ * contains an integer that is incremented with each call. This number is returned
+ * with the optional prefix. As such the returned value is not universally unique,
+ * but it is unique across the life of the PHP process.
+ *
+ * @since 5.0.3
+ *
+ * @param string $prefix Prefix for the returned ID.
+ * @return string Unique ID.
+ */
+function wp_unique_id( $prefix = '' ) {
+	static $id_counter = 0;
+	return $prefix . (string) ++$id_counter;
+}
+
 ```
 
 HTTP status codes
