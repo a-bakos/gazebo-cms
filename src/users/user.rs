@@ -85,3 +85,8 @@ impl User {
         }
     }
 }
+
+// TODO
+// define( 'COOKIEHASH', md5( $siteurl ) );
+// define( 'USER_COOKIE', 'wordpressuser_' . COOKIEHASH );
+
