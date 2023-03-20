@@ -1,3 +1,4 @@
+use crate::allocator::ResourceID::UserID;
 use crate::allocator::ResourceManager;
 use crate::database::db::Database;
 
@@ -10,6 +11,8 @@ pub struct App {
     // todo: start of run timestamp
     // start: timestamp
     debug_mode: bool,
+    // logged in users
+    //users: Vec<UserID>,
 }
 
 impl App {
