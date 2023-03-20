@@ -1,8 +1,8 @@
 use crate::allocator::{ID_Allocator, ResourceID, ResourceType};
 use crate::app::App;
-use crate::dates::functions;
+use crate::dates::functions as date_functions;
+use crate::users::functions as user_functions;
 use crate::users::roles::UserRole;
-use crate::users::user_functional;
 use std::fmt::Formatter;
 
 #[derive(Debug)]
@@ -78,10 +78,10 @@ impl User {
             last_name,
             login_name,
             email,
-            id: user_functional::get_next_available_user_id(app),
+            id: user_functions::get_next_available_user_id(app),
             role,
             password,
-            registered: functions::get_current_date(),
+            registered: date_functions::get_current_date(),
         }
     }
 }
