@@ -1,9 +1,6 @@
-use std::collections::HashMap;
 // Mock CSV database
 use crate::consts;
-use crate::posts::entry_type::EntryType;
-use crate::posts::post::{EntryID, OX_Post};
-use crate::users::user::UserID;
+use crate::posts::post::OX_Post;
 use csv::{ReaderBuilder, StringRecord, WriterBuilder};
 use std::error::Error;
 
@@ -85,31 +82,3 @@ pub fn add(_post: &OX_Post) {}
 pub fn update(_post: &OX_Post) {}
 #[allow(dead_code)]
 pub fn delete(_post: &OX_Post) {}
-
-pub const COL_ID: usize = 0;
-pub const COL_ID_AUTHOR: usize = 1;
-pub const COL_PARENT: usize = 2;
-pub const COL_DATE_PUBLISH: usize = 3;
-pub const COL_DATE_MODIFIED: usize = 4;
-pub const COL_SLUG: usize = 5;
-pub const COL_POST_TYPE: usize = 6;
-pub const COL_TITLE: usize = 7;
-pub const COL_EXCERPT: usize = 8;
-pub const COL_CONTENT: usize = 9;
-pub const COL_PASSWORD: usize = 10;
-
-pub fn get_columns() -> HashMap<String, usize> {
-    let mut columns: HashMap<String, usize> = HashMap::new();
-    columns.insert(COL_ID.to_string(), COL_ID);
-    columns.insert(COL_ID_AUTHOR.to_string(), COL_ID_AUTHOR);
-    columns.insert(COL_PARENT.to_string(), COL_PARENT);
-    columns.insert(COL_DATE_PUBLISH.to_string(), COL_DATE_PUBLISH);
-    columns.insert(COL_DATE_MODIFIED.to_string(), COL_DATE_MODIFIED);
-    columns.insert(COL_SLUG.to_string(), COL_SLUG);
-    columns.insert(COL_POST_TYPE.to_string(), COL_POST_TYPE);
-    columns.insert(COL_TITLE.to_string(), COL_TITLE);
-    columns.insert(COL_EXCERPT.to_string(), COL_EXCERPT);
-    columns.insert(COL_CONTENT.to_string(), COL_CONTENT);
-    columns.insert(COL_PASSWORD.to_string(), COL_PASSWORD);
-    columns
-}
