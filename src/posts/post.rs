@@ -27,7 +27,7 @@ WP_POST
 
 use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
 use crate::app::App;
-use crate::dates::date_functional;
+use crate::dates::functions;
 use crate::posts::entry_type::EntryType;
 use crate::url;
 use crate::users::user::UserID;
@@ -117,8 +117,8 @@ impl OX_Post {
             id: get_next_available_entry_id(app),
             id_author: get_author_id(),
             id_parent: get_entry_parent_id(),
-            date_publish: date_functional::get_current_date(),
-            date_modified: date_functional::get_current_date(),
+            date_publish: functions::get_current_date(),
+            date_modified: functions::get_current_date(),
             slug: None,
             the_type: entry_type,
             title: None,

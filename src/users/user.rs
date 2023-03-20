@@ -1,6 +1,6 @@
 use crate::allocator::{ID_Allocator, ResourceID, ResourceType};
 use crate::app::App;
-use crate::dates::date_functional;
+use crate::dates::functions;
 use crate::users::roles::UserRole;
 use crate::users::user_functional;
 use std::fmt::Formatter;
@@ -81,7 +81,7 @@ impl User {
             id: user_functional::get_next_available_user_id(app),
             role,
             password,
-            registered: date_functional::get_current_date(),
+            registered: functions::get_current_date(),
         }
     }
 }
@@ -89,4 +89,3 @@ impl User {
 // TODO
 // define( 'COOKIEHASH', md5( $siteurl ) );
 // define( 'USER_COOKIE', 'wordpressuser_' . COOKIEHASH );
-
