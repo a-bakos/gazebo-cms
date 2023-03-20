@@ -12,6 +12,7 @@ mod users;
 
 use crate::database::db;
 use crate::posts::post::OX_Post;
+use posts::functions as post_functions;
 
 fn main() {
     // Start the App
@@ -38,6 +39,6 @@ fn main() {
     #[allow(clippy::let_unit_value)]
     let _store = db::store(to_store);
 
-    let _get_post: Option<OX_Post> = db::get_post_by_id(2).unwrap();
+    let _get_post: Option<OX_Post> = post_functions::get_post_by_id(2).unwrap();
     dbg!(&_get_post);
 }
