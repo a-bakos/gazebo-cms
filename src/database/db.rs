@@ -40,6 +40,7 @@ impl Database {
     }
 }
 
+// move this to post functions.rs
 pub fn get_post_by_id(post_id: u32) -> Result<Option<OX_Post>, Box<dyn Error>> {
     let csv_db = parse_csv(consts::FILE_PATH)?;
     let found_post;
