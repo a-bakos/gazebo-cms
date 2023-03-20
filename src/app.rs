@@ -9,8 +9,7 @@ pub struct App {
     db: Database,
     // todo: start of run timestamp
     // start: timestamp
-    // todo: debug mode
-    debug: bool,
+    debug_mode: bool,
 }
 
 impl App {
@@ -27,7 +26,7 @@ impl App {
                 "charset".to_string(),
                 "prefix_".to_string(),
             ),
-            debug: false,
+            debug_mode: false,
         }
     }
 
