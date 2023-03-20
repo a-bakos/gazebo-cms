@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+// TODO later: think about tables
+
 pub const COL_INDEX_ID: usize = 0;
 pub const COL_INDEX_ID_AUTHOR: usize = 1;
 pub const COL_INDEX_PARENT: usize = 2;

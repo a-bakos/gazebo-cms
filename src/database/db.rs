@@ -39,7 +39,7 @@ impl Database {
 }
 
 pub fn parse_csv(path: &str) -> Result<Vec<StringRecord>, Box<dyn Error>> {
-    println!("Parsing CSV: {:?}", path);
+    println!("Parsing CSV: {path:?}");
     let mut csv_result: Vec<StringRecord> = Vec::new();
     let mut reader = ReaderBuilder::new().has_headers(false).from_path(path)?;
     for row in reader.records() {
@@ -50,7 +50,7 @@ pub fn parse_csv(path: &str) -> Result<Vec<StringRecord>, Box<dyn Error>> {
 }
 
 pub fn write_to_csv(path: &str, posts: Vec<&OX_Post>) -> Result<(), Box<dyn Error>> {
-    println!("Writing CSV: {:?}", path);
+    println!("Writing CSV: {path:?}");
     let mut writer = WriterBuilder::new().from_path(path)?;
     for single_post in posts.iter() {
         writer.write_record([
@@ -72,7 +72,7 @@ pub fn write_to_csv(path: &str, posts: Vec<&OX_Post>) -> Result<(), Box<dyn Erro
 }
 
 pub fn store(posts: Vec<&OX_Post>) {
-    println!("Storing posts: {:?}", posts);
+    println!("Storing posts: {posts:?}");
     let _write = write_to_csv(consts::FILE_PATH, posts);
 }
 

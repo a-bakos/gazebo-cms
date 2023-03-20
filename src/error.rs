@@ -14,7 +14,7 @@ impl std::fmt::Display for Error {
         match *self {
             Error::ParseError(ref err) => {
                 // Why ref err?
-                write!(f, "Cannot parse parameter {}", err)
+                write!(f, "Cannot parse parameter {err}")
             }
             Error::MissingParameters => {
                 write!(f, "Missing parameter")
