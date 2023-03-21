@@ -1,15 +1,15 @@
-use crate::allocator::ResourceID::UserID;
 use crate::allocator::ResourceManager;
 use crate::database::db::Database;
+use std::time::SystemTime;
 
+// #[derive(Debug)]
 pub struct App {
     pub name: String,
     pub version: String,
     pub resources: ResourceManager,
     #[allow(dead_code)]
     db: Database,
-    // todo: start of run timestamp
-    // start: timestamp
+    pub start: SystemTime,
     debug_mode: bool,
     // logged in users
     //users: Vec<UserID>,
@@ -29,6 +29,7 @@ impl App {
                 "charset".to_string(),
                 "prefix_".to_string(),
             ),
+            start: SystemTime::now(),
             debug_mode: false,
         }
     }

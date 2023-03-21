@@ -43,4 +43,6 @@ fn main() {
     dbg!(&_get_post);
 
     dbg!(columns::get_columns());
+
+    dbg!(&app.start);
 }
