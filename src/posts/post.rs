@@ -142,7 +142,8 @@ impl OX_Post {
     }
 
     pub fn add_permalink(&mut self, slug: String) {
-        let slug = url::permalink::create_permalink_from(slug);
+        let permalink_generator = url::permalink::PermalinkGenerator::new(true);
+        let slug = permalink_generator.create_permalink_from(slug);
         self.slug = Some(slug);
     }
 
