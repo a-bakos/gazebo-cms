@@ -6,6 +6,7 @@ mod consts;
 mod database;
 mod dates;
 mod error;
+mod http;
 mod posts;
 mod url;
 mod users;

@@ -2,6 +2,7 @@ use crate::allocator::ResourceManager;
 use crate::database::db::Database;
 use std::time::SystemTime;
 
+// Todo need to implement Debug for App
 // #[derive(Debug)]
 pub struct App {
     pub name: String,
