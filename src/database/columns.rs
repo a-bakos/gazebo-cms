@@ -29,18 +29,9 @@ pub const COLUMNS: [(&str, usize); 11] = [
 ];
 
 pub fn get_columns() -> HashMap<String, usize> {
-    // TODO can we get COLUMNS in here and iterate over it ??
     let mut columns: HashMap<String, usize> = HashMap::new();
-    columns.insert(COLUMNS[0].0.to_string(), COLUMNS[0].1);
-    columns.insert(COLUMNS[1].0.to_string(), COLUMNS[1].1);
-    columns.insert(COLUMNS[2].0.to_string(), COLUMNS[2].1);
-    columns.insert(COLUMNS[3].0.to_string(), COLUMNS[3].1);
-    columns.insert(COLUMNS[4].0.to_string(), COLUMNS[4].1);
-    columns.insert(COLUMNS[5].0.to_string(), COLUMNS[5].1);
-    columns.insert(COLUMNS[6].0.to_string(), COLUMNS[6].1);
-    columns.insert(COLUMNS[7].0.to_string(), COLUMNS[7].1);
-    columns.insert(COLUMNS[8].0.to_string(), COLUMNS[8].1);
-    columns.insert(COLUMNS[9].0.to_string(), COLUMNS[9].1);
-    columns.insert(COLUMNS[10].0.to_string(), COLUMNS[10].1);
+    for (col_name, col_index) in COLUMNS.iter() {
+        columns.insert(col_name.to_string(), *col_index);
+    }
     columns
 }
