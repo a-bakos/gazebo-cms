@@ -7,15 +7,16 @@ use std::collections::HashSet;
  *
  */
 
+#[derive(Debug)]
 pub struct PermalinkGenerator<'a> {
     pub separator: String,
     pub stop_words: HashSet<&'a str>,
     pub not_allowed: HashSet<&'a str>,
 }
-impl PermalinkGenerator<'_> {
-    pub fn new(hyphen_as_separator: bool) -> Self {
+impl<'a> PermalinkGenerator<'a> {
+    pub fn new(use_hyphen_as_separator: bool) -> Self {
         let separator;
-        if hyphen_as_separator {
+        if use_hyphen_as_separator {
             separator = consts::DEFAULT_PERMALINK_SEPARATOR.to_string();
         } else {
             separator = "_".to_string();
@@ -28,6 +29,13 @@ impl PermalinkGenerator<'_> {
                 .iter()
                 .cloned()
                 .collect(),
+        }
+    }
+
+    // permalink_generator.extend_stop_words(vec!["dog", "bread"]);
+    pub fn extend_stop_words(&mut self, more_stop_words: Vec<&'a str>) {
+        for word in more_stop_words.iter() {
+            self.stop_words.insert(word);
         }
     }
 
