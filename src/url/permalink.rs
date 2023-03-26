@@ -25,6 +25,8 @@ pub struct PermalinkGenerator<'a> {
     pub separator: &'a str,
     pub stop_words: HashSet<&'a str>,
     pub not_allowed_characters: HashSet<&'a str>,
+    pub length_limit: usize,
+    pub use_limit: bool,
 }
 
 impl<'a> PermalinkGenerator<'a> {
@@ -43,7 +45,24 @@ impl<'a> PermalinkGenerator<'a> {
                 .iter()
                 .cloned()
                 .collect(),
+            length_limit: consts::DEFAULT_PERMALINK_LIMIT,
+            use_limit: true,
         }
+    }
+
+    pub fn unlimited_permalink_length(&mut self, unlimited: bool) {
+        if unlimited {
+            self.use_limit = false;
+        }
+    }
+
+    pub fn set_max_permalink_length(&mut self, permalink_length: usize) {
+        if permalink_length > 60 {
+            // todo
+            // notice to use that the permalink len is too long to be good
+        }
+
+        self.length_limit = permalink_length;
     }
 
     pub fn extend_stop_words(&mut self, more_stop_words: Vec<&'a str>) {
@@ -91,9 +110,16 @@ impl<'a> PermalinkGenerator<'a> {
             }
         });
 
+        let permalink = self.limit_length(permalink);
+
         // URL Encoding
         let permalink = encode(&permalink).to_string();
 
+        permalink
+    }
+
+    fn limit_length(&self, permalink: String) -> String {
+        // todo - limit to char
         permalink
     }
 }
