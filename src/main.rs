@@ -25,7 +25,10 @@ fn main() {
     // Imitate editing a new posts - Eg. User clicks a "new posts" button
     let mut post = OX_Post::draft(&mut app, posts::entry_type::EntryType::Post);
     // User adds a title to the posts (permalink auto-generated)
-    post.add_title("This is @ new #posts".to_string(), true);
+    post.add_title(
+        "This is the ultimate post of an item @ new #posts".to_string(),
+        true,
+    );
 
     // Imitate editing a second new posts - Eg. User clicks a "new posts" button
     let mut post_2 = OX_Post::draft(&mut app, posts::entry_type::EntryType::Post);

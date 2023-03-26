@@ -4,15 +4,28 @@ use std::collections::HashSet;
 /**
  * Permalink generator
  *
+ * Rules to consider when generating permalinks
  *
+ * Make sure the URL is:
+ * - SEO-friendly
+ * - Human readable
+ * - Consistent
+ * - Lowercase
+ * - Using dashes as separator
+ * - Free of special characters
+ * - Encoded
+ * - Trimmed leading and trailing whitespaces
+ * - Limited to 50-60 characters in length
+ * - Unique with an appended number, if needed
  */
 
 #[derive(Debug)]
 pub struct PermalinkGenerator<'a> {
     pub separator: String,
     pub stop_words: HashSet<&'a str>,
-    pub not_allowed: HashSet<&'a str>,
+    pub not_allowed_characters: HashSet<&'a str>,
 }
+
 impl<'a> PermalinkGenerator<'a> {
     pub fn new(use_hyphen_as_separator: bool) -> Self {
         let separator;
@@ -25,7 +38,7 @@ impl<'a> PermalinkGenerator<'a> {
         Self {
             separator,
             stop_words: ["and", "the", "of", "a"].iter().cloned().collect(),
-            not_allowed: ["&", "#", "?", "%", "<", ">", "\"", "'", "/"]
+            not_allowed_characters: ["&", "#", "?", "%", "<", ">", "\"", "'", "/"]
                 .iter()
                 .cloned()
                 .collect(),
@@ -40,21 +53,28 @@ impl<'a> PermalinkGenerator<'a> {
     }
 
     pub fn create_permalink_from(&self, slug: String) -> String {
+        // Trim + Lowercase
         let mut permalink = slug.trim().to_lowercase().to_string();
-        permalink = slug.replace(' ', &self.separator);
-
-        // TODO - the below mapping removes uppercase chars
-
         // Get rid of unwanted characters
         permalink = permalink
             .chars()
-            .map(|ch| match ch {
-                'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | 'k' | 'l' | 'm'
-                | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z'
-                | '-' | '_' => ch.to_string().to_lowercase().to_string(),
-                _ => String::new(),
+            .map(|ch| {
+                if self
+                    .not_allowed_characters
+                    .contains(&ch.to_string() as &str)
+                {
+                    String::new()
+                } else {
+                    ch.to_string()
+                }
             })
             .collect();
+
+        // remove stop words
+        // todo
+
+        // Replace spaces with dashes
+        permalink = permalink.replace(' ', &self.separator);
 
         // Remove duplicated hyphens
         let permalink: String = permalink.chars().fold(String::new(), |mut acc, ch| {
