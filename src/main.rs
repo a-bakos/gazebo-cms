@@ -26,7 +26,7 @@ fn main() {
     let mut post = OX_Post::draft(&mut app, posts::entry_type::EntryType::Post);
     // User adds a title to the posts (permalink auto-generated)
     post.add_title(
-        "This is the ultimate post of an item @ new #posts".to_string(),
+        "This is the ultimate post of an item @ new #posts & something of value".to_string(),
         true,
     );
 

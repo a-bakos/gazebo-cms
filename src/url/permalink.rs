@@ -1,5 +1,6 @@
 use crate::consts;
 use std::collections::HashSet;
+use urlencoding::encode;
 
 /**
  * Permalink generator
@@ -55,6 +56,7 @@ impl<'a> PermalinkGenerator<'a> {
     pub fn create_permalink_from(&self, slug: String) -> String {
         // Trim + Lowercase
         let mut permalink = slug.trim().to_lowercase().to_string();
+
         // Get rid of unwanted characters
         permalink = permalink
             .chars()
@@ -70,11 +72,12 @@ impl<'a> PermalinkGenerator<'a> {
             })
             .collect();
 
-        // remove stop words
-        // todo
+        // Remove stop words
+        let mut permalink_as_words: Vec<&str> = permalink.split(' ').collect();
+        permalink_as_words.retain(|&word| !self.stop_words.contains(word));
 
-        // Replace spaces with dashes
-        permalink = permalink.replace(' ', &self.separator);
+        // Join words by separator character
+        let permalink = permalink_as_words.join(&self.separator);
 
         // Remove duplicated hyphens
         let permalink: String = permalink.chars().fold(String::new(), |mut acc, ch| {
@@ -88,6 +91,9 @@ impl<'a> PermalinkGenerator<'a> {
                 acc
             }
         });
+
+        // URL Encoding
+        let permalink = encode(&permalink).to_string();
 
         permalink
     }
