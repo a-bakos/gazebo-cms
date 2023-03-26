@@ -22,18 +22,18 @@ use urlencoding::encode;
 
 #[derive(Debug)]
 pub struct PermalinkGenerator<'a> {
-    pub separator: String,
+    pub separator: &'a str,
     pub stop_words: HashSet<&'a str>,
     pub not_allowed_characters: HashSet<&'a str>,
 }
 
 impl<'a> PermalinkGenerator<'a> {
-    pub fn new(use_hyphen_as_separator: bool) -> Self {
+    pub fn new(use_dash_as_separator: bool) -> Self {
         let separator;
-        if use_hyphen_as_separator {
-            separator = consts::DEFAULT_PERMALINK_SEPARATOR.to_string();
+        if use_dash_as_separator {
+            separator = consts::DEFAULT_PERMALINK_SEPARATOR;
         } else {
-            separator = "_".to_string();
+            separator = "_";
         }
 
         Self {
@@ -46,7 +46,6 @@ impl<'a> PermalinkGenerator<'a> {
         }
     }
 
-    // permalink_generator.extend_stop_words(vec!["dog", "bread"]);
     pub fn extend_stop_words(&mut self, more_stop_words: Vec<&'a str>) {
         for word in more_stop_words.iter() {
             self.stop_words.insert(word);
@@ -79,7 +78,7 @@ impl<'a> PermalinkGenerator<'a> {
         // Join words by separator character
         let permalink = permalink_as_words.join(&self.separator);
 
-        // Remove duplicated hyphens
+        // Remove duplicated dashes
         let permalink: String = permalink.chars().fold(String::new(), |mut acc, ch| {
             if ch == consts::DEFAULT_PERMALINK_SEPARATOR.chars().next().unwrap()
                 && acc.ends_with(consts::DEFAULT_PERMALINK_SEPARATOR)
