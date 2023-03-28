@@ -21,14 +21,14 @@ use urlencoding::encode;
  */
 
 #[derive(Debug)]
-pub struct PermalinksConfig {
-    pub length_limit: usize,
-    pub allow_unlimited_length: bool,
-    pub allow_stop_words: bool,
+struct PermalinksConfig {
+    length_limit: usize,
+    allow_unlimited_length: bool,
+    allow_stop_words: bool,
 }
 
 impl PermalinksConfig {
-    pub fn new() -> Self {
+    fn new() -> Self {
         Self {
             length_limit: consts::DEFAULT_PERMALINK_LIMIT,
             allow_unlimited_length: false,
@@ -42,7 +42,7 @@ pub struct PermalinkGenerator<'a> {
     pub separator: &'a str,
     pub stop_words: HashSet<&'a str>,
     pub not_allowed_characters: HashSet<&'a str>,
-    pub config: PermalinksConfig,
+    config: PermalinksConfig,
     pub length_limit: usize,
 }
 
@@ -57,8 +57,11 @@ impl<'a> PermalinkGenerator<'a> {
 
         Self {
             separator,
-            stop_words: ["and", "the", "of", "a"].iter().cloned().collect(),
-            not_allowed_characters: ["&", "#", "?", "%", "<", ">", "\"", "'", "/"]
+            stop_words: consts::DEFAULT_PERMALINK_STOP_WORDS
+                .iter()
+                .cloned()
+                .collect(),
+            not_allowed_characters: consts::DEFAULT_PERMALINK_NOT_ALLOWED_CHARS
                 .iter()
                 .cloned()
                 .collect(),
