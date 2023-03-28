@@ -20,13 +20,29 @@ use urlencoding::encode;
  * - Unique with an appended number, if needed
  */
 
+pub struct PermalinksConfig {
+    pub length_limit: usize,
+    pub use_limit: bool,
+    pub allow_stop_words: bool,
+}
+
+impl PermalinksConfig {
+    pub fn new() -> Self {
+        Self {
+            length_limit: consts::DEFAULT_PERMALINK_LIMIT,
+            use_limit: false,
+            allow_stop_words: false,
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct PermalinkGenerator<'a> {
     pub separator: &'a str,
     pub stop_words: HashSet<&'a str>,
     pub not_allowed_characters: HashSet<&'a str>,
+    pub config: PermalinksConfig,
     pub length_limit: usize,
-    pub use_limit: bool,
 }
 
 impl<'a> PermalinkGenerator<'a> {
@@ -46,13 +62,13 @@ impl<'a> PermalinkGenerator<'a> {
                 .cloned()
                 .collect(),
             length_limit: consts::DEFAULT_PERMALINK_LIMIT,
-            use_limit: true,
+            config: PermalinksConfig::new(),
         }
     }
 
     pub fn unlimited_permalink_length(&mut self, unlimited: bool) {
         if unlimited {
-            self.use_limit = false;
+            self.config.use_limit = false;
         }
     }
 
@@ -88,7 +104,7 @@ impl<'a> PermalinkGenerator<'a> {
         permalink
     }
 
-    fn remove_stop_words(&self, permalink: String) -> Vec<String> {
+    fn maybe_remove_stop_words(&self, permalink: String) -> Vec<String> {
         let mut permalink_as_words: Vec<&str> = permalink.split(' ').collect();
         let mut filtered_words: Vec<String> = Vec::new();
         for word in permalink_as_words {
@@ -122,7 +138,7 @@ impl<'a> PermalinkGenerator<'a> {
         // Get rid of unwanted characters
         let mut permalink = self.remove_unwanted_characters(permalink);
         // Remove stop words
-        let permalink_as_words = self.remove_stop_words(permalink);
+        let permalink_as_words = self.maybe_remove_stop_words(permalink);
         // Join words by separator character
         let permalink = permalink_as_words.join(&self.separator);
         // Remove duplicated dashes
