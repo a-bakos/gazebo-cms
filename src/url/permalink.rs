@@ -129,11 +129,21 @@ impl<'a> PermalinkGenerator<'a> {
         let permalink = self.remove_duplicate_dashes(permalink);
         // Maybe limit length of permalink
         let permalink = self.maybe_limit_length(permalink);
+
+        // todo
+        // check for uniqueness
+        // let permalink = permalink.make_unique(permalink);
+
         // URL Encoding
-        let permalink = encode(&permalink).to_string();
+        let permalink = self.encode_permalink(permalink);
 
         // Return the final permalink
         permalink
+    }
+
+    fn encode_permalink(&self, permalink: String) -> String {
+        // Encoding done using the external crate
+        encode(&permalink).to_string()
     }
 
     fn maybe_limit_length(&self, permalink: String) -> String {
