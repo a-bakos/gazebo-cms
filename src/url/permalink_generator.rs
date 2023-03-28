@@ -20,9 +20,10 @@ use urlencoding::encode;
  * - Unique with an appended number, if needed
  */
 
+#[derive(Debug)]
 pub struct PermalinksConfig {
     pub length_limit: usize,
-    pub use_limit: bool,
+    pub allow_unlimited_length: bool,
     pub allow_stop_words: bool,
 }
 
@@ -30,7 +31,7 @@ impl PermalinksConfig {
     pub fn new() -> Self {
         Self {
             length_limit: consts::DEFAULT_PERMALINK_LIMIT,
-            use_limit: false,
+            allow_unlimited_length: false,
             allow_stop_words: false,
         }
     }
@@ -66,9 +67,15 @@ impl<'a> PermalinkGenerator<'a> {
         }
     }
 
-    pub fn unlimited_permalink_length(&mut self, unlimited: bool) {
-        if unlimited {
-            self.config.use_limit = false;
+    pub fn allow_unlimited_length(&mut self, allow_unlimited: bool) {
+        if allow_unlimited {
+            self.config.allow_unlimited_length = true;
+        }
+    }
+
+    pub fn allow_stop_words(&mut self, allow_stop_words: bool) {
+        if allow_stop_words {
+            self.config.allow_stop_words = true;
         }
     }
 
