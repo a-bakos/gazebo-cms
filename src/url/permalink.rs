@@ -71,12 +71,8 @@ impl<'a> PermalinkGenerator<'a> {
         }
     }
 
-    pub fn create_permalink_from(&self, slug: String) -> String {
-        // Trim + Lowercase
-        let mut permalink = slug.trim().to_lowercase().to_string();
-
-        // Get rid of unwanted characters
-        permalink = permalink
+    fn remove_unwanted_characters(&self, permalink: String) -> String {
+        let permalink = permalink
             .chars()
             .map(|ch| {
                 if self
@@ -89,36 +85,58 @@ impl<'a> PermalinkGenerator<'a> {
                 }
             })
             .collect();
-
-        // Remove stop words
-        let mut permalink_as_words: Vec<&str> = permalink.split(' ').collect();
-        permalink_as_words.retain(|&word| !self.stop_words.contains(word));
-
-        // Join words by separator character
-        let permalink = permalink_as_words.join(&self.separator);
-
-        // Remove duplicated dashes
-        let permalink: String = permalink.chars().fold(String::new(), |mut acc, ch| {
-            if ch == consts::DEFAULT_PERMALINK_SEPARATOR.chars().next().unwrap()
-                && acc.ends_with(consts::DEFAULT_PERMALINK_SEPARATOR)
-            {
-                // Skip adding the separator to `acc`
-                acc
-            } else {
-                acc.push(ch);
-                acc
-            }
-        });
-
-        let permalink = self.limit_length(permalink);
-
-        // URL Encoding
-        let permalink = encode(&permalink).to_string();
-
         permalink
     }
 
-    fn limit_length(&self, permalink: String) -> String {
+    fn remove_stop_words(&self, permalink: String) -> Vec<String> {
+        let mut permalink_as_words: Vec<&str> = permalink.split(' ').collect();
+        let mut filtered_words: Vec<String> = Vec::new();
+        for word in permalink_as_words {
+            if !self.stop_words.contains(word) {
+                filtered_words.push(word.to_string());
+            }
+        }
+        filtered_words
+    }
+
+    fn remove_duplicate_dashes(&self, permalink: String) -> String {
+        let permalink: String = permalink
+            .chars()
+            .fold(String::new(), |mut accumulator, ch| {
+                if ch == consts::DEFAULT_PERMALINK_SEPARATOR.chars().next().unwrap()
+                    && accumulator.ends_with(consts::DEFAULT_PERMALINK_SEPARATOR)
+                {
+                    // Skip adding the separator to `accumulator`
+                    accumulator
+                } else {
+                    accumulator.push(ch);
+                    accumulator
+                }
+            });
+        permalink
+    }
+
+    pub fn create_permalink_from(&mut self, slug: String) -> String {
+        // Basic clean: Trim + Lowercase
+        let mut permalink = slug.trim().to_lowercase().to_string();
+        // Get rid of unwanted characters
+        let mut permalink = self.remove_unwanted_characters(permalink);
+        // Remove stop words
+        let permalink_as_words = self.remove_stop_words(permalink);
+        // Join words by separator character
+        let permalink = permalink_as_words.join(&self.separator);
+        // Remove duplicated dashes
+        let permalink = self.remove_duplicate_dashes(permalink);
+        // Maybe limit length of permalink
+        let permalink = self.maybe_limit_length(permalink);
+        // URL Encoding
+        let permalink = encode(&permalink).to_string();
+
+        // Return the final permalink
+        permalink
+    }
+
+    fn maybe_limit_length(&self, permalink: String) -> String {
         // todo - limit to char
         permalink
     }
