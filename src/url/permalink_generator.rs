@@ -20,11 +20,21 @@ use urlencoding::encode;
  * - Unique with an appended number, if needed
  */
 
+pub enum PermalinksTruncationMethod {
+    // Simply cut the string at the end
+    CutOffEnd,
+    // Remove the least significant words
+    RemoveLeastSignificantWords,
+    // Remove longest words
+    RemoveLongestWords,
+}
+
 #[derive(Debug)]
 struct PermalinksConfig {
     length_limit: usize,
     allow_unlimited_length: bool,
     allow_stop_words: bool,
+    truncation_method: PermalinksTruncationMethod,
 }
 
 impl PermalinksConfig {
@@ -33,6 +43,7 @@ impl PermalinksConfig {
             length_limit: consts::DEFAULT_PERMALINK_LIMIT,
             allow_unlimited_length: false,
             allow_stop_words: false,
+            truncation_method: PermalinksTruncationMethod::CutOff, // todo this is test only for now,
         }
     }
 }
@@ -76,19 +87,17 @@ impl<'a> PermalinkGenerator<'a> {
         }
     }
 
+    pub fn set_max_length(&mut self, length: usize) {
+        if length < consts::PERMALINK_MAX_ALLOWED_LENGTH && length > 0 {
+            self.config.length_limit = length;
+            self.config.allow_unlimited_length = false;
+        }
+    }
+
     pub fn allow_stop_words(&mut self, allow_stop_words: bool) {
         if allow_stop_words {
             self.config.allow_stop_words = true;
         }
-    }
-
-    pub fn set_max_permalink_length(&mut self, permalink_length: usize) {
-        if permalink_length > 60 {
-            // todo
-            // notice to use that the permalink len is too long to be good
-        }
-
-        self.length_limit = permalink_length;
     }
 
     pub fn extend_stop_words(&mut self, more_stop_words: Vec<&'a str>) {
