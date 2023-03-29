@@ -183,7 +183,20 @@ impl<'a> PermalinkGenerator<'a> {
     }
 
     fn maybe_limit_length(&self, permalink: String) -> String {
-        // todo - limit to char
+        match self.config.truncation_method {
+            PermalinkTruncationMethod::CutOffEnd => {
+                // Cut the end of the string
+                if permalink.chars().count() > self.config.length_limit {
+                    return permalink
+                        .chars()
+                        .take(self.config.length_limit)
+                        .collect::<String>();
+                }
+            }
+            PermalinkTruncationMethod::RemoveLeastSignificantWords => {}
+            PermalinkTruncationMethod::RemoveLongestWords => {}
+        }
+
         permalink
     }
 }
