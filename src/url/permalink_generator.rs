@@ -9,13 +9,13 @@ use urlencoding::encode;
  *
  * Make sure the URL is:
  * - SEO-friendly
- * - Human readable
- * - Consistent
- * - Lowercase
- * - Using dashes as separator
- * - Free of special characters
- * - Encoded
- * - Trimmed leading and trailing whitespaces
+ * - [done] Consistent
+ * - [done] Human readable
+ * - [done] Lowercase
+ * - [done] Using dashes as separator
+ * - [done] Free of special characters
+ * - [done] Encoded
+ * - [done] Trimmed leading and trailing whitespaces
  * - Limited to 50-60 characters in length
  * - Unique with an appended number, if needed
  */
