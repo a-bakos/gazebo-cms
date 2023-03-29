@@ -20,7 +20,8 @@ use urlencoding::encode;
  * - Unique with an appended number, if needed
  */
 
-pub enum PermalinksTruncationMethod {
+#[derive(Debug)]
+pub enum PermalinkTruncationMethod {
     // Simply cut the string at the end
     CutOffEnd,
     // Remove the least significant words
@@ -34,7 +35,7 @@ struct PermalinksConfig {
     length_limit: usize,
     allow_unlimited_length: bool,
     allow_stop_words: bool,
-    truncation_method: PermalinksTruncationMethod,
+    truncation_method: PermalinkTruncationMethod,
 }
 
 impl PermalinksConfig {
@@ -43,7 +44,7 @@ impl PermalinksConfig {
             length_limit: consts::DEFAULT_PERMALINK_LIMIT,
             allow_unlimited_length: false,
             allow_stop_words: false,
-            truncation_method: PermalinksTruncationMethod::CutOff, // todo this is test only for now,
+            truncation_method: PermalinkTruncationMethod::CutOffEnd, // todo this is test only for now,
         }
     }
 }
