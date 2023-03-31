@@ -16,7 +16,7 @@ use urlencoding::encode;
  * - [done] Free of special characters
  * - [done] Encoded
  * - [done] Trimmed leading and trailing whitespaces
- * - Limited to 50-60 characters in length
+ * - [done] Limited to 50-60 characters in length
  * - Unique with an appended number, if needed
  */
 
@@ -168,12 +168,16 @@ impl<'a> PermalinkGenerator<'a> {
 
         // todo
         // check for uniqueness
-        // let permalink = permalink.make_unique(permalink);
+        let permalink = self.make_unique(permalink);
 
         // URL Encoding
         let permalink = self.encode_permalink(permalink);
 
         // Return the final permalink
+        permalink
+    }
+
+    fn make_unique(&self, permalink: String) -> String {
         permalink
     }
 
@@ -198,5 +202,18 @@ impl<'a> PermalinkGenerator<'a> {
         }
 
         permalink
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn allow_unlimited_permalink_length() {
+        let permalink_config = PermalinksConfig::new();
+        let mut permalinks = PermalinkGenerator::new(true);
+        permalinks.allow_unlimited_length(true);
+        assert_eq!(true, permalinks.config.allow_unlimited_length);
     }
 }
