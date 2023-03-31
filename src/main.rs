@@ -11,7 +11,7 @@ mod posts;
 mod url;
 mod users;
 
-use crate::database::{columns, db};
+use crate::database::db;
 use crate::posts::post::OX_Post;
 use posts::functions as post_functions;
 
@@ -46,7 +46,7 @@ fn main() {
     let _get_post: Option<OX_Post> = post_functions::get_post_by_id(1).unwrap();
     // dbg!(&_get_post);
 
-    // dbg!(columns::get_columns());
+    // dbg!(crate::database::columns::get_columns());
 
     dbg!(&app.start);
 

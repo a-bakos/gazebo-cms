@@ -42,7 +42,7 @@ pub fn get_all_posts() -> Result<Vec<OX_Post>, Box<dyn Error>> {
     let mut posts: Vec<OX_Post> = Vec::new();
     let csv_db = db::parse_csv(consts::FILE_PATH)?;
     for post in csv_db.iter() {
-        let the_post = turn_row_into_post(&post);
+        let the_post = turn_row_into_post(post);
         posts.push(the_post);
     }
 
@@ -57,7 +57,7 @@ pub fn get_post_by_id(post_id: u32) -> Result<Option<OX_Post>, Box<dyn Error>> {
         if let Some(id) = row.get(columns::COL_INDEX_ID) {
             if id == post_id.to_string() {
                 found_post = row;
-                post = Some(turn_row_into_post(&found_post));
+                post = Some(turn_row_into_post(found_post));
                 break;
             }
         }

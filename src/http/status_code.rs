@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+#[allow(dead_code)]
 pub fn http_status_code_map() -> HashMap<u32, String> {
     let mut map = HashMap::new();
     map.insert(100, "Continue".to_string());

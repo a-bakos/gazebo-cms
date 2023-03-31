@@ -1,6 +1,7 @@
 pub const VERSION: &str = "0.0.2";
 
 // Permalink defaults
+#[allow(dead_code)]
 pub const PERMALINK_MAX_ALLOWED_LENGTH: usize = 1024;
 pub const DEFAULT_PERMALINK_SEPARATOR: &str = "-";
 pub const DEFAULT_PERMALINK_LIMIT: usize = 60;

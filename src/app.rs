@@ -11,6 +11,7 @@ pub struct App {
     #[allow(dead_code)]
     db: Database,
     pub start: SystemTime,
+    #[allow(dead_code)]
     debug_mode: bool,
     // logged in users
     //users: Vec<UserID>,
