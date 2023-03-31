@@ -1,4 +1,6 @@
 use crate::consts;
+use crate::database::{columns, db};
+use crate::posts::functions as post_functions;
 use std::collections::HashSet;
 use urlencoding::encode;
 
@@ -179,6 +181,15 @@ impl<'a> PermalinkGenerator<'a> {
 
     fn make_unique(&self, permalink: String) -> String {
         // Get all posts, clean results, only keep a list of permalinks
+        let mut all_permalinks: HashSet<String> = HashSet::new();
+        if db::parse_csv(consts::FILE_PATH).is_ok() {
+            let csv_db = db::parse_csv(consts::FILE_PATH).ok().unwrap();
+            for post in csv_db.iter() {
+                let post_permalink = post.get(columns::COL_INDEX_SLUG).unwrap().to_string();
+                all_permalinks.insert(post_permalink);
+            }
+        }
+        dbg!(all_permalinks);
         // check if proposed permalink is available hello-world
         // if not, get a list of links that start the same [ hello-world, hello-world-2, hello-world-wide-web ]
         // check for a number appended at the end / how?

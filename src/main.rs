@@ -42,14 +42,15 @@ fn main() {
     let to_store: Vec<&OX_Post> = vec![&post, &post_2];
     #[allow(clippy::let_unit_value)]
     let _store = db::store(to_store);
-
+    #[allow(clippy::let_unit_value)]
     let _get_post: Option<OX_Post> = post_functions::get_post_by_id(1).unwrap();
-    dbg!(&_get_post);
+    // dbg!(&_get_post);
 
-    dbg!(columns::get_columns());
+    // dbg!(columns::get_columns());
 
     dbg!(&app.start);
 
+    #[allow(clippy::let_unit_value)]
     let _all_posts = post_functions::get_all_posts();
-    dbg!(_all_posts);
+    // dbg!(_all_posts);
 }
