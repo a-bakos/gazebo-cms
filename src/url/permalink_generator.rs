@@ -214,6 +214,19 @@ mod test {
         let permalink_config = PermalinksConfig::new();
         let mut permalinks = PermalinkGenerator::new(true);
         permalinks.allow_unlimited_length(true);
-        assert_eq!(true, permalinks.config.allow_unlimited_length);
+        assert!(permalinks.config.allow_unlimited_length);
+    }
+
+    #[test]
+    fn words_joined_by_separator() {
+        let permalink_as_words = vec![
+            "this".to_string(),
+            "is".to_string(),
+            "a".to_string(),
+            "permalink".to_string(),
+            "test".to_string(),
+        ];
+        let permalink = permalink_as_words.join("-");
+        assert_eq!("this-is-a-permalink-test", permalink);
     }
 }
