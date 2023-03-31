@@ -43,10 +43,13 @@ fn main() {
     #[allow(clippy::let_unit_value)]
     let _store = db::store(to_store);
 
-    let _get_post: Option<OX_Post> = post_functions::get_post_by_id(2).unwrap();
+    let _get_post: Option<OX_Post> = post_functions::get_post_by_id(1).unwrap();
     dbg!(&_get_post);
 
     dbg!(columns::get_columns());
 
     dbg!(&app.start);
+
+    let _all_posts = post_functions::get_all_posts();
+    dbg!(_all_posts);
 }
