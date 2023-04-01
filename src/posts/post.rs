@@ -147,8 +147,34 @@ impl OX_Post {
         self.slug = Some(slug);
     }
 
+    pub fn add_content(&mut self, content: String) {
+        self.content = Some(content);
+    }
+
     #[allow(dead_code)]
     pub fn store(&mut self) -> bool {
         true
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn is_title_and_permalink_added() {
+        let mut app = crate::app::App::init(
+            "Test Rusty CMS Experiment App".to_string(),
+            crate::consts::VERSION.to_string(),
+        );
+
+        let test_post_title: String = "Test title added".to_string();
+        let test_post_slug: String = "test-title-added".to_string();
+
+        let mut post = OX_Post::draft(&mut app, crate::posts::entry_type::EntryType::Post);
+        post.add_title(test_post_title.clone(), true);
+
+        assert_eq!(Some(test_post_title), post.title);
+        assert_eq!(Some(test_post_slug), post.slug);
     }
 }
