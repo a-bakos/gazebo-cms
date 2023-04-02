@@ -21,3 +21,7 @@ Even a small module, like permalink-generation has a lot of hidden knowledge, so
 I'm not concerned with an asynchronous approaches right now. I do want to look at that soon, though. 
 
 Database-wise, I'm starting with one of the easiest possible ways, using a simple CSV format to store post data. Later, I will look into real solutions, like PostgreSQL or SurrealDB. 
+
+**What if...**
+
+Who knows/wishful thinking, etc, and it's a big _if_ at this point, but if I can reach escape velocity with this prototyping exercise, this might even grow into a real product...
