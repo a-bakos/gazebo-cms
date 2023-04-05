@@ -1,8 +1,7 @@
+# This file is just a collection of random ideas at this point
 
- Some todo ideas
+Some todo ideas
  
- - http mod
-
 ```php
 /**
  * Serializes data, if needed.
