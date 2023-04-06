@@ -22,6 +22,10 @@ fn main() {
         consts::VERSION.to_string(),
     );
 
+    // todo
+    users::user::User::login(&mut app, "test@test.com");
+    dbg!(&app.users);
+
     // Imitate editing a new posts - Eg. User clicks a "new posts" button
     let mut post = OX_Post::draft(&mut app, posts::entry_type::EntryType::Post);
     // User adds a title to the posts (permalink auto-generated)

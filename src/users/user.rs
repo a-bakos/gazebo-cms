@@ -52,14 +52,14 @@ impl ID_Allocator for UserID {
 #[derive(Debug)]
 #[allow(dead_code)]
 pub struct User {
-    first_name: String,
-    last_name: String,
-    login_name: String,
-    email: String,
-    id: UserID,
-    role: UserRole,
+    pub first_name: String,
+    pub last_name: String,
+    pub login_name: String,
+    pub email: String,
+    pub id: UserID,
+    pub role: UserRole,
     password: String,
-    registered: String,
+    pub registered: String,
 }
 
 impl User {
@@ -83,6 +83,23 @@ impl User {
             password,
             registered: date_functions::get_current_date(),
         }
+    }
+
+    pub fn login(app: &mut App, user_email: &str) -> bool {
+        println!("{} log in request", user_email);
+        // dummy login functionality
+        // see if user exists
+        // get id if it does and push it into users vec
+        app.users.push(user_email.to_string());
+        true
+    }
+
+    pub fn change_username(&mut self, new_username: &str) {
+        // username change functionality
+    }
+
+    pub fn reset_password(&mut self, new_password: &str) {
+        // password reset functionality
     }
 }
 

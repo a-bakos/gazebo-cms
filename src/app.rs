@@ -1,5 +1,6 @@
 use crate::allocator::ResourceManager;
 use crate::database::db::Database;
+use crate::users::user_manager::UserManager;
 use std::time::SystemTime;
 
 // Todo need to implement Debug for App
@@ -14,7 +15,7 @@ pub struct App {
     #[allow(dead_code)]
     debug_mode: bool,
     // logged in users
-    //users: Vec<UserID>,
+    pub users: Vec<String>,
 }
 
 impl App {
@@ -33,6 +34,7 @@ impl App {
             ),
             start: SystemTime::now(),
             debug_mode: false,
+            users: Vec::new(),
         }
     }
 
