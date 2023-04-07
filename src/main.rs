@@ -14,7 +14,6 @@ mod users;
 use crate::database::db;
 use crate::posts::post::OX_Post;
 use posts::functions as post_functions;
-
 fn main() {
     // Start the App
     let mut app = app::App::init(
@@ -22,9 +21,20 @@ fn main() {
         consts::VERSION.to_string(),
     );
 
-    // todo
+    // Let's create a new user and insert it
+    let test_user = users::user::User::new(
+        "First".to_string(),
+        "Last".to_string(),
+        "testuser".to_string(),
+        "test@test.com".to_string(),
+        users::roles::UserRole::Admin,
+        "123456".to_string(),
+    );
+    let _is_user_inserted: bool = users::user::User::insert(&mut app, test_user);
+
+    // Mimic a user login request
     users::user::User::login(&mut app, "test@test.com");
-    dbg!(&app.users);
+    //dbg!(&app.users);
 
     // Imitate editing a new posts - Eg. User clicks a "new posts" button
     let mut post = OX_Post::draft(&mut app, posts::entry_type::EntryType::Post);

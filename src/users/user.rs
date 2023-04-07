@@ -64,8 +64,7 @@ pub struct User {
 
 impl User {
     #[allow(dead_code)]
-    fn new(
-        app: &mut App,
+    pub fn new(
         first_name: String,
         last_name: String,
         login_name: String,
@@ -78,11 +77,25 @@ impl User {
             last_name,
             login_name,
             email,
-            id: user_functions::get_next_available_user_id(app),
+            id: UserID(crate::consts::USER_ID_TEMPORARY_DEFAULT),
             role,
             password,
             registered: date_functions::get_current_date(),
         }
+    }
+
+    pub fn insert(app: &mut App, user: User) -> bool {
+        dbg!(user);
+        // try-insert logic here
+        // check if email is valid / fatal
+        // check if email exists / fatal
+        // check if we have fname, lname, login name / non-fatal
+        // check password strength / non-fatal
+        // check role validity / non-fatal ?
+        // allocate ID: id: user_functions::get_next_available_user_id(app),
+        // add to app
+        // maybe use usermanager?
+        true
     }
 
     pub fn login(app: &mut App, user_email: &str) -> bool {

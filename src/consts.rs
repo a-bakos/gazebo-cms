@@ -13,3 +13,5 @@ pub const ID_START_VALUE: u32 = 0;
 
 // Mock DB file
 pub const FILE_PATH: &str = "mock_db.csv";
+
+pub const USER_ID_TEMPORARY_DEFAULT: u32 = 0;
