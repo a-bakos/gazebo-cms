@@ -193,7 +193,7 @@ impl<'a> PermalinkGenerator<'a> {
             let csv_db = db::parse_csv(consts::FILE_PATH_POSTS).ok().unwrap();
             for post in csv_db.iter() {
                 let post_permalink = post
-                    .get(crate::database::columns::COL_INDEX_SLUG)
+                    .get(crate::database::columns::COL_INDEX_POST_SLUG)
                     .unwrap()
                     .to_string();
                 all_permalinks.insert(post_permalink);

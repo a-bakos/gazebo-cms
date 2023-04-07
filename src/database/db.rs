@@ -5,6 +5,11 @@ use crate::users::user::User;
 use csv::{ReaderBuilder, StringRecord, WriterBuilder};
 use std::error::Error;
 
+pub enum DB_Table {
+    Posts,
+    Users,
+}
+
 pub struct Database {
     pub name: String,
     pub user: String,
