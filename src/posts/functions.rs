@@ -50,7 +50,7 @@ pub fn get_all_posts() -> Result<Vec<OX_Post>, Box<dyn Error>> {
     Ok(posts)
 }
 
-pub fn get_post_by_id(_app: &App, post_id: u32) -> Result<Option<OX_Post>, Box<dyn Error>> {
+pub fn get_post_by_id(post_id: u32) -> Result<Option<OX_Post>, Box<dyn Error>> {
     let csv_db = db::parse_csv(consts::FILE_PATH)?;
     let found_post;
     let mut post = None;
@@ -68,31 +68,55 @@ pub fn get_post_by_id(_app: &App, post_id: u32) -> Result<Option<OX_Post>, Box<d
 }
 
 // Get post title
-pub fn get_the_title(_app: &App, _post_id: u32) -> Option<String> {
-    Some(String::new())
+pub fn get_the_title(post_id: u32) -> Option<String> {
+    let post = get_post_by_id(post_id).unwrap().unwrap();
+    post.title
 }
 
 // Get post URL
-pub fn get_the_permalink(_app: &App, _post_id: u32) -> Option<String> {
-    Some(String::new())
+pub fn get_the_permalink(post_id: u32) -> Option<String> {
+    let post = get_post_by_id(post_id).unwrap().unwrap();
+    post.slug
 }
 
 // Get post creation date
-pub fn get_the_date(_app: &App, _post_id: u32) -> Option<String> {
-    Some(String::new())
+pub fn get_the_date(post_id: u32) -> Option<String> {
+    let post = get_post_by_id(post_id).unwrap().unwrap();
+    Some(post.date_publish)
 }
 
 // Get post modification date
-pub fn get_the_modified_date(_app: &App, _post_id: u32) -> Option<String> {
-    Some(String::new())
+pub fn get_the_modified_date(post_id: u32) -> Option<String> {
+    let post = get_post_by_id(post_id).unwrap().unwrap();
+    Some(post.date_modified)
 }
 
 // Get post content
-pub fn get_the_content(_app: &App, _post_id: u32) -> Option<String> {
-    Some(String::new())
+pub fn get_the_content(post_id: u32) -> Option<String> {
+    let post = get_post_by_id(post_id).unwrap().unwrap();
+    post.content
 }
 
 // Get post author
-pub fn get_the_author(_app: &App, _post_id: u32) -> Option<String> {
-    Some(String::new())
+pub fn get_the_author(post_id: u32) -> Option<UserID> {
+    let post = get_post_by_id(post_id).unwrap().unwrap();
+    Some(post.id_author)
+}
+
+// Get post parent
+pub fn get_post_parent(post_id: u32) -> Option<EntryID> {
+    let post = get_post_by_id(post_id).unwrap().unwrap();
+    post.id_parent
+}
+
+// Get post type
+pub fn get_post_type(post_id: u32) -> Option<EntryType> {
+    let post = get_post_by_id(post_id).unwrap().unwrap();
+    Some(post.the_type)
+}
+
+// Get post excerpt
+pub fn get_post_excerpt(post_id: u32) -> Option<String> {
+    let post = get_post_by_id(post_id).unwrap().unwrap();
+    post.excerpt
 }
