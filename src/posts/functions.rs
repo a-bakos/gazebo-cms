@@ -1,3 +1,4 @@
+use crate::app::App;
 use crate::consts;
 use crate::database::{columns, db};
 use crate::posts::entry_type::EntryType;
@@ -49,7 +50,7 @@ pub fn get_all_posts() -> Result<Vec<OX_Post>, Box<dyn Error>> {
     Ok(posts)
 }
 
-pub fn get_post_by_id(post_id: u32) -> Result<Option<OX_Post>, Box<dyn Error>> {
+pub fn get_post_by_id(_app: &App, post_id: u32) -> Result<Option<OX_Post>, Box<dyn Error>> {
     let csv_db = db::parse_csv(consts::FILE_PATH)?;
     let found_post;
     let mut post = None;
@@ -64,4 +65,34 @@ pub fn get_post_by_id(post_id: u32) -> Result<Option<OX_Post>, Box<dyn Error>> {
     }
 
     Ok(post)
+}
+
+// Get post title
+pub fn get_the_title(_app: &App, _post_id: u32) -> Option<String> {
+    Some(String::new())
+}
+
+// Get post URL
+pub fn get_the_permalink(_app: &App, _post_id: u32) -> Option<String> {
+    Some(String::new())
+}
+
+// Get post creation date
+pub fn get_the_date(_app: &App, _post_id: u32) -> Option<String> {
+    Some(String::new())
+}
+
+// Get post modification date
+pub fn get_the_modified_date(_app: &App, _post_id: u32) -> Option<String> {
+    Some(String::new())
+}
+
+// Get post content
+pub fn get_the_content(_app: &App, _post_id: u32) -> Option<String> {
+    Some(String::new())
+}
+
+// Get post author
+pub fn get_the_author(_app: &App, _post_id: u32) -> Option<String> {
+    Some(String::new())
 }

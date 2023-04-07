@@ -93,6 +93,7 @@ impl User {
         // check password strength / non-fatal
         // check role validity / non-fatal ?
         // allocate ID: id: user_functions::get_next_available_user_id(app),
+        // store use in db
         // add to app
         // maybe use usermanager?
         true
