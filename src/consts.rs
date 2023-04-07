@@ -12,6 +12,7 @@ pub const DEFAULT_PERMALINK_NOT_ALLOWED_CHARS: [&str; 9] =
 pub const ID_START_VALUE: u32 = 0;
 
 // Mock DB file
-pub const FILE_PATH: &str = "mock_db.csv";
+pub const FILE_PATH_POSTS: &str = "mock_db_posts.csv";
+pub const FILE_PATH_USERS: &str = "mock_db_users.csv";
 
 pub const USER_ID_TEMPORARY_DEFAULT: u32 = 0;

@@ -41,7 +41,7 @@ fn turn_row_into_post(row: &csv::StringRecord) -> OX_Post {
 
 pub fn get_all_posts() -> Result<Vec<OX_Post>, Box<dyn Error>> {
     let mut posts: Vec<OX_Post> = Vec::new();
-    let csv_db = db::parse_csv(consts::FILE_PATH)?;
+    let csv_db = db::parse_csv(consts::FILE_PATH_POSTS)?;
     for post in csv_db.iter() {
         let the_post = turn_row_into_post(post);
         posts.push(the_post);
@@ -51,7 +51,7 @@ pub fn get_all_posts() -> Result<Vec<OX_Post>, Box<dyn Error>> {
 }
 
 pub fn get_post_by_id(post_id: u32) -> Result<Option<OX_Post>, Box<dyn Error>> {
-    let csv_db = db::parse_csv(consts::FILE_PATH)?;
+    let csv_db = db::parse_csv(consts::FILE_PATH_POSTS)?;
     let found_post;
     let mut post = None;
     for row in csv_db.iter() {

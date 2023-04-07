@@ -1,6 +1,7 @@
 // Mock CSV database
 use crate::consts;
 use crate::posts::post::OX_Post;
+use crate::users::user::User;
 use csv::{ReaderBuilder, StringRecord, WriterBuilder};
 use std::error::Error;
 
@@ -49,7 +50,7 @@ pub fn parse_csv(path: &str) -> Result<Vec<StringRecord>, Box<dyn Error>> {
     Ok(csv_result)
 }
 
-pub fn write_to_csv(path: &str, posts: Vec<&OX_Post>) -> Result<(), Box<dyn Error>> {
+pub fn write_posts_to_csv(path: &str, posts: Vec<&OX_Post>) -> Result<(), Box<dyn Error>> {
     println!("Writing CSV: {path:?}");
     let mut writer = WriterBuilder::new().from_path(path)?;
     for single_post in posts.iter() {
@@ -71,9 +72,33 @@ pub fn write_to_csv(path: &str, posts: Vec<&OX_Post>) -> Result<(), Box<dyn Erro
     Ok(())
 }
 
-pub fn store(posts: Vec<&OX_Post>) {
+pub fn write_users_to_csv(path: &str, user: &User) -> Result<(), Box<dyn Error>> {
+    println!("Writing CSV: {path:?}");
+    let mut writer = WriterBuilder::new().from_path(path)?;
+
+    writer.write_record([
+        user.id.to_string(),
+        user.first_name.to_string(),
+        user.last_name.to_string(),
+        user.login_name.to_string(),
+        user.email.to_string(),
+        user.role.to_string(),
+        user.password.to_string(),
+        user.registered.to_string(),
+    ])?;
+
+    writer.flush()?;
+    Ok(())
+}
+
+pub fn store_post(posts: Vec<&OX_Post>) {
     println!("Storing posts: {posts:?}");
-    let _write = write_to_csv(consts::FILE_PATH, posts);
+    let _write = write_posts_to_csv(consts::FILE_PATH_POSTS, posts);
+}
+
+pub fn store_user(user: &User) {
+    println!("Storing user: {user:?}");
+    let _write = write_users_to_csv(consts::FILE_PATH_USERS, user);
 }
 
 #[allow(dead_code)]

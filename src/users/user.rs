@@ -1,5 +1,6 @@
 use crate::allocator::{ID_Allocator, ResourceID, ResourceType};
 use crate::app::App;
+use crate::database::db;
 use crate::dates::functions as date_functions;
 use crate::users::functions as user_functions;
 use crate::users::roles::UserRole;
@@ -58,7 +59,7 @@ pub struct User {
     pub email: String,
     pub id: UserID,
     pub role: UserRole,
-    password: String,
+    pub(crate) password: String,
     pub registered: String,
 }
 
@@ -85,6 +86,7 @@ impl User {
     }
 
     pub fn insert(app: &mut App, user: User) -> bool {
+        let _store = db::store_user(&user);
         dbg!(user);
         // try-insert logic here
         // check if email is valid / fatal
