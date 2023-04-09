@@ -12,6 +12,8 @@ fn get_current_user() -> User {
     todo!()
 }
 
+// get user by id
 fn get_user_by_id(user_id: UserID) -> User {
     todo!()
+    // get user
 }
