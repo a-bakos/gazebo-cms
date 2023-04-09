@@ -1,5 +1,6 @@
 use crate::allocator::ResourceManager;
 use crate::database::db::Database;
+use crate::users::user::UserID;
 use crate::users::user_manager::UserManager;
 use std::time::SystemTime;
 
@@ -16,6 +17,7 @@ pub struct App {
     debug_mode: bool,
     // logged in users
     pub users: Vec<String>,
+    current_user: Option<UserID>, // this is just an idea. it doesn't have an effect until we go async...
 }
 
 impl App {
@@ -35,6 +37,7 @@ impl App {
             start: SystemTime::now(),
             debug_mode: false,
             users: Vec::new(),
+            current_user: None,
         }
     }
 

@@ -11,3 +11,7 @@ pub fn get_next_available_user_id(app: &mut App) -> UserID {
 fn get_current_user() -> User {
     todo!()
 }
+
+fn get_user_by_id(user_id: UserID) -> User {
+    todo!()
+}
