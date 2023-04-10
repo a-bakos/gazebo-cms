@@ -2,6 +2,13 @@
 
 Some todo ideas
  
+
+- serde for serialisation
+- sqlx for postgresql
+- warp for async framework
+- anyhow for errors
+
+ 
 ```php
 /**
  * Serializes data, if needed.
