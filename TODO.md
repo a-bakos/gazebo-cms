@@ -8,6 +8,17 @@ Some todo ideas
 - warp for async framework
 - anyhow for errors
 
+```SQL
+CREATE TABLE IF NOT EXISTS users (
+    id serial PRIMARY KEY,
+    firstname VARCHAR (255) NOT NULL,
+    lastname VARCHAR (255) NOT NULL,
+    email ??? NOT NULL,
+    role ??? NOT NULL,
+    created_on TIMESTAMP NOT NULL DEFAULT NOW()
+);
+```
+ 
  
 ```php
 /**
