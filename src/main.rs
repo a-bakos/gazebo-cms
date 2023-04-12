@@ -28,7 +28,7 @@ fn main() {
         "testuser".to_string(),
         "test@test.com".to_string(),
         users::roles::UserRole::Admin,
-        "123456".to_string(),
+        "12345678".to_string(),
     );
     let _is_user_inserted: bool = users::user::User::insert(&mut app, test_user);
 

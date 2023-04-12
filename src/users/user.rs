@@ -59,7 +59,7 @@ pub struct User {
     pub email: String,
     pub id: UserID,
     pub role: UserRole,
-    pub(crate) password: String,
+    pub password: String,
     pub registered: String,
 }
 
@@ -86,8 +86,6 @@ impl User {
     }
 
     pub fn insert(app: &mut App, user: User) -> bool {
-        let _store = db::store_user(&user);
-        dbg!(user);
         // try-insert logic here
         // check if email is valid / fatal
         // check if email exists / fatal
@@ -98,6 +96,17 @@ impl User {
         // store use in db
         // add to app
         // maybe use usermanager?
+
+        // We don't need to check user role validity, because it can only be a variant of the UserRole enum
+        if !crate::users::user_manager::is_email_valid(&user.email)
+            || !crate::users::user_manager::is_password_valid(&user.password)
+        {
+            return false;
+        }
+
+        let _store = db::store_user(&user);
+        dbg!(user);
+
         true
     }
 

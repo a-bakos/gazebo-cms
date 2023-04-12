@@ -16,3 +16,5 @@ pub const FILE_PATH_POSTS: &str = "mock_db_posts.csv";
 pub const FILE_PATH_USERS: &str = "mock_db_users.csv";
 
 pub const USER_ID_TEMPORARY_DEFAULT: u32 = 0;
+
+pub const MIN_PASSWORD_LENGTH: usize = 8;
