@@ -6,7 +6,7 @@ use crate::users::functions as user_functions;
 use crate::users::roles::UserRole;
 use std::fmt::Formatter;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct UserID(pub u32);
 
 impl std::fmt::Display for UserID {

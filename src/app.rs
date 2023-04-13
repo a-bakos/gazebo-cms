@@ -11,13 +11,13 @@ pub struct App {
     pub version: String,
     pub resources: ResourceManager,
     #[allow(dead_code)]
-    db: Database,
+    pub(crate) db: Database,
     pub start: SystemTime,
     #[allow(dead_code)]
     debug_mode: bool,
     // logged in users
     pub users: Vec<String>,
-    current_user: Option<UserID>, // this is just an idea. it doesn't have an effect until we go async...
+    pub current_user: Option<UserID>, // this is just an idea. it doesn't have an effect until we go async...
 }
 
 impl App {

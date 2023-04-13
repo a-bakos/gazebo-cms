@@ -5,6 +5,7 @@ use crate::users::user::User;
 use csv::{ReaderBuilder, StringRecord, WriterBuilder};
 use std::error::Error;
 
+#[allow(non_camel_case_types)]
 pub enum DB_Table {
     Posts,
     Users,
@@ -39,8 +40,24 @@ impl Database {
     }
 
     #[allow(dead_code)]
-    pub fn get_row(_id: u32) {
-        todo!()
+    pub fn get_row(db_table: DB_Table, id: u32) {
+        let mut path = None;
+        match db_table {
+            DB_Table::Users => {
+                path = Some(consts::FILE_PATH_USERS);
+            }
+            DB_Table::Posts => {
+                path = Some(consts::FILE_PATH_POSTS);
+            }
+        }
+        if path.is_some() {
+            let csv = parse_csv(path.unwrap());
+            for row in csv.unwrap().iter() {
+                let result = crate::users::functions::turn_row_into_user(row);
+                dbg!(result);
+                // row = StringRecord(["0", "First", "Last", "testuser", "test@test.com", "admin", "12345678", "2023-04-12 19:10:54"])
+            }
+        }
     }
 }
 

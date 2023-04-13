@@ -12,8 +12,10 @@ mod url;
 mod users;
 
 use crate::database::db;
+use crate::database::db::DB_Table;
 use crate::posts::post::OX_Post;
 use posts::functions as post_functions;
+
 fn main() {
     // Start the App
     let mut app = app::App::init(
@@ -30,7 +32,10 @@ fn main() {
         users::roles::UserRole::Admin,
         "12345678".to_string(),
     );
-    let _is_user_inserted: bool = users::user::User::insert(&mut app, test_user);
+    //let _is_user_inserted: bool = users::user::User::insert(&mut app, test_user);
+
+    println!("Getting user table row");
+    db::Database::get_row(DB_Table::Users, 0);
 
     // Mimic a user login request
     users::user::User::login(&mut app, "test@test.com");
