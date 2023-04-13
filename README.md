@@ -4,6 +4,10 @@
 This is a project for myself to practice and grow my Rust skills. The main idea behind this project is to explore and
 re-create some parts of WordPress using Rust in order to pick up new things, solidify what I've learnt, understand and commit to muscle memory.
 
+**Why WordPress?**
+
+Because I love WordPress and I know it like the back of my hand. It's that simple.
+
 **Aims and limitations:**
 
 Eventually, I want a prototype for a basic CMS flow. _However..._
@@ -24,4 +28,4 @@ Database-wise, I'm starting with one of the easiest possible ways, using a simpl
 
 **What if...**
 
-Who knows/wishful thinking, etc, and it's a big _if_ at this point, but if I can reach escape velocity with this prototyping exercise, there's always the potential it might even grow into a real product...
+Who knows/wishful thinking, etc, and it's a big _if_ at this point, but if I can reach escape velocity with this prototyping exercise, there's always the potential it grows into a real product...
