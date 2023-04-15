@@ -1,6 +1,10 @@
 use crate::app::App;
+use crate::consts;
+use crate::database::{columns, db};
+use crate::users::functions::turn_row_into_user;
 use crate::users::roles::UserRole;
 use crate::users::user::User;
+use std::error::Error;
 
 pub struct UserManager {
     users: Vec<crate::users::user::UserID>,
@@ -30,15 +34,29 @@ pub fn is_password_valid(password: &str) -> bool {
 }
 
 pub fn user_exists(email: &str) -> bool {
-    // get user db/table and look for the email address
-    // if found return true
-    if get_user_by_email(email).is_some() {
-        return true;
+    if get_user_by_email(email).is_ok() {
+        if get_user_by_email(email).unwrap().is_some() {
+            return true;
+        }
     }
-    panic!("Couldn't find user");
     false
 }
 
-pub fn get_user_by_email(email: &str) -> Option<User> {
-    todo!()
+pub fn get_user_by_email(email: &str) -> Result<Option<User>, Box<dyn Error>> {
+    // if is valid email
+
+    let csv_db = db::parse_csv(consts::FILE_PATH_USERS)?;
+    let found_user;
+    let mut user = None;
+    for row in csv_db.iter() {
+        if let Some(db_email) = row.get(columns::COL_INDEX_USER_EMAIL) {
+            if db_email.to_lowercase() == email.to_lowercase() {
+                found_user = row;
+                user = Some(turn_row_into_user(found_user));
+                break;
+            }
+        }
+    }
+
+    Ok(user)
 }

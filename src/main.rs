@@ -41,6 +41,9 @@ fn main() {
     users::user::User::login(&mut app, "test@test.com");
     //dbg!(&app.users);
 
+    let getuser = users::user_manager::get_user_by_email("test@test.com");
+    dbg!(getuser);
+
     // Imitate editing a new posts - Eg. User clicks a "new posts" button
     let mut post = OX_Post::draft(&mut app, posts::entry_type::EntryType::Post);
     // User adds a title to the posts (permalink auto-generated)
@@ -55,14 +58,14 @@ fn main() {
     post_2.add_title("This is a second posts".to_string(), true);
 
     // Check the App state
-    dbg!(&app.resources);
+    //dbg!(&app.resources);
 
     // The storage methods will be part of the OX_Post routine
     let to_store: Vec<&OX_Post> = vec![&post, &post_2];
     #[allow(clippy::let_unit_value)]
     let _store = db::store_post(to_store);
     #[allow(clippy::let_unit_value)]
-    let _get_post: Option<OX_Post> = post_functions::get_post_by_id(1).unwrap();
+    //let _get_post: Option<OX_Post> = post_functions::get_post_by_id(1).unwrap();
     // dbg!(&_get_post);
 
     // dbg!(crate::database::columns::get_columns());

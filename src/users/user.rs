@@ -1,29 +1,3 @@
-use crate::allocator::{ID_Allocator, ResourceID, ResourceType};
-use crate::app::App;
-use crate::database::db;
-use crate::dates::functions as date_functions;
-use crate::users::functions as user_functions;
-use crate::users::roles::UserRole;
-use std::fmt::Formatter;
-
-#[derive(Debug, Clone)]
-pub struct UserID(pub u32);
-
-impl std::fmt::Display for UserID {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.0)
-    }
-}
-
-impl ID_Allocator for UserID {
-    fn allocate(app: &mut App) -> Self {
-        let _ = &app
-            .resources
-            .add_to_allocated(ResourceType::User, ResourceID::UserID(1));
-        UserID(1)
-    }
-}
-
 /*
  * string $nickname
  * string $description
@@ -49,6 +23,32 @@ impl ID_Allocator for UserID {
  * string $syntax_highlighting
  * string $use_ssl
  */
+
+use crate::allocator::{ID_Allocator, ResourceID, ResourceType};
+use crate::app::App;
+use crate::database::db;
+use crate::dates::functions as date_functions;
+use crate::users::functions as user_functions;
+use crate::users::roles::UserRole;
+use std::fmt::Formatter;
+
+#[derive(Debug, Clone)]
+pub struct UserID(pub u32);
+
+impl std::fmt::Display for UserID {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl ID_Allocator for UserID {
+    fn allocate(app: &mut App) -> Self {
+        let _ = &app
+            .resources
+            .add_to_allocated(ResourceType::User, ResourceID::UserID(1));
+        UserID(1)
+    }
+}
 
 #[derive(Debug)]
 #[allow(dead_code)]
