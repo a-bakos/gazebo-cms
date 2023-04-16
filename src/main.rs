@@ -24,33 +24,24 @@ fn main() {
         "Rusty CMS Experiment App".to_string(),
         consts::VERSION.to_string(),
     );
+    // App started timestamp:
+    // dbg!(&app.start);
 
+    // User-related processes
     mock_process::Imitate::register_user(&mut app);
+    mock_process::Imitate::user_login(&mut app);
+    mock_process::Imitate::get_user_by_email();
+
+    // Post-related processes
+    mock_process::Imitate::add_posts(&mut app);
+    mock_process::Imitate::get_post_by_id();
+    mock_process::Imitate::get_all_posts();
 
     println!("Getting user table row");
     db::Database::get_row(DB_Table::Users, 0);
-
-    // Mimic a user login request
-    users::user::User::login(&mut app, "test@test.com");
-    dbg!(&app.users);
-
-    let getuser = users::user_manager::get_user_by_email("test@test.com");
-    dbg!(getuser);
-
-    mock_process::Imitate::add_posts(&mut app);
-
-    #[allow(clippy::let_unit_value)]
-    //let _get_post: Option<OX_Post> = post_functions::get_post_by_id(1).unwrap();
-    // dbg!(&_get_post);
 
     // dbg!(crate::database::columns::get_columns());
 
     // Check the App state
     //dbg!(&app.resources);
-
-    dbg!(&app.start);
-
-    #[allow(clippy::let_unit_value)]
-    let _all_posts = post_functions::get_all_posts();
-    // dbg!(_all_posts);
 }

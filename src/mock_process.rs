@@ -4,15 +4,19 @@
 
 use crate::app::App;
 use crate::database::db;
-use crate::posts::post::OX_Post;
-use crate::{posts, users};
+use crate::{
+    posts,
+    posts::{entry_type::EntryType, functions as post_functions, post::OX_Post},
+    users,
+    users::{user, user::User, user_manager},
+};
 
 pub(crate) struct Imitate {}
 
 impl Imitate {
-    pub fn register_user(app: &mut App) -> bool {
+    pub fn register_user(app: &mut App) {
         // Let's create a new user and insert it
-        let test_user = crate::users::user::User::new(
+        let test_user = User::new(
             "First".to_string(),
             "Last".to_string(),
             "testuser".to_string(),
@@ -20,14 +24,25 @@ impl Imitate {
             users::roles::UserRole::Admin,
             "12345678".to_string(),
         );
-        let is_user_inserted: bool = users::user::User::insert(app, test_user);
+        let is_user_inserted: bool = User::insert(app, test_user);
 
-        is_user_inserted
+        dbg!(is_user_inserted);
+    }
+
+    // Mimic a user login request
+    pub fn user_login(app: &mut App) {
+        User::login(app, "test@test.com");
+        dbg!(&app.users);
+    }
+
+    pub fn get_user_by_email() {
+        let getuser = user_manager::get_user_by_email("test@test.com");
+        dbg!(getuser.unwrap());
     }
 
     pub fn add_posts(app: &mut App) {
         // Imitate editing a new post - Eg. User clicks on a "add/create new post" button
-        let mut post = OX_Post::draft(app, posts::entry_type::EntryType::Post);
+        let mut post = OX_Post::draft(app, EntryType::Post);
 
         // User adds a title to the post with permalink
         // (The title contains special characters which will be treated when the permalink is generated)
@@ -37,7 +52,7 @@ impl Imitate {
         );
 
         // Imitate editing a second new post creation
-        let mut post_2 = OX_Post::draft(app, posts::entry_type::EntryType::Post);
+        let mut post_2 = OX_Post::draft(app, EntryType::Post);
         // User adds a title to the posts (permalink auto-generated)
         post_2.add_title("This is a second post".to_string(), true);
 
@@ -47,5 +62,17 @@ impl Imitate {
 
         #[allow(clippy::let_unit_value)]
         let _store = db::store_post(to_store);
+    }
+
+    pub fn get_post_by_id() {
+        #[allow(clippy::let_unit_value)]
+        let get_post: Option<OX_Post> = post_functions::get_post_by_id(1).unwrap();
+        dbg!(&get_post);
+    }
+
+    pub fn get_all_posts() {
+        #[allow(clippy::let_unit_value)]
+        let all_posts = post_functions::get_all_posts();
+        dbg!(all_posts);
     }
 }
