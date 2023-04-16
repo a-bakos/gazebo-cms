@@ -1,7 +1,6 @@
 use crate::allocator::ResourceManager;
 use crate::database::db::Database;
 use crate::users::user::UserID;
-use crate::users::user_manager::UserManager;
 use std::time::SystemTime;
 
 // Todo need to implement Debug for App

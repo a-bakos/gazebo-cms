@@ -147,6 +147,7 @@ impl OX_Post {
         self.slug = Some(slug);
     }
 
+    #[allow(dead_code)]
     pub fn add_content(&mut self, content: String) {
         self.content = Some(content);
     }

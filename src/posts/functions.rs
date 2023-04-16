@@ -1,4 +1,3 @@
-use crate::app::App;
 use crate::consts;
 use crate::database::{columns, db};
 use crate::posts::entry_type::EntryType;
@@ -68,54 +67,63 @@ pub fn get_post_by_id(post_id: u32) -> Result<Option<OX_Post>, Box<dyn Error>> {
 }
 
 // Get post title
+#[allow(dead_code)]
 pub fn get_the_title(post_id: u32) -> Option<String> {
     let post = get_post_by_id(post_id).unwrap().unwrap();
     post.title
 }
 
 // Get post URL
+#[allow(dead_code)]
 pub fn get_the_permalink(post_id: u32) -> Option<String> {
     let post = get_post_by_id(post_id).unwrap().unwrap();
     post.slug
 }
 
 // Get post creation date
+#[allow(dead_code)]
 pub fn get_the_date(post_id: u32) -> Option<String> {
     let post = get_post_by_id(post_id).unwrap().unwrap();
     Some(post.date_publish)
 }
 
 // Get post modification date
+#[allow(dead_code)]
 pub fn get_the_modified_date(post_id: u32) -> Option<String> {
     let post = get_post_by_id(post_id).unwrap().unwrap();
     Some(post.date_modified)
 }
 
 // Get post content
+#[allow(dead_code)]
 pub fn get_the_content(post_id: u32) -> Option<String> {
     let post = get_post_by_id(post_id).unwrap().unwrap();
     post.content
 }
 
 // Get post author
+#[allow(dead_code)]
 pub fn get_the_author(post_id: u32) -> Option<UserID> {
     let post = get_post_by_id(post_id).unwrap().unwrap();
     Some(post.id_author)
 }
 
 // Get post parent
+#[allow(dead_code)]
 pub fn get_post_parent(post_id: u32) -> Option<EntryID> {
     let post = get_post_by_id(post_id).unwrap().unwrap();
     post.id_parent
 }
 
 // Get post type
+#[allow(dead_code)]
 pub fn get_post_type(post_id: u32) -> Option<EntryType> {
     let post = get_post_by_id(post_id).unwrap().unwrap();
     Some(post.the_type)
 }
 
 // Get post excerpt
+#[allow(dead_code)]
 pub fn get_post_excerpt(post_id: u32) -> Option<String> {
     let post = get_post_by_id(post_id).unwrap().unwrap();
     post.excerpt

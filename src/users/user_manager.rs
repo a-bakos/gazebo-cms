@@ -1,21 +1,22 @@
-use crate::app::App;
 use crate::consts;
 use crate::database::{columns, db};
 use crate::users::functions::turn_row_into_user;
-use crate::users::roles::UserRole;
 use crate::users::user::User;
 use std::error::Error;
 
+#[allow(dead_code)]
 pub struct UserManager {
     users: Vec<crate::users::user::UserID>,
 }
 
+#[allow(dead_code)]
 impl UserManager {
     pub fn new() -> Self {
         Self { users: Vec::new() }
     }
 }
 
+#[allow(unused_variables)]
 pub fn is_email_valid(email: &str) -> bool {
     true
 }
@@ -34,10 +35,8 @@ pub fn is_password_valid(password: &str) -> bool {
 }
 
 pub fn user_exists(email: &str) -> bool {
-    if get_user_by_email(email).is_ok() {
-        if get_user_by_email(email).unwrap().is_some() {
-            return true;
-        }
+    if get_user_by_email(email).is_ok() && get_user_by_email(email).unwrap().is_some() {
+        return true;
     }
     false
 }

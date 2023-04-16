@@ -28,7 +28,6 @@ use crate::allocator::{ID_Allocator, ResourceID, ResourceType};
 use crate::app::App;
 use crate::database::db;
 use crate::dates::functions as date_functions;
-use crate::users::functions as user_functions;
 use crate::users::roles::UserRole;
 use std::fmt::Formatter;
 
@@ -85,6 +84,7 @@ impl User {
         }
     }
 
+    #[allow(unused_variables)]
     pub fn insert(app: &mut App, user: User) -> bool {
         // try-insert logic here
         // check if email is valid / fatal
@@ -108,14 +108,14 @@ impl User {
             return false;
         }
 
-        let _store = db::store_user(&user);
+        db::store_user(&user);
         dbg!(user);
 
         true
     }
 
     pub fn login(app: &mut App, user_email: &str) -> bool {
-        println!("{} log in request", user_email);
+        println!("{user_email} log in request");
         // dummy login functionality
         // see if user exists
         // get id if it does and push it into users vec
@@ -123,10 +123,14 @@ impl User {
         true
     }
 
+    #[allow(unused_variables)]
+    #[allow(dead_code)]
     pub fn change_username(&mut self, new_username: &str) {
         // username change functionality
     }
 
+    #[allow(unused_variables)]
+    #[allow(dead_code)]
     pub fn reset_password(&mut self, new_password: &str) {
         // password reset functionality
     }

@@ -5,10 +5,9 @@
 use crate::app::App;
 use crate::database::db;
 use crate::{
-    posts,
     posts::{entry_type::EntryType, functions as post_functions, post::OX_Post},
     users,
-    users::{user, user::User, user_manager},
+    users::{user::User, user_manager},
 };
 
 pub(crate) struct Imitate {}
@@ -73,6 +72,6 @@ impl Imitate {
     pub fn get_all_posts() {
         #[allow(clippy::let_unit_value)]
         let all_posts = post_functions::get_all_posts();
-        dbg!(all_posts);
+        dbg!(all_posts.unwrap());
     }
 }
