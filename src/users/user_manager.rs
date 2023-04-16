@@ -21,7 +21,7 @@ pub fn is_email_valid(email: &str) -> bool {
 }
 
 pub fn is_password_valid(password: &str) -> bool {
-    if password.len() < crate::consts::MIN_PASSWORD_LENGTH {
+    if password.len() < consts::MIN_PASSWORD_LENGTH {
         // Password must be at least crate::consts::MIN_PASSWORD_LENGTH characters long!
         return false;
     }
@@ -43,7 +43,10 @@ pub fn user_exists(email: &str) -> bool {
 }
 
 pub fn get_user_by_email(email: &str) -> Result<Option<User>, Box<dyn Error>> {
-    // if is valid email
+    // todo: if is valid email
+    //if !is_email_valid(&email) {
+    //    return an error
+    //}
 
     let csv_db = db::parse_csv(consts::FILE_PATH_USERS)?;
     let found_user;
