@@ -13,11 +13,6 @@ mod users;
 
 mod mock_process;
 
-use crate::database::db;
-use crate::database::db::DB_Table;
-use crate::posts::post::OX_Post;
-use posts::functions as post_functions;
-
 fn main() {
     // Start the App
     let mut app = app::App::init(
@@ -36,12 +31,4 @@ fn main() {
     mock_process::Imitate::add_posts(&mut app);
     mock_process::Imitate::get_post_by_id();
     mock_process::Imitate::get_all_posts();
-
-    println!("Getting user table row");
-    db::Database::get_row(DB_Table::Users, 0);
-
-    // dbg!(crate::database::columns::get_columns());
-
-    // Check the App state
-    //dbg!(&app.resources);
 }
