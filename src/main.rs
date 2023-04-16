@@ -11,7 +11,7 @@ mod posts;
 mod url;
 mod users;
 
-mod run_sequence;
+mod mock_process;
 
 use crate::database::db;
 use crate::database::db::DB_Table;
@@ -25,7 +25,7 @@ fn main() {
         consts::VERSION.to_string(),
     );
 
-    run_sequence::Process::register_user(&mut app);
+    mock_process::Imitate::register_user(&mut app);
 
     println!("Getting user table row");
     db::Database::get_row(DB_Table::Users, 0);
@@ -37,7 +37,7 @@ fn main() {
     let getuser = users::user_manager::get_user_by_email("test@test.com");
     dbg!(getuser);
 
-    run_sequence::Process::add_posts(&mut app);
+    mock_process::Imitate::add_posts(&mut app);
 
     #[allow(clippy::let_unit_value)]
     //let _get_post: Option<OX_Post> = post_functions::get_post_by_id(1).unwrap();

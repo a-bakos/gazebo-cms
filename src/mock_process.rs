@@ -7,9 +7,9 @@ use crate::database::db;
 use crate::posts::post::OX_Post;
 use crate::{posts, users};
 
-pub(crate) struct Process {}
+pub(crate) struct Imitate {}
 
-impl Process {
+impl Imitate {
     pub fn register_user(app: &mut App) -> bool {
         // Let's create a new user and insert it
         let test_user = crate::users::user::User::new(
