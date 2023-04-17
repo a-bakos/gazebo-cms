@@ -30,7 +30,7 @@ impl Imitate {
 
     // Mimic a user login request
     pub fn user_login(app: &mut App) {
-        User::login(app, "test@test.com");
+        User::login(app, "test@test.com", "password");
         dbg!(&app.users);
     }
 

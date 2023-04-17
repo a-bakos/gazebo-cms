@@ -29,6 +29,7 @@ use crate::app::App;
 use crate::database::db;
 use crate::dates::functions as date_functions;
 use crate::users::roles::UserRole;
+use crate::users::user_manager::{is_password_valid, user_exists};
 use std::fmt::Formatter;
 
 #[derive(Debug, Clone)]
@@ -98,14 +99,13 @@ impl User {
         // maybe use usermanager?
 
         if crate::users::user_manager::user_exists(&user.email) {
-            //return false;
+            return false;
         }
 
         // We don't need to check user role validity, because it can only be a variant of the UserRole enum
         if !crate::users::user_manager::is_email_valid(&user.email)
             || !crate::users::user_manager::is_password_valid(&user.password)
         {
-            panic!("{} is not a valid", user.password);
             return false;
         }
 
@@ -115,12 +115,22 @@ impl User {
         true
     }
 
-    pub fn login(app: &mut App, user_email: &str) -> bool {
+    pub fn login(app: &mut App, user_email: &str, password: &str) -> bool {
         println!("{user_email} log in request");
         // dummy login functionality
-        // see if user exists
+
+        if !user_exists(&user_email) {
+            return false;
+        }
+
+        if !is_password_valid(&password) {
+            return false;
+        }
+
         // get id if it does and push it into users vec
+        // first, check if already in vec
         app.users.push(user_email.to_string());
+
         true
     }
 
