@@ -21,7 +21,7 @@ impl Imitate {
             "testuser".to_string(),
             "test@test.com".to_string(),
             users::roles::UserRole::Admin,
-            "12345678".to_string(),
+            "A345678B".to_string(),
         );
         let is_user_inserted: bool = User::insert(app, test_user);
 

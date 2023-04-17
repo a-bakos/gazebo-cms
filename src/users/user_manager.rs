@@ -1,7 +1,6 @@
 use crate::consts;
 use crate::database::{columns, db};
-use crate::users::functions::turn_row_into_user;
-use crate::users::user::User;
+use crate::users::{functions::turn_row_into_user, user::User};
 use std::error::Error;
 
 #[allow(dead_code)]
@@ -22,16 +21,39 @@ pub fn is_email_valid(email: &str) -> bool {
 }
 
 pub fn is_password_valid(password: &str) -> bool {
-    if password.len() < consts::MIN_PASSWORD_LENGTH {
-        // Password must be at least crate::consts::MIN_PASSWORD_LENGTH characters long!
-        return false;
+    let mut ok_pw_len: bool = false;
+    let mut ok_pw_uppercase: bool = false;
+    let mut ok_pw_numeric: bool = false;
+
+    // Password length check
+    if password.len() >= consts::MIN_PASSWORD_LENGTH {
+        ok_pw_len = true;
     }
 
-    // check strength
-    // check capital letters
-    // check numbers
+    // Check if password contains capital letters
+    // Use the any method to check if at least one character satisfies the conditions
+    ok_pw_uppercase = password.chars().any(|ch| {
+        if ch.is_ascii_uppercase() {
+            return true;
+        }
+        false
+    });
+
+    // Check if password contains numbers
+    ok_pw_numeric = password.chars().any(|ch| {
+        if ch.is_numeric() {
+            return true;
+        }
+        false
+    });
+
+    // todo
     // check special chars
-    true
+
+    if ok_pw_numeric && ok_pw_uppercase && ok_pw_len {
+        return true;
+    }
+    false
 }
 
 pub fn user_exists(email: &str) -> bool {

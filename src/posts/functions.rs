@@ -1,7 +1,9 @@
 use crate::consts;
 use crate::database::{columns, db};
-use crate::posts::entry_type::EntryType;
-use crate::posts::post::{EntryID, OX_Post};
+use crate::posts::{
+    entry_type::EntryType,
+    post::{EntryID, OX_Post},
+};
 use crate::users::user::UserID;
 use std::error::Error;
 

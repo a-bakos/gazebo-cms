@@ -98,13 +98,14 @@ impl User {
         // maybe use usermanager?
 
         if crate::users::user_manager::user_exists(&user.email) {
-            return false;
+            //return false;
         }
 
         // We don't need to check user role validity, because it can only be a variant of the UserRole enum
         if !crate::users::user_manager::is_email_valid(&user.email)
             || !crate::users::user_manager::is_password_valid(&user.password)
         {
+            panic!("{} is not a valid", user.password);
             return false;
         }
 
