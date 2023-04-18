@@ -68,4 +68,12 @@ mod test {
         app.change_admin_email(test_admin_email);
         assert_eq!(app.admin_email, test_admin_email);
     }
+
+    #[test]
+    fn is_app_name_changed() {
+        let test_app_name = "TEST RUST CMS APP NAME";
+        let mut app = App::init();
+        app.change_app_name(test_app_name);
+        assert_eq!(app.name, test_app_name);
+    }
 }
