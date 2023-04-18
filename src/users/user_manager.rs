@@ -84,3 +84,21 @@ pub fn get_user_by_email(email: &str) -> Result<Option<User>, Box<dyn Error>> {
 
     Ok(user)
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_is_password_valid() {
+        let password_correct = "Abcd1234";
+        let password_too_short = "Abcd1";
+        let password_missing_number = "ABCdefGH";
+        let password_missing_uppercase = "abcde1234";
+        assert_eq!(is_password_valid(password_correct), true);
+        assert_eq!(is_password_valid(password_too_short), false);
+        assert_eq!(is_password_valid(password_missing_number), false);
+        assert_eq!(is_password_valid(password_missing_uppercase), false);
+        assert_eq!(is_password_valid(password_missing_uppercase), false);
+    }
+}

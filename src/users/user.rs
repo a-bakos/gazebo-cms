@@ -149,6 +149,14 @@ impl User {
     }
 }
 
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test() {}
+}
+
 // TODO
 // define( 'COOKIEHASH', md5( $siteurl ) );
 // define( 'USER_COOKIE', 'wordpressuser_' . COOKIEHASH );
