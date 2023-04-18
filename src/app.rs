@@ -56,3 +56,16 @@ impl App {
         true
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn is_admin_email_changed() {
+        let test_admin_email = "test_admin_email@cms.test";
+        let mut app = App::init();
+        app.change_admin_email(test_admin_email);
+        assert_eq!(app.admin_email, test_admin_email);
+    }
+}

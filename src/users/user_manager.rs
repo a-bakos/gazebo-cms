@@ -90,7 +90,7 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_is_password_valid() {
+    fn are_password_variations_valid() {
         let password_correct = "Abcd1234";
         let password_too_short = "Abcd1";
         let password_missing_number = "ABCdefGH";
