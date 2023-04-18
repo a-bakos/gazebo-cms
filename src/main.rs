@@ -19,8 +19,7 @@ fn main() {
     // App started timestamp:
     // dbg!(&app.start);
 
-    app.change_admin_email("admin@example.com");
-    app.change_app_name("THE RUST CMS");
+    mock_process::Imitate::update_app_defaults(&mut app);
 
     // User-related processes
     mock_process::Imitate::register_user();

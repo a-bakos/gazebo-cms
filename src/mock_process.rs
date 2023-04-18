@@ -13,6 +13,11 @@ use crate::{
 pub(crate) struct Imitate {}
 
 impl Imitate {
+    pub fn update_app_defaults(app: &mut App) {
+        app.change_admin_email("admin@example.com");
+        app.change_app_name("THE RUST CMS");
+    }
+
     pub fn register_user() {
         // Let's create a new user and insert it
         let test_user = User::new(
