@@ -98,13 +98,13 @@ impl User {
         // add to app
         // maybe use usermanager?
 
-        if crate::users::user_manager::user_exists(&user.email) {
+        if user_exists(&user.email) {
             return false;
         }
 
         // We don't need to check user role validity, because it can only be a variant of the UserRole enum
         if !crate::users::user_manager::is_email_valid(&user.email)
-            || !crate::users::user_manager::is_password_valid(&user.password)
+            || !is_password_valid(&user.password)
         {
             return false;
         }
@@ -142,8 +142,14 @@ impl User {
 
     #[allow(unused_variables)]
     #[allow(dead_code)]
-    pub fn reset_password(&mut self, new_password: &str) {
+    pub fn reset_password(&mut self, new_password: &str) -> bool {
         // password reset functionality
+        if is_password_valid(new_password) {
+            // todo store new password logic here
+            return true;
+        }
+
+        false
     }
 }
 
