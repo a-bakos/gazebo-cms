@@ -17,6 +17,7 @@ fn main() {
     // Start the App
     let mut app = app::App::init(
         "Rusty CMS Experiment App".to_string(),
+        "admin@cms.test".to_string(),
         consts::VERSION.to_string(),
     );
     // App started timestamp:

@@ -101,9 +101,11 @@ impl User {
         db::store_user(&user);
         dbg!(user);
 
-        // todo: on successful insertion, maybe send notification email to user
+        // todo: on successful insertion, maybe send notification email to user + admin
         if send_notification {
             // send email
+            // new_user_notification(user.id);
+            // send_notification_to_admin( NOTIFICATION::NEW_USER_ADDED)
         }
 
         true

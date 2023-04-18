@@ -7,6 +7,7 @@ use std::time::SystemTime;
 // #[derive(Debug)]
 pub struct App {
     pub name: String,
+    pub admin_email: String,
     pub version: String,
     pub resources: ResourceManager,
     #[allow(dead_code)]
@@ -20,9 +21,10 @@ pub struct App {
 }
 
 impl App {
-    fn new(app_name: String, version: String) -> Self {
+    fn new(app_name: String, admin_email: String, version: String) -> Self {
         Self {
             name: app_name,
+            admin_email,
             version,
             resources: ResourceManager::new(), // HashMap<ResourceType, Vec<ResourceID>>
             db: Database::new(
@@ -40,7 +42,7 @@ impl App {
         }
     }
 
-    pub fn init(app_name: String, version: String) -> Self {
-        App::new(app_name, version)
+    pub fn init(app_name: String, admin_email: String, version: String) -> Self {
+        App::new(app_name, admin_email, version)
     }
 }
