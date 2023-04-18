@@ -13,7 +13,7 @@ use crate::{
 pub(crate) struct Imitate {}
 
 impl Imitate {
-    pub fn register_user(app: &mut App) {
+    pub fn register_user() {
         // Let's create a new user and insert it
         let test_user = User::new(
             "First".to_string(),
@@ -23,7 +23,7 @@ impl Imitate {
             users::roles::UserRole::Admin,
             "A345678B".to_string(),
         );
-        let is_user_inserted: bool = User::insert(app, test_user);
+        let is_user_inserted: bool = User::insert(test_user, true);
 
         dbg!(is_user_inserted);
     }

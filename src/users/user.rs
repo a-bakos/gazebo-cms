@@ -29,7 +29,7 @@ use crate::app::App;
 use crate::database::db;
 use crate::dates::functions as date_functions;
 use crate::users::roles::UserRole;
-use crate::users::user_manager::{is_password_valid, user_exists};
+use crate::users::user_manager::{is_email_valid, is_password_valid, user_exists};
 use std::fmt::Formatter;
 
 #[derive(Debug, Clone)]
@@ -86,31 +86,25 @@ impl User {
     }
 
     #[allow(unused_variables)]
-    pub fn insert(app: &mut App, user: User) -> bool {
-        // try-insert logic here
-        // check if email is valid / fatal
-        // check if email exists / fatal
-        // check if we have fname, lname, login name / non-fatal
-        // check password strength / non-fatal
-        // check role validity / non-fatal ?
-        // allocate ID: id: user_functions::get_next_available_user_id(app),
-        // store use in db
-        // add to app
-        // maybe use usermanager?
+    pub fn insert(user: User, send_notification: bool) -> bool {
+        // ID allocation is taken care of by the User::new() function
 
         if user_exists(&user.email) {
             return false;
         }
 
         // We don't need to check user role validity, because it can only be a variant of the UserRole enum
-        if !crate::users::user_manager::is_email_valid(&user.email)
-            || !is_password_valid(&user.password)
-        {
+        if !is_email_valid(&user.email) || !is_password_valid(&user.password) {
             return false;
         }
 
         db::store_user(&user);
         dbg!(user);
+
+        // todo: on successful insertion, maybe send notification email to user
+        if send_notification {
+            // send email
+        }
 
         true
     }

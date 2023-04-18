@@ -23,7 +23,7 @@ fn main() {
     // dbg!(&app.start);
 
     // User-related processes
-    mock_process::Imitate::register_user(&mut app);
+    mock_process::Imitate::register_user();
     mock_process::Imitate::user_login(&mut app);
     mock_process::Imitate::get_user_by_email();
 
