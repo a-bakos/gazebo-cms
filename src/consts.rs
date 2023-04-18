@@ -1,5 +1,7 @@
-/// App version
-pub const VERSION: &str = "0.0.2";
+/// App default
+pub const DEFAULT_APP_NAME: &str = "Rusty CMS Experiment";
+pub const DEFAULT_APP_ADMIN_EMAIL: &str = "change_this@cms.email";
+pub const VERSION: &str = "0.0.122";
 
 /// Permalink defaults
 #[allow(dead_code)]

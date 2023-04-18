@@ -15,13 +15,12 @@ mod mock_process;
 
 fn main() {
     // Start the App
-    let mut app = app::App::init(
-        "Rusty CMS Experiment App".to_string(),
-        "admin@cms.test".to_string(),
-        consts::VERSION.to_string(),
-    );
+    let mut app = app::App::init();
     // App started timestamp:
     // dbg!(&app.start);
+
+    app.change_admin_email("admin@example.com");
+    app.change_app_name("THE RUST CMS");
 
     // User-related processes
     mock_process::Imitate::register_user();
