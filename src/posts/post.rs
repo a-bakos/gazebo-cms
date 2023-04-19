@@ -156,6 +156,11 @@ impl OX_Post {
     pub fn store(&mut self) -> bool {
         true
     }
+
+    pub fn update_slug(&mut self, new_slug: &str) -> bool {
+        self.slug = Some(new_slug.to_string());
+        true
+    }
 }
 
 #[cfg(test)]
