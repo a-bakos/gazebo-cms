@@ -147,6 +147,7 @@ impl OX_Post {
         self.slug = Some(slug);
     }
 
+    #[allow(dead_code)]
     pub fn add_content(&mut self, content: String) {
         self.content = Some(content);
     }
@@ -163,10 +164,7 @@ mod test {
 
     #[test]
     fn is_title_and_permalink_added() {
-        let mut app = crate::app::App::init(
-            "Test Rusty CMS Experiment App".to_string(),
-            crate::consts::VERSION.to_string(),
-        );
+        let mut app = crate::app::App::init();
 
         let test_post_title: String = "Test title added".to_string();
         let test_post_slug: String = "test-title-added".to_string();

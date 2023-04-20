@@ -1,9 +1,7 @@
 use crate::allocator::ID_Allocator;
 use crate::app::App;
 use crate::database::columns;
-use crate::users::roles::UserRole;
 use crate::users::user::{User, UserID};
-use std::env::current_exe;
 
 #[allow(dead_code)]
 pub fn get_next_available_user_id(app: &mut App) -> UserID {
@@ -30,7 +28,8 @@ fn add_role_to_user(user_id: u32, role: UserRole) -> bool {
 }
 
 // get user by id
-fn get_user_by_id(user_id: UserID) -> User {
+#[allow(dead_code)]
+fn get_user_by_id(_user_id: UserID) -> User {
     todo!()
     // get user
 }

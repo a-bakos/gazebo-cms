@@ -6,6 +6,7 @@ use csv::{ReaderBuilder, StringRecord, WriterBuilder};
 use std::error::Error;
 
 #[allow(non_camel_case_types)]
+#[allow(dead_code)]
 pub enum DB_Table {
     Posts,
     Users,
@@ -40,24 +41,17 @@ impl Database {
     }
 
     #[allow(dead_code)]
-    pub fn get_row(db_table: DB_Table, id: u32) /*-> Option<impl DB_Return>*/
-    {
-        let mut path = None;
-        match db_table {
-            DB_Table::Users => {
-                path = Some(consts::FILE_PATH_USERS);
-            }
-            DB_Table::Posts => {
-                path = Some(consts::FILE_PATH_POSTS);
-            }
-        }
-        if path.is_some() {
-            let csv = parse_csv(path.unwrap());
-            for row in csv.unwrap().iter() {
-                let result = crate::users::functions::turn_row_into_user(row);
-                dbg!(result);
-                // row = StringRecord(["0", "First", "Last", "testuser", "test@test.com", "admin", "12345678", "2023-04-12 19:10:54"])
-            }
+    pub fn get_row(db_table: DB_Table, _id: u32) {
+        let path = match db_table {
+            DB_Table::Users => Some(consts::FILE_PATH_USERS),
+            DB_Table::Posts => Some(consts::FILE_PATH_POSTS),
+        };
+        let csv = parse_csv(path.unwrap());
+        for row in csv.unwrap().iter() {
+            let result = crate::users::functions::turn_row_into_user(row);
+            // todo!()
+            dbg!(result);
+            // row = StringRecord(["0", "First", "Last", "testuser", "test@test.com", "admin", "12345678", "2023-04-12 19:10:54"])
         }
     }
 }

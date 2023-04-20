@@ -1,13 +1,13 @@
 use crate::allocator::ResourceManager;
 use crate::database::db::Database;
 use crate::users::user::UserID;
-use crate::users::user_manager::UserManager;
 use std::time::SystemTime;
 
 // Todo need to implement Debug for App
 // #[derive(Debug)]
 pub struct App {
     pub name: String,
+    pub admin_email: String,
     pub version: String,
     pub resources: ResourceManager,
     #[allow(dead_code)]
@@ -21,10 +21,11 @@ pub struct App {
 }
 
 impl App {
-    fn new(app_name: String, version: String) -> Self {
+    fn new() -> Self {
         Self {
-            name: app_name,
-            version,
+            name: crate::consts::DEFAULT_APP_NAME.to_string(),
+            admin_email: crate::consts::DEFAULT_APP_ADMIN_EMAIL.to_string(),
+            version: crate::consts::VERSION.to_string(),
             resources: ResourceManager::new(), // HashMap<ResourceType, Vec<ResourceID>>
             db: Database::new(
                 "database".to_string(),
@@ -41,7 +42,40 @@ impl App {
         }
     }
 
-    pub fn init(app_name: String, version: String) -> Self {
-        App::new(app_name, version)
+    pub fn init() -> Self {
+        App::new()
+    }
+
+    pub fn change_admin_email(&mut self, new_admin_email: &str) -> bool {
+        self.admin_email = new_admin_email.to_owned();
+        // todo send admin notification
+        true
+    }
+
+    pub fn change_app_name(&mut self, new_app_name: &str) -> bool {
+        self.name = new_app_name.to_owned();
+        // todo send admin notification
+        true
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn is_admin_email_changed() {
+        let test_admin_email = "test_admin_email@cms.test";
+        let mut app = App::init();
+        app.change_admin_email(test_admin_email);
+        assert_eq!(app.admin_email, test_admin_email);
+    }
+
+    #[test]
+    fn is_app_name_changed() {
+        let test_app_name = "TEST RUST CMS APP NAME";
+        let mut app = App::init();
+        app.change_app_name(test_app_name);
+        assert_eq!(app.name, test_app_name);
     }
 }

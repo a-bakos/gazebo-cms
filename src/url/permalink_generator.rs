@@ -206,7 +206,6 @@ impl<'a> PermalinkGenerator<'a> {
                 }
                 println!("{}", link);
             }
-
             // check if proposed permalink is available hello-world
             // if not, get a list of links that start the same [ hello-world, hello-world-2, hello-world-wide-web ]
             // check for a number appended at the end / how?
