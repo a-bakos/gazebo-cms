@@ -216,7 +216,11 @@ impl<'a> PermalinkGenerator<'a> {
                                     let mut new_permalink = permalink_str
                                         [..permalink_str.len() - num_str.as_str().len()]
                                         .to_string();
-                                    new_permalink.push_str(&format!("-{}", the_permalink_num));
+                                    new_permalink.push_str(&format!(
+                                        "{}{}",
+                                        crate::consts::DEFAULT_PERMALINK_SEPARATOR,
+                                        the_permalink_num
+                                    ));
                                     return new_permalink;
                                 }
                             }
@@ -224,7 +228,11 @@ impl<'a> PermalinkGenerator<'a> {
                     } else {
                         // if no digit, append one
                         let mut new_permalink = permalink.to_string();
-                        new_permalink.push_str(&format!("-{}", 1));
+                        new_permalink.push_str(&format!(
+                            "{}{}",
+                            crate::consts::DEFAULT_PERMALINK_SEPARATOR,
+                            1
+                        ));
                         return new_permalink;
                     }
                 }
