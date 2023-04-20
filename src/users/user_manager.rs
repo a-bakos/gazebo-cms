@@ -1,4 +1,5 @@
 use crate::app::App;
+use crate::users::functions::get_user_by_email;
 use crate::users::roles::UserRole;
 use crate::users::user::User;
 
@@ -37,8 +38,4 @@ pub fn user_exists(email: &str) -> bool {
     }
     panic!("Couldn't find user");
     false
-}
-
-pub fn get_user_by_email(email: &str) -> Option<User> {
-    todo!()
 }

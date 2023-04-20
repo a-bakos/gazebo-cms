@@ -40,7 +40,8 @@ impl Database {
     }
 
     #[allow(dead_code)]
-    pub fn get_row(db_table: DB_Table, id: u32) {
+    pub fn get_row(db_table: DB_Table, id: u32) /*-> Option<impl DB_Return>*/
+    {
         let mut path = None;
         match db_table {
             DB_Table::Users => {
