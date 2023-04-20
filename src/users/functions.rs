@@ -1,6 +1,7 @@
 use crate::allocator::ID_Allocator;
 use crate::app::App;
 use crate::database::columns;
+use crate::users::roles::UserRole;
 use crate::users::user::{User, UserID};
 
 #[allow(dead_code)]

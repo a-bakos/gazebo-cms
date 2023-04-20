@@ -60,9 +60,12 @@ impl Imitate {
         // User adds a title to the posts (permalink auto-generated)
         post_2.add_title("This is a second post".to_string(), true);
 
+        let mut post_3 = OX_Post::draft(app, EntryType::Post);
+        post_3.add_title("This is a second post".to_string(), true);
+
         // The storage methods will be part of the OX_Post routine
         // ie. store post + update post
-        let to_store: Vec<&OX_Post> = vec![&post, &post_2];
+        let to_store: Vec<&OX_Post> = vec![&post, &post_2, &post_3];
 
         #[allow(clippy::let_unit_value)]
         let _store = db::store_post(to_store);

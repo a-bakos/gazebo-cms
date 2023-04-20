@@ -201,7 +201,7 @@ impl<'a> PermalinkGenerator<'a> {
         }
         if !all_permalinks.is_empty() {
             for link in all_permalinks.iter() {
-                if link == permalink {
+                if link.as_str() == permalink.as_str() {
                     panic!("perma exists!")
                 }
                 println!("{}", link);
