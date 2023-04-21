@@ -4,6 +4,7 @@
 
 use crate::app::App;
 use crate::database::db;
+use crate::url::permalink_generator::PermalinkGenerator;
 use crate::{
     posts::{entry_type::EntryType, functions as post_functions, post::OX_Post},
     users,

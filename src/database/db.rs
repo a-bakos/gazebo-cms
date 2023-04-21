@@ -69,7 +69,11 @@ pub fn parse_csv(path: &str) -> Result<Vec<StringRecord>, Box<dyn Error>> {
 
 pub fn write_posts_to_csv(path: &str, posts: Vec<&OX_Post>) -> Result<(), Box<dyn Error>> {
     println!("Writing CSV: {path:?}");
-    let mut writer = WriterBuilder::new().from_path(path)?;
+    let file = std::fs::OpenOptions::new()
+        .append(true)
+        .create(true)
+        .open(path)?;
+    let mut writer = WriterBuilder::new().from_writer(file);
     for single_post in posts.iter() {
         writer.write_record([
             single_post.id.to_string(),
