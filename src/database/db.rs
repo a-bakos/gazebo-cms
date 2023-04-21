@@ -120,9 +120,24 @@ pub fn store_user(user: &User) {
     let _write = write_users_to_csv(consts::FILE_PATH_USERS, user);
 }
 
+use crate::posts::post::PostSpecific;
+
+pub fn update_post(post: &OX_Post, post_specs_to_update: Vec<PostSpecific>) {
+    for spec in post_specs_to_update.iter() {
+        match spec {
+            PostSpecific::Title => println!("title"),
+            PostSpecific::Permalink => println!("perma"),
+            PostSpecific::AuthorID => println!("authid"),
+            PostSpecific::ParentID => println!("parentid"),
+            PostSpecific::DateModified => println!("datemod"),
+            PostSpecific::Excerpt => println!("excerpt"),
+            PostSpecific::Content => println!("content"),
+            PostSpecific::Password => println!("pass"),
+        }
+    }
+}
+
 #[allow(dead_code)]
 pub fn add(_post: &OX_Post) {}
-#[allow(dead_code)]
-pub fn update(_post: &OX_Post) {}
 #[allow(dead_code)]
 pub fn delete(_post: &OX_Post) {}

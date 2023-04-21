@@ -66,13 +66,6 @@ impl Imitate {
 
         let mut post_4 = OX_Post::draft(app, EntryType::Post);
         post_4.add_title("This is a second post".to_string(), true);
-
-        // The storage methods will be part of the OX_Post routine
-        // ie. store post + update post
-        #[allow(clippy::let_unit_value)]
-        // let _store_1 = db::store_post(&post);
-        // let _store_2 = db::store_post(&post_2);
-        let _store_3 = db::store_post(&post_4);
     }
 
     pub fn get_post_by_id() {
