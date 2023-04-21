@@ -66,10 +66,10 @@ impl Imitate {
 
         // The storage methods will be part of the OX_Post routine
         // ie. store post + update post
-        let to_store: Vec<&OX_Post> = vec![&post, &post_2, &post_3];
-
         #[allow(clippy::let_unit_value)]
-        let _store = db::store_post(to_store);
+        let _store_1 = db::store_post(&post);
+        let _store_2 = db::store_post(&post_2);
+        let _store_3 = db::store_post(&post_3);
     }
 
     pub fn get_post_by_id() {
