@@ -111,7 +111,7 @@ pub fn write_users_to_csv(path: &str, user: &User) -> Result<(), Box<dyn Error>>
 }
 
 pub fn store_post(the_post: &OX_Post) {
-    println!("Storing posts: {the_post:?}");
+    println!("Storing post: {the_post:?}");
     let _write = write_posts_to_csv(consts::FILE_PATH_POSTS, the_post);
 }
 

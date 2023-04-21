@@ -202,6 +202,7 @@ impl<'a> PermalinkGenerator<'a> {
         }
         if !all_permalinks.is_empty() {
             for link in all_permalinks.iter() {
+                dbg!(&link);
                 if link.as_str() == permalink.as_str() {
                     // links are the same
 
