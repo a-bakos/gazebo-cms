@@ -26,16 +26,19 @@ Some todo ideas
     pub password: Option<String>,
 ```
 
-`id`: cannot be null; bigint(20); primary key; auto increment; no default
-`author id`: cannot be null; bigint(20);
-`parent id`: bigint(20); no default or 0
-`date publish`: datetime; default 0000-00-00 00:00:00
-`date mod`: datetime; default 0000-00-00 00:00:00
-`content`: longtext; no default
-`title`: text; no default
-`excerpt`: text; no default
-`pass`: varchar(255); no default
-`type`: varchar(20); has default type
+- `id`: cannot be null; bigint(20); primary key; auto increment; no default
+- `author id`: cannot be null; bigint(20);
+- `parent id`: bigint(20); no default or 0
+- `date publish`: datetime; default 0000-00-00 00:00:00
+- `date mod`: datetime; default 0000-00-00 00:00:00
+- `content`: longtext; no default
+- `title`: text; no default
+- `excerpt`: text; no default
+- `pass`: varchar(255); no default
+- `type`: varchar(20); has default type
+- `permalink`: varchar(255); not null
+
+WP has a separate column for post_name which is similar to the slug
 
 ### Users table
 
@@ -52,12 +55,12 @@ pub struct User {
 }
 ```
 
-`id`: primary key; bigint(20); not null; no default
-`login`: varchar(60); not null
-`password`: varchar(255); not null
-`email`: varchar(100); not null
-`registered`: datetime; default 0000-00-00 00:00:00
-`role`: WP stores this in usermeta
+- `id`: primary key; bigint(20); not null; no default
+- `login`: varchar(60); not null
+- `password`: varchar(255); not null
+- `email`: varchar(100); not null
+- `registered`: datetime; default 0000-00-00 00:00:00
+- `role`: WP stores this in usermeta
 
 ```SQL
 CREATE TABLE IF NOT EXISTS users (
