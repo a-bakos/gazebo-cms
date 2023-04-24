@@ -83,8 +83,9 @@ impl ResourceManager {
             ResourceType::Entry => {
                 // Check if we have last allocated ID stored, increment if yes, otherwise start from 1
                 if let Some(id) = app.resources.last_allocated_ID.get(&resource_type) {
-                    let try_id: u32 = u32::from(id) + 1;
-
+                    let try_id: u32 = u32::from(id) + 1_u32;
+                    dbg!(try_id);
+                    dbg!(&app.resources.last_allocated_ID);
                     if app.resources.allocated_ID.get(&resource_type).is_some() {
                         ResourceID::EntryID(try_id)
                     } else {

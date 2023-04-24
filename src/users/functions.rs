@@ -1,6 +1,7 @@
 use crate::allocator::ID_Allocator;
 use crate::app::App;
 use crate::database::columns;
+use crate::users::roles::UserRole;
 use crate::users::user::{User, UserID};
 
 #[allow(dead_code)]
@@ -19,11 +20,23 @@ fn get_current_user(app: &App) -> Option<User> {
     None
 }
 
+fn add_role_to_user(user_id: u32, role: UserRole) -> bool {
+    // get user by id
+    // check role
+    // change role
+
+    true
+}
+
 // get user by id
 #[allow(dead_code)]
 fn get_user_by_id(_user_id: UserID) -> User {
     todo!()
     // get user
+}
+
+pub fn get_user_by_email(email: &str) -> Option<User> {
+    todo!()
 }
 
 pub fn turn_row_into_user(row: &csv::StringRecord) -> User {

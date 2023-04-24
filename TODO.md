@@ -8,6 +8,60 @@ Some todo ideas
 - warp for async framework
 - anyhow for errors
 
+## DB design ideas
+
+### Posts table:
+
+```rust
+    pub id: EntryID,
+    pub id_author: UserID,
+    pub id_parent: Option<EntryID>,
+    pub date_publish: String,
+    pub date_modified: String,
+    pub slug: Option<String>,
+    pub the_type: EntryType,
+    pub title: Option<String>,
+    pub excerpt: Option<String>,
+    pub content: Option<String>,
+    pub password: Option<String>,
+```
+
+- `id`: cannot be null; bigint(20); primary key; auto increment; no default
+- `author id`: cannot be null; bigint(20);
+- `parent id`: bigint(20); no default or 0
+- `date publish`: datetime; default 0000-00-00 00:00:00
+- `date mod`: datetime; default 0000-00-00 00:00:00
+- `content`: longtext; no default
+- `title`: text; no default
+- `excerpt`: text; no default
+- `pass`: varchar(255); no default
+- `type`: varchar(20); has default type
+- `permalink`: varchar(255); not null
+
+WP has a separate column for post_name which is similar to the slug
+
+### Users table
+
+```rust
+pub struct User {
+    pub first_name: String,
+    pub last_name: String,
+    pub login_name: String,
+    pub email: String,
+    pub id: UserID,
+    pub role: UserRole,
+    pub password: String,
+    pub registered: String,
+}
+```
+
+- `id`: primary key; bigint(20); not null; no default
+- `login`: varchar(60); not null
+- `password`: varchar(255); not null
+- `email`: varchar(100); not null
+- `registered`: datetime; default 0000-00-00 00:00:00
+- `role`: WP stores this in usermeta
+
 ```SQL
 CREATE TABLE IF NOT EXISTS users (
     id serial PRIMARY KEY,

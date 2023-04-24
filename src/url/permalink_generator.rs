@@ -1,5 +1,6 @@
 use crate::consts;
 use crate::database::db;
+use regex::Regex;
 use std::collections::HashSet;
 use urlencoding::encode;
 
@@ -199,11 +200,44 @@ impl<'a> PermalinkGenerator<'a> {
                 all_permalinks.insert(post_permalink);
             }
         }
-        dbg!(&all_permalinks);
         if !all_permalinks.is_empty() {
-            // check if proposed permalink is available hello-world
-            // if not, get a list of links that start the same [ hello-world, hello-world-2, hello-world-wide-web ]
-            // check for a number appended at the end / how?
+            for link in all_permalinks.iter() {
+                dbg!(&link);
+                if link.as_str() == permalink.as_str() {
+                    // links are the same
+
+                    // get the stored permalink and extract the digit
+                    let permalink_str = link.as_str();
+                    let re = Regex::new(r"-(\d+)$").unwrap();
+                    if re.is_match(permalink_str) {
+                        if let Some(captures) = re.captures(permalink_str) {
+                            if let Some(num_str) = captures.get(1) {
+                                if let Ok(mut the_permalink_num) = num_str.as_str().parse::<u32>() {
+                                    the_permalink_num += 1;
+                                    let mut new_permalink = permalink_str
+                                        [..permalink_str.len() - num_str.as_str().len()]
+                                        .to_string();
+                                    new_permalink.push_str(&format!(
+                                        "{}{}",
+                                        crate::consts::DEFAULT_PERMALINK_SEPARATOR,
+                                        the_permalink_num
+                                    ));
+                                    return new_permalink;
+                                }
+                            }
+                        }
+                    } else {
+                        // if no digit, append one
+                        let mut new_permalink = permalink.to_string();
+                        new_permalink.push_str(&format!(
+                            "{}{}",
+                            crate::consts::DEFAULT_PERMALINK_SEPARATOR,
+                            1
+                        ));
+                        return new_permalink;
+                    }
+                }
+            }
         }
 
         permalink

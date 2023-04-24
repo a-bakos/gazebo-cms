@@ -4,6 +4,7 @@
 
 use crate::app::App;
 use crate::database::db;
+use crate::url::permalink_generator::PermalinkGenerator;
 use crate::{
     posts::{entry_type::EntryType, functions as post_functions, post::OX_Post},
     users,
@@ -60,12 +61,11 @@ impl Imitate {
         // User adds a title to the posts (permalink auto-generated)
         post_2.add_title("This is a second post".to_string(), true);
 
-        // The storage methods will be part of the OX_Post routine
-        // ie. store post + update post
-        let to_store: Vec<&OX_Post> = vec![&post, &post_2];
+        let mut post_3 = OX_Post::draft(app, EntryType::Post);
+        post_3.add_title("This is a second post".to_string(), true);
 
-        #[allow(clippy::let_unit_value)]
-        let _store = db::store_post(to_store);
+        let mut post_4 = OX_Post::draft(app, EntryType::Post);
+        post_4.add_title("This is a second post".to_string(), true);
     }
 
     pub fn get_post_by_id() {

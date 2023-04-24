@@ -27,11 +27,28 @@ WP_POST
 
 use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
 use crate::app::App;
+use crate::database::db::*;
 use crate::dates::functions as date_functions;
 use crate::posts::entry_type::EntryType;
 use crate::url;
 use crate::users::user::UserID;
 use std::fmt::Formatter;
+
+#[derive(Debug)]
+pub enum PostSpecific {
+    Title,
+    Permalink,
+    AuthorID,
+    ParentID,
+    // DatePublished,
+    DateModified,
+    Excerpt,
+    Content,
+    Password,
+}
+
+// todo:
+// post status missing!
 
 #[derive(Debug)]
 #[allow(non_camel_case_types)]
@@ -73,6 +90,7 @@ impl ID_Allocator for EntryID {
         dbg!(&resource_entry_id);
         let entry_id = match resource_entry_id {
             ResourceID::EntryID(id) => EntryID(id),
+            // Todo: users ID
             _ => EntryID(0),
         };
         let _ = &app
@@ -113,7 +131,7 @@ pub fn get_post(_post_id: EntryID) -> OX_Post {
 
 impl OX_Post {
     pub fn draft(app: &mut App, entry_type: EntryType) -> Self {
-        Self {
+        let the_post = Self {
             id: get_next_available_entry_id(app),
             id_author: get_author_id(),
             id_parent: get_entry_parent_id(),
@@ -125,7 +143,12 @@ impl OX_Post {
             excerpt: None,
             content: None,
             password: None,
-        }
+        };
+
+        #[allow(clippy::let_unit_value)]
+        let _store_post = store_post(&the_post);
+
+        the_post
     }
 
     #[allow(dead_code)]
@@ -134,11 +157,17 @@ impl OX_Post {
     }
 
     pub fn add_title(&mut self, title: String, create_permalink: bool) {
+        let mut post_specifics_to_update: Vec<PostSpecific> = Vec::new();
         self.title = Some(title.clone());
+        post_specifics_to_update.push(PostSpecific::Title);
 
         if create_permalink {
             self.add_permalink(title);
+            post_specifics_to_update.push(PostSpecific::Permalink);
         }
+
+        #[allow(clippy::let_unit_value)]
+        let _update_post = update_post(self, post_specifics_to_update);
     }
 
     pub fn add_permalink(&mut self, slug: String) {

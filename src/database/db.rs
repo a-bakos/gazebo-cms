@@ -67,24 +67,26 @@ pub fn parse_csv(path: &str) -> Result<Vec<StringRecord>, Box<dyn Error>> {
     Ok(csv_result)
 }
 
-pub fn write_posts_to_csv(path: &str, posts: Vec<&OX_Post>) -> Result<(), Box<dyn Error>> {
+pub fn write_posts_to_csv(path: &str, the_post: &OX_Post) -> Result<(), Box<dyn Error>> {
     println!("Writing CSV: {path:?}");
-    let mut writer = WriterBuilder::new().from_path(path)?;
-    for single_post in posts.iter() {
-        writer.write_record([
-            single_post.id.to_string(),
-            single_post.id_author.to_string(),
-            single_post.id_parent.unwrap_or_default().to_string(),
-            single_post.date_publish.to_string(),
-            single_post.date_modified.to_string(),
-            single_post.slug.clone().unwrap_or_default().to_string(),
-            single_post.the_type.to_string(),
-            single_post.title.clone().unwrap_or_default().to_string(),
-            single_post.excerpt.clone().unwrap_or_default().to_string(),
-            single_post.content.clone().unwrap_or_default().to_string(),
-            single_post.password.clone().unwrap_or_default().to_string(),
-        ])?;
-    }
+    let file = std::fs::OpenOptions::new()
+        .append(true)
+        .create(true)
+        .open(path)?;
+    let mut writer = WriterBuilder::new().from_writer(file);
+    writer.write_record([
+        the_post.id.to_string(),
+        the_post.id_author.to_string(),
+        the_post.id_parent.unwrap_or_default().to_string(),
+        the_post.date_publish.to_string(),
+        the_post.date_modified.to_string(),
+        the_post.slug.clone().unwrap_or_default().to_string(),
+        the_post.the_type.to_string(),
+        the_post.title.clone().unwrap_or_default().to_string(),
+        the_post.excerpt.clone().unwrap_or_default().to_string(),
+        the_post.content.clone().unwrap_or_default().to_string(),
+        the_post.password.clone().unwrap_or_default().to_string(),
+    ])?;
     writer.flush()?;
     Ok(())
 }
@@ -108,9 +110,9 @@ pub fn write_users_to_csv(path: &str, user: &User) -> Result<(), Box<dyn Error>>
     Ok(())
 }
 
-pub fn store_post(posts: Vec<&OX_Post>) {
-    println!("Storing posts: {posts:?}");
-    let _write = write_posts_to_csv(consts::FILE_PATH_POSTS, posts);
+pub fn store_post(the_post: &OX_Post) {
+    println!("Storing post: {the_post:?}");
+    let _write = write_posts_to_csv(consts::FILE_PATH_POSTS, the_post);
 }
 
 pub fn store_user(user: &User) {
@@ -118,9 +120,24 @@ pub fn store_user(user: &User) {
     let _write = write_users_to_csv(consts::FILE_PATH_USERS, user);
 }
 
+use crate::posts::post::PostSpecific;
+
+pub fn update_post(post: &OX_Post, post_specs_to_update: Vec<PostSpecific>) {
+    for spec in post_specs_to_update.iter() {
+        match spec {
+            PostSpecific::Title => println!("title"),
+            PostSpecific::Permalink => println!("perma"),
+            PostSpecific::AuthorID => println!("authid"),
+            PostSpecific::ParentID => println!("parentid"),
+            PostSpecific::DateModified => println!("datemod"),
+            PostSpecific::Excerpt => println!("excerpt"),
+            PostSpecific::Content => println!("content"),
+            PostSpecific::Password => println!("pass"),
+        }
+    }
+}
+
 #[allow(dead_code)]
 pub fn add(_post: &OX_Post) {}
-#[allow(dead_code)]
-pub fn update(_post: &OX_Post) {}
 #[allow(dead_code)]
 pub fn delete(_post: &OX_Post) {}
