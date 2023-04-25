@@ -4,6 +4,7 @@ use crate::posts::post::OX_Post;
 use crate::users::user::User;
 use csv::{ReaderBuilder, StringRecord, WriterBuilder};
 use std::error::Error;
+use std::ptr::replace;
 
 #[allow(non_camel_case_types)]
 #[allow(dead_code)]
@@ -67,7 +68,7 @@ pub fn parse_csv(path: &str) -> Result<Vec<StringRecord>, Box<dyn Error>> {
     Ok(csv_result)
 }
 
-pub fn write_posts_to_csv(path: &str, the_post: &OX_Post) -> Result<(), Box<dyn Error>> {
+pub fn write_post_to_csv(path: &str, the_post: &OX_Post) -> Result<(), Box<dyn Error>> {
     println!("Writing CSV: {path:?}");
     let file = std::fs::OpenOptions::new()
         .append(true)
@@ -87,6 +88,32 @@ pub fn write_posts_to_csv(path: &str, the_post: &OX_Post) -> Result<(), Box<dyn 
         the_post.content.clone().unwrap_or_default().to_string(),
         the_post.password.clone().unwrap_or_default().to_string(),
     ])?;
+    writer.flush()?;
+    Ok(())
+}
+
+pub fn write_posts_to_csv(path: &str, the_posts: Vec<OX_Post>) -> Result<(), Box<dyn Error>> {
+    println!("Writing CSV: {path:?}");
+    let file = std::fs::OpenOptions::new()
+        // .append(true)
+        .create(true)
+        .open(path)?;
+    let mut writer = WriterBuilder::new().from_writer(file);
+    for the_post in the_posts.iter() {
+        writer.write_record([
+            the_post.id.to_string(),
+            the_post.id_author.to_string(),
+            the_post.id_parent.unwrap_or_default().to_string(),
+            the_post.date_publish.to_string(),
+            the_post.date_modified.to_string(),
+            the_post.slug.clone().unwrap_or_default().to_string(),
+            the_post.the_type.to_string(),
+            the_post.title.clone().unwrap_or_default().to_string(),
+            the_post.excerpt.clone().unwrap_or_default().to_string(),
+            the_post.content.clone().unwrap_or_default().to_string(),
+            the_post.password.clone().unwrap_or_default().to_string(),
+        ])?;
+    }
     writer.flush()?;
     Ok(())
 }
@@ -112,7 +139,12 @@ pub fn write_users_to_csv(path: &str, user: &User) -> Result<(), Box<dyn Error>>
 
 pub fn store_post(the_post: &OX_Post) {
     println!("Storing post: {the_post:?}");
-    let _write = write_posts_to_csv(consts::FILE_PATH_POSTS, the_post);
+    let _write = write_post_to_csv(consts::FILE_PATH_POSTS, the_post);
+}
+
+pub fn store_all_posts(the_posts: Vec<OX_Post>) {
+    println!("Storing posts: {the_posts:?}");
+    let _write = write_posts_to_csv(consts::FILE_PATH_POSTS, the_posts);
 }
 
 pub fn store_user(user: &User) {
@@ -122,19 +154,58 @@ pub fn store_user(user: &User) {
 
 use crate::posts::post::PostSpecific;
 
-pub fn update_post(post: &OX_Post, post_specs_to_update: Vec<PostSpecific>) {
-    for spec in post_specs_to_update.iter() {
-        match spec {
-            PostSpecific::Title => println!("title"),
-            PostSpecific::Permalink => println!("perma"),
-            PostSpecific::AuthorID => println!("authid"),
-            PostSpecific::ParentID => println!("parentid"),
-            PostSpecific::DateModified => println!("datemod"),
-            PostSpecific::Excerpt => println!("excerpt"),
-            PostSpecific::Content => println!("content"),
-            PostSpecific::Password => println!("pass"),
+pub fn update_post(post: &OX_Post, post_specs_to_update: Vec<PostSpecific>) -> bool {
+    // get post by id
+    let search_index;
+    let mut all_posts = crate::posts::functions::get_all_posts().unwrap();
+    for single_post in all_posts.iter() {
+        if single_post.id == post.id {
+            search_index = post.id;
+            let mut replacement_post = OX_Post {
+                id: single_post.id.clone(),
+                id_author: single_post.id_author.clone(),
+                id_parent: single_post.id_parent.clone(),
+                date_publish: single_post.date_publish.clone(),
+                date_modified: crate::dates::functions::get_current_date(),
+                slug: single_post.slug.clone(),
+                the_type: single_post.the_type.clone(),
+                title: single_post.title.clone(),
+                excerpt: single_post.excerpt.clone(),
+                content: single_post.content.clone(),
+                password: single_post.password.clone(),
+            };
+
+            for spec in post_specs_to_update.iter() {
+                match spec {
+                    PostSpecific::Title => replacement_post.title = post.title.clone(),
+                    PostSpecific::Permalink => replacement_post.slug = post.slug.clone(),
+                    PostSpecific::AuthorID => replacement_post.id_author = post.id_author.clone(),
+                    PostSpecific::ParentID => replacement_post.id_parent = post.id_parent.clone(),
+                    PostSpecific::Excerpt => replacement_post.excerpt = post.excerpt.clone(),
+                    PostSpecific::Content => replacement_post.content = post.content.clone(),
+                    PostSpecific::Password => replacement_post.password = post.password.clone(),
+                }
+            }
+
+            let index = all_posts
+                .iter()
+                .position(|item| -> bool {
+                    let the_post_id = item.id.clone();
+                    the_post_id == search_index
+                })
+                .unwrap();
+            //single post drop
+            all_posts.remove(index);
+            //replacement_post push
+            all_posts.push(replacement_post);
+
+            store_all_posts(all_posts);
+
+            return true;
         }
+        break;
     }
+    return false;
 }
 
 #[allow(dead_code)]
