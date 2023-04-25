@@ -76,6 +76,12 @@ impl std::fmt::Display for EntryID {
     }
 }
 
+impl PartialEq for EntryID {
+    fn eq(&self, other: &Self) -> bool {
+        self.0 == other.0
+    }
+}
+
 impl EntryID {
     // get current ID
     #[allow(dead_code)]
