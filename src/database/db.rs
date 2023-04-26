@@ -169,6 +169,7 @@ pub fn update_post(post: &OX_Post, post_specs_to_update: Vec<PostSpecific>) -> b
                 date_modified: crate::dates::functions::get_current_date(),
                 slug: single_post.slug.clone(),
                 the_type: single_post.the_type.clone(),
+                status: single_post.status.clone(),
                 title: single_post.title.clone(),
                 excerpt: single_post.excerpt.clone(),
                 content: single_post.content.clone(),

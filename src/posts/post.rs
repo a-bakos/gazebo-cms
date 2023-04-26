@@ -32,7 +32,7 @@ use crate::dates::functions as date_functions;
 use crate::posts::entry_type::EntryType;
 use crate::url;
 use crate::users::user::UserID;
-use std::fmt::Formatter;
+use std::fmt::{write, Formatter};
 
 #[derive(Debug)]
 pub enum PostSpecific {
@@ -46,8 +46,38 @@ pub enum PostSpecific {
     Password,
 }
 
-// todo:
-// post status missing!
+// WP statuses:
+// publish
+// future
+// draft
+// pending
+// private
+// trash
+// auto-draft
+// inherit
+// request-pending
+// request-confirmed
+// request-failed
+// request-completed
+
+#[derive(Debug, Clone)]
+pub enum PostStatus {
+    Draft,
+    Publish,
+    Private,
+    Trash,
+}
+
+impl std::fmt::Display for PostStatus {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            PostStatus::Draft => write!(f, "draft"),
+            PostStatus::Publish => write!(f, "publish"),
+            PostStatus::Private => write!(f, "private"),
+            PostStatus::Trash => write!(f, "trash"),
+        }
+    }
+}
 
 #[derive(Debug)]
 #[allow(non_camel_case_types)]
@@ -59,6 +89,7 @@ pub struct OX_Post {
     pub date_modified: String,
     pub slug: Option<String>,
     pub the_type: EntryType,
+    pub status: PostStatus,
     pub title: Option<String>,
     pub excerpt: Option<String>,
     pub content: Option<String>,
@@ -144,6 +175,7 @@ impl OX_Post {
             date_modified: date_functions::get_current_date(),
             slug: None,
             the_type: entry_type,
+            status: PostStatus::Draft,
             title: Some("Untitled".to_string()),
             excerpt: None,
             content: None,
