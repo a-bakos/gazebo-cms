@@ -20,6 +20,13 @@ fn get_current_user(app: &App) -> Option<User> {
     None
 }
 
+pub fn get_current_user_id(app: &App) -> UserID {
+    if app.current_user.is_some() {
+        return app.current_user.clone().unwrap();
+    }
+    crate::consts::SYSTEM_USER_ID
+}
+
 fn add_role_to_user(user_id: u32, role: UserRole) -> bool {
     // get user by id
     // check role

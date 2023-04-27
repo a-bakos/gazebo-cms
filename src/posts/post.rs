@@ -30,8 +30,8 @@ use crate::app::App;
 use crate::database::db::*;
 use crate::dates::functions as date_functions;
 use crate::posts::entry_type::EntryType;
-use crate::url;
 use crate::users::user::UserID;
+use crate::{consts, url};
 use std::fmt::{write, Formatter};
 
 #[derive(Debug)]
@@ -136,17 +136,6 @@ impl ID_Allocator for EntryID {
     }
 }
 
-// Get current Entry ID
-#[allow(dead_code)]
-fn get_the_id() -> EntryID {
-    EntryID::get()
-}
-
-#[allow(dead_code)]
-fn get_author_id() -> UserID {
-    UserID(100)
-}
-
 #[allow(dead_code)]
 fn get_next_available_entry_id(app: &mut App) -> EntryID {
     EntryID::allocate(app)
@@ -169,14 +158,14 @@ impl OX_Post {
     pub fn draft(app: &mut App, entry_type: EntryType) -> Self {
         let the_post = Self {
             id: get_next_available_entry_id(app),
-            id_author: get_author_id(),
+            id_author: crate::users::functions::get_current_user_id(&app),
             id_parent: get_entry_parent_id(),
             date_publish: date_functions::get_current_date(),
             date_modified: date_functions::get_current_date(),
             slug: None,
             the_type: entry_type,
             status: PostStatus::Draft,
-            title: Some("Untitled".to_string()),
+            title: Some(consts::POST_UNTITLED_DEFAULT.to_string()),
             excerpt: None,
             content: None,
             password: None,
@@ -226,6 +215,17 @@ impl OX_Post {
     pub fn update_slug(&mut self, new_slug: &str) -> bool {
         self.slug = Some(new_slug.to_string());
         true
+    }
+
+    // Get current Entry ID
+    #[allow(dead_code)]
+    pub fn get_the_id(&self) -> EntryID {
+        self.id.clone()
+    }
+
+    #[allow(dead_code)]
+    pub fn get_author_id(&self) -> UserID {
+        self.id_author.clone()
     }
 }
 
