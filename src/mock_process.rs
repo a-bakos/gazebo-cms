@@ -57,9 +57,9 @@ impl Imitate {
         );
 
         // Imitate editing a second new post creation
-        let mut post_2 = OX_Post::draft(app, EntryType::Post);
+        //let mut post_2 = OX_Post::draft(app, EntryType::Post);
         // User adds a title to the posts (permalink auto-generated)
-        post_2.add_title("This is a second post".to_string(), true);
+        //post_2.add_title("This is a second post".to_string(), true);
 
         //let mut post_3 = OX_Post::draft(app, EntryType::Post);
         //post_3.add_title("This is a second post".to_string(), true);

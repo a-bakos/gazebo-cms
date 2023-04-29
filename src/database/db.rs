@@ -69,7 +69,8 @@ pub fn parse_csv(path: &str) -> Result<Vec<StringRecord>, Box<dyn Error>> {
 }
 
 pub fn write_post_to_csv(path: &str, the_post: &OX_Post) -> Result<(), Box<dyn Error>> {
-    println!("Writing CSV: {path:?}");
+    println!("Append post to CSV: {path:?}");
+    dbg!(&the_post);
     let file = std::fs::OpenOptions::new()
         .append(true)
         .create(true)
@@ -95,11 +96,12 @@ pub fn write_post_to_csv(path: &str, the_post: &OX_Post) -> Result<(), Box<dyn E
 pub fn write_posts_to_csv(path: &str, the_posts: Vec<OX_Post>) -> Result<(), Box<dyn Error>> {
     println!("Writing CSV: {path:?}");
     let file = std::fs::OpenOptions::new()
-        // .append(true)
+        .write(true)
         .create(true)
         .open(path)?;
     let mut writer = WriterBuilder::new().from_writer(file);
     for the_post in the_posts.iter() {
+        dbg!(&the_post);
         writer.write_record([
             the_post.id.to_string(),
             the_post.id_author.to_string(),
@@ -138,7 +140,6 @@ pub fn write_users_to_csv(path: &str, user: &User) -> Result<(), Box<dyn Error>>
 }
 
 pub fn store_post(the_post: &OX_Post) {
-    println!("Storing post: {the_post:?}");
     let _write = write_post_to_csv(consts::FILE_PATH_POSTS, the_post);
 }
 
@@ -158,9 +159,11 @@ pub fn update_post(post: &OX_Post, post_specs_to_update: Vec<PostSpecific>) -> b
     // get post by id
     let search_index;
     let mut all_posts = crate::posts::functions::get_all_posts().unwrap();
+    dbg!(&all_posts);
     for single_post in all_posts.iter() {
         if single_post.id == post.id {
             search_index = post.id;
+            // create post struct from row
             let mut replacement_post = OX_Post {
                 id: single_post.id.clone(),
                 id_author: single_post.id_author.clone(),
@@ -188,18 +191,18 @@ pub fn update_post(post: &OX_Post, post_specs_to_update: Vec<PostSpecific>) -> b
                 }
             }
 
-            let index = all_posts
-                .iter()
-                .position(|item| -> bool {
-                    let the_post_id = item.id.clone();
-                    the_post_id == search_index
-                })
-                .unwrap();
+            if let Some(index) = all_posts.iter().position(|item| -> bool {
+                let the_post_id = item.id.clone();
+                the_post_id == search_index
+            }) {
+                all_posts.remove(index);
+            }
+
             //single post drop
-            all_posts.remove(index);
+            dbg!(&all_posts);
             //replacement_post push
             all_posts.push(replacement_post);
-
+            dbg!(&all_posts);
             store_all_posts(all_posts);
 
             return true;
