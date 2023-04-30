@@ -136,7 +136,6 @@ impl User {
     #[allow(dead_code)]
     pub fn change_username(&mut self, new_username: &str) {
         // username change functionality
-        // is_username_valid
     }
 
     #[allow(unused_variables)]

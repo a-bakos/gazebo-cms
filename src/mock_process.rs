@@ -36,7 +36,6 @@ impl Imitate {
 
     // Mimic a user login request
     pub fn user_login(app: &mut App) {
-        // if users
         User::login(app, "test@test.com", "password");
         dbg!(&app.users);
     }
@@ -46,8 +45,9 @@ impl Imitate {
         if get_user_by_email(user_email).is_ok() {
             let getuser = get_user_by_email(user_email);
             dbg!(getuser.unwrap());
+        } else {
+            println!("Cannot get user / can't find file");
         }
-        println!("Cannot get user / can't find file");
     }
 
     pub fn add_posts(app: &mut App) {

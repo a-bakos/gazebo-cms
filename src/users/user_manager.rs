@@ -24,7 +24,17 @@ pub fn is_email_valid(email: &str) -> bool {
 }
 
 pub fn is_username_valid(username: &str) -> bool {
-    true
+    // Min length validation
+    let mut min_length_ok = false;
+    if username.len() >= consts::MIN_USER_NAME_LENGTH {
+        min_length_ok = true;
+    }
+
+    // Make sure it doesn't contain special characters
+    let mut no_special_characters = false;
+    no_special_characters = crate::helpers::str_contains_special_char(username); // must be false
+
+    min_length_ok && !no_special_characters
 }
 
 pub fn is_password_valid(password: &str) -> bool {
@@ -56,12 +66,7 @@ pub fn is_password_valid(password: &str) -> bool {
     });
 
     // Check if password contains special characters
-    ok_pw_special = password.chars().any(|ch| match ch {
-        '@' | '#' | '!' | '?' | '>' | '<' | '|' | '~' | ':' | ';' | '\'' | '"' | '`' | '£'
-        | '$' | '%' | '^' | '&' | '*' | '(' | ')' | '_' | '+' | '=' | '-' | '}' | '{' | '['
-        | ']' | ',' | '.' | '/' | '\\' => true,
-        _ => false,
-    });
+    ok_pw_special = crate::helpers::str_contains_special_char(password);
 
     if ok_pw_numeric && ok_pw_uppercase && ok_pw_len && ok_pw_special {
         return true;
