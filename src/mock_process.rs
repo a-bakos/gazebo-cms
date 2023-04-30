@@ -31,19 +31,23 @@ impl Imitate {
             "A345678B".to_string(),
         );
         let is_user_inserted: bool = User::insert(test_user, true);
-
         dbg!(is_user_inserted);
     }
 
     // Mimic a user login request
     pub fn user_login(app: &mut App) {
+        // if users
         User::login(app, "test@test.com", "password");
         dbg!(&app.users);
     }
 
     pub fn get_user_by_email() {
-        let getuser = get_user_by_email("test@test.com");
-        dbg!(getuser.unwrap());
+        let user_email = "test@test.com";
+        if get_user_by_email(user_email).is_ok() {
+            let getuser = get_user_by_email(user_email);
+            dbg!(getuser.unwrap());
+        }
+        println!("Cannot get user / can't find file");
     }
 
     pub fn add_posts(app: &mut App) {

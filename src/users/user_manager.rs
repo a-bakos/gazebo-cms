@@ -5,7 +5,6 @@ use crate::users::{
     user::{User, UserID},
 };
 use std::error::Error;
-use std::mem::transmute;
 
 #[allow(dead_code)]
 pub struct UserManager {
