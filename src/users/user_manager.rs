@@ -31,10 +31,10 @@ pub fn is_username_valid(username: &str) -> bool {
     }
 
     // Make sure it doesn't contain special characters
-    let mut no_special_characters = false;
-    no_special_characters = crate::helpers::str_contains_special_char(username); // must be false
+    let mut special_characters = true;
+    special_characters = crate::helpers::str_contains_special_char(username); // must be false
 
-    min_length_ok && !no_special_characters
+    min_length_ok && !special_characters
 }
 
 pub fn is_password_valid(password: &str) -> bool {
