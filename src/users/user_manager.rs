@@ -1,11 +1,15 @@
 use crate::consts;
 use crate::database::{columns, db};
-use crate::users::{functions::turn_row_into_user, user::User};
+use crate::users::{
+    functions::turn_row_into_user,
+    user::{User, UserID},
+};
 use std::error::Error;
+use std::mem::transmute;
 
 #[allow(dead_code)]
 pub struct UserManager {
-    users: Vec<crate::users::user::UserID>,
+    users: Vec<UserID>,
 }
 
 #[allow(dead_code)]
@@ -20,10 +24,15 @@ pub fn is_email_valid(email: &str) -> bool {
     true
 }
 
+pub fn is_username_valid(username: &str) -> bool {
+    true
+}
+
 pub fn is_password_valid(password: &str) -> bool {
     let mut ok_pw_len: bool = false;
     let mut ok_pw_uppercase: bool = false;
     let mut ok_pw_numeric: bool = false;
+    let mut ok_pw_special: bool = false;
 
     // Password length check
     if password.len() >= consts::MIN_PASSWORD_LENGTH {
@@ -47,10 +56,15 @@ pub fn is_password_valid(password: &str) -> bool {
         false
     });
 
-    // todo
-    // check special chars
+    // Check if password contains special characters
+    ok_pw_special = password.chars().any(|ch| match ch {
+        '@' | '#' | '!' | '?' | '>' | '<' | '|' | '~' | ':' | ';' | '\'' | '"' | '`' | '£'
+        | '$' | '%' | '^' | '&' | '*' | '(' | ')' | '_' | '+' | '=' | '-' | '}' | '{' | '['
+        | ']' | ',' | '.' | '/' | '\\' => true,
+        _ => false,
+    });
 
-    if ok_pw_numeric && ok_pw_uppercase && ok_pw_len {
+    if ok_pw_numeric && ok_pw_uppercase && ok_pw_len && ok_pw_special {
         return true;
     }
     false
@@ -91,14 +105,16 @@ mod test {
 
     #[test]
     fn are_password_variations_valid() {
-        let password_correct = "Abcd1234";
-        let password_too_short = "Abcd1";
-        let password_missing_number = "ABCdefGH";
-        let password_missing_uppercase = "abcde1234";
+        let password_correct = "#Abcd1234!";
+        let password_too_short = "_Abc1";
+        let password_missing_number = "?ABCdefGH";
+        let password_missing_special = "abcDEF123";
+        let password_missing_uppercase = "@abcde1234";
+
         assert_eq!(is_password_valid(password_correct), true);
         assert_eq!(is_password_valid(password_too_short), false);
         assert_eq!(is_password_valid(password_missing_number), false);
-        assert_eq!(is_password_valid(password_missing_uppercase), false);
+        assert_eq!(is_password_valid(password_missing_special), false);
         assert_eq!(is_password_valid(password_missing_uppercase), false);
     }
 }

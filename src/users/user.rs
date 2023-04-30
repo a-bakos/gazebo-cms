@@ -123,17 +123,20 @@ impl User {
             return false;
         }
 
-        // get id if it does and push it into users vec
-        // first, check if already in vec
-        app.users.push(user_email.to_string());
+        // Add to users list - if in list: already logged in
+        if !app.users.contains(&user_email.to_string()) {
+            app.users.push(user_email.to_string());
+            return true;
+        }
 
-        true
+        false
     }
 
     #[allow(unused_variables)]
     #[allow(dead_code)]
     pub fn change_username(&mut self, new_username: &str) {
         // username change functionality
+        // is_username_valid
     }
 
     #[allow(unused_variables)]

@@ -5,6 +5,7 @@
 use crate::app::App;
 use crate::database::db;
 use crate::url::permalink_generator::PermalinkGenerator;
+use crate::users::user_manager::get_user_by_email;
 use crate::{
     posts::{entry_type::EntryType, functions as post_functions, post::OX_Post},
     users,
@@ -41,7 +42,7 @@ impl Imitate {
     }
 
     pub fn get_user_by_email() {
-        let getuser = user_manager::get_user_by_email("test@test.com");
+        let getuser = get_user_by_email("test@test.com");
         dbg!(getuser.unwrap());
     }
 
