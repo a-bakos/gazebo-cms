@@ -3,14 +3,14 @@ use crate::database::{columns, db};
 use crate::posts::post::PostStatus;
 use crate::posts::{
     entry_type::EntryType,
-    post::{EntryID, OX_Post},
+    post::{EntryID, GB_Post},
 };
 use crate::users::user::UserID;
 use std::error::Error;
 
-fn turn_row_into_post(row: &csv::StringRecord) -> OX_Post {
+fn turn_row_into_post(row: &csv::StringRecord) -> GB_Post {
     // Turn into OX_Post
-    OX_Post {
+    GB_Post {
         id: EntryID(
             row.get(columns::COL_INDEX_POST_ID)
                 .unwrap()
@@ -42,8 +42,8 @@ fn turn_row_into_post(row: &csv::StringRecord) -> OX_Post {
     }
 }
 
-pub fn get_all_posts() -> Result<Vec<OX_Post>, Box<dyn Error>> {
-    let mut posts: Vec<OX_Post> = Vec::new();
+pub fn get_all_posts() -> Result<Vec<GB_Post>, Box<dyn Error>> {
+    let mut posts: Vec<GB_Post> = Vec::new();
     let csv_db = db::parse_csv(consts::FILE_PATH_POSTS)?;
     for post in csv_db.iter() {
         let the_post = turn_row_into_post(post);
@@ -53,7 +53,7 @@ pub fn get_all_posts() -> Result<Vec<OX_Post>, Box<dyn Error>> {
     Ok(posts)
 }
 
-pub fn get_post_by_id(post_id: u32) -> Result<Option<OX_Post>, Box<dyn Error>> {
+pub fn get_post_by_id(post_id: u32) -> Result<Option<GB_Post>, Box<dyn Error>> {
     let csv_db = db::parse_csv(consts::FILE_PATH_POSTS)?;
     let found_post;
     let mut post = None;

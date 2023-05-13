@@ -1,6 +1,6 @@
 // Mock CSV database
 use crate::consts;
-use crate::posts::post::OX_Post;
+use crate::posts::post::GB_Post;
 use crate::users::user::User;
 use csv::{ReaderBuilder, StringRecord, WriterBuilder};
 use std::error::Error;
@@ -67,7 +67,7 @@ pub fn parse_csv(path: &str) -> Result<Vec<StringRecord>, Box<dyn Error>> {
     Ok(csv_result)
 }
 
-pub fn write_post_to_csv(path: &str, the_post: &OX_Post) -> Result<(), Box<dyn Error>> {
+pub fn write_post_to_csv(path: &str, the_post: &GB_Post) -> Result<(), Box<dyn Error>> {
     println!("Append post to CSV: {path:?}");
     dbg!(&the_post);
     let file = std::fs::OpenOptions::new()
@@ -92,7 +92,7 @@ pub fn write_post_to_csv(path: &str, the_post: &OX_Post) -> Result<(), Box<dyn E
     Ok(())
 }
 
-pub fn write_posts_to_csv(path: &str, the_posts: Vec<OX_Post>) -> Result<(), Box<dyn Error>> {
+pub fn write_posts_to_csv(path: &str, the_posts: Vec<GB_Post>) -> Result<(), Box<dyn Error>> {
     println!("Writing CSV: {path:?}");
     let file = std::fs::OpenOptions::new()
         .write(true)
@@ -138,11 +138,11 @@ pub fn write_users_to_csv(path: &str, user: &User) -> Result<(), Box<dyn Error>>
     Ok(())
 }
 
-pub fn store_post(the_post: &OX_Post) {
+pub fn store_post(the_post: &GB_Post) {
     let _write = write_post_to_csv(consts::FILE_PATH_POSTS, the_post);
 }
 
-pub fn store_all_posts(the_posts: Vec<OX_Post>) {
+pub fn store_all_posts(the_posts: Vec<GB_Post>) {
     println!("Storing posts: {the_posts:?}");
     let _write = write_posts_to_csv(consts::FILE_PATH_POSTS, the_posts);
 }
@@ -154,7 +154,7 @@ pub fn store_user(user: &User) {
 
 use crate::posts::post::PostSpecific;
 
-pub fn update_post(post: &OX_Post, post_specs_to_update: Vec<PostSpecific>) -> bool {
+pub fn update_post(post: &GB_Post, post_specs_to_update: Vec<PostSpecific>) -> bool {
     // get post by id
     let search_index;
     let mut all_posts = crate::posts::functions::get_all_posts().unwrap();
@@ -163,7 +163,7 @@ pub fn update_post(post: &OX_Post, post_specs_to_update: Vec<PostSpecific>) -> b
         if single_post.id == post.id {
             search_index = post.id;
             // create post struct from row
-            let mut replacement_post = OX_Post {
+            let mut replacement_post = GB_Post {
                 id: single_post.id.clone(),
                 id_author: single_post.id_author.clone(),
                 id_parent: single_post.id_parent.clone(),
@@ -212,6 +212,6 @@ pub fn update_post(post: &OX_Post, post_specs_to_update: Vec<PostSpecific>) -> b
 }
 
 #[allow(dead_code)]
-pub fn add(_post: &OX_Post) {}
+pub fn add(_post: &GB_Post) {}
 #[allow(dead_code)]
-pub fn delete(_post: &OX_Post) {}
+pub fn delete(_post: &GB_Post) {}

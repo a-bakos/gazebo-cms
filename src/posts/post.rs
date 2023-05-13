@@ -81,7 +81,7 @@ impl std::fmt::Display for PostStatus {
 
 #[derive(Debug)]
 #[allow(non_camel_case_types)]
-pub struct OX_Post {
+pub struct GB_Post {
     pub id: EntryID,
     pub id_author: UserID,
     pub id_parent: Option<EntryID>,
@@ -150,11 +150,11 @@ fn get_entry_parent_id() -> Option<EntryID> {
 }
 
 #[allow(dead_code)]
-pub fn get_post(_post_id: EntryID) -> OX_Post {
+pub fn get_post(_post_id: EntryID) -> GB_Post {
     todo!()
 }
 
-impl OX_Post {
+impl GB_Post {
     pub fn draft(app: &mut App, entry_type: EntryType) -> Self {
         let the_post = Self {
             id: get_next_available_entry_id(app),
@@ -240,7 +240,7 @@ mod test {
         let test_post_title: String = "Test title added".to_string();
         let test_post_slug: String = "test-title-added".to_string();
 
-        let mut post = OX_Post::draft(&mut app, crate::posts::entry_type::EntryType::Post);
+        let mut post = GB_Post::draft(&mut app, crate::posts::entry_type::EntryType::Post);
         post.add_title(test_post_title.clone(), true);
 
         assert_eq!(Some(test_post_title), post.title);

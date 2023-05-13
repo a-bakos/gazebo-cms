@@ -5,7 +5,7 @@
 use crate::app::App;
 use crate::users::user_manager::get_user_by_email;
 use crate::{
-    posts::{entry_type::EntryType, functions as post_functions, post::OX_Post},
+    posts::{entry_type::EntryType, functions as post_functions, post::GB_Post},
     users,
     users::user::User,
 };
@@ -50,7 +50,7 @@ impl Imitate {
 
     pub fn add_posts(app: &mut App) {
         // Imitate editing a new post - Eg. User clicks on a "add/create new post" button
-        let mut post = OX_Post::draft(app, EntryType::Post);
+        let mut post = GB_Post::draft(app, EntryType::Post);
 
         // User adds a title to the post with permalink
         // (The title contains special characters which will be treated when the permalink is generated)
@@ -73,7 +73,7 @@ impl Imitate {
 
     pub fn get_post_by_id() {
         #[allow(clippy::let_unit_value)]
-        let get_post: Option<OX_Post> = post_functions::get_post_by_id(1).unwrap();
+        let get_post: Option<GB_Post> = post_functions::get_post_by_id(1).unwrap();
         dbg!(&get_post);
     }
 
