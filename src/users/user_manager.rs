@@ -37,6 +37,31 @@ pub fn is_username_valid(username: &str) -> bool {
     min_length_ok && !special_characters
 }
 
+/// Checks if a password is valid.
+///
+/// A password is considered valid if it meets the following criteria:
+///
+/// - It is at least `consts::MIN_PASSWORD_LENGTH` characters long
+/// - It contains at least one uppercase letter
+/// - It contains at least one number
+/// - It contains at least one special character
+///
+/// # Arguments
+///
+/// - `password` - A string slice containing the password to check
+///
+/// # Returns
+///
+/// Returns `true` if the password is valid, `false` otherwise.
+///
+/// # Examples
+///
+/// ```
+/// let valid_password = "#Abcd1234!";
+/// assert_eq!(is_password_valid(valid_password), true);
+/// ```
+///
+/// This function also has a unit test suite in the same module.
 pub fn is_password_valid(password: &str) -> bool {
     let mut ok_pw_len: bool = false;
     let mut ok_pw_uppercase: bool = false;
