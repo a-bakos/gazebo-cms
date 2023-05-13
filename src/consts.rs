@@ -1,8 +1,8 @@
 use crate::users::user::UserID;
 
 /// App default
-pub const DEFAULT_APP_NAME: &str = "Rusty CMS Experiment";
-pub const DEFAULT_APP_ADMIN_EMAIL: &str = "change_this@cms.email";
+pub const DEFAULT_APP_NAME: &str = "Gazebo CMS";
+pub const DEFAULT_APP_ADMIN_EMAIL: &str = "change_this@gazebocms.email";
 pub const VERSION: &str = "0.0.122";
 pub const SYSTEM_USER_ID: UserID = UserID(999);
 
@@ -16,7 +16,7 @@ pub const DEFAULT_PERMALINK_NOT_ALLOWED_CHARS: [&str; 9] =
     ["&", "#", "?", "%", "<", ">", "\"", "'", "/"];
 
 pub const ID_START_VALUE: u32 = 0;
-pub const POST_UNTITLED_DEFAULT: &str = "Untitled";
+pub const POST_UNTITLED_DEFAULT: &str = "Untitled Gazebo Post";
 
 // Mock DB (table) files
 pub const FILE_PATH_POSTS: &str = "mock_db_posts.csv";
