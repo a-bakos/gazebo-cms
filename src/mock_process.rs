@@ -3,13 +3,11 @@
 // This way we can keep the main file clean.
 
 use crate::app::App;
-use crate::database::db;
-use crate::url::permalink_generator::PermalinkGenerator;
 use crate::users::user_manager::get_user_by_email;
 use crate::{
     posts::{entry_type::EntryType, functions as post_functions, post::OX_Post},
     users,
-    users::{user::User, user_manager},
+    users::user::User,
 };
 
 pub(crate) struct Imitate {}

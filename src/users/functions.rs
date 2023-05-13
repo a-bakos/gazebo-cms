@@ -27,7 +27,7 @@ pub fn get_current_user_id(app: &App) -> UserID {
     crate::consts::SYSTEM_USER_ID
 }
 
-fn add_role_to_user(user_id: u32, role: UserRole) -> bool {
+fn add_role_to_user(_user_id: u32, _role: UserRole) -> bool {
     // get user by id
     // check role
     // change role
@@ -42,7 +42,7 @@ fn get_user_by_id(_user_id: UserID) -> User {
     // get user
 }
 
-pub fn get_user_by_email(email: &str) -> Option<User> {
+pub fn get_user_by_email(_email: &str) -> Option<User> {
     todo!()
 }
 

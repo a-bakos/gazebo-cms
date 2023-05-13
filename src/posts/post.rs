@@ -32,7 +32,7 @@ use crate::dates::functions as date_functions;
 use crate::posts::entry_type::EntryType;
 use crate::users::user::UserID;
 use crate::{consts, url};
-use std::fmt::{write, Formatter};
+use std::fmt::Formatter;
 
 #[derive(Debug)]
 pub enum PostSpecific {

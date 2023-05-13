@@ -4,7 +4,6 @@ use crate::posts::post::OX_Post;
 use crate::users::user::User;
 use csv::{ReaderBuilder, StringRecord, WriterBuilder};
 use std::error::Error;
-use std::ptr::replace;
 
 #[allow(non_camel_case_types)]
 #[allow(dead_code)]
