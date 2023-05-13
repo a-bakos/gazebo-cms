@@ -1,5 +1,5 @@
 use crate::allocator::ResourceManager;
-use crate::database::db::Database;
+use crate::database::db::GBDB;
 use crate::users::user::UserID;
 use std::time::SystemTime;
 
@@ -11,7 +11,7 @@ pub struct App {
     pub version: String,
     pub resources: ResourceManager,
     #[allow(dead_code)]
-    pub(crate) db: Database,
+    pub(crate) db: GBDB,
     pub start: SystemTime,
     #[allow(dead_code)]
     debug_mode: bool,
@@ -27,7 +27,7 @@ impl App {
             admin_email: crate::consts::DEFAULT_APP_ADMIN_EMAIL.to_string(),
             version: crate::consts::VERSION.to_string(),
             resources: ResourceManager::new(), // HashMap<ResourceType, Vec<ResourceID>>
-            db: Database::new(
+            db: GBDB::new(
                 "database".to_string(),
                 "user".to_string(),
                 "pass".to_string(),

@@ -14,7 +14,10 @@ mod users;
 
 mod mock_process;
 
-fn main() {
+use warp::Filter;
+
+#[tokio::main]
+async fn main() {
     // Start the App
     let mut app = app::App::init();
     // App started timestamp:
@@ -31,4 +34,7 @@ fn main() {
     //mock_process::Imitate::add_posts(&mut app);
     //mock_process::Imitate::get_post_by_id();
     //mock_process::Imitate::get_all_posts();
+
+    let hello = warp::path("hello").map(|| format!("Hello, Gazebo CMS!"));
+    warp::serve(hello).run(([127, 0, 0, 1], 1337)).await;
 }

@@ -12,7 +12,7 @@ pub enum DB_Table {
     Users,
 }
 
-pub struct Database {
+pub struct GBDB {
     pub name: String,
     pub user: String,
     pub password: String,
@@ -21,7 +21,7 @@ pub struct Database {
     pub table_prefix: String,
 }
 
-impl Database {
+impl GBDB {
     pub fn new(
         name: String,
         user: String,
