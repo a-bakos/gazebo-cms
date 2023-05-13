@@ -1,8 +1,11 @@
 use crate::consts;
 use crate::database::{columns, db};
-use crate::users::{
-    functions::turn_row_into_user,
-    user::{User, UserID},
+use crate::{
+    helpers::{str_contains_number, str_contains_special_char, str_contains_uppercase},
+    users::{
+        functions::turn_row_into_user,
+        user::{User, UserID},
+    },
 };
 use std::error::Error;
 
@@ -75,23 +78,13 @@ pub fn is_password_valid(password: &str) -> bool {
 
     // Check if password contains capital letters
     // Use the any method to check if at least one character satisfies the conditions
-    ok_pw_uppercase = password.chars().any(|ch| {
-        if ch.is_ascii_uppercase() {
-            return true;
-        }
-        false
-    });
+    ok_pw_uppercase = str_contains_uppercase(password);
 
     // Check if password contains numbers
-    ok_pw_numeric = password.chars().any(|ch| {
-        if ch.is_numeric() {
-            return true;
-        }
-        false
-    });
+    ok_pw_numeric = str_contains_number(password);
 
     // Check if password contains special characters
-    ok_pw_special = crate::helpers::str_contains_special_char(password);
+    ok_pw_special = str_contains_special_char(password);
 
     if ok_pw_numeric && ok_pw_uppercase && ok_pw_len && ok_pw_special {
         return true;
