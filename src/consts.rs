@@ -31,3 +31,7 @@ pub const USER_ID_TEMPORARY_DEFAULT: u32 = 0;
 pub const USER_ROLE_ADMIN: &str = "admin";
 pub const USER_ROLE_EDITOR: &str = "editor";
 pub const USER_ROLE_CONTRIBUTOR: &str = "contributor";
+
+pub const ENTRY_TYPE_POST: &str = "post";
+pub const ENTRY_TYPE_PAGE: &str = "page";
+pub const ENTRY_TYPE_MEDIA: &str = "media";
