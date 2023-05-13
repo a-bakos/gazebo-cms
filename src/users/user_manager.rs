@@ -110,15 +110,18 @@ mod test {
     #[test]
     fn are_password_variations_valid() {
         let password_correct = "#Abcd1234!";
-        let password_too_short = "_Abc1";
-        let password_missing_number = "?ABCdefGH";
-        let password_missing_special = "abcDEF123";
-        let password_missing_uppercase = "@abcde1234";
+        let password_incorrect_too_short = "_Abc1";
+        let password_incorrect_missing_number = "?ABCdefGH";
+        let password_incorrect_missing_special = "abcDEF123";
+        let password_incorrect_missing_uppercase = "@abcde1234";
 
         assert_eq!(is_password_valid(password_correct), true);
-        assert_eq!(is_password_valid(password_too_short), false);
-        assert_eq!(is_password_valid(password_missing_number), false);
-        assert_eq!(is_password_valid(password_missing_special), false);
-        assert_eq!(is_password_valid(password_missing_uppercase), false);
+        assert_eq!(is_password_valid(password_incorrect_too_short), false);
+        assert_eq!(is_password_valid(password_incorrect_missing_number), false);
+        assert_eq!(is_password_valid(password_incorrect_missing_special), false);
+        assert_eq!(
+            is_password_valid(password_incorrect_missing_uppercase),
+            false
+        );
     }
 }
