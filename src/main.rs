@@ -65,12 +65,14 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(pool_filter.clone())
         .and_then(get_users);
 
-    // let hello = warp::path("hello").map(|| format!("Hello, Gazebo CMS!"));
-    // warp::serve(hello).run(([127, 0, 0, 1], 1337)).await;
+    let get_users_html = warp::get()
+        .and(warp::path("usershtml"))
+        .and(warp::path::end()) // ::end() closes the URI path
+        .and(warp::query())
+        .and(pool_filter.clone())
+        .and_then(get_users_html);
 
-    let routes = get_users.with(cors);
-    // .recover(return_error)
-    // .with(warp::trace::request());
+    let routes = get_users.or(get_users_html).with(cors);
     warp::serve(routes).run(([127, 0, 0, 1], 1337)).await;
 
     Ok(())
@@ -86,4 +88,18 @@ async fn get_users(
         message,
         warp::http::StatusCode::OK,
     ))
+}
+
+// http://localhost:1337/users?name=what&age=whatwhat
+use warp::{http::Response, hyper::Body, Reply};
+
+async fn get_users_html(
+    params: HashMap<String, String>,
+    pool: PgPool,
+) -> Result<impl Reply, Infallible> {
+    let html = "<html><head><title>Users Page</title></head><body><h1>Users</h1></body></html>";
+    Ok(Response::builder()
+        .header("content-type", "text/html")
+        .body(Body::from(html))
+        .unwrap())
 }
