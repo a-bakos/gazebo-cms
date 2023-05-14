@@ -1,5 +1,13 @@
 CREATE TABLE IF NOT EXISTS gb_posts (
     id serial PRIMARY KEY,
+    author_id INTEGER NOT NULL,
+    parent_id INTEGER DEFAULT NULL,
+    date_publish TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    slug VARCHAR(255) NOT NULL,
+    post_type VARCHAR(20) DEFAULT 'post',
     title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL
+    excerpt TEXT DEFAULT NULL,
+    content TEXT NOT NULL,
+    password VARCHAR(255) DEFAULT NULL
 )
