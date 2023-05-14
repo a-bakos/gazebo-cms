@@ -1,51 +1,9 @@
 # This file is just a collection of random ideas at this point
 
 Some todo ideas
- 
 
 - serde for serialisation
-- sqlx for postgresql
-- warp for async framework
 - anyhow for errors
-
-## DB design ideas
-
-
-WP has a separate column for post_name which is similar to the slug
-
-### Users table
-
-```rust
-pub struct User {
-    pub first_name: String,
-    pub last_name: String,
-    pub login_name: String,
-    pub email: String,
-    pub id: UserID,
-    pub role: UserRole,
-    pub password: String,
-    pub registered: String,
-}
-```
-
-- `id`: primary key; bigint(20); not null; no default
-- `login`: varchar(60); not null
-- `password`: varchar(255); not null
-- `email`: varchar(100); not null
-- `registered`: datetime; default 0000-00-00 00:00:00
-- `role`: WP stores this in usermeta
-
-```SQL
-CREATE TABLE IF NOT EXISTS users (
-    id serial PRIMARY KEY,
-    firstname VARCHAR (255) NOT NULL,
-    lastname VARCHAR (255) NOT NULL,
-    email ??? NOT NULL,
-    role ??? NOT NULL,
-    created_on TIMESTAMP NOT NULL DEFAULT NOW()
-);
-```
- 
  
 ```php
 /**
