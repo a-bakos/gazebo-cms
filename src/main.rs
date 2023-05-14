@@ -17,9 +17,14 @@ mod mock_process;
 
 use std::collections::HashMap;
 use std::convert::Infallible;
-use warp::{http::Method, Filter};
 
 use sqlx::postgres::{PgPool, PgPoolOptions};
+
+use warp::http::StatusCode;
+use warp::reply::Html;
+use warp::{http::Method, Filter};
+use warp::{http::Response, hyper::Body};
+use warp::{Rejection, Reply};
 
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {
@@ -91,15 +96,22 @@ async fn get_users(
 }
 
 // http://localhost:1337/users?name=what&age=whatwhat
-use warp::{http::Response, hyper::Body, Reply};
-
 async fn get_users_html(
     params: HashMap<String, String>,
     pool: PgPool,
 ) -> Result<impl Reply, Infallible> {
-    let html = "<html><head><title>Users Page</title></head><body><h1>Users</h1></body></html>";
-    Ok(Response::builder()
+    let name = params
+        .get("name")
+        .unwrap_or(&"GAZEBO".to_owned())
+        .to_owned();
+    let html = format!(
+        r#"<html><head><title>Users Page</title></head><body><h1>Hello, {}!</h1></body></html>"#,
+        name
+    );
+
+    let response = Response::builder()
         .header("content-type", "text/html")
-        .body(Body::from(html))
-        .unwrap())
+        .body(html)
+        .unwrap();
+    Ok(response.into_response())
 }
