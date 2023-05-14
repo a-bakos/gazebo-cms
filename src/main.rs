@@ -9,6 +9,7 @@ mod error;
 mod helpers;
 mod http;
 mod posts;
+mod private;
 mod url;
 mod users;
 
@@ -16,8 +17,10 @@ mod mock_process;
 
 use warp::Filter;
 
+use sqlx::postgres::PgPoolOptions;
+
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), sqlx::Error> {
     // Start the App
     let mut app = app::App::init();
     // App started timestamp:
@@ -35,6 +38,19 @@ async fn main() {
     //mock_process::Imitate::get_post_by_id();
     //mock_process::Imitate::get_all_posts();
 
-    let hello = warp::path("hello").map(|| format!("Hello, Gazebo CMS!"));
-    warp::serve(hello).run(([127, 0, 0, 1], 1337)).await;
+    //let hello = warp::path("hello").map(|| format!("Hello, Gazebo CMS!"));
+    //warp::serve(hello).run(([127, 0, 0, 1], 1337)).await;
+
+    let db_pass = crate::private::DB_PASS;
+    let db_url = &("postgres://postgres:".to_owned() + db_pass + "@localhost/gazebocms");
+    println!("{}", db_url);
+    let pool = PgPoolOptions::new()
+        .max_connections(5)
+        .connect(db_url)
+        .await?;
+
+    // execute migrations before anything
+    sqlx::migrate!().run(&pool).await?;
+
+    Ok(())
 }

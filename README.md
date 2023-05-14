@@ -1,5 +1,5 @@
 # WIP Rust CMS
-## A thought experiment project based on WordPress
+## A thought experiment project inspired by WordPress
 
 This is a project for myself to practice and grow my Rust skills. The main idea behind this project is to explore and
 re-create some parts of WordPress using Rust in order to pick up new things, solidify what I've learnt already, 
