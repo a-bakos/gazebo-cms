@@ -12,9 +12,9 @@ pub enum EntryType {
 impl std::fmt::Display for EntryType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            EntryType::Post => write!(f, crate::consts::ENTRY_TYPE_POST),
-            EntryType::Page => write!(f, crate::consts::ENTRY_TYPE_PAGE),
-            EntryType::Media => write!(f, crate::consts::ENTRY_TYPE_MEDIA),
+            EntryType::Post => write!(f, "{}", crate::consts::ENTRY_TYPE_POST),
+            EntryType::Page => write!(f, "{}", crate::consts::ENTRY_TYPE_PAGE),
+            EntryType::Media => write!(f, "{}", crate::consts::ENTRY_TYPE_MEDIA),
         }
     }
 }
