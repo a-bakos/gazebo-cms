@@ -10,6 +10,7 @@ mod helpers;
 mod http;
 mod posts;
 mod private;
+mod routes;
 mod url;
 mod users;
 
@@ -82,27 +83,13 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(warp::path::end())
         .and(pool_filter.clone())
         .and(warp::body::json())
-        .and_then(registration);
+        .and_then(routes::registration::registration);
 
     let routes = get_users.or(get_users_html).or(registration).with(cors);
     warp::serve(routes).run(([127, 0, 0, 1], 1337)).await;
 
     Ok(())
 }
-
-mod routes;
-
-async fn registration(
-    pool: PgPool,
-    params: routes::registration::NewAccountRegistrationRequest,
-) -> Result<impl warp::Reply, warp::Rejection> {
-    println!("{:?}", params);
-    Ok(warp::reply::with_status(
-        "Registration successful",
-        warp::http::StatusCode::OK,
-    ))
-}
-
 // http://localhost:1337/users?name=what&age=whatwhat
 async fn get_users(
     params: HashMap<String, String>,
