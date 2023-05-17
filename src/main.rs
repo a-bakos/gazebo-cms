@@ -77,11 +77,30 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(pool_filter.clone())
         .and_then(get_users_html);
 
-    let routes = get_users.or(get_users_html).with(cors);
+    let registration = warp::post()
+        .and(warp::path("registration"))
+        .and(warp::path::end())
+        .and(pool_filter.clone())
+        .and(warp::body::json())
+        .and_then(registration);
+
+    let routes = get_users.or(get_users_html).or(registration).with(cors);
     warp::serve(routes).run(([127, 0, 0, 1], 1337)).await;
 
     Ok(())
 }
+
+async fn registration(
+    pool: PgPool,
+    params: HashMap<String, String>,
+) -> Result<impl warp::Reply, warp::Rejection> {
+    // todo
+    Ok(warp::reply::with_status(
+        "Registration successful",
+        warp::http::StatusCode::OK,
+    ))
+}
+
 // http://localhost:1337/users?name=what&age=whatwhat
 async fn get_users(
     params: HashMap<String, String>,
