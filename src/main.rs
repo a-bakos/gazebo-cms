@@ -90,11 +90,18 @@ async fn main() -> Result<(), sqlx::Error> {
     Ok(())
 }
 
+use serde::{Deserialize, Serialize};
+#[derive(Debug, Deserialize, Serialize)]
+struct NewAccountRegistrationRequest {
+    email: String,
+    password: String,
+}
+
 async fn registration(
     pool: PgPool,
-    params: HashMap<String, String>,
+    params: NewAccountRegistrationRequest,
 ) -> Result<impl warp::Reply, warp::Rejection> {
-    // todo
+    println!("{:?}", params);
     Ok(warp::reply::with_status(
         "Registration successful",
         warp::http::StatusCode::OK,
