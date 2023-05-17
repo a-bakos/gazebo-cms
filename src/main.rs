@@ -90,16 +90,11 @@ async fn main() -> Result<(), sqlx::Error> {
     Ok(())
 }
 
-use serde::{Deserialize, Serialize};
-#[derive(Debug, Deserialize, Serialize)]
-struct NewAccountRegistrationRequest {
-    email: String,
-    password: String,
-}
+mod routes;
 
 async fn registration(
     pool: PgPool,
-    params: NewAccountRegistrationRequest,
+    params: routes::registration::NewAccountRegistrationRequest,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     println!("{:?}", params);
     Ok(warp::reply::with_status(
