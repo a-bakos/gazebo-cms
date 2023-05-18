@@ -65,11 +65,12 @@ async fn main() -> Result<(), sqlx::Error> {
         .allow_methods(&[Method::PUT, Method::DELETE, Method::POST, Method::GET]);
 
     let get_users = warp::get()
-        .and(warp::path("users"))
+        .and(warp::path("user"))
+        .and(warp::path::param::<i32>())
         .and(warp::path::end()) // ::end() closes the URI path
-        .and(warp::query())
+        // .and(warp::query())
         .and(pool_filter.clone())
-        .and_then(get_users);
+        .and_then(get_user);
 
     let get_users_html = warp::get()
         .and(warp::path("usershtml"))
@@ -91,14 +92,16 @@ async fn main() -> Result<(), sqlx::Error> {
     Ok(())
 }
 // http://localhost:1337/users?name=what&age=whatwhat
-async fn get_users(
-    params: HashMap<String, String>,
+async fn get_user(
+    id: i32,
+    //params: HashMap<String, String>,
     pool: PgPool,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     // dummy implementation
-    let message = format!("Get all users with query params: {:?}", params);
+    println!("USER ID {}", id);
+    //let message = format!("Get all users with query params: {:?}", params);
     Ok(warp::reply::with_status(
-        message,
+        "Getting a user with an ID",
         warp::http::StatusCode::OK,
     ))
 }
