@@ -64,13 +64,13 @@ async fn main() -> Result<(), sqlx::Error> {
         .allow_header("content-type")
         .allow_methods(&[Method::PUT, Method::DELETE, Method::POST, Method::GET]);
 
-    let get_users = warp::get()
+    let get_user = warp::get()
         .and(warp::path("user"))
         .and(warp::path::param::<i32>())
         .and(warp::path::end()) // ::end() closes the URI path
         // .and(warp::query()) // => this is the params: HashMap<String, String> parameter in the callback
         .and(pool_filter.clone())
-        .and_then(get_user);
+        .and_then(routes::user::get_user);
 
     let get_users_html = warp::get()
         .and(warp::path("usershtml"))
@@ -86,20 +86,10 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(warp::body::json())
         .and_then(routes::registration::registration);
 
-    let routes = get_users.or(get_users_html).or(registration).with(cors);
+    let routes = get_user.or(get_users_html).or(registration).with(cors);
     warp::serve(routes).run(([127, 0, 0, 1], 1337)).await;
 
     Ok(())
-}
-
-// http://localhost:1337/user/{id}
-async fn get_user(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
-    // dummy implementation
-    println!("USER ID {}", id);
-    Ok(warp::reply::with_status(
-        "Getting a user with an ID",
-        warp::http::StatusCode::OK,
-    ))
 }
 
 // http://localhost:1337/users?name=what&age=whatwhat

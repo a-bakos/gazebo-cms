@@ -1,7 +1,8 @@
 use crate::consts;
+use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 #[allow(dead_code)]
 pub enum UserRole {
     Admin,       // read, write, delete, add ??
