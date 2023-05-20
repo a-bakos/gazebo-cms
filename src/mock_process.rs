@@ -21,8 +21,6 @@ impl Imitate {
     pub fn register_user() {
         // Let's create a new user and insert it
         let test_user = User::new(
-            "First".to_string(),
-            "Last".to_string(),
             "testuser".to_string(),
             "test@test.com".to_string(),
             users::roles::UserRole::Admin,

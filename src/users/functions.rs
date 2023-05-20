@@ -48,14 +48,6 @@ pub fn get_user_by_email(_email: &str) -> Option<User> {
 
 pub fn turn_row_into_user(row: &csv::StringRecord) -> User {
     User {
-        first_name: row
-            .get(columns::COL_INDEX_USER_FIRST_NAME)
-            .unwrap()
-            .to_string(),
-        last_name: row
-            .get(columns::COL_INDEX_USER_LAST_NAME)
-            .unwrap()
-            .to_string(),
         login_name: row
             .get(columns::COL_INDEX_USER_LOGIN_NAME)
             .unwrap()

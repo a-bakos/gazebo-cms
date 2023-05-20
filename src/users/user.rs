@@ -54,8 +54,6 @@ impl ID_Allocator for UserID {
 #[derive(Debug, Serialize, Deserialize)]
 #[allow(dead_code)]
 pub struct User {
-    pub first_name: String,
-    pub last_name: String,
     pub login_name: String,
     pub email: String,
     pub id: UserID,
@@ -66,17 +64,8 @@ pub struct User {
 
 impl User {
     #[allow(dead_code)]
-    pub fn new(
-        first_name: String,
-        last_name: String,
-        login_name: String,
-        email: String,
-        role: UserRole,
-        password: String,
-    ) -> Self {
+    pub fn new(login_name: String, email: String, role: UserRole, password: String) -> Self {
         Self {
-            first_name,
-            last_name,
             login_name,
             email,
             id: UserID(crate::consts::USER_ID_TEMPORARY_DEFAULT),

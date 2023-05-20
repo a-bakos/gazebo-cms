@@ -125,8 +125,6 @@ pub fn write_users_to_csv(path: &str, user: &User) -> Result<(), Box<dyn Error>>
 
     writer.write_record([
         user.id.to_string(),
-        user.first_name.to_string(),
-        user.last_name.to_string(),
         user.login_name.to_string(),
         user.email.to_string(),
         user.role.to_string(),
