@@ -1,4 +1,4 @@
-use crate::users::roles::get_role_variant;
+use crate::users::roles::{get_role_variant, UserRole};
 use crate::users::user::{User, UserID};
 use chrono::{DateTime, FixedOffset, NaiveDateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -23,10 +23,9 @@ pub async fn get_user(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::R
     match sqlx::query("SELECT * FROM gb_accounts WHERE id = $1")
         .bind(id)
         .map(|row: PgRow| {
-            let user_id: i32 = row.get("id");
-            let user_id = user_id as u32;
+            let user_id = row.get::<i32, _>("id") as u32;
 
-            let user_role = row.get("role");
+            let user_role = row.get::<&str, _>("role");
             let user_role = get_role_variant(user_role);
 
             // Don't need to specify a default/fallback value because the cell will never be empty
