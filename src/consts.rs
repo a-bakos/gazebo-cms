@@ -4,7 +4,7 @@ use crate::users::user::UserID;
 pub const DEFAULT_APP_NAME: &str = "Gazebo CMS";
 pub const DEFAULT_APP_ADMIN_EMAIL: &str = "change_this@gazebocms.email";
 pub const VERSION: &str = "0.0.169";
-pub const SYSTEM_USER_ID: UserID = UserID(999);
+pub const SYSTEM_USER_ID: UserID = UserID(0);
 
 /// Permalink defaults
 #[allow(dead_code)]
@@ -28,6 +28,7 @@ pub const MIN_PASSWORD_LENGTH: usize = 8;
 pub const MIN_USER_NAME_LENGTH: usize = 4;
 
 pub const USER_ID_TEMPORARY_DEFAULT: u32 = 0;
+
 pub const USER_ROLE_ADMIN: &str = "administrator";
 pub const USER_ROLE_EDITOR: &str = "editor";
 pub const USER_ROLE_CONTRIBUTOR: &str = "contributor";

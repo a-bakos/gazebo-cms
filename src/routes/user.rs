@@ -9,7 +9,7 @@ use std::num::ParseIntError;
 use warp::reject::Reject;
 
 #[derive(Debug)]
-struct SqlxError(Error);
+pub struct SqlxError(pub Error);
 
 impl Reject for SqlxError {}
 
