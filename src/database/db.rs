@@ -9,7 +9,7 @@ use std::error::Error;
 #[allow(dead_code)]
 pub enum DB_Table {
     Posts,
-    Users,
+    Accounts,
 }
 
 pub struct GBDB {
@@ -43,7 +43,7 @@ impl GBDB {
     #[allow(dead_code)]
     pub fn get_row(db_table: DB_Table, _id: u32) {
         let path = match db_table {
-            DB_Table::Users => Some(consts::FILE_PATH_USERS),
+            DB_Table::Accounts => Some(consts::FILE_PATH_USERS),
             DB_Table::Posts => Some(consts::FILE_PATH_POSTS),
         };
         let csv = parse_csv(path.unwrap());

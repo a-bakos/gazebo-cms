@@ -77,7 +77,7 @@ pub fn get_columns(table: DB_Table) -> HashMap<String, usize> {
                 columns.insert(col_name.to_string(), *col_index);
             }
         }
-        DB_Table::Users => {
+        DB_Table::Accounts => {
             for (col_name, col_index) in COLUMNS_USERS.iter() {
                 columns.insert(col_name.to_string(), *col_index);
             }

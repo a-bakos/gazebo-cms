@@ -8,7 +8,7 @@ pub enum UserRole {
     Admin,       // read, write, delete, add ??
     Editor,      // read, write, delete
     Contributor, // read
-    NotFound,    // missing role
+    NotFound,    // missing or incorrect role
 }
 
 impl std::fmt::Display for UserRole {
