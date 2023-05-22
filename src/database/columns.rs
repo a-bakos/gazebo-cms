@@ -1,8 +1,6 @@
 use crate::database::db::DB_Table;
 use std::collections::HashMap;
 
-// TODO later: think about tables
-
 // Posts table
 
 pub const COL_INDEX_POST_ID: usize = 0;

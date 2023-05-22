@@ -1,6 +1,6 @@
 use crate::database::columns::{
     COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LOGIN,
-    COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE, COL_INDEX_USER_PASSWORD,
+    COL_INDEX_ACCOUNT_PASSWORD, COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE,
 };
 use crate::database::db::DB_Table;
 use crate::users::roles::{get_role_variant, UserRole};
@@ -17,7 +17,6 @@ use crate::database::columns;
 
 #[derive(Debug)]
 pub struct SqlxError(pub Error);
-
 impl Reject for SqlxError {}
 
 // http://localhost:1337/user/{id}
