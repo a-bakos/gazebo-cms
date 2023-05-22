@@ -1,4 +1,5 @@
 use crate::database::columns::COL_INDEX_USER_PASSWORD;
+use crate::database::db::DB_Table;
 use crate::users::roles::{get_role_variant, UserRole};
 use crate::users::user::{User, UserID};
 use chrono::{DateTime, FixedOffset, NaiveDateTime, Utc};
@@ -28,7 +29,7 @@ pub async fn get_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
     // TODO Authentication layer needs to be here.
     // if ! auth { return Err(warp::reject::custom(AuthError)), }
 
-    let table_name = "gb_accounts";
+    let table_name: String = DB_Table::Accounts.into();
     let query = format!("SELECT * FROM {} WHERE id = $1", table_name);
     match sqlx::query(&query)
         .bind(id)

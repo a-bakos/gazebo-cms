@@ -11,6 +11,14 @@ pub enum DB_Table {
     Posts,
     Accounts,
 }
+impl Into<String> for DB_Table {
+    fn into(self) -> String {
+        match self {
+            DB_Table::Posts => "gb_posts".to_string(),
+            DB_Table::Accounts => "gb_accounts".to_string(),
+        }
+    }
+}
 
 pub struct GBDB {
     pub name: String,
