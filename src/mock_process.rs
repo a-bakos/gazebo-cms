@@ -26,8 +26,8 @@ impl Imitate {
             users::roles::UserRole::Admin,
             "A345678B".to_string(),
         );
-        let is_user_inserted: bool = User::insert(test_user, true);
-        dbg!(is_user_inserted);
+        //let is_user_inserted: bool = User::insert(test_user, true);
+        //dbg!(is_user_inserted);
     }
 
     // Mimic a user login request

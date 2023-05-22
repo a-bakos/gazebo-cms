@@ -53,22 +53,23 @@ pub const COLUMNS_USERS: [(&str, &str); 6] = [
     ("PASSWORD", COL_INDEX_ACCOUNT_PASSWORD),
     ("REGISTERED", COL_INDEX_ACCOUNT_REGISTERED),
 ];
-
-#[allow(dead_code)]
-pub fn get_columns(table: DB_Table) -> HashMap<String, usize> {
-    match table {
-        DB_Table::Posts => {
-            let mut columns: HashMap<String, usize> = HashMap::new();
-            for (col_name, col_index) in COLUMNS_POSTS.iter() {
-                columns.insert(col_name.to_string(), *col_index);
-            }
-        }
-        DB_Table::Accounts => {
-            let mut columns: HashMap<String, String> = HashMap::new();
-            for (col_name, col_index) in COLUMNS_USERS.iter() {
-                columns.insert(col_name.to_string(), col_index.to_string());
-            }
-        }
-    }
-    columns
-}
+//
+// #[allow(dead_code)]
+// pub fn get_columns(table: DB_Table) -> HashMap<String, usize> {
+//     match table {
+//         DB_Table::Posts => {
+//             let mut columns: HashMap<String, usize> = HashMap::new();
+//             for (col_name, col_index) in COLUMNS_POSTS.iter() {
+//                 columns.insert(col_name.to_string(), *col_index);
+//             }
+//             columns
+//         }
+//         DB_Table::Accounts => {
+//             let mut columns: HashMap<String, String> = HashMap::new();
+//             for (col_name, col_index) in COLUMNS_USERS.iter() {
+//                 columns.insert(col_name.to_string(), col_index.to_string());
+//             }
+//             columns
+//         }
+//     }
+// }

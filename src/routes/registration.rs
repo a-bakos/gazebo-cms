@@ -1,3 +1,4 @@
+use crate::database::db::DB_Table;
 use crate::routes::user::SqlxError;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::{PgPool, PgRow};
@@ -7,6 +8,7 @@ use warp::reject::Reject;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct NewAccountRegistrationRequest {
+    pub login: String,
     pub email: String,
     pub password: String,
 }
@@ -32,12 +34,32 @@ pub async fn registration(
     // check if user exists in accounts table
     let account_exists = account_exists(pool.clone(), params.email.clone()).await;
 
+    // if !crate::users::user_manager::is_password_valid(params.password.clone()) {
+    //     return Err(_);
+    // }
+
+    let login = params.login.clone();
+    let password = params.password.clone();
+    let email = params.email.clone();
+    let role = "admin";
+
     match account_exists {
         Ok(false) => {
-            // todo
-            // Registration logic goes here
-
-            Ok(warp::reply::json(&"Registration successful"))
+            let query = format!(
+                "INSERT INTO {} (login, password, email, role) VALUES ($1, $2, $3, $4)",
+                DB_Table::Accounts
+            );
+            match sqlx::query(&query)
+                .bind(login)
+                .bind(password)
+                .bind(email)
+                .bind(role)
+                .execute(&pool)
+                .await
+            {
+                Ok(_) => Ok(warp::reply::json(&"Registration successful")),
+                Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+            }
         }
         Ok(true) => Ok(warp::reply::json(&"Email address already in use")),
         Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),

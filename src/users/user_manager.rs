@@ -104,7 +104,7 @@ pub fn get_user_by_email(email: &str) -> Result<Option<User>, Box<dyn Error>> {
     let found_user;
     let mut user = None;
     for row in csv_db.iter() {
-        if let Some(db_email) = row.get(columns::COL_INDEX_USER_EMAIL) {
+        if let Some(db_email) = row.get("email".parse().unwrap()) {
             if db_email.to_lowercase() == email.to_lowercase() {
                 found_user = row;
                 user = Some(turn_row_into_user(found_user));

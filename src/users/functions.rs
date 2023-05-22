@@ -48,25 +48,16 @@ pub fn get_user_by_email(_email: &str) -> Option<User> {
 
 pub fn turn_row_into_user(row: &csv::StringRecord) -> User {
     User {
-        login_name: row
-            .get(columns::COL_INDEX_USER_LOGIN_NAME)
-            .unwrap()
-            .to_string(),
-        email: row.get(columns::COL_INDEX_USER_EMAIL).unwrap().to_string(),
+        login_name: row.get("login".parse().unwrap()).unwrap().to_string(),
+        email: row.get("email".parse().unwrap()).unwrap().to_string(),
         id: UserID(
-            row.get(columns::COL_INDEX_USER_ID)
+            row.get("id".parse().unwrap())
                 .unwrap()
                 .parse::<u32>()
                 .unwrap(),
         ),
-        role: crate::users::roles::get_role_variant(row.get(columns::COL_INDEX_USER_ROLE).unwrap()),
-        password: row
-            .get(columns::COL_INDEX_USER_PASSWORD)
-            .unwrap()
-            .to_string(),
-        registered: row
-            .get(columns::COL_INDEX_USER_REGISTERED)
-            .unwrap()
-            .to_string(),
+        role: crate::users::roles::get_role_variant(row.get("role".parse().unwrap()).unwrap()),
+        password: row.get("password".parse().unwrap()).unwrap().to_string(),
+        registered: row.get("registered".parse().unwrap()).unwrap().to_string(),
     }
 }

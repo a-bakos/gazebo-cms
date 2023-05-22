@@ -44,7 +44,7 @@ pub async fn get_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
                 email: row.get(COL_INDEX_ACCOUNT_EMAIL),
                 id: UserID(user_id),
                 role: user_role,
-                password: row.get(COL_INDEX_USER_PASSWORD), // todo: hide this later
+                password: row.get(COL_INDEX_ACCOUNT_PASSWORD), // todo: hide this later
                 registered: registered.to_string(),
             }
         })
