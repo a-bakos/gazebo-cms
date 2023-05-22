@@ -5,6 +5,9 @@ use crate::users::user::User;
 use csv::{ReaderBuilder, StringRecord, WriterBuilder};
 use std::error::Error;
 
+pub const DB_TABLE_POSTS: &str = "gb_posts";
+pub const DB_TABLE_ACCOUNTS: &str = "gb_accounts";
+
 #[allow(non_camel_case_types)]
 #[allow(dead_code)]
 pub enum DB_Table {
@@ -14,8 +17,8 @@ pub enum DB_Table {
 impl Into<String> for DB_Table {
     fn into(self) -> String {
         match self {
-            DB_Table::Posts => "gb_posts".to_string(),
-            DB_Table::Accounts => "gb_accounts".to_string(),
+            DB_Table::Posts => DB_TABLE_POSTS.to_string(),
+            DB_Table::Accounts => DB_TABLE_ACCOUNTS.to_string(),
         }
     }
 }

@@ -57,10 +57,8 @@ pub const COLUMNS_POSTS: [(&str, usize); 11] = [
 ];
 
 #[allow(dead_code)]
-pub const COLUMNS_USERS: [(&str, usize); 8] = [
+pub const COLUMNS_USERS: [(&str, usize); 6] = [
     ("ID", COL_INDEX_USER_ID),
-    ("FIRST_NAME", COL_INDEX_USER_FIRST_NAME),
-    ("LAST_NAME", COL_INDEX_USER_LAST_NAME),
     ("LOGIN_NAME", COL_INDEX_USER_LOGIN_NAME),
     ("EMAIL", COL_INDEX_USER_EMAIL),
     ("ROLE", COL_INDEX_USER_ROLE),
