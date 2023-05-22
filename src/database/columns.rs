@@ -39,7 +39,7 @@ pub const COLUMNS_POSTS: [(&str, usize); 11] = [
 
 pub const COL_INDEX_ACCOUNT_ID: &str = "id";
 pub const COL_INDEX_ACCOUNT_EMAIL: &str = "email";
-pub const COL_INDEX_ACCOUNT_PASSWORD: &str = "email";
+pub const COL_INDEX_ACCOUNT_PASSWORD: &str = "password";
 pub const COL_INDEX_ACCOUNT_ROLE: &str = "role";
 pub const COL_INDEX_ACCOUNT_LOGIN: &str = "login";
 pub const COL_INDEX_ACCOUNT_REGISTERED: &str = "registered";

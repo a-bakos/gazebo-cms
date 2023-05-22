@@ -31,23 +31,29 @@ pub async fn registration(
 ) -> Result<impl warp::Reply, warp::Rejection> {
     println!("{:?}", params);
 
+    let email = params.email.clone(); // need email check
+
     // check if user exists in accounts table
     let account_exists = account_exists(pool.clone(), params.email.clone()).await;
-
-    // if !crate::users::user_manager::is_password_valid(params.password.clone()) {
-    //     return Err(_);
-    // }
-
-    let login = params.login.clone();
-    let password = params.password.clone();
-    let email = params.email.clone();
-    let role = "admin";
-
     match account_exists {
         Ok(false) => {
+            let password = params.password.clone(); // todo need password check
+
+            // if !crate::users::user_manager::is_password_valid(params.password.clone()) {
+            //     return Err(_);
+            // }
+
+            let login = params.login.clone(); // todo need login name check
+
+            let role = crate::users::roles::UserRole::Contributor.to_string();
+
             let query = format!(
-                "INSERT INTO {} (login, password, email, role) VALUES ($1, $2, $3, $4)",
-                DB_Table::Accounts
+                "INSERT INTO {} ({}, {}, {}, {}) VALUES ($1, $2, $3, $4)",
+                DB_Table::Accounts,
+                crate::database::columns::COL_INDEX_ACCOUNT_LOGIN,
+                crate::database::columns::COL_INDEX_ACCOUNT_PASSWORD,
+                crate::database::columns::COL_INDEX_ACCOUNT_EMAIL,
+                crate::database::columns::COL_INDEX_ACCOUNT_ROLE
             );
             match sqlx::query(&query)
                 .bind(login)
