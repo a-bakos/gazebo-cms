@@ -11,21 +11,13 @@ pub struct NewAccountRegistrationRequest {
     pub password: String,
 }
 
-pub async fn check_if_account_exists(
-    pool: PgPool,
-    params: &NewAccountRegistrationRequest,
-) -> Result<bool, String> {
-    // check if user exists in accounts table
-    // select id where email = params.email
-    // if nothing, insert
-    // insert into gb_accounts (email, password, login, role)
-
+pub async fn account_exists(pool: PgPool, email: String) -> Result<bool, String> {
     match sqlx::query("SELECT id FROM gb_accounts WHERE email = $1")
-        .bind(params.email.clone())
+        .bind(email)
         .fetch_optional(&pool)
         .await
     {
-        Ok(Some(_)) => Err("Email address already un use".to_string()),
+        Ok(Some(_)) => Err("Email address already in use".to_string()),
         Ok(None) => Ok(false),
         Err(e) => Err(format!("Database error {}", e)),
     }
@@ -38,7 +30,7 @@ pub async fn registration(
     println!("{:?}", params);
 
     // check if user exists in accounts table
-    let account_exists = check_if_account_exists(pool.clone(), &params).await;
+    let account_exists = account_exists(pool.clone(), params.email.clone()).await;
 
     match account_exists {
         Ok(false) => {
