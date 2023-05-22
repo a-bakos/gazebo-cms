@@ -15,7 +15,7 @@ impl Reject for SqlxError {}
 
 // http://localhost:1337/user/{id}
 // when ID does not exist: Unhandled rejection: SqlxError(RowNotFound)
-pub async fn get_user(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
+pub async fn get_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
     // TODO Authentication layer needs to be here.
     // if ! auth { return Err(warp::reject::custom(AuthError)), }
 

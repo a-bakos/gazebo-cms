@@ -70,7 +70,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(warp::path::end()) // ::end() closes the URI path
         // .and(warp::query()) // => this is the params: HashMap<String, String> parameter in the callback
         .and(pool_filter.clone())
-        .and_then(routes::user::get_user);
+        .and_then(routes::user::get_user_by_id);
 
     let get_users_html = warp::get()
         .and(warp::path("usershtml"))
