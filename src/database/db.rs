@@ -10,7 +10,6 @@ pub const DB_TABLE_POSTS: &str = "gb_posts";
 pub const DB_TABLE_ACCOUNTS: &str = "gb_accounts";
 
 #[allow(non_camel_case_types)]
-#[allow(dead_code)]
 pub enum DB_Table {
     Posts,
     Accounts,
