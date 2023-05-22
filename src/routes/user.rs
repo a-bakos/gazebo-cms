@@ -1,4 +1,7 @@
-use crate::database::columns::COL_INDEX_USER_PASSWORD;
+use crate::database::columns::{
+    COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LOGIN,
+    COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE, COL_INDEX_USER_PASSWORD,
+};
 use crate::database::db::DB_Table;
 use crate::users::roles::{get_role_variant, UserRole};
 use crate::users::user::{User, UserID};
@@ -10,17 +13,12 @@ use sqlx::Row;
 use std::num::ParseIntError;
 use warp::reject::Reject;
 
+use crate::database::columns;
+
 #[derive(Debug)]
 pub struct SqlxError(pub Error);
 
 impl Reject for SqlxError {}
-
-pub const COL_INDEX_ACCOUNT_ID: &str = "id";
-pub const COL_INDEX_ACCOUNT_EMAIL: &str = "email";
-pub const COL_INDEX_ACCOUNT_PASSWORD: &str = "email";
-pub const COL_INDEX_ACCOUNT_ROLE: &str = "role";
-pub const COL_INDEX_ACCOUNT_LOGIN: &str = "login";
-pub const COL_INDEX_ACCOUNT_REGISTERED: &str = "registered";
 
 // http://localhost:1337/user/{id}
 // when ID does not exist: Unhandled rejection: SqlxError(RowNotFound)

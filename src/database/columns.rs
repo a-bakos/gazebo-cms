@@ -22,25 +22,6 @@ pub const COL_INDEX_POST_CONTENT: usize = 9;
 #[allow(dead_code)]
 pub const COL_INDEX_POST_PASSWORD: usize = 10;
 
-// Users table
-
-#[allow(dead_code)]
-pub const COL_INDEX_USER_ID: usize = 0;
-#[allow(dead_code)]
-pub const COL_INDEX_USER_FIRST_NAME: usize = 1;
-#[allow(dead_code)]
-pub const COL_INDEX_USER_LAST_NAME: usize = 2;
-#[allow(dead_code)]
-pub const COL_INDEX_USER_LOGIN_NAME: usize = 3;
-#[allow(dead_code)]
-pub const COL_INDEX_USER_EMAIL: usize = 4;
-#[allow(dead_code)]
-pub const COL_INDEX_USER_ROLE: usize = 5;
-#[allow(dead_code)]
-pub const COL_INDEX_USER_PASSWORD: usize = 6;
-#[allow(dead_code)]
-pub const COL_INDEX_USER_REGISTERED: usize = 7;
-
 #[allow(dead_code)]
 pub const COLUMNS_POSTS: [(&str, usize); 11] = [
     ("ID", COL_INDEX_POST_ID),
@@ -56,28 +37,38 @@ pub const COLUMNS_POSTS: [(&str, usize); 11] = [
     ("PASSWORD", COL_INDEX_POST_PASSWORD),
 ];
 
+// Accounts / Users table
+
+pub const COL_INDEX_ACCOUNT_ID: &str = "id";
+pub const COL_INDEX_ACCOUNT_EMAIL: &str = "email";
+pub const COL_INDEX_ACCOUNT_PASSWORD: &str = "email";
+pub const COL_INDEX_ACCOUNT_ROLE: &str = "role";
+pub const COL_INDEX_ACCOUNT_LOGIN: &str = "login";
+pub const COL_INDEX_ACCOUNT_REGISTERED: &str = "registered";
+
 #[allow(dead_code)]
-pub const COLUMNS_USERS: [(&str, usize); 6] = [
-    ("ID", COL_INDEX_USER_ID),
-    ("LOGIN_NAME", COL_INDEX_USER_LOGIN_NAME),
-    ("EMAIL", COL_INDEX_USER_EMAIL),
-    ("ROLE", COL_INDEX_USER_ROLE),
-    ("PASSWORD", COL_INDEX_USER_PASSWORD),
-    ("REGISTERED", COL_INDEX_USER_REGISTERED),
+pub const COLUMNS_USERS: [(&str, &str); 6] = [
+    ("ID", COL_INDEX_ACCOUNT_ID),
+    ("LOGIN_NAME", COL_INDEX_ACCOUNT_LOGIN),
+    ("EMAIL", COL_INDEX_ACCOUNT_EMAIL),
+    ("ROLE", COL_INDEX_ACCOUNT_ROLE),
+    ("PASSWORD", COL_INDEX_ACCOUNT_PASSWORD),
+    ("REGISTERED", COL_INDEX_ACCOUNT_REGISTERED),
 ];
 
 #[allow(dead_code)]
 pub fn get_columns(table: DB_Table) -> HashMap<String, usize> {
-    let mut columns: HashMap<String, usize> = HashMap::new();
     match table {
         DB_Table::Posts => {
+            let mut columns: HashMap<String, usize> = HashMap::new();
             for (col_name, col_index) in COLUMNS_POSTS.iter() {
                 columns.insert(col_name.to_string(), *col_index);
             }
         }
         DB_Table::Accounts => {
+            let mut columns: HashMap<String, String> = HashMap::new();
             for (col_name, col_index) in COLUMNS_USERS.iter() {
-                columns.insert(col_name.to_string(), *col_index);
+                columns.insert(col_name.to_string(), col_index.to_string());
             }
         }
     }
