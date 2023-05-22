@@ -4,6 +4,7 @@ use crate::posts::post::GB_Post;
 use crate::users::user::User;
 use csv::{ReaderBuilder, StringRecord, WriterBuilder};
 use std::error::Error;
+use std::fmt::{Display, Formatter};
 
 pub const DB_TABLE_POSTS: &str = "gb_posts";
 pub const DB_TABLE_ACCOUNTS: &str = "gb_accounts";
@@ -19,6 +20,14 @@ impl Into<String> for DB_Table {
         match self {
             DB_Table::Posts => DB_TABLE_POSTS.to_string(),
             DB_Table::Accounts => DB_TABLE_ACCOUNTS.to_string(),
+        }
+    }
+}
+impl Display for DB_Table {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            DB_Table::Posts => write!(f, "{}", DB_TABLE_POSTS),
+            DB_Table::Accounts => write!(f, "{}", DB_TABLE_ACCOUNTS),
         }
     }
 }
