@@ -5,7 +5,6 @@ mod app;
 mod consts;
 mod database;
 mod dates;
-// mod error;
 mod errors;
 mod helpers;
 mod http;
