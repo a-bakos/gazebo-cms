@@ -183,7 +183,7 @@ pub fn update_post(post: &GB_Post, post_specs_to_update: Vec<PostSpecific>) -> b
                 id_author: single_post.id_author.clone(),
                 id_parent: single_post.id_parent.clone(),
                 date_publish: single_post.date_publish.clone(),
-                date_modified: crate::dates::functions::get_current_date(),
+                date_modified: crate::datetime::functions::get_current_date(),
                 slug: single_post.slug.clone(),
                 the_type: single_post.the_type.clone(),
                 status: single_post.status.clone(),

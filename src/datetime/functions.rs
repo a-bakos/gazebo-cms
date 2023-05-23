@@ -1,4 +1,4 @@
-use crate::dates::date::GB_DateTime;
+use crate::datetime::date::GB_DateTime;
 
 pub fn get_current_date() -> String {
     let date: GB_DateTime = GB_DateTime::new();

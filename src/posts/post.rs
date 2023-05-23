@@ -28,7 +28,7 @@ WP_POST
 use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
 use crate::app::App;
 use crate::database::db::*;
-use crate::dates::functions as date_functions;
+use crate::datetime::functions as date_functions;
 use crate::posts::entry_type::EntryType;
 use crate::users::user::UserID;
 use crate::{consts, url};

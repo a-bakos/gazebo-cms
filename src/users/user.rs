@@ -27,7 +27,7 @@
 use crate::allocator::{ID_Allocator, ResourceID, ResourceType};
 use crate::app::App;
 use crate::database::db;
-use crate::dates::functions as date_functions;
+use crate::datetime::functions as date_functions;
 use crate::users::roles::UserRole;
 use crate::users::user_manager::{is_email_valid, is_password_valid, user_exists};
 use serde::{Deserialize, Serialize};
