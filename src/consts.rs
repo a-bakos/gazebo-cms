@@ -18,8 +18,6 @@ pub const DEFAULT_PERMALINK_NOT_ALLOWED_CHARS: [&str; 9] =
 pub const ID_START_VALUE: u32 = 0;
 pub const POST_UNTITLED_DEFAULT: &str = "Untitled Gazebo Post";
 
-pub const TABLE_PREFIX: &str = "gb_";
-
 // Mock DB (table) files
 pub const FILE_PATH_POSTS: &str = "mock_db_posts.csv";
 pub const FILE_PATH_USERS: &str = "mock_db_users.csv";
