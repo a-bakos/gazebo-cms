@@ -14,11 +14,8 @@ pub struct NewAccountRegistrationRequest {
 }
 
 pub async fn account_exists(pool: PgPool, email: String) -> Result<bool, String> {
-    match sqlx::query("SELECT id FROM gb_accounts WHERE email = $1")
-        .bind(email)
-        .fetch_optional(&pool)
-        .await
-    {
+    let query = format!("SELECT id FROM {} WHERE email = $1", DB_Table::Accounts);
+    match sqlx::query(&query).bind(email).fetch_optional(&pool).await {
         Ok(Some(_)) => Err("Email address already in use".to_string()),
         Ok(None) => Ok(false),
         Err(e) => Err(format!("Database error {}", e)),
