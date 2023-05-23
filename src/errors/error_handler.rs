@@ -1,0 +1,53 @@
+use std::fmt::{write, Formatter};
+use warp::{http::StatusCode, reject::Reject, Rejection, Reply};
+
+#[derive(Debug)]
+#[allow(clippy::enum_variant_names)]
+pub enum GB_Error {
+    //ParseError(std::num::ParseIntError),
+    MissingParameters,
+    OutOfBounds,
+    IncorrectCredentials,
+}
+
+impl std::fmt::Display for GB_Error {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match *self {
+            // GB_Error::ParseError(ref err) => {
+            //     // Why ref err?
+            //     write!(f, "Cannot parse parameter {err}")
+            // }
+            GB_Error::MissingParameters => {
+                write!(f, "Missing parameter")
+            }
+            GB_Error::OutOfBounds => {
+                write!(f, "Out of bounds")
+            }
+            GB_Error::IncorrectCredentials => {
+                write!(f, "Invalid credentials")
+            }
+        }
+    }
+}
+
+pub async fn return_error(r: Rejection) -> Result<impl warp::Reply, warp::Rejection> {
+    if let Some(GB_Error::IncorrectCredentials) = r.find() {
+        // event!(Level::ERROR, "Wrong password entered");
+        Ok(warp::reply::with_status(
+            "Wrong email/password combination".to_string(),
+            StatusCode::UNAUTHORIZED,
+        ))
+    // } else if let Some(GB_Error::Unauthorized) = r.find() {
+    //     // event!(Level::ERROR, "Not matching account ID");
+    //     Ok(warp::reply::with_status(
+    //         "No permission to change resource".to_string(),
+    //         StatusCode::UNAUTHORIZED,
+    //     ))
+    } else {
+        // event!(Level::WARN, "Requested route was not found");
+        Ok(warp::reply::with_status(
+            "Route not found".to_string(),
+            StatusCode::NOT_FOUND,
+        ))
+    }
+}
