@@ -1,0 +1,2 @@
+pub const DB_TABLE_POSTS: &str = "gb_posts";
+pub const DB_TABLE_ACCOUNTS: &str = "gb_accounts";

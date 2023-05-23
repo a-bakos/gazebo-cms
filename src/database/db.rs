@@ -1,13 +1,11 @@
 // Mock CSV database
 use crate::consts;
+use crate::database::consts::{DB_TABLE_ACCOUNTS, DB_TABLE_POSTS};
 use crate::posts::post::GB_Post;
 use crate::users::user::User;
 use csv::{ReaderBuilder, StringRecord, WriterBuilder};
 use std::error::Error;
 use std::fmt::{Display, Formatter};
-
-pub const DB_TABLE_POSTS: &str = "gb_posts";
-pub const DB_TABLE_ACCOUNTS: &str = "gb_accounts";
 
 #[allow(non_camel_case_types)]
 pub enum DB_Table {
