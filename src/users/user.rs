@@ -31,12 +31,12 @@ use crate::datetime::functions as date_functions;
 use crate::users::roles::UserRole;
 use crate::users::user_manager::{is_email_valid, is_password_valid, user_exists};
 use serde::{Deserialize, Serialize};
-use std::fmt::Formatter;
+use std::fmt::{Display, Formatter};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserID(pub u32);
 
-impl std::fmt::Display for UserID {
+impl Display for UserID {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.0)
     }
@@ -52,7 +52,6 @@ impl ID_Allocator for UserID {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-#[allow(dead_code)]
 pub struct User {
     pub login_name: String,
     pub email: String,
@@ -126,6 +125,7 @@ impl User {
     #[allow(dead_code)]
     pub fn change_username(&mut self, new_username: &str) {
         // username change functionality
+        // self.login = new_username
     }
 
     #[allow(unused_variables)]

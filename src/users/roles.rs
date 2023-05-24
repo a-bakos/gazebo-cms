@@ -52,9 +52,11 @@ pub fn get_role_variant(role: &str) -> UserRole {
     }
 }
 
+#[cfg(test)]
 mod test {
     use super::*;
 
+    #[test]
     fn is_role_variant_correct() {
         let role_1 = "administrator";
         let role_2 = "editor";
