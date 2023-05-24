@@ -2,8 +2,7 @@ use crate::consts;
 use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
 
-#[derive(Debug, Serialize, Deserialize)]
-#[allow(dead_code)]
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub enum UserRole {
     Admin,       // read, write, delete, add ??
     Editor,      // read, write, delete
@@ -50,5 +49,21 @@ pub fn get_role_variant(role: &str) -> UserRole {
         consts::USER_ROLE_EDITOR => UserRole::Editor,
         consts::USER_ROLE_CONTRIBUTOR => UserRole::Contributor,
         _ => UserRole::NotFound,
+    }
+}
+
+mod test {
+    use super::*;
+
+    fn is_role_variant_correct() {
+        let role_1 = "administrator";
+        let role_2 = "editor";
+        let role_3 = "contributor";
+        let role_4 = "any_role";
+
+        assert_eq!(UserRole::Admin, get_role_variant(role_1));
+        assert_eq!(UserRole::Editor, get_role_variant(role_2));
+        assert_eq!(UserRole::Contributor, get_role_variant(role_3));
+        assert_eq!(UserRole::NotFound, get_role_variant(role_4));
     }
 }
