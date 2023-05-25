@@ -18,15 +18,6 @@ pub enum AccountExistsCheckBy {
     Login,
 }
 
-// pub async fn check_account_exists_by_email(pool: PgPool, email: String) -> Result<bool, String> {
-//     let query = format!("SELECT id FROM {} WHERE email = $1", DB_Table::Accounts);
-//     match sqlx::query(&query).bind(email).fetch_optional(&pool).await {
-//         Ok(Some(_)) => Ok(true), // email found
-//         Ok(None) => Ok(false),   // email not found
-//         Err(e) => Err(format!("Database error {}", e)),
-//     }
-// }
-
 pub async fn check_account_exists(
     pool: PgPool,
     param: AccountExistsCheckBy,
