@@ -16,7 +16,7 @@ use warp::http::StatusCode;
 use warp::reject::Reject;
 
 use crate::database::columns;
-use crate::routes::registration::account_exists;
+use crate::routes::registration::{check_account_exists, AccountExistsCheckBy};
 
 #[derive(Debug)]
 pub struct SqlxError(pub Error);
@@ -79,8 +79,8 @@ pub async fn delete_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct LoginRequest {
-    pub login: String,
-    pub email: String,
+    pub login: Option<String>,
+    pub email: Option<String>,
     pub password: String,
 }
 
@@ -90,32 +90,67 @@ pub async fn login(
 ) -> Result<impl warp::Reply, warp::Rejection> {
     println!("{:?}", params);
 
-    let email = params.email.clone(); // need email check
+    // if email found, ignore login name
+    // if no email, look for login name
+    if let Some(email) = params.email {
+        let account_exists_by_email =
+            check_account_exists(pool.clone(), AccountExistsCheckBy::Email, email.clone()).await;
 
-    // check if user exists in accounts table
-    let account_exists = account_exists(pool.clone(), params.email.clone()).await;
-    match account_exists {
-        Ok(true) => {
-            let password = params.password.clone(); // todo need password check
-
-            // if !crate::users::user_manager::is_password_valid(params.password.clone()) {
-            //     return Err(_);
-            // }
-
-            let login = params.login.clone(); // todo need login name check
-
-            let query = format!("SELECT * FROM {} WHERE email = $1", DB_Table::Accounts);
-            match sqlx::query(&query)
-                .bind(password)
-                .bind(email)
-                .execute(&pool)
-                .await
-            {
-                Ok(_) => Ok(warp::reply::json(&"Login successful")),
-                Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+        return match account_exists_by_email {
+            Ok(true) => {
+                // Acc exists / go login
+                let query = format!("SELECT * FROM {} WHERE email = $1", DB_Table::Accounts);
+                let binding = email.clone();
+                let password = params.password.clone();
+                match sqlx::query(&query)
+                    .bind(password)
+                    .bind(binding)
+                    .execute(&pool)
+                    .await
+                {
+                    Ok(_) => Ok(warp::reply::json(&"Login successful")),
+                    Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+                }
             }
-        }
-        Ok(false) => Ok(warp::reply::json(&"Email address not found")),
-        Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+            Ok(false) => Ok(warp::reply::json(&"Email address not found")),
+            Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+        };
     }
+
+    if let Some(login) = params.login {
+        let query = format!("SELECT * FROM {} WHERE login = $1", DB_Table::Accounts);
+        let binding = login.clone();
+        let account_exists_by_login =
+            check_account_exists(pool.clone(), AccountExistsCheckBy::Login, login.clone()).await;
+
+        return match account_exists_by_login {
+            Ok(true) => {
+                // Acc exists
+                let query = format!("SELECT * FROM {} WHERE login = $1", DB_Table::Accounts);
+                let binding = login.clone();
+                let password = params.password.clone();
+                match sqlx::query(&query)
+                    .bind(password)
+                    .bind(binding)
+                    .execute(&pool)
+                    .await
+                {
+                    Ok(_) => Ok(warp::reply::json(&"Login successful")),
+                    Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+                }
+            }
+            Ok(false) => Ok(warp::reply::json(&"Login address not found")),
+            Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+        };
+    }
+
+    let response = ErrorResponse {
+        error: "Empty login".to_owned(),
+    };
+    Ok(warp::reply::json(&response))
+}
+
+#[derive(Serialize)]
+struct ErrorResponse {
+    error: String,
 }

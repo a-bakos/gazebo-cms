@@ -13,11 +13,38 @@ pub struct NewAccountRegistrationRequest {
     pub password: String,
 }
 
-pub async fn account_exists(pool: PgPool, email: String) -> Result<bool, String> {
-    let query = format!("SELECT id FROM {} WHERE email = $1", DB_Table::Accounts);
-    match sqlx::query(&query).bind(email).fetch_optional(&pool).await {
-        Ok(Some(_)) => Ok(true), // email found
-        Ok(None) => Ok(false),   // email not found
+pub enum AccountExistsCheckBy {
+    Email,
+    Login,
+}
+
+// pub async fn check_account_exists_by_email(pool: PgPool, email: String) -> Result<bool, String> {
+//     let query = format!("SELECT id FROM {} WHERE email = $1", DB_Table::Accounts);
+//     match sqlx::query(&query).bind(email).fetch_optional(&pool).await {
+//         Ok(Some(_)) => Ok(true), // email found
+//         Ok(None) => Ok(false),   // email not found
+//         Err(e) => Err(format!("Database error {}", e)),
+//     }
+// }
+
+pub async fn check_account_exists(
+    pool: PgPool,
+    param: AccountExistsCheckBy,
+    value: String,
+) -> Result<bool, String> {
+    let query;
+    match param {
+        AccountExistsCheckBy::Email => {
+            query = format!("SELECT id FROM {} WHERE email = $1", DB_Table::Accounts);
+        }
+        AccountExistsCheckBy::Login => {
+            query = format!("SELECT id FROM {} WHERE login = $1", DB_Table::Accounts);
+        }
+    }
+
+    match sqlx::query(&query).bind(value).fetch_optional(&pool).await {
+        Ok(Some(_)) => Ok(true), // email | login found
+        Ok(None) => Ok(false),   // email | login not found
         Err(e) => Err(format!("Database error {}", e)),
     }
 }
@@ -31,7 +58,12 @@ pub async fn registration(
     let email = params.email.clone(); // need email check
 
     // check if user exists in accounts table
-    let account_exists = account_exists(pool.clone(), params.email.clone()).await;
+    let account_exists = check_account_exists(
+        pool.clone(),
+        AccountExistsCheckBy::Email,
+        params.email.clone(),
+    )
+    .await;
     match account_exists {
         Ok(false) => {
             let password = params.password.clone(); // todo need password check
