@@ -94,9 +94,17 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(warp::body::json())
         .and_then(routes::registration::registration);
 
+    let login = warp::post()
+        .and(warp::path("login"))
+        .and(warp::path::end())
+        .and(pool_filter.clone())
+        .and(warp::body::json())
+        .and_then(routes::user::login);
+
     let routes = get_user
         .or(get_users_html)
         .or(registration)
+        .or(login)
         .or(delete_user)
         .with(cors);
     warp::serve(routes).run(([127, 0, 0, 1], 1337)).await;

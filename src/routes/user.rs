@@ -10,11 +10,13 @@ use serde::{Deserialize, Serialize};
 use sqlx::postgres::{PgPool, PgRow};
 use sqlx::Error;
 use sqlx::Row;
+use std::collections::HashMap;
 use std::num::ParseIntError;
 use warp::http::StatusCode;
 use warp::reject::Reject;
 
 use crate::database::columns;
+use crate::routes::registration::account_exists;
 
 #[derive(Debug)]
 pub struct SqlxError(pub Error);
@@ -72,5 +74,48 @@ pub async fn delete_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply
             StatusCode::OK,
         )),
         Err(e) => Err(warp::reject::custom(SqlxError(e))),
+    }
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct LoginRequest {
+    pub login: String,
+    pub email: String,
+    pub password: String,
+}
+
+pub async fn login(
+    pool: PgPool,
+    params: LoginRequest,
+) -> Result<impl warp::Reply, warp::Rejection> {
+    println!("{:?}", params);
+
+    let email = params.email.clone(); // need email check
+
+    // check if user exists in accounts table
+    let account_exists = account_exists(pool.clone(), params.email.clone()).await;
+    match account_exists {
+        Ok(true) => {
+            let password = params.password.clone(); // todo need password check
+
+            // if !crate::users::user_manager::is_password_valid(params.password.clone()) {
+            //     return Err(_);
+            // }
+
+            let login = params.login.clone(); // todo need login name check
+
+            let query = format!("SELECT * FROM {} WHERE email = $1", DB_Table::Accounts);
+            match sqlx::query(&query)
+                .bind(password)
+                .bind(email)
+                .execute(&pool)
+                .await
+            {
+                Ok(_) => Ok(warp::reply::json(&"Login successful")),
+                Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+            }
+        }
+        Ok(false) => Ok(warp::reply::json(&"Email address not found")),
+        Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
     }
 }
