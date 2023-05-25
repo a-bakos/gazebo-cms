@@ -72,6 +72,14 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(pool_filter.clone())
         .and_then(routes::user::get_user_by_id);
 
+    let delete_user = warp::delete()
+        .and(warp::path("user"))
+        .and(warp::path::param::<i32>())
+        .and(warp::path::end()) // ::end() closes the URI path
+        // .and(warp::query()) // => this is the params: HashMap<String, String> parameter in the callback
+        .and(pool_filter.clone())
+        .and_then(routes::user::delete_user_by_id);
+
     let get_users_html = warp::get()
         .and(warp::path("usershtml"))
         .and(warp::path::end()) // ::end() closes the URI path
@@ -86,7 +94,11 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(warp::body::json())
         .and_then(routes::registration::registration);
 
-    let routes = get_user.or(get_users_html).or(registration).with(cors);
+    let routes = get_user
+        .or(get_users_html)
+        .or(registration)
+        .or(delete_user)
+        .with(cors);
     warp::serve(routes).run(([127, 0, 0, 1], 1337)).await;
 
     Ok(())

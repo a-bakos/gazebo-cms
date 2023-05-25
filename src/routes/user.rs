@@ -11,6 +11,7 @@ use sqlx::postgres::{PgPool, PgRow};
 use sqlx::Error;
 use sqlx::Row;
 use std::num::ParseIntError;
+use warp::http::StatusCode;
 use warp::reject::Reject;
 
 use crate::database::columns;
@@ -52,6 +53,24 @@ pub async fn get_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
         .await
     {
         Ok(res) => Ok(warp::reply::json(&res)),
+        Err(e) => Err(warp::reject::custom(SqlxError(e))),
+    }
+}
+
+// http://localhost:1337/user/{id}
+// when ID does not exist: Unhandled rejection: SqlxError(RowNotFound)
+pub async fn delete_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
+    println!("User to be deleted ID: {}", id);
+
+    // TODO Authentication layer needs to be here.
+    // if ! auth { return Err(warp::reject::custom(AuthError)), }
+
+    let query = format!("DELETE FROM {} WHERE id = $1", DB_Table::Accounts);
+    match sqlx::query(&query).bind(id).execute(&pool).await {
+        Ok(_) => Ok(warp::reply::with_status(
+            format!("User {} deleted", id),
+            StatusCode::OK,
+        )),
         Err(e) => Err(warp::reject::custom(SqlxError(e))),
     }
 }
