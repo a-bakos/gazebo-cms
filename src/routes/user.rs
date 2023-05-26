@@ -104,7 +104,15 @@ pub async fn login(
 
                 // todo password check needed
                 let password = params.password.clone();
-                try_login(&query, &pool, password, binding).await
+                if is_password_match(&pool, &password, AccountExistsCheckBy::Email, &binding).await
+                {
+                    // Try login and return result
+                    try_login(&query, &pool, password, binding).await
+                } else {
+                    Ok(warp::reply::json(&format!(
+                        "Pass doesn't match (from email login)!"
+                    )))
+                }
             }
             Ok(false) => Ok(warp::reply::json(&"Email address not found")),
             Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
@@ -125,7 +133,15 @@ pub async fn login(
 
                 // todo password check needed
                 let password = params.password.clone();
-                try_login(&query, &pool, password, binding).await
+                if is_password_match(&pool, &password, AccountExistsCheckBy::Login, &binding).await
+                {
+                    // Try login and return result
+                    try_login(&query, &pool, password, binding).await
+                } else {
+                    Ok(warp::reply::json(&format!(
+                        "Pass doesn't match (from login name login)!"
+                    )))
+                }
             }
             Ok(false) => Ok(warp::reply::json(&"Login address not found")),
             Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
@@ -138,11 +154,13 @@ pub async fn login(
     Ok(warp::reply::json(&response))
 }
 
+// Wrapper type so we have a size at compile time
 #[derive(Serialize)]
 struct ErrorResponse {
     error: String,
 }
 
+const MSG_LOGIN_SUCCESS: &str = "Login successful";
 pub async fn try_login(
     query: &str,
     pool: &PgPool,
@@ -155,7 +173,43 @@ pub async fn try_login(
         .execute(pool)
         .await
     {
-        Ok(_) => Ok(warp::reply::json(&"Login successful")),
+        Ok(_) => Ok(warp::reply::json(&MSG_LOGIN_SUCCESS)),
         Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+    }
+}
+
+pub async fn is_password_match(
+    pool: &PgPool,
+    password: &str,
+    check_by: AccountExistsCheckBy,
+    value: &str,
+) -> bool {
+    let query = match check_by {
+        AccountExistsCheckBy::Email => {
+            format!(
+                "SELECT id FROM {} WHERE email = $1 AND password = $2",
+                DB_Table::Accounts
+            )
+        }
+        AccountExistsCheckBy::Login => {
+            format!(
+                "SELECT id FROM {} WHERE login = $1 AND password = $2",
+                DB_Table::Accounts
+            )
+        }
+    };
+
+    match sqlx::query(&query)
+        .bind(value)
+        .bind(password)
+        .map(|row| {
+            let user_id = row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32;
+            UserID(user_id)
+        })
+        .fetch_one(pool)
+        .await
+    {
+        Ok(res) => true,
+        Err(err) => false,
     }
 }
