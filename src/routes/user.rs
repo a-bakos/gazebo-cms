@@ -104,15 +104,7 @@ pub async fn login(
 
                 // todo password check needed
                 let password = params.password.clone();
-                match sqlx::query(&query)
-                    .bind(password)
-                    .bind(binding)
-                    .execute(&pool)
-                    .await
-                {
-                    Ok(_) => Ok(warp::reply::json(&"Login successful")),
-                    Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
-                }
+                try_login(&query, &pool, password, binding).await
             }
             Ok(false) => Ok(warp::reply::json(&"Email address not found")),
             Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
@@ -133,15 +125,7 @@ pub async fn login(
 
                 // todo password check needed
                 let password = params.password.clone();
-                match sqlx::query(&query)
-                    .bind(password)
-                    .bind(binding)
-                    .execute(&pool)
-                    .await
-                {
-                    Ok(_) => Ok(warp::reply::json(&"Login successful")),
-                    Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
-                }
+                try_login(&query, &pool, password, binding).await
             }
             Ok(false) => Ok(warp::reply::json(&"Login address not found")),
             Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
@@ -157,4 +141,21 @@ pub async fn login(
 #[derive(Serialize)]
 struct ErrorResponse {
     error: String,
+}
+
+pub async fn try_login(
+    query: &str,
+    pool: &PgPool,
+    password: String,
+    binding: String,
+) -> Result<warp::reply::Json, warp::Rejection> {
+    match sqlx::query(&query)
+        .bind(password)
+        .bind(binding)
+        .execute(pool)
+        .await
+    {
+        Ok(_) => Ok(warp::reply::json(&"Login successful")),
+        Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+    }
 }
