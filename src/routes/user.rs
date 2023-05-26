@@ -101,8 +101,6 @@ pub async fn login(
                 // Acc exists / go login
                 let query = format!("SELECT * FROM {} WHERE email = $1", DB_Table::Accounts);
                 let binding = email.clone();
-
-                // todo password check needed
                 let password = params.password.clone();
                 if is_password_match(&pool, &password, AccountExistsCheckBy::Email, &binding).await
                 {
@@ -130,8 +128,6 @@ pub async fn login(
                 // Acc exists
                 let query = format!("SELECT * FROM {} WHERE login = $1", DB_Table::Accounts);
                 let binding = login.clone();
-
-                // todo password check needed
                 let password = params.password.clone();
                 if is_password_match(&pool, &password, AccountExistsCheckBy::Login, &binding).await
                 {
