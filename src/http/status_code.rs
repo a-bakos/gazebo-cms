@@ -3,7 +3,7 @@
 // let status_message = HttpStatusCode::Unauthorized.message();
 
 #[derive(Debug)]
-enum HttpStatusCode {
+pub enum HttpStatusCode {
     Continue,
     SwitchingProtocols,
     Processing,
@@ -68,7 +68,7 @@ enum HttpStatusCode {
 }
 
 impl HttpStatusCode {
-    fn code(&self) -> u32 {
+    pub fn code(&self) -> u32 {
         match self {
             HttpStatusCode::Continue => 100,
             HttpStatusCode::SwitchingProtocols => 101,
@@ -134,7 +134,7 @@ impl HttpStatusCode {
         }
     }
 
-    fn message(&self) -> &str {
+    pub fn message(&self) -> &str {
         match self {
             HttpStatusCode::Continue => "Continue",
             HttpStatusCode::SwitchingProtocols => "Switching Protocols",
