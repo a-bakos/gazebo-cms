@@ -16,6 +16,7 @@ use warp::http::StatusCode;
 use warp::reject::Reject;
 
 use crate::database::columns;
+use crate::http::status_code::HttpStatusCode;
 use crate::routes::registration::{check_account_exists, AccountExistsCheckBy};
 
 #[derive(Debug)]
@@ -107,8 +108,12 @@ pub async fn login(
                     // Try login and return result
                     try_login(&query, &pool, password, binding).await
                 } else {
+                    let status_code = HttpStatusCode::Unauthorized.code();
+                    let status_message = HttpStatusCode::Unauthorized.message();
+                    println!("Wrong password used for: {}", &binding);
                     Ok(warp::reply::json(&format!(
-                        "Pass doesn't match (from email login)!"
+                        "{} {}",
+                        status_code, status_message
                     )))
                 }
             }
@@ -134,8 +139,12 @@ pub async fn login(
                     // Try login and return result
                     try_login(&query, &pool, password, binding).await
                 } else {
+                    let status_code = HttpStatusCode::Unauthorized.code();
+                    let status_message = HttpStatusCode::Unauthorized.message();
+                    println!("Wrong password used for: {}", &binding);
                     Ok(warp::reply::json(&format!(
-                        "Pass doesn't match (from login name login)!"
+                        "{} {}",
+                        status_code, status_message
                     )))
                 }
             }
