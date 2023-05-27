@@ -1,68 +1,202 @@
-use std::collections::HashMap;
+// Usage:
+// let status_code = HttpStatusCode::Unauthorized.code();
+// let status_message = HttpStatusCode::Unauthorized.message();
 
-#[allow(dead_code)]
-pub fn http_status_code_map() -> HashMap<u32, String> {
-    let mut map = HashMap::new();
-    map.insert(100, "Continue".to_string());
-    map.insert(101, "Switching Protocols".to_string());
-    map.insert(102, "Processing".to_string());
-    map.insert(103, "Early Hints".to_string());
-    map.insert(200, "OK".to_string());
-    map.insert(201, "Created".to_string());
-    map.insert(202, "Accepted".to_string());
-    map.insert(203, "Non-Authoritative Information".to_string());
-    map.insert(204, "No Content".to_string());
-    map.insert(205, "Reset Content".to_string());
-    map.insert(206, "Partial Content".to_string());
-    map.insert(207, "Multi-Status".to_string());
-    map.insert(226, "IM Used".to_string());
-    map.insert(300, "Multiple Choices".to_string());
-    map.insert(301, "Moved Permanently".to_string());
-    map.insert(302, "Found".to_string());
-    map.insert(303, "See Other".to_string());
-    map.insert(304, "Not Modified".to_string());
-    map.insert(305, "Use Proxy".to_string());
-    map.insert(306, "Reserved".to_string());
-    map.insert(307, "Temporary Redirect".to_string());
-    map.insert(308, "Permanent Redirect".to_string());
-    map.insert(400, "Bad Request".to_string());
-    map.insert(401, "Unauthorized".to_string());
-    map.insert(402, "Payment Required".to_string());
-    map.insert(403, "Forbidden".to_string());
-    map.insert(404, "Not Found".to_string());
-    map.insert(405, "Method Not Allowed".to_string());
-    map.insert(406, "Not Acceptable".to_string());
-    map.insert(407, "Proxy Authentication Required".to_string());
-    map.insert(408, "Request Timeout".to_string());
-    map.insert(409, "Conflict".to_string());
-    map.insert(410, "Gone".to_string());
-    map.insert(411, "Length Required".to_string());
-    map.insert(412, "Precondition Failed".to_string());
-    map.insert(413, "Request Entity Too Large".to_string());
-    map.insert(414, "Request-URI Too Long".to_string());
-    map.insert(415, "Unsupported Media Type".to_string());
-    map.insert(416, "Requested Range Not Satisfiable".to_string());
-    map.insert(417, "Expectation Failed".to_string());
-    map.insert(418, "I\'m a teapot".to_string());
-    map.insert(421, "Misdirected Request".to_string());
-    map.insert(422, "Unprocessable Entity".to_string());
-    map.insert(423, "Locked".to_string());
-    map.insert(424, "Failed Dependency".to_string());
-    map.insert(426, "Upgrade Required".to_string());
-    map.insert(428, "Precondition Required".to_string());
-    map.insert(429, "Too Many Requests".to_string());
-    map.insert(431, "Request Header Fields Too Large".to_string());
-    map.insert(451, "Unavailable For Legal Reasons".to_string());
-    map.insert(500, "Internal Server Error".to_string());
-    map.insert(501, "Not Implemented".to_string());
-    map.insert(502, "Bad Gateway".to_string());
-    map.insert(503, "Service Unavailable".to_string());
-    map.insert(504, "Gateway Timeout".to_string());
-    map.insert(505, "HTTP Version Not Supported".to_string());
-    map.insert(506, "Variant Also Negotiates".to_string());
-    map.insert(507, "Insufficient Storage".to_string());
-    map.insert(510, "Not Extended".to_string());
-    map.insert(511, "Network Authentication Required".to_string());
+#[derive(Debug)]
+enum HttpStatusCode {
+    Continue,
+    SwitchingProtocols,
+    Processing,
+    Ok,
+    Created,
+    Accepted,
+    NonAuthoritativeInformation,
+    NoContent,
+    ResetContent,
+    PartialContent,
+    MultiStatus,
+    AlreadyReported,
+    IMUsed,
+    MultipleChoices,
+    MovedPermanently,
+    Found,
+    SeeOther,
+    NotModified,
+    UseProxy,
+    TemporaryRedirect,
+    PermanentRedirect,
+    BadRequest,
+    Unauthorized,
+    PaymentRequired,
+    Forbidden,
+    NotFound,
+    MethodNotAllowed,
+    NotAcceptable,
+    ProxyAuthenticationRequired,
+    RequestTimeout,
+    Conflict,
+    Gone,
+    LengthRequired,
+    PreconditionFailed,
+    PayloadTooLarge,
+    URITooLong,
+    UnsupportedMediaType,
+    RangeNotSatisfiable,
+    ExpectationFailed,
+    ImATeapot,
+    MisdirectedRequest,
+    UnprocessableEntity,
+    Locked,
+    FailedDependency,
+    TooEarly,
+    UpgradeRequired,
+    PreconditionRequired,
+    TooManyRequests,
+    RequestHeaderFieldsTooLarge,
+    UnavailableForLegalReasons,
+    InternalServerError,
+    NotImplemented,
+    BadGateway,
+    ServiceUnavailable,
+    GatewayTimeout,
+    HTTPVersionNotSupported,
+    VariantAlsoNegotiates,
+    InsufficientStorage,
+    LoopDetected,
+    NotExtended,
+    NetworkAuthenticationRequired,
+}
 
-    map
+impl HttpStatusCode {
+    fn code(&self) -> u32 {
+        match self {
+            HttpStatusCode::Continue => 100,
+            HttpStatusCode::SwitchingProtocols => 101,
+            HttpStatusCode::Processing => 102,
+            HttpStatusCode::Ok => 200,
+            HttpStatusCode::Created => 201,
+            HttpStatusCode::Accepted => 202,
+            HttpStatusCode::NonAuthoritativeInformation => 203,
+            HttpStatusCode::NoContent => 204,
+            HttpStatusCode::ResetContent => 205,
+            HttpStatusCode::PartialContent => 206,
+            HttpStatusCode::MultiStatus => 207,
+            HttpStatusCode::AlreadyReported => 208,
+            HttpStatusCode::IMUsed => 226,
+            HttpStatusCode::MultipleChoices => 300,
+            HttpStatusCode::MovedPermanently => 301,
+            HttpStatusCode::Found => 302,
+            HttpStatusCode::SeeOther => 303,
+            HttpStatusCode::NotModified => 304,
+            HttpStatusCode::UseProxy => 305,
+            HttpStatusCode::TemporaryRedirect => 307,
+            HttpStatusCode::PermanentRedirect => 308,
+            HttpStatusCode::BadRequest => 400,
+            HttpStatusCode::Unauthorized => 401,
+            HttpStatusCode::PaymentRequired => 402,
+            HttpStatusCode::Forbidden => 403,
+            HttpStatusCode::NotFound => 404,
+            HttpStatusCode::MethodNotAllowed => 405,
+            HttpStatusCode::NotAcceptable => 406,
+            HttpStatusCode::ProxyAuthenticationRequired => 407,
+            HttpStatusCode::RequestTimeout => 408,
+            HttpStatusCode::Conflict => 409,
+            HttpStatusCode::Gone => 410,
+            HttpStatusCode::LengthRequired => 411,
+            HttpStatusCode::PreconditionFailed => 412,
+            HttpStatusCode::PayloadTooLarge => 413,
+            HttpStatusCode::URITooLong => 414,
+            HttpStatusCode::UnsupportedMediaType => 415,
+            HttpStatusCode::RangeNotSatisfiable => 416,
+            HttpStatusCode::ExpectationFailed => 417,
+            HttpStatusCode::ImATeapot => 418,
+            HttpStatusCode::MisdirectedRequest => 421,
+            HttpStatusCode::UnprocessableEntity => 422,
+            HttpStatusCode::Locked => 423,
+            HttpStatusCode::FailedDependency => 424,
+            HttpStatusCode::TooEarly => 425,
+            HttpStatusCode::UpgradeRequired => 426,
+            HttpStatusCode::PreconditionRequired => 428,
+            HttpStatusCode::TooManyRequests => 429,
+            HttpStatusCode::RequestHeaderFieldsTooLarge => 431,
+            HttpStatusCode::UnavailableForLegalReasons => 451,
+            HttpStatusCode::InternalServerError => 500,
+            HttpStatusCode::NotImplemented => 501,
+            HttpStatusCode::BadGateway => 502,
+            HttpStatusCode::ServiceUnavailable => 503,
+            HttpStatusCode::GatewayTimeout => 504,
+            HttpStatusCode::HTTPVersionNotSupported => 505,
+            HttpStatusCode::VariantAlsoNegotiates => 506,
+            HttpStatusCode::InsufficientStorage => 507,
+            HttpStatusCode::LoopDetected => 508,
+            HttpStatusCode::NotExtended => 510,
+            HttpStatusCode::NetworkAuthenticationRequired => 511,
+        }
+    }
+
+    fn message(&self) -> &str {
+        match self {
+            HttpStatusCode::Continue => "Continue",
+            HttpStatusCode::SwitchingProtocols => "Switching Protocols",
+            HttpStatusCode::Processing => "Processing",
+            HttpStatusCode::Ok => "OK",
+            HttpStatusCode::Created => "Created",
+            HttpStatusCode::Accepted => "Accepted",
+            HttpStatusCode::NonAuthoritativeInformation => "Non-Authoritative Information",
+            HttpStatusCode::NoContent => "No Content",
+            HttpStatusCode::ResetContent => "Reset Content",
+            HttpStatusCode::PartialContent => "Partial Content",
+            HttpStatusCode::MultiStatus => "Multi-Status",
+            HttpStatusCode::AlreadyReported => "Already Reported",
+            HttpStatusCode::IMUsed => "IM Used",
+            HttpStatusCode::MultipleChoices => "Multiple Choices",
+            HttpStatusCode::MovedPermanently => "Moved Permanently",
+            HttpStatusCode::Found => "Found",
+            HttpStatusCode::SeeOther => "See Other",
+            HttpStatusCode::NotModified => "Not Modified",
+            HttpStatusCode::UseProxy => "Use Proxy",
+            HttpStatusCode::TemporaryRedirect => "Temporary Redirect",
+            HttpStatusCode::PermanentRedirect => "Permanent Redirect",
+            HttpStatusCode::BadRequest => "Bad Request",
+            HttpStatusCode::Unauthorized => "Unauthorized",
+            HttpStatusCode::PaymentRequired => "Payment Required",
+            HttpStatusCode::Forbidden => "Forbidden",
+            HttpStatusCode::NotFound => "Not Found",
+            HttpStatusCode::MethodNotAllowed => "Method Not Allowed",
+            HttpStatusCode::NotAcceptable => "Not Acceptable",
+            HttpStatusCode::ProxyAuthenticationRequired => "Proxy Authentication Required",
+            HttpStatusCode::RequestTimeout => "Request Timeout",
+            HttpStatusCode::Conflict => "Conflict",
+            HttpStatusCode::Gone => "Gone",
+            HttpStatusCode::LengthRequired => "Length Required",
+            HttpStatusCode::PreconditionFailed => "Precondition Failed",
+            HttpStatusCode::PayloadTooLarge => "Payload Too Large",
+            HttpStatusCode::URITooLong => "URI Too Long",
+            HttpStatusCode::UnsupportedMediaType => "Unsupported Media Type",
+            HttpStatusCode::RangeNotSatisfiable => "Range Not Satisfiable",
+            HttpStatusCode::ExpectationFailed => "Expectation Failed",
+            HttpStatusCode::ImATeapot => "I'm a teapot",
+            HttpStatusCode::MisdirectedRequest => "Misdirected Request",
+            HttpStatusCode::UnprocessableEntity => "Unprocessable Entity",
+            HttpStatusCode::Locked => "Locked",
+            HttpStatusCode::FailedDependency => "Failed Dependency",
+            HttpStatusCode::TooEarly => "Too Early",
+            HttpStatusCode::UpgradeRequired => "Upgrade Required",
+            HttpStatusCode::PreconditionRequired => "Precondition Required",
+            HttpStatusCode::TooManyRequests => "Too Many Requests",
+            HttpStatusCode::RequestHeaderFieldsTooLarge => "Request Header Fields Too Large",
+            HttpStatusCode::UnavailableForLegalReasons => "Unavailable For Legal Reasons",
+            HttpStatusCode::InternalServerError => "Internal Server Error",
+            HttpStatusCode::NotImplemented => "Not Implemented",
+            HttpStatusCode::BadGateway => "Bad Gateway",
+            HttpStatusCode::ServiceUnavailable => "Service Unavailable",
+            HttpStatusCode::GatewayTimeout => "Gateway Timeout",
+            HttpStatusCode::HTTPVersionNotSupported => "HTTP Version Not Supported",
+            HttpStatusCode::VariantAlsoNegotiates => "Variant Also Negotiates",
+            HttpStatusCode::InsufficientStorage => "Insufficient Storage",
+            HttpStatusCode::LoopDetected => "Loop Detected",
+            HttpStatusCode::NotExtended => "Not Extended",
+            HttpStatusCode::NetworkAuthenticationRequired => "Network Authentication Required",
+        }
+    }
 }
