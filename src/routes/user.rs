@@ -35,7 +35,6 @@ pub async fn get_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
         .bind(id)
         .map(|row: PgRow| {
             let user_id = row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32;
-
             let user_role = row.get::<&str, _>(COL_INDEX_ACCOUNT_ROLE);
             let user_role = get_role_variant(user_role);
 

@@ -2,6 +2,18 @@ use crate::consts;
 use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
 
+// Capabilities draft:
+// POST
+// CreatePost
+// DeletePost
+// UpdatePost
+// ReadPost
+
+// USER
+// AddUser
+// DeleteUser
+// UpdateUser
+
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub enum UserRole {
     Admin,       // read, write, delete, add ??
