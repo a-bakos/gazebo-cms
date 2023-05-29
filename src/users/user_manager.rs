@@ -1,5 +1,8 @@
 use crate::consts;
+use crate::database::columns::COL_INDEX_ACCOUNT_ID;
+use crate::database::db::DB_Table;
 use crate::database::{columns, db};
+use crate::routes::registration::AccountExistsCheckBy;
 use crate::{
     helpers::{str_contains_number, str_contains_special_char, str_contains_uppercase},
     users::{
@@ -7,6 +10,7 @@ use crate::{
         user::{User, UserID},
     },
 };
+use sqlx::{PgPool, Row};
 use std::error::Error;
 
 #[allow(dead_code)]
@@ -114,6 +118,42 @@ pub fn get_user_by_email(email: &str) -> Result<Option<User>, Box<dyn Error>> {
     }
 
     Ok(user)
+}
+
+pub async fn is_password_match(
+    pool: &PgPool,
+    password: &str,
+    check_by: AccountExistsCheckBy,
+    value: &str,
+) -> bool {
+    let query = match check_by {
+        AccountExistsCheckBy::Email => {
+            format!(
+                "SELECT id FROM {} WHERE email = $1 AND password = $2",
+                DB_Table::Accounts
+            )
+        }
+        AccountExistsCheckBy::Login => {
+            format!(
+                "SELECT id FROM {} WHERE login = $1 AND password = $2",
+                DB_Table::Accounts
+            )
+        }
+    };
+
+    match sqlx::query(&query)
+        .bind(value)
+        .bind(password)
+        .map(|row| {
+            let user_id = row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32;
+            UserID(user_id)
+        })
+        .fetch_one(pool)
+        .await
+    {
+        Ok(res) => true,
+        Err(err) => false,
+    }
 }
 
 #[cfg(test)]

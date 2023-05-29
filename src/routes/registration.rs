@@ -1,5 +1,5 @@
 use crate::database::db::DB_Table;
-use crate::routes::user::SqlxError;
+use crate::errors::error_handler::SqlxError;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::{PgPool, PgRow};
 use sqlx::Error;

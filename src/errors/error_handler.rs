@@ -1,5 +1,21 @@
+use serde::{Deserialize, Serialize};
 use std::fmt::{write, Formatter};
 use warp::{http::StatusCode, reject::Reject, Rejection, Reply};
+
+#[derive(Debug)]
+pub struct SqlxError(pub sqlx::Error);
+impl Reject for SqlxError {}
+
+// Wrapper type so we have a size at compile time
+#[derive(Serialize)]
+pub struct ErrorResponse {
+    pub error: String,
+}
+impl ErrorResponse {
+    pub fn new(error: String) -> Self {
+        Self { error }
+    }
+}
 
 #[derive(Debug)]
 #[allow(clippy::enum_variant_names)]
