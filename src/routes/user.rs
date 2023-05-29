@@ -3,6 +3,7 @@ use crate::database::columns::{
     COL_INDEX_ACCOUNT_PASSWORD, COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE,
 };
 use crate::database::db::DB_Table;
+use crate::http::response::HttpResponse;
 use crate::users::roles::{get_role_variant, UserRole};
 use crate::users::user::{User, UserID};
 use chrono::{DateTime, FixedOffset, NaiveDateTime, Utc};
@@ -14,6 +15,7 @@ use std::collections::HashMap;
 use std::num::ParseIntError;
 use warp::http::StatusCode;
 use warp::reject::Reject;
+use warp::reply::Response;
 
 use crate::database::columns;
 use crate::http::status_code::HttpStatusCode;
@@ -107,16 +109,14 @@ pub async fn login(
                     // Try login and return result
                     try_login(&query, &pool, password, binding).await
                 } else {
-                    let status_code = HttpStatusCode::Unauthorized.code();
-                    let status_message = HttpStatusCode::Unauthorized.message();
+                    // System log
                     println!("Wrong password used for: {}", &binding);
-                    Ok(warp::reply::json(&format!(
-                        "{} {}",
-                        status_code, status_message
-                    )))
+
+                    // Client response
+                    Ok(warp::reply::json(&HttpResponse::unauthorized()))
                 }
             }
-            Ok(false) => Ok(warp::reply::json(&"Email address not found")),
+            Ok(false) => Ok(warp::reply::json(&HttpResponse::unauthorized())),
             Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
         };
     }
@@ -138,30 +138,31 @@ pub async fn login(
                     // Try login and return result
                     try_login(&query, &pool, password, binding).await
                 } else {
-                    let status_code = HttpStatusCode::Unauthorized.code();
-                    let status_message = HttpStatusCode::Unauthorized.message();
+                    // System log
                     println!("Wrong password used for: {}", &binding);
-                    Ok(warp::reply::json(&format!(
-                        "{} {}",
-                        status_code, status_message
-                    )))
+                    // Client response
+                    Ok(warp::reply::json(&HttpResponse::unauthorized()))
                 }
             }
-            Ok(false) => Ok(warp::reply::json(&"Login address not found")),
+            Ok(false) => Ok(warp::reply::json(&HttpResponse::unauthorized())),
             Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
         };
     }
 
-    let response = ErrorResponse {
-        error: "Empty login".to_owned(),
-    };
-    Ok(warp::reply::json(&response))
+    Ok(warp::reply::json(&ErrorResponse::new(
+        "Empty login".to_owned(),
+    )))
 }
 
 // Wrapper type so we have a size at compile time
 #[derive(Serialize)]
 struct ErrorResponse {
     error: String,
+}
+impl ErrorResponse {
+    fn new(error: String) -> ErrorResponse {
+        ErrorResponse { error }
+    }
 }
 
 const MSG_LOGIN_SUCCESS: &str = "Login successful";
