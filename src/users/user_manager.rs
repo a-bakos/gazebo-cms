@@ -2,7 +2,7 @@ use crate::consts;
 use crate::database::columns::COL_INDEX_ACCOUNT_ID;
 use crate::database::db::DB_Table;
 use crate::database::{columns, db};
-use crate::routes::registration::AccountExistsCheckBy;
+use crate::routes::user::registration::AccountExistsCheckBy;
 use crate::{
     helpers::{str_contains_number, str_contains_special_char, str_contains_uppercase},
     users::{
