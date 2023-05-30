@@ -101,6 +101,14 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(warp::body::json())
         .and_then(routes::user::login::login);
 
+    // todo
+    //let create_post = warp::post()
+    //    .and(warp::path(url::path::PATH_POST_ADD))
+    //    .and(warp::path::end())
+    //    .and(pool_filter.clone())
+    //    .and(warp::body::json())
+    //    .and_then(routes::post::crud::insert_post);
+
     let routes = get_user
         .or(get_users_html)
         .or(registration)
