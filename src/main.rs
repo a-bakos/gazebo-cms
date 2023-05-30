@@ -65,7 +65,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .allow_methods(&[Method::PUT, Method::DELETE, Method::POST, Method::GET]);
 
     let get_user = warp::get()
-        .and(warp::path("user"))
+        .and(warp::path(url::path::PATH_USER))
         .and(warp::path::param::<i32>())
         .and(warp::path::end()) // ::end() closes the URI path
         // .and(warp::query()) // => this is the params: HashMap<String, String> parameter in the callback
@@ -73,7 +73,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .and_then(routes::user::crud::get_user_by_id);
 
     let delete_user = warp::delete()
-        .and(warp::path("user"))
+        .and(warp::path(url::path::PATH_USER))
         .and(warp::path::param::<i32>())
         .and(warp::path::end()) // ::end() closes the URI path
         // .and(warp::query()) // => this is the params: HashMap<String, String> parameter in the callback
@@ -88,14 +88,14 @@ async fn main() -> Result<(), sqlx::Error> {
         .and_then(get_users_html);
 
     let registration = warp::post()
-        .and(warp::path("registration"))
+        .and(warp::path(url::path::PATH_USER_REGISTRATION))
         .and(warp::path::end())
         .and(pool_filter.clone())
         .and(warp::body::json())
         .and_then(routes::user::registration::registration);
 
     let login = warp::post()
-        .and(warp::path("login"))
+        .and(warp::path(url::path::PATH_USER_LOGIN))
         .and(warp::path::end())
         .and(pool_filter.clone())
         .and(warp::body::json())
@@ -112,6 +112,7 @@ async fn main() -> Result<(), sqlx::Error> {
     Ok(())
 }
 
+// This is just an experimental feature
 // http://localhost:1337/users?name=what&age=whatwhat
 async fn get_users_html(
     params: HashMap<String, String>,
