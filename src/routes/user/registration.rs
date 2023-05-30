@@ -1,5 +1,7 @@
 use crate::database::db::DB_Table;
 use crate::errors::error_handler::SqlxError;
+use crate::users::user_manager;
+use crate::users::user_manager::AccountExistsCheckBy;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::{PgPool, PgRow};
 use sqlx::Error;
@@ -13,33 +15,6 @@ pub struct NewAccountRegistrationRequest {
     pub password: String,
 }
 
-pub enum AccountExistsCheckBy {
-    Email,
-    Login,
-}
-
-pub async fn check_account_exists(
-    pool: PgPool,
-    param: AccountExistsCheckBy,
-    value: String,
-) -> Result<bool, String> {
-    let query;
-    match param {
-        AccountExistsCheckBy::Email => {
-            query = format!("SELECT id FROM {} WHERE email = $1", DB_Table::Accounts);
-        }
-        AccountExistsCheckBy::Login => {
-            query = format!("SELECT id FROM {} WHERE login = $1", DB_Table::Accounts);
-        }
-    }
-
-    match sqlx::query(&query).bind(value).fetch_optional(&pool).await {
-        Ok(Some(_)) => Ok(true), // email | login found
-        Ok(None) => Ok(false),   // email | login not found
-        Err(e) => Err(format!("Database error {}", e)),
-    }
-}
-
 pub async fn registration(
     pool: PgPool,
     params: NewAccountRegistrationRequest,
@@ -49,7 +24,7 @@ pub async fn registration(
     let email = params.email.clone(); // need email check
 
     // check if user exists in accounts table
-    let account_exists = check_account_exists(
+    let account_exists = user_manager::check_account_exists(
         pool.clone(),
         AccountExistsCheckBy::Email,
         params.email.clone(),

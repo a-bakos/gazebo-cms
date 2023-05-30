@@ -1,8 +1,9 @@
 use crate::database::db::DB_Table;
 use crate::errors::error_handler::ErrorResponse;
 use crate::http::response::HttpResponse;
-use crate::routes::user::registration::{check_account_exists, AccountExistsCheckBy};
 use crate::users::user_manager;
+use crate::users::user_manager::check_account_exists;
+use crate::users::user_manager::AccountExistsCheckBy;
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 
