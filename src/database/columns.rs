@@ -44,6 +44,13 @@ pub const COL_INDEX_ACCOUNT_ROLE: &str = "role";
 pub const COL_INDEX_ACCOUNT_LOGIN: &str = "login";
 pub const COL_INDEX_ACCOUNT_REGISTERED: &str = "registered";
 
+// Accounts meta
+
+pub const COL_INDEX_ACCOUNT_META_ID: &str = "account_meta_id";
+pub const COL_INDEX_ACCOUNT_META_USER_ID: &str = "user_id";
+pub const COL_INDEX_ACCOUNT_META_KEY: &str = "meta_key";
+pub const COL_INDEX_ACCOUNT_META_VALUE: &str = "meta_value";
+
 #[allow(dead_code)]
 pub const COLUMNS_USERS: [(&str, &str); 6] = [
     ("ID", COL_INDEX_ACCOUNT_ID),
@@ -53,6 +60,15 @@ pub const COLUMNS_USERS: [(&str, &str); 6] = [
     ("PASSWORD", COL_INDEX_ACCOUNT_PASSWORD),
     ("REGISTERED", COL_INDEX_ACCOUNT_REGISTERED),
 ];
+
+#[allow(dead_code)]
+pub const COLUMNS_USER_META: [(&str, &str); 4] = [
+    ("META_ID", COL_INDEX_ACCOUNT_META_ID),
+    ("USER_ID", COL_INDEX_ACCOUNT_META_USER_ID),
+    ("META_KEY", COL_INDEX_ACCOUNT_META_KEY),
+    ("META_VALUE", COL_INDEX_ACCOUNT_META_VALUE),
+];
+
 //
 // #[allow(dead_code)]
 // pub fn get_columns(table: DB_Table) -> HashMap<String, usize> {
