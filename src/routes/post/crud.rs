@@ -1,5 +1,7 @@
 use crate::database::columns::{
-    COL_INDEX_POST_ID, COL_INDEX_POST_ID_AUTHOR, COL_INDEX_POST_PARENT,
+    COL_INDEX_POST_CONTENT, COL_INDEX_POST_DATE_MODIFIED, COL_INDEX_POST_DATE_PUBLISH,
+    COL_INDEX_POST_EXCERPT, COL_INDEX_POST_ID, COL_INDEX_POST_ID_AUTHOR, COL_INDEX_POST_PARENT,
+    COL_INDEX_POST_SLUG, COL_INDEX_POST_TITLE,
 };
 use crate::database::db::DB_Table;
 use crate::errors::error_handler::SqlxError;
@@ -22,28 +24,25 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
             let post_id = row.get::<i32, _>(COL_INDEX_POST_ID) as u32;
             let author_id = row.get::<i32, _>(COL_INDEX_POST_ID_AUTHOR) as u32;
 
-            //parent_id
-            //author_id
+            let try_parent_id: Result<i32, _> = row.try_get(COL_INDEX_POST_PARENT);
+            let parent_id = try_parent_id.ok().unwrap_or(0) as u32;
+
             //date_published
             //date_modified
-            //slug
             //post_type
-            //title
-            //excerpt
-            //content
 
             GB_Post {
                 id: EntryID(post_id),
                 id_author: UserID(author_id),
-                id_parent: None,
-                date_publish: "".to_string(),
-                date_modified: "".to_string(),
-                slug: None,
+                id_parent: Some(EntryID(parent_id)),
+                date_publish: "".to_string(), //row.get(COL_INDEX_POST_DATE_PUBLISH),
+                date_modified: "".to_string(), //row.get(COL_INDEX_POST_DATE_MODIFIED),
+                slug: row.get(COL_INDEX_POST_SLUG),
                 the_type: EntryType::Post,
                 status: PostStatus::Draft,
-                title: None,
-                excerpt: None,
-                content: None,
+                title: row.get(COL_INDEX_POST_TITLE),
+                excerpt: row.get(COL_INDEX_POST_EXCERPT),
+                content: row.get(COL_INDEX_POST_CONTENT),
                 password: None,
             }
 
