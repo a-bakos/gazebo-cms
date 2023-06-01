@@ -9,5 +9,6 @@ CREATE TABLE IF NOT EXISTS gb_posts (
     title VARCHAR(255) NOT NULL,
     excerpt TEXT DEFAULT NULL,
     content TEXT NOT NULL,
-    password VARCHAR(255) DEFAULT NULL
+    password VARCHAR(255) DEFAULT NULL,
+    status VARCHAR(20) DEFAULT 'post'
 );

@@ -1,11 +1,12 @@
 use crate::database::columns::{
     COL_INDEX_POST_CONTENT, COL_INDEX_POST_DATE_MODIFIED, COL_INDEX_POST_DATE_PUBLISH,
     COL_INDEX_POST_EXCERPT, COL_INDEX_POST_ID, COL_INDEX_POST_ID_AUTHOR, COL_INDEX_POST_PARENT,
-    COL_INDEX_POST_SLUG, COL_INDEX_POST_TITLE,
+    COL_INDEX_POST_SLUG, COL_INDEX_POST_STATUS, COL_INDEX_POST_TITLE, COL_INDEX_POST_TYPE,
 };
 use crate::database::db::DB_Table;
 use crate::errors::error_handler::SqlxError;
 use crate::posts::entry_type::EntryType;
+use crate::posts::functions::get_post_type;
 use crate::posts::post::{EntryID, GB_Post, PostStatus};
 use crate::users::user::UserID;
 use sqlx::postgres::PgRow;
@@ -23,13 +24,12 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
         .map(|row: PgRow| {
             let post_id = row.get::<i32, _>(COL_INDEX_POST_ID) as u32;
             let author_id = row.get::<i32, _>(COL_INDEX_POST_ID_AUTHOR) as u32;
+            let parent_id = row.try_get(COL_INDEX_POST_PARENT).ok().unwrap_or(0) as u32;
 
-            let try_parent_id: Result<i32, _> = row.try_get(COL_INDEX_POST_PARENT);
-            let parent_id = try_parent_id.ok().unwrap_or(0) as u32;
-
+            // todo
+            // let entry_type = get_post_type(row.get(COL_INDEX_POST_TYPE));
             //date_published
             //date_modified
-            //post_type
 
             GB_Post {
                 id: EntryID(post_id),
@@ -39,7 +39,7 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
                 date_modified: "".to_string(), //row.get(COL_INDEX_POST_DATE_MODIFIED),
                 slug: row.get(COL_INDEX_POST_SLUG),
                 the_type: EntryType::Post,
-                status: PostStatus::Draft,
+                status: row.get(COL_INDEX_POST_STATUS),
                 title: row.get(COL_INDEX_POST_TITLE),
                 excerpt: row.get(COL_INDEX_POST_EXCERPT),
                 content: row.get(COL_INDEX_POST_CONTENT),

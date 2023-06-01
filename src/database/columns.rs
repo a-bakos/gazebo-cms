@@ -19,9 +19,10 @@ pub const COL_INDEX_POST_EXCERPT: usize = 8;
 pub const COL_INDEX_POST_CONTENT: usize = 9;
 #[allow(dead_code)]
 pub const COL_INDEX_POST_PASSWORD: usize = 10;
+pub const COL_INDEX_POST_STATUS: usize = 11;
 
 #[allow(dead_code)]
-pub const COLUMNS_POSTS: [(&str, usize); 11] = [
+pub const COLUMNS_POSTS: [(&str, usize); 12] = [
     ("ID", COL_INDEX_POST_ID),
     ("ID_AUTHOR", COL_INDEX_POST_ID_AUTHOR),
     ("PARENT", COL_INDEX_POST_PARENT),
@@ -33,6 +34,7 @@ pub const COLUMNS_POSTS: [(&str, usize); 11] = [
     ("EXCERPT", COL_INDEX_POST_EXCERPT),
     ("CONTENT", COL_INDEX_POST_CONTENT),
     ("PASSWORD", COL_INDEX_POST_PASSWORD),
+    ("STATUS", COL_INDEX_POST_STATUS),
 ];
 
 // Accounts / Users table
