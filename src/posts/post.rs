@@ -32,6 +32,7 @@ use crate::datetime::functions as date_functions;
 use crate::posts::entry_type::EntryType;
 use crate::users::user::UserID;
 use crate::{consts, url};
+use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
 
 #[derive(Debug)]
@@ -60,7 +61,7 @@ pub enum PostSpecific {
 // request-failed
 // request-completed
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum PostStatus {
     Draft,
     Publish,
@@ -79,8 +80,8 @@ impl std::fmt::Display for PostStatus {
     }
 }
 
-#[derive(Debug)]
 #[allow(non_camel_case_types)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct GB_Post {
     pub id: EntryID,
     pub id_author: UserID,
@@ -97,7 +98,7 @@ pub struct GB_Post {
 }
 
 // New type patterns for IDs
-#[derive(Default, Debug, Copy, Clone)]
+#[derive(Default, Debug, Copy, Clone, Serialize, Deserialize)]
 pub struct EntryID(pub u32);
 
 impl std::fmt::Display for EntryID {

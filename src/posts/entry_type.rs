@@ -1,6 +1,7 @@
+use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum EntryType {
     Post,
     #[allow(dead_code)]
