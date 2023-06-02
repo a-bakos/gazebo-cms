@@ -69,6 +69,9 @@ pub enum PostStatus {
     Trash,
 }
 
+// todo idea:
+// MediaStatus: Attached, Unattached
+
 impl std::fmt::Display for PostStatus {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
