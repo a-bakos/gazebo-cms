@@ -28,6 +28,7 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
             // Underscores' meaning here:
             // we don't need to specify a default/fallback value because the cell will never be empty
 
+            // IDs
             let post_id = row.get::<i32, _>(COL_INDEX_POST_ID) as u32;
             let author_id = row.get::<i32, _>(COL_INDEX_POST_ID_AUTHOR) as u32;
             let parent_id = row
@@ -35,27 +36,33 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
                 .ok()
                 .unwrap_or(consts::ENTRY_ID_NO_PARENT) as u32;
 
+            // Entry type
             let entry_type_as_str: &str = row.get(COL_INDEX_POST_TYPE);
-            let the_entry_type: EntryType = get_entry_type_variant(entry_type_as_str);
+            let the_type: EntryType = get_entry_type_variant(entry_type_as_str);
 
-            let date_published: NaiveDateTime =
+            // Publish date
+            let date_publish: NaiveDateTime =
                 row.get::<NaiveDateTime, _>(COL_INDEX_POST_DATE_PUBLISH);
+            let date_publish = date_publish.to_string();
+
+            // Modified date
             let date_modified: NaiveDateTime =
                 row.get::<NaiveDateTime, _>(COL_INDEX_POST_DATE_MODIFIED);
+            let date_modified = date_modified.to_string();
 
+            // Entry status
             let entry_status_as_str: &str = row.get(COL_INDEX_POST_STATUS);
-            let the_post_status: EntryStatus =
-                get_entry_status_variant(entry_status_as_str, &the_entry_type);
+            let status: EntryStatus = get_entry_status_variant(entry_status_as_str, &the_type);
 
             GB_Post {
                 id: EntryID(post_id),
                 id_author: UserID(author_id),
                 id_parent: Some(EntryID(parent_id)),
-                date_publish: date_published.to_string(),
-                date_modified: date_modified.to_string(),
+                date_publish,
+                date_modified,
                 slug: row.get(COL_INDEX_POST_SLUG),
-                the_type: the_entry_type,
-                status: the_post_status,
+                the_type,
+                status,
                 title: row.get(COL_INDEX_POST_TITLE),
                 excerpt: row.get(COL_INDEX_POST_EXCERPT),
                 content: row.get(COL_INDEX_POST_CONTENT),
