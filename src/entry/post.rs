@@ -30,6 +30,7 @@ use crate::app::App;
 use crate::database::db::*;
 use crate::datetime::functions as date_functions;
 use crate::entry::entry_type::EntryType;
+use crate::entry::status::PostStatus;
 use crate::users::user::UserID;
 use crate::{consts, url};
 use serde::{Deserialize, Serialize};
@@ -60,28 +61,6 @@ pub enum PostSpecific {
 // request-confirmed
 // request-failed
 // request-completed
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum PostStatus {
-    Draft,
-    Publish,
-    Private,
-    Trash,
-}
-
-// todo idea:
-// MediaStatus: Attached, Unattached
-
-impl std::fmt::Display for PostStatus {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match self {
-            PostStatus::Draft => write!(f, "draft"),
-            PostStatus::Publish => write!(f, "publish"),
-            PostStatus::Private => write!(f, "private"),
-            PostStatus::Trash => write!(f, "trash"),
-        }
-    }
-}
 
 #[allow(non_camel_case_types)]
 #[derive(Debug, Serialize, Deserialize)]

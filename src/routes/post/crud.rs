@@ -6,7 +6,8 @@ use crate::database::columns::{
 use crate::database::db::DB_Table;
 use crate::entry::entry_type::{get_entry_type_variant, EntryType};
 use crate::entry::functions::get_post_type;
-use crate::entry::post::{EntryID, GB_Post, PostStatus};
+use crate::entry::post::{EntryID, GB_Post};
+use crate::entry::status::{get_entry_status_variant, EntryStatus, PostStatus};
 use crate::errors::error_handler::SqlxError;
 use crate::users::user::UserID;
 use sqlx::postgres::PgRow;
@@ -32,10 +33,10 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
             // let date_published // timestamp without tz
             // let date_modified // timestamp without tz
 
-            let post_status: &str = row.get(COL_INDEX_POST_STATUS);
-            //let the_post_status: EntryStatus =
-            //    get_entry_status_variant(post_status_as_str, &the_entry_type);
-            println!("{:?}", post_status);
+            let entry_status_as_str: &str = row.get(COL_INDEX_POST_STATUS);
+            let the_post_status: EntryStatus =
+                get_entry_status_variant(entry_status_as_str, &the_entry_type);
+            println!("{:?}", the_post_status);
 
             GB_Post {
                 id: EntryID(post_id),
