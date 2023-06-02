@@ -11,6 +11,7 @@ use crate::entry::post::{EntryID, GB_Post};
 use crate::entry::status::{get_entry_status_variant, EntryStatus, PostStatus};
 use crate::errors::error_handler::SqlxError;
 use crate::users::user::UserID;
+use chrono::NaiveDateTime;
 use sqlx::postgres::PgRow;
 use sqlx::{PgPool, Row};
 use std::collections::HashMap;
@@ -24,6 +25,9 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
     match sqlx::query(&query)
         .bind(id)
         .map(|row: PgRow| {
+            // Underscores' meaning here:
+            // we don't need to specify a default/fallback value because the cell will never be empty
+
             let post_id = row.get::<i32, _>(COL_INDEX_POST_ID) as u32;
             let author_id = row.get::<i32, _>(COL_INDEX_POST_ID_AUTHOR) as u32;
             let parent_id = row
@@ -34,8 +38,10 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
             let entry_type_as_str: &str = row.get(COL_INDEX_POST_TYPE);
             let the_entry_type: EntryType = get_entry_type_variant(entry_type_as_str);
 
-            // let date_published // timestamp without tz
-            // let date_modified // timestamp without tz
+            let date_published: NaiveDateTime =
+                row.get::<NaiveDateTime, _>(COL_INDEX_POST_DATE_PUBLISH);
+            let date_modified: NaiveDateTime =
+                row.get::<NaiveDateTime, _>(COL_INDEX_POST_DATE_MODIFIED);
 
             let entry_status_as_str: &str = row.get(COL_INDEX_POST_STATUS);
             let the_post_status: EntryStatus =
@@ -45,8 +51,8 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
                 id: EntryID(post_id),
                 id_author: UserID(author_id),
                 id_parent: Some(EntryID(parent_id)),
-                date_publish: "".to_string(), //row.get(COL_INDEX_POST_DATE_PUBLISH),
-                date_modified: "".to_string(), //row.get(COL_INDEX_POST_DATE_MODIFIED),
+                date_publish: date_published.to_string(),
+                date_modified: date_modified.to_string(),
                 slug: row.get(COL_INDEX_POST_SLUG),
                 the_type: the_entry_type,
                 status: the_post_status,
@@ -55,19 +61,6 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
                 content: row.get(COL_INDEX_POST_CONTENT),
                 password: None,
             }
-
-            // Don't need to specify a default/fallback value because the cell will never be empty
-            //let registered: NaiveDateTime =
-            //row.get::<NaiveDateTime, _>(COL_INDEX_ACCOUNT_REGISTERED);
-
-            // User {
-            //     login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
-            //     email: row.get(COL_INDEX_ACCOUNT_EMAIL),
-            //     id: UserID(user_id),
-            //     role: user_role,
-            //     password: row.get(COL_INDEX_ACCOUNT_PASSWORD), // todo: hide this later
-            //     registered: registered.to_string(),
-            // }
         })
         .fetch_one(&pool)
         .await
