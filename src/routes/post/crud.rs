@@ -1,3 +1,4 @@
+use crate::consts;
 use crate::database::columns::{
     COL_INDEX_POST_CONTENT, COL_INDEX_POST_DATE_MODIFIED, COL_INDEX_POST_DATE_PUBLISH,
     COL_INDEX_POST_EXCERPT, COL_INDEX_POST_ID, COL_INDEX_POST_ID_AUTHOR, COL_INDEX_POST_PARENT,
@@ -28,7 +29,7 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
             let parent_id = row
                 .try_get(COL_INDEX_POST_PARENT)
                 .ok()
-                .unwrap_or(ENTRY_ID_NO_PARENT) as u32;
+                .unwrap_or(consts::ENTRY_ID_NO_PARENT) as u32;
 
             let entry_type_as_str: &str = row.get(COL_INDEX_POST_TYPE);
             let the_entry_type: EntryType = get_entry_type_variant(entry_type_as_str);
