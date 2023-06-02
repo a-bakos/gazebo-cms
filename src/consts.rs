@@ -35,3 +35,5 @@ pub const USER_ROLE_NOT_FOUND: &str = "not_found";
 pub const ENTRY_TYPE_POST: &str = "post";
 pub const ENTRY_TYPE_PAGE: &str = "page";
 pub const ENTRY_TYPE_MEDIA: &str = "media";
+
+pub const ENTRY_ID_NO_PARENT: i32 = 0;

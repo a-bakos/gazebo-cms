@@ -25,7 +25,10 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
         .map(|row: PgRow| {
             let post_id = row.get::<i32, _>(COL_INDEX_POST_ID) as u32;
             let author_id = row.get::<i32, _>(COL_INDEX_POST_ID_AUTHOR) as u32;
-            let parent_id = row.try_get(COL_INDEX_POST_PARENT).ok().unwrap_or(0) as u32;
+            let parent_id = row
+                .try_get(COL_INDEX_POST_PARENT)
+                .ok()
+                .unwrap_or(ENTRY_ID_NO_PARENT) as u32;
 
             let entry_type_as_str: &str = row.get(COL_INDEX_POST_TYPE);
             let the_entry_type: EntryType = get_entry_type_variant(entry_type_as_str);
