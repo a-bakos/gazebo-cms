@@ -2,7 +2,7 @@ use crate::consts;
 use crate::database::consts::{
     DB_TABLE_ACCOUNTS, DB_TABLE_ACCOUNT_META, DB_TABLE_POSTS, DB_TABLE_POST_META,
 };
-use crate::posts::post::GB_Post;
+use crate::entry::post::GB_Post;
 use crate::users::user::User;
 use csv::{ReaderBuilder, StringRecord, WriterBuilder};
 use std::error::Error;
@@ -167,7 +167,7 @@ pub fn store_post(the_post: &GB_Post) {
 }
 
 pub fn store_all_posts(the_posts: Vec<GB_Post>) {
-    println!("Storing posts: {the_posts:?}");
+    println!("Storing entry: {the_posts:?}");
     let _write = write_posts_to_csv(consts::FILE_PATH_POSTS, the_posts);
 }
 
@@ -176,12 +176,12 @@ pub fn store_user(user: &User) {
     let _write = write_users_to_csv(consts::FILE_PATH_USERS, user);
 }
 
-use crate::posts::post::PostSpecific;
+use crate::entry::post::PostSpecific;
 
 pub fn update_post(post: &GB_Post, post_specs_to_update: Vec<PostSpecific>) -> bool {
     // get post by id
     let search_index;
-    let mut all_posts = crate::posts::functions::get_all_posts().unwrap();
+    let mut all_posts = crate::entry::functions::get_all_posts().unwrap();
     dbg!(&all_posts);
     for single_post in all_posts.iter() {
         if single_post.id == post.id {

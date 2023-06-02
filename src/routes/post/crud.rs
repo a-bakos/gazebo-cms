@@ -4,10 +4,10 @@ use crate::database::columns::{
     COL_INDEX_POST_SLUG, COL_INDEX_POST_STATUS, COL_INDEX_POST_TITLE, COL_INDEX_POST_TYPE,
 };
 use crate::database::db::DB_Table;
+use crate::entry::entry_type::{get_entry_type_variant, EntryType};
+use crate::entry::functions::get_post_type;
+use crate::entry::post::{EntryID, GB_Post, PostStatus};
 use crate::errors::error_handler::SqlxError;
-use crate::posts::entry_type::{get_entry_type_variant, EntryType};
-use crate::posts::functions::get_post_type;
-use crate::posts::post::{EntryID, GB_Post, PostStatus};
 use crate::users::user::UserID;
 use sqlx::postgres::PgRow;
 use sqlx::{PgPool, Row};
@@ -26,14 +26,15 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
             let author_id = row.get::<i32, _>(COL_INDEX_POST_ID_AUTHOR) as u32;
             let parent_id = row.try_get(COL_INDEX_POST_PARENT).ok().unwrap_or(0) as u32;
 
-            // todo
-            let entry_type: &str = row.get(COL_INDEX_POST_TYPE);
-            let entry_post_type = get_entry_type_variant(entry_type);
-            println!("{:?}", entry_type);
+            let entry_type_as_str: &str = row.get(COL_INDEX_POST_TYPE);
+            let the_entry_type: EntryType = get_entry_type_variant(entry_type_as_str);
+
             // let date_published // timestamp without tz
             // let date_modified // timestamp without tz
 
-            let post_status: String = row.get(COL_INDEX_POST_STATUS);
+            let post_status: &str = row.get(COL_INDEX_POST_STATUS);
+            //let the_post_status: EntryStatus =
+            //    get_entry_status_variant(post_status_as_str, &the_entry_type);
             println!("{:?}", post_status);
 
             GB_Post {
@@ -43,8 +44,8 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
                 date_publish: "".to_string(), //row.get(COL_INDEX_POST_DATE_PUBLISH),
                 date_modified: "".to_string(), //row.get(COL_INDEX_POST_DATE_MODIFIED),
                 slug: row.get(COL_INDEX_POST_SLUG),
-                the_type: entry_post_type,
-                status: PostStatus::Draft,
+                the_type: the_entry_type,
+                status: PostStatus::Draft, //the_post_status,
                 title: row.get(COL_INDEX_POST_TITLE),
                 excerpt: row.get(COL_INDEX_POST_EXCERPT),
                 content: row.get(COL_INDEX_POST_CONTENT),

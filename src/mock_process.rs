@@ -5,7 +5,7 @@
 use crate::app::App;
 use crate::users::user_manager::get_user_by_email;
 use crate::{
-    posts::{entry_type::EntryType, functions as post_functions, post::GB_Post},
+    entry::{entry_type::EntryType, functions as post_functions, post::GB_Post},
     users,
     users::user::User,
 };
@@ -53,13 +53,13 @@ impl Imitate {
         // User adds a title to the post with permalink
         // (The title contains special characters which will be treated when the permalink is generated)
         post.add_title(
-            "This is the ultimate post of an item @ new #posts & something of value".to_string(),
+            "This is the ultimate post of an item @ new #entry & something of value".to_string(),
             true,
         );
 
         // Imitate editing a second new post creation
         //let mut post_2 = OX_Post::draft(app, EntryType::Post);
-        // User adds a title to the posts (permalink auto-generated)
+        // User adds a title to the entry (permalink auto-generated)
         //post_2.add_title("This is a second post".to_string(), true);
 
         //let mut post_3 = OX_Post::draft(app, EntryType::Post);

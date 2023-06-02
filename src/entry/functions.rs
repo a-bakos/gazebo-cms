@@ -1,7 +1,7 @@
 use crate::consts;
 use crate::database::{columns, db};
-use crate::posts::post::PostStatus;
-use crate::posts::{
+use crate::entry::post::PostStatus;
+use crate::entry::{
     entry_type::EntryType,
     post::{EntryID, GB_Post},
 };

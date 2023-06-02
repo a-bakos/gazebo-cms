@@ -188,7 +188,7 @@ impl<'a> PermalinkGenerator<'a> {
     }
 
     fn make_unique(&self, permalink: String) -> String {
-        // Get all posts, clean results, only keep a list of permalinks
+        // Get all entry, clean results, only keep a list of permalinks
         let mut all_permalinks: HashSet<String> = HashSet::new();
         if db::parse_csv(consts::FILE_PATH_POSTS).is_ok() {
             let csv_db = db::parse_csv(consts::FILE_PATH_POSTS).ok().unwrap();
