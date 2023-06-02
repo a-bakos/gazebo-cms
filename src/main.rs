@@ -102,7 +102,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .and_then(routes::user::login::login);
 
     let get_post = warp::get()
-        .and(warp::path("post"))
+        .and(warp::path(url::path::PATH_POST))
         .and(warp::path::param::<i32>())
         .and(warp::path::end()) // ::end() closes the URI path
         // .and(warp::query()) // => this is the params: HashMap<String, String> parameter in the callback
