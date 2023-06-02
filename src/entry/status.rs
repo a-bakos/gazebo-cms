@@ -2,11 +2,17 @@ use crate::entry::entry_type::EntryType;
 use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
 
+/// Post entry "draft" status
 pub const ENTRY_STATUS_POST_DRAFT: &str = "draft";
+/// Post entry "publish" status
 pub const ENTRY_STATUS_POST_PUBLISH: &str = "publish";
+/// Post entry "private" status
 pub const ENTRY_STATUS_POST_PRIVATE: &str = "private";
+/// Post entry "trash" status
 pub const ENTRY_STATUS_POST_TRASH: &str = "trash";
+/// Media entry "attached" status
 pub const ENTRY_STATUS_MEDIA_ATTACHED: &str = "attached";
+/// Media entry "unattached" status
 pub const ENTRY_STATUS_MEDIA_UNATTACHED: &str = "unattached";
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

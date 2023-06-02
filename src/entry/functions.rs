@@ -1,6 +1,6 @@
 use crate::consts;
 use crate::database::{columns, db};
-use crate::entry::status::PostStatus;
+use crate::entry::status::{EntryStatus, PostStatus};
 use crate::entry::{
     entry_type::EntryType,
     post::{EntryID, GB_Post},
@@ -34,7 +34,7 @@ fn turn_row_into_post(row: &csv::StringRecord) -> GB_Post {
             .to_string(),
         slug: Some(row.get(columns::COL_INDEX_POST_SLUG).unwrap().to_string()),
         the_type: EntryType::Post,
-        status: PostStatus::Draft,
+        status: EntryStatus::PostStatus(PostStatus::Draft),
         title: Some(row.get(columns::COL_INDEX_POST_TITLE).unwrap().to_string()),
         excerpt: None,
         content: None,

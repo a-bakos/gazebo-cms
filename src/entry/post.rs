@@ -30,7 +30,7 @@ use crate::app::App;
 use crate::database::db::*;
 use crate::datetime::functions as date_functions;
 use crate::entry::entry_type::EntryType;
-use crate::entry::status::PostStatus;
+use crate::entry::status::{EntryStatus, PostStatus};
 use crate::users::user::UserID;
 use crate::{consts, url};
 use serde::{Deserialize, Serialize};
@@ -72,7 +72,7 @@ pub struct GB_Post {
     pub date_modified: String,
     pub slug: Option<String>,
     pub the_type: EntryType,
-    pub status: PostStatus,
+    pub status: EntryStatus,
     pub title: Option<String>,
     pub excerpt: Option<String>,
     pub content: Option<String>,
@@ -147,7 +147,7 @@ impl GB_Post {
             date_modified: date_functions::get_current_date(),
             slug: None,
             the_type: entry_type,
-            status: PostStatus::Draft,
+            status: EntryStatus::PostStatus(PostStatus::Draft),
             title: Some(consts::POST_UNTITLED_DEFAULT.to_string()),
             excerpt: None,
             content: None,

@@ -36,7 +36,6 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
             let entry_status_as_str: &str = row.get(COL_INDEX_POST_STATUS);
             let the_post_status: EntryStatus =
                 get_entry_status_variant(entry_status_as_str, &the_entry_type);
-            println!("{:?}", the_post_status);
 
             GB_Post {
                 id: EntryID(post_id),
@@ -46,7 +45,7 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
                 date_modified: "".to_string(), //row.get(COL_INDEX_POST_DATE_MODIFIED),
                 slug: row.get(COL_INDEX_POST_SLUG),
                 the_type: the_entry_type,
-                status: PostStatus::Draft, //the_post_status,
+                status: the_post_status,
                 title: row.get(COL_INDEX_POST_TITLE),
                 excerpt: row.get(COL_INDEX_POST_EXCERPT),
                 content: row.get(COL_INDEX_POST_CONTENT),
