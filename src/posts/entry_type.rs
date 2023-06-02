@@ -20,7 +20,7 @@ impl std::fmt::Display for EntryType {
     }
 }
 
-fn get_entry_type_variant(entry_type: &str) -> EntryType {
+pub fn get_entry_type_variant(entry_type: &str) -> EntryType {
     match entry_type {
         crate::consts::ENTRY_TYPE_POST => EntryType::Post,
         crate::consts::ENTRY_TYPE_PAGE => EntryType::Page,
