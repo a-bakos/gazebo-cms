@@ -26,21 +26,28 @@ pub async fn get_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
     match sqlx::query(&query)
         .bind(id)
         .map(|row: PgRow| {
-            let user_id = row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32;
-            let user_role = row.get::<&str, _>(COL_INDEX_ACCOUNT_ROLE);
-            let user_role = get_role_variant(user_role);
+            // Underscores' meaning here:
+            // we don't need to specify a default/fallback value because the cell will never be empty
 
-            // Don't need to specify a default/fallback value because the cell will never be empty
+            // ID
+            let user_id = row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32;
+
+            // Role
+            let role = row.get::<&str, _>(COL_INDEX_ACCOUNT_ROLE);
+            let role = get_role_variant(role);
+
+            // Registered date
             let registered: NaiveDateTime =
                 row.get::<NaiveDateTime, _>(COL_INDEX_ACCOUNT_REGISTERED);
+            let registered = registered.to_string();
 
             User {
                 login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
                 email: row.get(COL_INDEX_ACCOUNT_EMAIL),
                 id: UserID(user_id),
-                role: user_role,
+                role,
                 password: row.get(COL_INDEX_ACCOUNT_PASSWORD), // todo: hide this later
-                registered: registered.to_string(),
+                registered,
             }
         })
         .fetch_one(&pool)
