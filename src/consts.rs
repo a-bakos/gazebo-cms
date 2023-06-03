@@ -3,7 +3,7 @@ use crate::users::user::UserID;
 /// App default
 pub const DEFAULT_APP_NAME: &str = "Gazebo CMS";
 pub const DEFAULT_APP_ADMIN_EMAIL: &str = "change_this@gazebocms.email";
-pub const VERSION: &str = "0.0.169";
+pub const VERSION: &str = "0.0.259";
 pub const SYSTEM_USER_ID: UserID = UserID(0);
 
 /// Permalink defaults
