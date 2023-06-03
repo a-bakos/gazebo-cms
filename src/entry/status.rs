@@ -10,10 +10,15 @@ pub const ENTRY_STATUS_POST_PUBLISH: &str = "publish";
 pub const ENTRY_STATUS_POST_PRIVATE: &str = "private";
 /// Post entry "trash" status
 pub const ENTRY_STATUS_POST_TRASH: &str = "trash";
+/// Post entry "unknown" status
+pub const ENTRY_STATUS_POST_UNKNOWN: &str = "unknown";
+
 /// Media entry "attached" status
 pub const ENTRY_STATUS_MEDIA_ATTACHED: &str = "attached";
 /// Media entry "unattached" status
 pub const ENTRY_STATUS_MEDIA_UNATTACHED: &str = "unattached";
+/// Media entry "unknown" status
+pub const ENTRY_STATUS_MEDIA_UNKNOWN: &str = "unknown";
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum EntryStatus {
@@ -34,11 +39,23 @@ pub enum PostStatus {
 impl std::fmt::Display for PostStatus {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            PostStatus::Draft => write!(f, "draft"),
-            PostStatus::Publish => write!(f, "publish"),
-            PostStatus::Private => write!(f, "private"),
-            PostStatus::Trash => write!(f, "trash"),
-            PostStatus::Unknown => write!(f, "unknown"),
+            PostStatus::Draft => write!(f, "{}", ENTRY_STATUS_POST_DRAFT),
+            PostStatus::Publish => write!(f, "{}", ENTRY_STATUS_POST_PUBLISH),
+            PostStatus::Private => write!(f, "{}", ENTRY_STATUS_POST_PRIVATE),
+            PostStatus::Trash => write!(f, "{}", ENTRY_STATUS_POST_TRASH),
+            PostStatus::Unknown => write!(f, "{}", ENTRY_STATUS_POST_UNKNOWN),
+        }
+    }
+}
+
+impl Into<String> for PostStatus {
+    fn into(self) -> String {
+        match self {
+            PostStatus::Draft => ENTRY_STATUS_POST_DRAFT.to_string(),
+            PostStatus::Publish => ENTRY_STATUS_POST_PUBLISH.to_string(),
+            PostStatus::Private => ENTRY_STATUS_POST_PRIVATE.to_string(),
+            PostStatus::Trash => ENTRY_STATUS_POST_TRASH.to_string(),
+            PostStatus::Unknown => ENTRY_STATUS_POST_UNKNOWN.to_string(),
         }
     }
 }
@@ -52,9 +69,19 @@ pub enum MediaStatus {
 impl std::fmt::Display for MediaStatus {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            MediaStatus::Attached => write!(f, "attached"),
-            MediaStatus::Unattached => write!(f, "unattached"),
-            MediaStatus::Unknown => write!(f, "unknown"),
+            MediaStatus::Attached => write!(f, "{}", ENTRY_STATUS_MEDIA_ATTACHED),
+            MediaStatus::Unattached => write!(f, "{}", ENTRY_STATUS_MEDIA_UNATTACHED),
+            MediaStatus::Unknown => write!(f, "{}", ENTRY_STATUS_MEDIA_UNKNOWN),
+        }
+    }
+}
+
+impl Into<String> for MediaStatus {
+    fn into(self) -> String {
+        match self {
+            MediaStatus::Attached => ENTRY_STATUS_MEDIA_ATTACHED.to_string(),
+            MediaStatus::Unattached => ENTRY_STATUS_MEDIA_UNATTACHED.to_string(),
+            MediaStatus::Unknown => ENTRY_STATUS_MEDIA_UNKNOWN.to_string(),
         }
     }
 }
