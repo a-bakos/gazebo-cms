@@ -2,6 +2,108 @@
 
 ---
 
+# Idea: GB_Query struct
+
+### WP Query args:
+
+```php
+$args = [
+    'author'                 => '',         // Retrieve posts by Author ID or comma-separated list of author IDs
+    'author__in'             => array(),    // Display posts by specific author's user ID(s)
+    'author__not_in'         => array(),    // Exclude posts by specific author's user ID(s)
+    'author_name'            => '',         // Display posts by specific author's username
+    'cache_results'          => true,       // Cache query results or not (true/false)
+    'cat'                    => '',         // Category ID or comma-separated list of category IDs
+    'category__and'          => array(),    // Retrieve posts assigned to specific categories by ID (AND condition)
+    'category__in'           => array(),    // Display posts assigned to specific categories by ID
+    'category__not_in'       => array(),    // Exclude posts assigned to specific categories by ID
+    'category_name'          => '',         // Display posts assigned to specific categories by slug
+    'comment_fields'         => '',         // Specify fields to retrieve for the comments
+    'comments_per_page'      => '',         // Number of comments to display per page
+    'custom_field_key'       => '',         // Retrieve posts with specific custom field key
+    'custom_field_value'     => '',         // Retrieve posts with specific custom field value
+    'custom_fields'          => '',         // Retrieve posts with specific custom fields
+    'date_query'             => array(),     // Date query parameters (array)
+    'day'                    => '',         // Display posts published on a specific day
+    'error'                  => '',         // Query error handling
+    'feed'                   => '',         // Feed type to retrieve
+    'fields'                 => 'all',      // Specify fields to retrieve for the posts (e.g., 'ids', 'names', 'all', 'count')
+    'hour'                   => '',         // Display posts published in a specific hour
+    'ignore_custom_sort'     => false,      // Ignore custom sorting or not (true/false)
+    'ignore_filters'         => false,      // Ignore filters or not (true/false)
+    'ignore_sticky_posts'    => false,   // Ignore sticky posts or not (true/false)
+    'issearch'               => '',         // Perform a keyword search (alternative to 'search')
+    'm'                      => '',         // Display posts with specific post IDs
+    'meta_compare'           => '',         // Comparison operator for custom field value (e.g., '=', '>', '<')
+    'meta_key'               => 'custom_field', // Retrieve posts with specific custom field key
+    'meta_query'             => array(),     // Custom field (meta) query parameters (array)
+    'meta_value'             => 'value',    // Retrieve posts with specific custom field value
+    'minute'                 => '',         // Display posts published in a specific minute
+    'monthnum'               => '',         // Display posts published in a specific month
+    'monthnum__and'          => array(),    // Display posts published in specific months (AND condition)
+    'monthnum__in'           => array(),    // Display posts published in specific months (IN condition)
+    'monthnum__not_in'       => array(),    // Exclude posts published in specific months
+    'name'                   => '',         // Display posts by post name (slug)
+    'no_found_rows'          => false,      // Disable SQL_CALC_FOUND_ROWS in the query (true/false)
+    'nopaging'               => false,       // Show all posts or paginate (true/false)
+    'offset'                 => '',         // Number of posts to offset in the query
+    'order'                  => 'DESC',     // Sort order for posts (e.g., 'ASC', 'DESC')
+    'orderby'                => 'date',     // Order posts by specific criteria (e.g., 'date', 'title', 'rand')
+    'p'                      => '',         // Display specific posts by ID
+    'page'                   => '',         // Current page number
+    'paged'                  => '',         // Current page of results
+    'pagename'               => '',         // Display posts by page name (slug)
+    'post__in'               => array(),    // Retrieve posts specified by an array of post IDs
+    'post__not_in'           => array(),    // Exclude posts specified by an array of post IDs
+    'post_fields'            => '',         // Specify fields to retrieve for the posts (e.g., 'ids', 'names', 'all', 'count')
+    'post_mime_type'         => '',         // Retrieve posts of a specific mime type
+    'post_name__in'          => array(),    // Display posts with specific post slugs
+    'post_parent'            => '',         // Display child posts of specific parent post ID
+    'post_parent__in'        => array(),    // Display child posts of any of the specified parent post IDs
+    'post_parent__not_in'    => array(),     // Exclude child posts of specific parent post IDs
+    'post_status'            => '',         // Post status (e.g., 'publish', 'draft', 'private')
+    'post_type'              => 'post',     // Display posts of specific post types (e.g., 'post', 'page', 'custom_post_type')
+    'post_type__in'          => array(),    // Display posts of specific post types (AND condition)
+    'post_type__not_in'      => array(),    // Exclude posts of specific post types
+    'posts_per_archive_page' => '',         // Number of posts to display per page in archives
+    'posts_per_page'         => '',         // Number of posts to retrieve
+    'preview'                => '',         // Preview post status or not (true/false)
+    'robotsmeta'             => '',         // Robots meta tag value
+    's'                      => '',         // Perform a keyword search (alternative to 'search')
+    'search'                 => '',         // Perform a keyword search
+    'search_terms'           => '',         // Perform a keyword search (alternative to 'search')
+    'second'                 => '',         // Display posts published in a specific second
+    'sentence'               => '',         // Perform a keyword search (alternative to 'search')
+    'suppress_filters'       => false,      // Suppress filters or not (true/false)
+    'tag'                    => '',         // Display posts assigned to specific tags by slug
+    'tag__and'               => array(),    // Display posts assigned to all of the specified tags by ID
+    'tag__in'                => array(),    // Display posts assigned to any of the specified tags by ID
+    'tag__not_in'            => array(),    // Exclude posts assigned to specific tags by ID
+    'tag_id'                 => '',         // Display posts assigned to specific tags by ID
+    'tag_slug__and'          => array(),    // Display posts assigned to all of the specified tags by slug
+    'tag_slug__in'           => array(),    // Display posts assigned to any of the specified tags by slug
+    'tag_slug__not_in'       => array(),    // Exclude posts assigned to specific tags by slug
+    'tax_query'              => array(),     // Taxonomy query parameters (array)
+    'title'                  => '',         // Display posts by specific title
+    'update_post_term_cache' => true,       // Update post term cache or not (true/false)
+    'w'                      => '',         // Display posts published in a specific week
+    'year'                   => '',         // Display posts published in a specific year
+    'year__and'              => array(),    // Display posts published in specific years (AND condition)
+    'year__in'               => array(),    // Display posts published in specific years (IN condition)
+    'year__not_in'           => array()     // Exclude posts published in specific years
+];
+```
+
+```rust
+struct GB_Query {
+    // args
+    todo
+}
+```
+
+
+---
+
 ## Roles and caps in WP
 
 ### Super Admin
