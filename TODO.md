@@ -95,20 +95,16 @@ $args = [
 ```
 
 ```rust
-struct GB_Query {
-    // args
-    // todo
-    title: Option<String> 
+struct GB_Query(Vec<GB_QueryArg>);
+
+enum GB_QueryArg {
+    AuthorID(Vec<UserID>),
+    ID(Vec<EntryID>),
+    Title(String),
+    EntryType(Vec<EntryType>), // like post_type
+    EntryStatus(EntryStatus), // like post_status
 }
 ```
-
-gb query = hashmap
-k, v
-enum variant, value
-Vec<(enum k, enum v)>
-Vec<enum_k(enum_v)>
-
-
 ---
 
 ## Roles and caps in WP
