@@ -97,9 +97,16 @@ $args = [
 ```rust
 struct GB_Query {
     // args
-    todo
+    // todo
+    title: Option<String> 
 }
 ```
+
+gb query = hashmap
+k, v
+enum variant, value
+Vec<(enum k, enum v)>
+Vec<enum_k(enum_v)>
 
 
 ---
