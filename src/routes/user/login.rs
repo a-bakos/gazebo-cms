@@ -22,7 +22,7 @@ pub async fn try_login(
     password: String,
     binding: String,
 ) -> Result<warp::reply::Json, warp::Rejection> {
-    match sqlx::query(&query)
+    match sqlx::query(query)
         .bind(password)
         .bind(binding)
         .execute(pool)

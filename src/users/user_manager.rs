@@ -123,15 +123,14 @@ pub async fn check_account_exists(
     param: AccountExistsCheckBy,
     value: String,
 ) -> Result<bool, String> {
-    let query;
-    match param {
+    let query = match param {
         AccountExistsCheckBy::Email => {
-            query = format!("SELECT id FROM {} WHERE email = $1", DB_Table::Accounts);
+            format!("SELECT id FROM {} WHERE email = $1", DB_Table::Accounts)
         }
         AccountExistsCheckBy::Login => {
-            query = format!("SELECT id FROM {} WHERE login = $1", DB_Table::Accounts);
+            format!("SELECT id FROM {} WHERE login = $1", DB_Table::Accounts)
         }
-    }
+    };
 
     match sqlx::query(&query).bind(value).fetch_optional(&pool).await {
         Ok(Some(_)) => Ok(true), // email | login found

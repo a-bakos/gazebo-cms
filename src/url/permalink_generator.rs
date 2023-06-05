@@ -220,7 +220,7 @@ impl<'a> PermalinkGenerator<'a> {
                         }
                     } else {
                         // if no digit, append one
-                        let mut new_permalink = permalink.to_string();
+                        let mut new_permalink = permalink;
                         new_permalink.push_str(&format!(
                             "{}{}",
                             crate::consts::DEFAULT_PERMALINK_SEPARATOR,

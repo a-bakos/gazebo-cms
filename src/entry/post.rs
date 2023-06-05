@@ -139,25 +139,20 @@ pub fn get_post(_post_id: EntryID) -> GB_Post {
 
 impl GB_Post {
     pub fn draft(app: &mut App, entry_type: EntryType) -> Self {
-        let the_post = Self {
+        Self {
             id: get_next_available_entry_id(app),
-            id_author: crate::users::functions::get_current_user_id(&app),
+            id_author: crate::users::functions::get_current_user_id(app),
             id_parent: get_entry_parent_id(),
             date_publish: date_functions::get_current_date(),
             date_modified: date_functions::get_current_date(),
             slug: None,
             the_type: entry_type,
-            status: EntryStatus::PostStatus(PostStatus::Draft),
+            status: EntryStatus::Post(PostStatus::Draft),
             title: Some(consts::POST_UNTITLED_DEFAULT.to_string()),
             excerpt: None,
             content: None,
             password: None,
-        };
-
-        // #[allow(clippy::let_unit_value)]
-        // let _store_post = store_post(&the_post);
-
-        the_post
+        }
     }
 
     #[allow(dead_code)]
@@ -203,7 +198,7 @@ impl GB_Post {
     // Get current Entry ID
     #[allow(dead_code)]
     pub fn get_the_id(&self) -> EntryID {
-        self.id.clone()
+        self.id
     }
 
     #[allow(dead_code)]

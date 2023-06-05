@@ -22,10 +22,10 @@ pub const ENTRY_STATUS_MEDIA_UNKNOWN: &str = "unknown";
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum EntryStatus {
-    PostStatus(PostStatus),
+    Post(PostStatus),
     //PageStatus(PageStatus),
-    MediaStatus(MediaStatus),
-    UnknownStatus,
+    Media(MediaStatus),
+    Unknown,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -93,7 +93,7 @@ pub fn get_entry_status_variant(
     match *the_entry_type {
         EntryType::Post => {
             let post_status = get_post_status_variant(entry_status_as_str);
-            EntryStatus::PostStatus(post_status)
+            EntryStatus::Post(post_status)
         }
         // EntryType::Page => {
         //     let page_status: PostStatus = get_page_status_variant();
@@ -101,26 +101,26 @@ pub fn get_entry_status_variant(
         // }
         EntryType::Media => {
             let media_status = get_media_status_variant(entry_status_as_str);
-            EntryStatus::MediaStatus(media_status)
+            EntryStatus::Media(media_status)
         }
-        _ => EntryStatus::UnknownStatus,
+        _ => EntryStatus::Unknown,
     }
 }
 
 pub fn get_post_status_variant(entry_status_as_str: &str) -> PostStatus {
-    return match entry_status_as_str {
+    match entry_status_as_str {
         ENTRY_STATUS_POST_DRAFT => PostStatus::Draft,
         ENTRY_STATUS_POST_PUBLISH => PostStatus::Publish,
         ENTRY_STATUS_POST_PRIVATE => PostStatus::Private,
         ENTRY_STATUS_POST_TRASH => PostStatus::Trash,
         _ => PostStatus::Publish,
-    };
+    }
 }
 
 pub fn get_media_status_variant(entry_status_as_str: &str) -> MediaStatus {
-    return match entry_status_as_str {
+    match entry_status_as_str {
         ENTRY_STATUS_MEDIA_ATTACHED => MediaStatus::Attached,
         ENTRY_STATUS_MEDIA_UNATTACHED => MediaStatus::Unattached,
         _ => MediaStatus::Unknown,
-    };
+    }
 }

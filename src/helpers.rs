@@ -22,10 +22,7 @@
 pub fn str_contains_special_char(str_to_check: &str) -> bool {
     return str_to_check
         .chars()
-        .any(|ch| match ch.to_ascii_lowercase() {
-            'a'..='z' | '0'..='9' => false,
-            _ => true,
-        });
+        .any(|ch| !matches!(ch.to_ascii_lowercase(), 'a'..='z' | '0'..='9'));
 }
 
 /// Checks if a string contains at least one uppercase letter.
