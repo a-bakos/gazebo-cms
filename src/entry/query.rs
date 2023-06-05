@@ -65,6 +65,9 @@ impl GB_Query {
 // Turn PgRow into GB_Post
 impl Into<GB_Post> for PgRow {
     fn into(self) -> GB_Post {
+        // Underscores' meaning here:
+        // we don't need to specify a default/fallback value because the cell will never be empty
+
         // IDs
         let post_id = self.get::<i32, _>(COL_INDEX_POST_ID) as u32;
         let author_id = self.get::<i32, _>(COL_INDEX_POST_ID_AUTHOR) as u32;
