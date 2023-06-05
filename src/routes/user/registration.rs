@@ -58,7 +58,13 @@ pub async fn registration(
                 .execute(&pool)
                 .await
             {
-                Ok(_) => Ok(warp::reply::json(&"Registration successful")),
+                Ok(_) => {
+                    // User notification to go out.
+                    // new_user_notification(user.id);
+                    // send_notification_to_admin( NOTIFICATION::NEW_USER_ADDED)
+
+                    Ok(warp::reply::json(&"Registration successful"))
+                }
                 Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
             }
         }

@@ -1,9 +1,3 @@
-use crate::consts;
-use crate::database::columns::{
-    COL_INDEX_POST_CONTENT, COL_INDEX_POST_DATE_MODIFIED, COL_INDEX_POST_DATE_PUBLISH,
-    COL_INDEX_POST_EXCERPT, COL_INDEX_POST_ID, COL_INDEX_POST_ID_AUTHOR, COL_INDEX_POST_PARENT,
-    COL_INDEX_POST_SLUG, COL_INDEX_POST_STATUS, COL_INDEX_POST_TITLE, COL_INDEX_POST_TYPE,
-};
 use crate::database::db::DB_Table;
 use crate::entry::entry_type::{get_entry_type_variant, EntryType};
 use crate::entry::functions::get_post_type;

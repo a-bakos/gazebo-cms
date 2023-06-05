@@ -5,7 +5,6 @@
 use crate::app::App;
 use crate::entry::query::{GB_Query, GB_QueryArg};
 use crate::routes::user::login::login;
-use crate::users::user_manager::get_user_by_email;
 use crate::{
     entry::{entry_type::EntryType, functions as post_functions, post::GB_Post},
     users,
@@ -22,31 +21,34 @@ impl Imitate {
     }
 
     pub fn register_user() {
+        todo!()
         // Let's create a new user and insert it
-        let test_user = User::new(
-            "testuser".to_string(),
-            "test@test.com".to_string(),
-            users::roles::UserRole::Admin,
-            "A345678B".to_string(),
-        );
+        // let test_user = User::new(
+        //     "testuser".to_string(),
+        //     "test@test.com".to_string(),
+        //     users::roles::UserRole::Admin,
+        //     "A345678B".to_string(),
+        // );
         //let is_user_inserted: bool = User::insert(test_user, true);
         //dbg!(is_user_inserted);
     }
 
     // Mimic a user login request
     pub fn user_login(app: &mut App) {
-        User::login(app, "test@test.com", "password");
-        dbg!(&app.users);
+        todo!()
+        // User::login(app, "test@test.com", "password");
+        // dbg!(&app.users);
     }
 
     pub fn get_user_by_email() {
-        let user_email = "test@test.com";
-        if get_user_by_email(user_email).is_ok() {
-            let getuser = get_user_by_email(user_email);
-            dbg!(getuser.unwrap());
-        } else {
-            println!("Cannot get user / can't find file");
-        }
+        todo!()
+        // let user_email = "test@test.com";
+        // if get_user_by_email(user_email).is_ok() {
+        //     let getuser = get_user_by_email(user_email);
+        //     dbg!(getuser.unwrap());
+        // } else {
+        //     println!("Cannot get user / can't find file");
+        // }
     }
 
     pub fn add_posts(app: &mut App) {
@@ -73,15 +75,17 @@ impl Imitate {
     }
 
     pub fn get_post_by_id() {
-        #[allow(clippy::let_unit_value)]
-        let get_post: Option<GB_Post> = post_functions::get_post_by_id(1).unwrap();
-        dbg!(&get_post);
+        todo!()
+        // #[allow(clippy::let_unit_value)]
+        // let get_post: Option<GB_Post> = post_functions::get_post_by_id(1).unwrap();
+        // dbg!(&get_post);
     }
 
     pub fn get_all_posts() {
-        #[allow(clippy::let_unit_value)]
-        let all_posts = post_functions::get_all_posts();
-        dbg!(all_posts.unwrap());
+        todo!()
+        //#[allow(clippy::let_unit_value)]
+        // let all_posts = post_functions::get_all_posts();
+        // dbg!(all_posts.unwrap());
     }
 
     pub async fn gb_query_get_posts_by_id(pool: PgPool) {

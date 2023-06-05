@@ -28,7 +28,13 @@ pub async fn try_login(
         .execute(pool)
         .await
     {
-        Ok(_) => Ok(warp::reply::json(&MSG_LOGIN_SUCCESS)),
+        Ok(_) => {
+            // Add to users list - if in list: already logged in
+            // if !app.users.contains(&user_email.to_string()) {
+            //     app.users.push(user_email.to_string());
+            // }
+            Ok(warp::reply::json(&MSG_LOGIN_SUCCESS))
+        }
         Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
     }
 }

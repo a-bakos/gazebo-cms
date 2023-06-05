@@ -4,10 +4,7 @@ use crate::database::db::DB_Table;
 use crate::database::{columns, db};
 use crate::{
     helpers::{str_contains_number, str_contains_special_char, str_contains_uppercase},
-    users::{
-        functions::turn_row_into_user,
-        user::{User, UserID},
-    },
+    users::user::{User, UserID},
 };
 use sqlx::{PgPool, Row};
 use std::error::Error;
@@ -88,35 +85,6 @@ pub fn is_password_valid(password: &str) -> bool {
         return true;
     }
     false
-}
-
-pub fn user_exists(email: &str) -> bool {
-    if get_user_by_email(email).is_ok() && get_user_by_email(email).unwrap().is_some() {
-        return true;
-    }
-    false
-}
-
-pub fn get_user_by_email(email: &str) -> Result<Option<User>, Box<dyn Error>> {
-    // todo: if is valid email
-    //if !is_email_valid(&email) {
-    //    return an error
-    //}
-
-    let csv_db = db::parse_csv(consts::FILE_PATH_USERS)?;
-    let found_user;
-    let mut user = None;
-    for row in csv_db.iter() {
-        if let Some(db_email) = row.get("email".parse().unwrap()) {
-            if db_email.to_lowercase() == email.to_lowercase() {
-                found_user = row;
-                user = Some(turn_row_into_user(found_user));
-                break;
-            }
-        }
-    }
-
-    Ok(user)
 }
 
 pub async fn is_password_match(

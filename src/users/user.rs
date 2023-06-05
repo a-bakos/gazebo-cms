@@ -29,7 +29,7 @@ use crate::app::App;
 use crate::database::db;
 use crate::datetime::functions as date_functions;
 use crate::users::roles::UserRole;
-use crate::users::user_manager::{is_email_valid, is_password_valid, user_exists};
+use crate::users::user_manager::{is_email_valid, is_password_valid};
 use serde::{Deserialize, Serialize};
 use std::fmt::{Display, Formatter};
 
@@ -62,65 +62,6 @@ pub struct User {
 }
 
 impl User {
-    #[allow(dead_code)]
-    pub fn new(login_name: String, email: String, role: UserRole, password: String) -> Self {
-        Self {
-            login_name,
-            email,
-            id: UserID(crate::consts::USER_ID_TEMPORARY_DEFAULT),
-            role,
-            password,
-            registered: date_functions::get_current_date(),
-        }
-    }
-
-    #[allow(unused_variables)]
-    pub fn insert(user: User, send_notification: bool) -> bool {
-        // ID allocation is taken care of by the User::new() function
-
-        if user_exists(&user.email) {
-            return false;
-        }
-
-        // We don't need to check user role validity, because it can only be a variant of the UserRole enum
-        if !is_email_valid(&user.email) || !is_password_valid(&user.password) {
-            return false;
-        }
-
-        db::store_user(&user);
-        dbg!(user);
-
-        // todo: on successful insertion, maybe send notification email to user + admin
-        if send_notification {
-            // send email
-            // new_user_notification(user.id);
-            // send_notification_to_admin( NOTIFICATION::NEW_USER_ADDED)
-        }
-
-        true
-    }
-
-    pub fn login(app: &mut App, user_email: &str, password: &str) -> bool {
-        println!("{user_email} log in request");
-        // dummy login functionality
-
-        if !user_exists(&user_email) {
-            return false;
-        }
-
-        if !is_password_valid(&password) {
-            return false;
-        }
-
-        // Add to users list - if in list: already logged in
-        if !app.users.contains(&user_email.to_string()) {
-            app.users.push(user_email.to_string());
-            return true;
-        }
-
-        false
-    }
-
     #[allow(unused_variables)]
     #[allow(dead_code)]
     pub fn change_username(&mut self, new_username: &str) {

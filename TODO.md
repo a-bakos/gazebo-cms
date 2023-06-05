@@ -4,6 +4,22 @@
 
 // todo rename post_type column in posts table to entry_type
 
+// todo consider gb_config table : eg. for logged in user IDs
+
+---
+
+Test structure:
+
+```rust
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test() {}
+}
+```
+
 ---
 
 # Idea: GB_Query struct

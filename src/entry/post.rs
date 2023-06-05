@@ -154,8 +154,8 @@ impl GB_Post {
             password: None,
         };
 
-        #[allow(clippy::let_unit_value)]
-        let _store_post = store_post(&the_post);
+        // #[allow(clippy::let_unit_value)]
+        // let _store_post = store_post(&the_post);
 
         the_post
     }
@@ -175,8 +175,8 @@ impl GB_Post {
             post_specifics_to_update.push(PostSpecific::Permalink);
         }
 
-        #[allow(clippy::let_unit_value)]
-        let _update_post = update_post(self, post_specifics_to_update);
+        // #[allow(clippy::let_unit_value)]
+        // let _update_post = update_post(self, post_specifics_to_update);
     }
 
     pub fn add_permalink(&mut self, slug: String) {
