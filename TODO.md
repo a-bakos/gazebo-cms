@@ -1,5 +1,9 @@
 # This file is just a collection of random ideas at this point
 
+// todo rename GB_Post to GB_Entry
+
+// todo rename post_type column in posts table to entry_type
+
 ---
 
 # Idea: GB_Query struct

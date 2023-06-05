@@ -84,12 +84,12 @@ impl Imitate {
         dbg!(all_posts.unwrap());
     }
 
-    pub fn gb_query(pool: PgPool) {
+    pub async fn gb_query(pool: PgPool) {
         let args = vec![GB_QueryArg::EntryID(vec![1, 2, 3])];
-        let query = GB_Query::new(args, pool);
-        query.run();
+        let mut query = GB_Query::new(args, pool);
+        query.run().await.expect("failed to execute query");
         let query_results = query.get_results();
 
-        println!("{:?}", query_results);
+        println!("{:#?}", query_results);
     }
 }

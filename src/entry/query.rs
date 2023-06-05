@@ -1,6 +1,18 @@
+use crate::consts;
+use crate::database::columns::{
+    COL_INDEX_POST_CONTENT, COL_INDEX_POST_DATE_MODIFIED, COL_INDEX_POST_DATE_PUBLISH,
+    COL_INDEX_POST_EXCERPT, COL_INDEX_POST_ID, COL_INDEX_POST_ID_AUTHOR, COL_INDEX_POST_PARENT,
+    COL_INDEX_POST_SLUG, COL_INDEX_POST_STATUS, COL_INDEX_POST_TITLE, COL_INDEX_POST_TYPE,
+};
+use crate::database::db::DB_Table;
+use crate::entry::entry_type::{get_entry_type_variant, EntryType};
 use crate::entry::post::{EntryID, GB_Post};
+use crate::entry::status::{get_entry_status_variant, EntryStatus};
+use crate::errors::error_handler::SqlxError;
 use crate::users::user::UserID;
-use sqlx::{Error, PgPool};
+use chrono::NaiveDateTime;
+use sqlx::postgres::PgRow;
+use sqlx::{Error, PgPool, Row};
 
 #[derive(Debug)]
 pub enum GB_QueryArg {
@@ -13,10 +25,8 @@ pub enum GB_QueryArg {
 pub struct GB_Query {
     args: Vec<GB_QueryArg>,
     results: Vec<GB_Post>,
-    pool: PgPool, // pool clone
+    pool: PgPool, // Will be a pool clone
 }
-
-// todo rename GB_Post to GB_Entry
 
 impl GB_Query {
     pub fn new(args: Vec<GB_QueryArg>, pool: PgPool) -> Self {
@@ -27,17 +37,70 @@ impl GB_Query {
         }
     }
 
-    pub fn run(&self) -> Result<bool, Error> {
-        // todo
-        println!("Coming from GB Query run()");
-        // collect results into self.results
+    // Collect results into self.results
+    pub async fn run(&mut self) -> Result<bool, SqlxError> {
+        let query = format!("SELECT * FROM {} WHERE post_type = $1", DB_Table::Posts);
+        match sqlx::query(&query)
+            .bind("post")
+            .map(|row: PgRow| {
+                // IDs
+                let post_id = row.get::<i32, _>(COL_INDEX_POST_ID) as u32;
+                let author_id = row.get::<i32, _>(COL_INDEX_POST_ID_AUTHOR) as u32;
+                let parent_id = row
+                    .try_get(COL_INDEX_POST_PARENT)
+                    .ok()
+                    .unwrap_or(consts::ENTRY_ID_NO_PARENT) as u32;
 
-        // SQLX query here
+                // Entry type
+                let entry_type_as_str: &str = row.get(COL_INDEX_POST_TYPE);
+                let the_type: EntryType = get_entry_type_variant(entry_type_as_str);
 
-        Ok(true)
+                // Publish date
+                let date_publish: NaiveDateTime =
+                    row.get::<NaiveDateTime, _>(COL_INDEX_POST_DATE_PUBLISH);
+                let date_publish = date_publish.to_string();
+
+                // Modified date
+                let date_modified: NaiveDateTime =
+                    row.get::<NaiveDateTime, _>(COL_INDEX_POST_DATE_MODIFIED);
+                let date_modified = date_modified.to_string();
+
+                // Entry status
+                let entry_status_as_str: &str = row.get(COL_INDEX_POST_STATUS);
+                let status: EntryStatus = get_entry_status_variant(entry_status_as_str, &the_type);
+
+                let the_post = GB_Post {
+                    id: EntryID(post_id),
+                    id_author: UserID(author_id),
+                    id_parent: Some(EntryID(parent_id)),
+                    date_publish,
+                    date_modified,
+                    slug: row.get(COL_INDEX_POST_SLUG),
+                    the_type,
+                    status,
+                    title: row.get(COL_INDEX_POST_TITLE),
+                    excerpt: row.get(COL_INDEX_POST_EXCERPT),
+                    content: row.get(COL_INDEX_POST_CONTENT),
+                    password: None,
+                };
+
+                self.results.push(the_post);
+            })
+            .fetch_all(&self.pool)
+            .await
+        {
+            Ok(_) => Ok(true),
+            Err(e) => Err(SqlxError(e)),
+        }
     }
 
     pub fn get_results(&self) -> &Vec<GB_Post> {
         &self.results
+    }
+}
+
+impl Into<GB_Post> for PgRow {
+    fn into(self) -> GB_Post {
+        todo!()
     }
 }
