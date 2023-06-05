@@ -26,10 +26,8 @@
 
 use crate::allocator::{ID_Allocator, ResourceID, ResourceType};
 use crate::app::App;
-use crate::database::db;
-use crate::datetime::functions as date_functions;
 use crate::users::roles::UserRole;
-use crate::users::user_manager::{is_email_valid, is_password_valid};
+use crate::users::user_manager::is_password_valid;
 use serde::{Deserialize, Serialize};
 use std::fmt::{Display, Formatter};
 

@@ -1,16 +1,9 @@
-use crate::consts;
-use crate::database::{columns, db};
-use crate::entry::status::{EntryStatus, PostStatus};
-use crate::entry::{
-    entry_type::EntryType,
-    post::{EntryID, GB_Post},
-};
+use crate::entry::{entry_type::EntryType, post::EntryID};
 use crate::users::user::UserID;
-use std::error::Error;
 
 // Get post title
 #[allow(dead_code)]
-pub fn get_the_title(post_id: u32) -> Option<String> {
+pub fn get_the_title(_post_id: u32) -> Option<String> {
     todo!()
     // let post = get_post_by_id(post_id).unwrap().unwrap();
     // post.title
@@ -18,7 +11,7 @@ pub fn get_the_title(post_id: u32) -> Option<String> {
 
 // Get post URL
 #[allow(dead_code)]
-pub fn get_the_permalink(post_id: u32) -> Option<String> {
+pub fn get_the_permalink(_post_id: u32) -> Option<String> {
     todo!()
     // let post = get_post_by_id(post_id).unwrap().unwrap();
     // post.slug
@@ -26,7 +19,7 @@ pub fn get_the_permalink(post_id: u32) -> Option<String> {
 
 // Get post creation date
 #[allow(dead_code)]
-pub fn get_the_date(post_id: u32) -> Option<String> {
+pub fn get_the_date(_post_id: u32) -> Option<String> {
     todo!()
     // let post = get_post_by_id(post_id).unwrap().unwrap();
     // Some(post.date_publish)
@@ -34,7 +27,7 @@ pub fn get_the_date(post_id: u32) -> Option<String> {
 
 // Get post modification date
 #[allow(dead_code)]
-pub fn get_the_modified_date(post_id: u32) -> Option<String> {
+pub fn get_the_modified_date(_post_id: u32) -> Option<String> {
     todo!()
     // let post = get_post_by_id(post_id).unwrap().unwrap();
     // Some(post.date_modified)
@@ -42,7 +35,7 @@ pub fn get_the_modified_date(post_id: u32) -> Option<String> {
 
 // Get post content
 #[allow(dead_code)]
-pub fn get_the_content(post_id: u32) -> Option<String> {
+pub fn get_the_content(_post_id: u32) -> Option<String> {
     todo!()
     // let post = get_post_by_id(post_id).unwrap().unwrap();
     // post.content
@@ -50,7 +43,7 @@ pub fn get_the_content(post_id: u32) -> Option<String> {
 
 // Get post author
 #[allow(dead_code)]
-pub fn get_the_author(post_id: u32) -> Option<UserID> {
+pub fn get_the_author(_post_id: u32) -> Option<UserID> {
     todo!()
     // let post = get_post_by_id(post_id).unwrap().unwrap();
     // Some(post.id_author)
@@ -58,7 +51,7 @@ pub fn get_the_author(post_id: u32) -> Option<UserID> {
 
 // Get post parent
 #[allow(dead_code)]
-pub fn get_post_parent(post_id: u32) -> Option<EntryID> {
+pub fn get_post_parent(_post_id: u32) -> Option<EntryID> {
     todo!()
     // let post = get_post_by_id(post_id).unwrap().unwrap();
     // post.id_parent
@@ -66,7 +59,7 @@ pub fn get_post_parent(post_id: u32) -> Option<EntryID> {
 
 // Get post type
 #[allow(dead_code)]
-pub fn get_post_type(post_id: u32) -> Option<EntryType> {
+pub fn get_post_type(_post_id: u32) -> Option<EntryType> {
     todo!()
     // let post = get_post_by_id(post_id).unwrap().unwrap();
     // Some(post.the_type)
@@ -74,7 +67,7 @@ pub fn get_post_type(post_id: u32) -> Option<EntryType> {
 
 // Get post excerpt
 #[allow(dead_code)]
-pub fn get_post_excerpt(post_id: u32) -> Option<String> {
+pub fn get_post_excerpt(_post_id: u32) -> Option<String> {
     todo!()
     // let post = get_post_by_id(post_id).unwrap().unwrap();
     // post.excerpt

@@ -1,3 +1,7 @@
+// Mock DB (table) files
+pub const FILE_PATH_POSTS: &str = "mock_db_posts.csv";
+pub const FILE_PATH_USERS: &str = "mock_db_users.csv";
+
 pub fn parse_csv(path: &str) -> Result<Vec<StringRecord>, Box<dyn Error>> {
     println!("Parsing CSV: {path:?}");
     let mut csv_result: Vec<StringRecord> = Vec::new();

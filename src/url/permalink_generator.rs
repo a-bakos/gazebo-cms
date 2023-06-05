@@ -1,5 +1,4 @@
 use crate::consts;
-use crate::database::db;
 use regex::Regex;
 use std::collections::HashSet;
 use urlencoding::encode;
@@ -189,7 +188,7 @@ impl<'a> PermalinkGenerator<'a> {
 
     fn make_unique(&self, permalink: String) -> String {
         // Get all entry, clean results, only keep a list of permalinks
-        let mut all_permalinks: HashSet<String> = HashSet::new();
+        let all_permalinks: HashSet<String> = HashSet::new();
 
         // TODO get all permalinks
 

@@ -1,18 +1,15 @@
-use crate::consts;
 use crate::database::consts::{
     DB_TABLE_ACCOUNTS, DB_TABLE_ACCOUNT_META, DB_TABLE_POSTS, DB_TABLE_POST_META,
 };
-use crate::entry::post::GB_Post;
-use crate::users::user::User;
-use csv::{ReaderBuilder, StringRecord, WriterBuilder};
-use std::error::Error;
 use std::fmt::{Display, Formatter};
 
 #[allow(non_camel_case_types)]
 pub enum DB_Table {
     Posts,
+    #[allow(dead_code)]
     PostMeta,
     Accounts,
+    #[allow(dead_code)]
     AccountMeta,
 }
 impl Into<String> for DB_Table {

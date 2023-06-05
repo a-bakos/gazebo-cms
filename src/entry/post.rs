@@ -27,7 +27,6 @@ WP_POST
 
 use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
 use crate::app::App;
-use crate::database::db::*;
 use crate::datetime::functions as date_functions;
 use crate::entry::entry_type::EntryType;
 use crate::entry::status::{EntryStatus, PostStatus};
@@ -37,6 +36,7 @@ use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
 
 #[derive(Debug)]
+#[allow(dead_code)]
 pub enum PostSpecific {
     Title,
     Permalink,

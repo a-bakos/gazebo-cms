@@ -4,22 +4,19 @@
 
 use crate::app::App;
 use crate::entry::query::{GB_Query, GB_QueryArg};
-use crate::routes::user::login::login;
-use crate::{
-    entry::{entry_type::EntryType, functions as post_functions, post::GB_Post},
-    users,
-    users::user::User,
-};
+use crate::entry::{entry_type::EntryType, post::GB_Post};
 use sqlx::PgPool;
 
 pub(crate) struct Imitate {}
 
 impl Imitate {
+    #[allow(dead_code)]
     pub fn update_app_defaults(app: &mut App) {
         app.change_admin_email("admin@example.com");
         app.change_app_name("THE RUST CMS");
     }
 
+    #[allow(dead_code)]
     pub fn register_user() {
         todo!()
         // Let's create a new user and insert it
@@ -34,12 +31,14 @@ impl Imitate {
     }
 
     // Mimic a user login request
-    pub fn user_login(app: &mut App) {
+    #[allow(dead_code)]
+    pub fn user_login(_app: &mut App) {
         todo!()
         // User::login(app, "test@test.com", "password");
         // dbg!(&app.users);
     }
 
+    #[allow(dead_code)]
     pub fn get_user_by_email() {
         todo!()
         // let user_email = "test@test.com";
@@ -51,6 +50,7 @@ impl Imitate {
         // }
     }
 
+    #[allow(dead_code)]
     pub fn add_posts(app: &mut App) {
         // Imitate editing a new post - Eg. User clicks on a "add/create new post" button
         let mut post = GB_Post::draft(app, EntryType::Post);
@@ -74,6 +74,7 @@ impl Imitate {
         //post_4.add_title("This is a second post".to_string(), true);
     }
 
+    #[allow(dead_code)]
     pub fn get_post_by_id() {
         todo!()
         // #[allow(clippy::let_unit_value)]
@@ -81,6 +82,7 @@ impl Imitate {
         // dbg!(&get_post);
     }
 
+    #[allow(dead_code)]
     pub fn get_all_posts() {
         todo!()
         //#[allow(clippy::let_unit_value)]

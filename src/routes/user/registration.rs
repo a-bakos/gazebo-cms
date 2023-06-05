@@ -1,12 +1,8 @@
 use crate::database::db::DB_Table;
-use crate::errors::error_handler::SqlxError;
 use crate::users::user_manager;
 use crate::users::user_manager::AccountExistsCheckBy;
 use serde::{Deserialize, Serialize};
-use sqlx::postgres::{PgPool, PgRow};
-use sqlx::Error;
-use sqlx::Row;
-use warp::reject::Reject;
+use sqlx::postgres::PgPool;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct NewAccountRegistrationRequest {

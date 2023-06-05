@@ -21,31 +21,21 @@ use std::convert::Infallible;
 
 use sqlx::postgres::{PgPool, PgPoolOptions};
 
-use warp::http::StatusCode;
-use warp::reply::Html;
+use warp::http::Response;
+use warp::Reply;
 use warp::{http::Method, Filter};
-use warp::{http::Response, hyper::Body};
-use warp::{Rejection, Reply};
 
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {
     // Start the App
-    let mut app = app::App::init();
+    let _app = app::App::init();
     // App started timestamp:
     // dbg!(&app.start);
 
-    //mock_process::Imitate::update_app_defaults(&mut app);
+    // mock_process::Imitate::update_app_defaults(&mut app);
 
-    // User-related processes
-    //mock_process::Imitate::register_user();
-    //mock_process::Imitate::user_login(&mut app);
-    //mock_process::Imitate::get_user_by_email();
-
-    // Post-related processes
-    //mock_process::Imitate::add_posts(&mut app);
-    //mock_process::Imitate::get_post_by_id();
-    //mock_process::Imitate::get_all_posts();
-
+    // DB Setup
+    // let pool = db_setup(...).await;
     let db_pass = crate::private::DB_PASS;
     let db_url = &("postgres://postgres:".to_owned() + db_pass + "@localhost/gazebocms");
     println!("{}", db_url);
@@ -135,7 +125,7 @@ async fn main() -> Result<(), sqlx::Error> {
 // http://localhost:1337/users?name=what&age=whatwhat
 async fn get_users_html(
     params: HashMap<String, String>,
-    pool: PgPool,
+    _pool: PgPool,
 ) -> Result<impl Reply, Infallible> {
     let name = params
         .get("name")

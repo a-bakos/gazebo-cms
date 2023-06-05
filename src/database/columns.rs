@@ -1,6 +1,3 @@
-use crate::database::db::DB_Table;
-use std::collections::HashMap;
-
 // Posts table
 
 pub const COL_INDEX_POST_ID: usize = 0;

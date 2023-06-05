@@ -2,6 +2,7 @@
 // let status_code = HttpStatusCode::Unauthorized.code();
 // let status_message = HttpStatusCode::Unauthorized.message();
 
+#[allow(dead_code)]
 #[derive(Debug)]
 pub enum HttpStatusCode {
     Continue,
@@ -68,6 +69,7 @@ pub enum HttpStatusCode {
 }
 
 impl HttpStatusCode {
+    #[allow(dead_code)]
     pub fn code(&self) -> u32 {
         match self {
             HttpStatusCode::Continue => 100,

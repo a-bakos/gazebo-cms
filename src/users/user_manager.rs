@@ -1,13 +1,11 @@
 use crate::consts;
 use crate::database::columns::COL_INDEX_ACCOUNT_ID;
 use crate::database::db::DB_Table;
-use crate::database::{columns, db};
 use crate::{
     helpers::{str_contains_number, str_contains_special_char, str_contains_uppercase},
-    users::user::{User, UserID},
+    users::user::UserID,
 };
 use sqlx::{PgPool, Row};
-use std::error::Error;
 
 #[allow(dead_code)]
 pub struct UserManager {
@@ -21,11 +19,12 @@ impl UserManager {
     }
 }
 
-#[allow(unused_variables)]
+#[allow(unused_variables, dead_code)]
 pub fn is_email_valid(email: &str) -> bool {
     true
 }
 
+#[allow(dead_code)]
 pub fn is_username_valid(username: &str) -> bool {
     // Min length validation
     let mut min_length_ok = false;
@@ -34,8 +33,7 @@ pub fn is_username_valid(username: &str) -> bool {
     }
 
     // Make sure it doesn't contain special characters
-    let mut special_characters = true;
-    special_characters = crate::helpers::str_contains_special_char(username); // must be false
+    let special_characters = str_contains_special_char(username); // must be false
 
     min_length_ok && !special_characters
 }
@@ -67,9 +65,6 @@ pub fn is_username_valid(username: &str) -> bool {
 /// This function also has a unit test suite in the same module.
 pub fn is_password_valid(password: &str) -> bool {
     let mut ok_pw_len: bool = false;
-    let mut ok_pw_uppercase: bool = false;
-    let mut ok_pw_numeric: bool = false;
-    let mut ok_pw_special: bool = false;
 
     // Password length check
     if password.len() >= consts::MIN_PASSWORD_LENGTH {
@@ -77,9 +72,9 @@ pub fn is_password_valid(password: &str) -> bool {
     }
 
     // They all need to be true
-    ok_pw_uppercase = str_contains_uppercase(password);
-    ok_pw_numeric = str_contains_number(password);
-    ok_pw_special = str_contains_special_char(password);
+    let ok_pw_uppercase = str_contains_uppercase(password);
+    let ok_pw_numeric = str_contains_number(password);
+    let ok_pw_special = str_contains_special_char(password);
 
     if ok_pw_numeric && ok_pw_uppercase && ok_pw_len && ok_pw_special {
         return true;
@@ -118,8 +113,8 @@ pub async fn is_password_match(
         .fetch_one(pool)
         .await
     {
-        Ok(res) => true,
-        Err(err) => false,
+        Ok(_res) => true,
+        Err(_err) => false,
     }
 }
 

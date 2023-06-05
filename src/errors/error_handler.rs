@@ -1,17 +1,19 @@
-use serde::{Deserialize, Serialize};
-use std::fmt::{write, Formatter};
-use warp::{http::StatusCode, reject::Reject, Rejection, Reply};
+use serde::Serialize;
+use std::fmt::Formatter;
+use warp::{http::StatusCode, reject::Reject, Rejection};
 
 #[derive(Debug)]
 pub struct SqlxError(pub sqlx::Error);
 impl Reject for SqlxError {}
 
 // Wrapper type so we have a size at compile time
+#[allow(dead_code)]
 #[derive(Serialize)]
 pub struct ErrorResponse {
     pub error: String,
 }
 impl ErrorResponse {
+    #[allow(dead_code)]
     pub fn new(error: String) -> Self {
         Self { error }
     }
@@ -19,6 +21,7 @@ impl ErrorResponse {
 
 #[derive(Debug)]
 #[allow(clippy::enum_variant_names)]
+#[allow(dead_code, non_camel_case_types)]
 pub enum GB_Error {
     //ParseError(std::num::ParseIntError),
     MissingParameters,
@@ -46,6 +49,7 @@ impl std::fmt::Display for GB_Error {
     }
 }
 
+#[allow(dead_code)]
 pub async fn return_error(r: Rejection) -> Result<impl warp::Reply, warp::Rejection> {
     if let Some(GB_Error::IncorrectCredentials) = r.find() {
         // event!(Level::ERROR, "Wrong password entered");

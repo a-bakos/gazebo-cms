@@ -81,8 +81,8 @@ pub async fn login(
     }
 
     if let Some(login) = params.login {
-        let query = format!("SELECT * FROM {} WHERE login = $1", DB_Table::Accounts);
-        let binding = login.clone();
+        let _query = format!("SELECT * FROM {} WHERE login = $1", DB_Table::Accounts);
+        let _binding = login.clone();
         let account_exists_by_login =
             check_account_exists(pool.clone(), AccountExistsCheckBy::Login, login.clone()).await;
 

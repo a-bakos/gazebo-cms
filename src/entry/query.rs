@@ -12,16 +12,20 @@ use crate::errors::error_handler::SqlxError;
 use crate::users::user::UserID;
 use chrono::NaiveDateTime;
 use sqlx::postgres::PgRow;
-use sqlx::{Error, PgPool, Row};
+use sqlx::{PgPool, Row};
 
 #[derive(Debug)]
+#[allow(non_camel_case_types)]
 pub enum GB_QueryArg {
+    #[allow(dead_code)]
     AuthorID(Vec<UserID>),
     EntryID(Vec<u32>),
+    #[allow(dead_code)]
     Title(String),
 }
 
 #[derive(Debug)]
+#[allow(non_camel_case_types)]
 pub struct GB_Query {
     args: Vec<GB_QueryArg>,
     results: Vec<GB_Post>,
