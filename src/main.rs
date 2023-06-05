@@ -109,7 +109,13 @@ async fn main() -> Result<(), sqlx::Error> {
     //    .and(warp::body::json())
     //    .and_then(routes::post::crud::insert_post);
 
+    let index = warp::path::end() // Match the root path ("/")
+        .and(warp::get()) // Handle GET requests
+        .and(pool_filter.clone())
+        .and_then(get_index_html);
+
     let routes = get_user
+        .or(index)
         .or(get_users_html)
         .or(registration)
         .or(login)
@@ -119,6 +125,28 @@ async fn main() -> Result<(), sqlx::Error> {
     warp::serve(routes).run(([127, 0, 0, 1], 1337)).await;
 
     Ok(())
+}
+
+async fn get_index_html(_pool: PgPool) -> Result<impl Reply, Infallible> {
+    let html = format!(
+        r#"<html><head><title>Gazebo CMS index page</title></head>
+            <body>
+            <h1>Login</h1>
+            <form method="post" action="/login">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required><br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br>
+                <input type="submit" value="Login">
+            </form>
+        </body></html>"#
+    );
+
+    let response = Response::builder()
+        .header("content-type", "text/html")
+        .body(html)
+        .unwrap();
+    Ok(response.into_response())
 }
 
 // This is just an experimental feature
