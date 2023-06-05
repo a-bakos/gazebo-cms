@@ -84,7 +84,7 @@ impl Imitate {
         dbg!(all_posts.unwrap());
     }
 
-    pub async fn gb_query(pool: PgPool) {
+    pub async fn gb_query_get_posts_by_id(pool: PgPool) {
         let args = vec![GB_QueryArg::EntryID(vec![1, 2, 3])];
         let mut query = GB_Query::new(args, pool);
         query.run().await.expect("failed to execute query");
