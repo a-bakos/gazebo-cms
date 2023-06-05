@@ -10,26 +10,30 @@ pub enum GB_QueryArg {
 }
 
 #[derive(Debug)]
-pub struct GB_Query(Vec<GB_QueryArg>, Vec<GB_Post>);
+pub struct GB_Query {
+    args: Vec<GB_QueryArg>,
+    results: Vec<GB_Post>,
+}
 
 // todo rename GB_Post to GB_Entry
 
 impl GB_Query {
-    pub fn new(args: Vec<GB_QueryArg>) -> GB_Query {
-        GB_Query(args, Vec::new())
+    pub fn new(args: Vec<GB_QueryArg>) -> Self {
+        Self {
+            args,
+            results: Vec::new(),
+        }
     }
 
-    pub fn run(&self) -> Result<Option<Vec<GB_Post>>, Error> {
+    pub fn run(&self) -> Result<bool, Error> {
         // todo
         println!("Coming from GB Query run()");
-        // vec of params = self.0
+        // collect results into self.results
 
-        Ok(Some(Vec::new()))
+        Ok(true)
     }
-}
 
-fn query_experiment() {
-    let args = vec![GB_QueryArg::EntryID(vec![1, 2, 3])];
-    let query = GB_Query::new(args);
-    query.run();
+    pub fn get_results(&self) -> &Vec<GB_Post> {
+        &self.results
+    }
 }

@@ -4,6 +4,7 @@
 
 use crate::app::App;
 use crate::entry::query::{GB_Query, GB_QueryArg};
+use crate::routes::user::login::login;
 use crate::users::user_manager::get_user_by_email;
 use crate::{
     entry::{entry_type::EntryType, functions as post_functions, post::GB_Post},
@@ -86,5 +87,8 @@ impl Imitate {
         let args = vec![GB_QueryArg::EntryID(vec![1, 2, 3])];
         let query = GB_Query::new(args);
         query.run();
+        let query_results = query.get_results();
+
+        println!("{:?}", query_results);
     }
 }
