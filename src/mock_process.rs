@@ -11,6 +11,7 @@ use crate::{
     users,
     users::user::User,
 };
+use sqlx::PgPool;
 
 pub(crate) struct Imitate {}
 
@@ -83,9 +84,9 @@ impl Imitate {
         dbg!(all_posts.unwrap());
     }
 
-    pub fn gb_query() {
+    pub fn gb_query(pool: PgPool) {
         let args = vec![GB_QueryArg::EntryID(vec![1, 2, 3])];
-        let query = GB_Query::new(args);
+        let query = GB_Query::new(args, pool);
         query.run();
         let query_results = query.get_results();
 

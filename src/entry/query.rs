@@ -1,6 +1,6 @@
 use crate::entry::post::{EntryID, GB_Post};
 use crate::users::user::UserID;
-use sqlx::Error;
+use sqlx::{Error, PgPool};
 
 #[derive(Debug)]
 pub enum GB_QueryArg {
@@ -13,15 +13,17 @@ pub enum GB_QueryArg {
 pub struct GB_Query {
     args: Vec<GB_QueryArg>,
     results: Vec<GB_Post>,
+    pool: PgPool, // pool clone
 }
 
 // todo rename GB_Post to GB_Entry
 
 impl GB_Query {
-    pub fn new(args: Vec<GB_QueryArg>) -> Self {
+    pub fn new(args: Vec<GB_QueryArg>, pool: PgPool) -> Self {
         Self {
             args,
             results: Vec::new(),
+            pool,
         }
     }
 
@@ -29,6 +31,8 @@ impl GB_Query {
         // todo
         println!("Coming from GB Query run()");
         // collect results into self.results
+
+        // SQLX query here
 
         Ok(true)
     }
