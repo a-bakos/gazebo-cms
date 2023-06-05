@@ -46,6 +46,8 @@ async fn main() -> Result<(), sqlx::Error> {
     //mock_process::Imitate::get_post_by_id();
     //mock_process::Imitate::get_all_posts();
 
+    mock_process::Imitate::gb_query();
+
     let db_pass = crate::private::DB_PASS;
     let db_url = &("postgres://postgres:".to_owned() + db_pass + "@localhost/gazebocms");
     println!("{}", db_url);

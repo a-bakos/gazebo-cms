@@ -3,6 +3,7 @@
 // This way we can keep the main file clean.
 
 use crate::app::App;
+use crate::entry::query::{GB_Query, GB_QueryArg};
 use crate::users::user_manager::get_user_by_email;
 use crate::{
     entry::{entry_type::EntryType, functions as post_functions, post::GB_Post},
@@ -79,5 +80,11 @@ impl Imitate {
         #[allow(clippy::let_unit_value)]
         let all_posts = post_functions::get_all_posts();
         dbg!(all_posts.unwrap());
+    }
+
+    pub fn gb_query() {
+        let args = vec![GB_QueryArg::EntryID(vec![1, 2, 3])];
+        let query = GB_Query::new(args);
+        query.run();
     }
 }
