@@ -35,10 +35,22 @@ ul {
     background: #ccc;
 }
 
+.gb-admin-bar ul {
+    display: flex;
+    justify-content: space-between;
+}
+
 .gb-admin-bar ul li {
     list-style-type: none;
     display: inline-block;
     font-size: 20px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid;
+}
+
+.gb-admin-bar ul li a {
+    display: block;
 }
 
 .gb-admin-main {
