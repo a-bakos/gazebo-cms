@@ -1,0 +1,26 @@
+ul {
+    margin: unset;
+}
+
+#gb-gui {
+    margin: unset;
+    background-color: #eee;
+    font-size: 16px;
+    font-family: sans-serif;
+}
+
+.gb-admin-panel {
+}
+
+.gb-admin-menu {
+}
+
+.gb-admin-bar {
+    background: #ccc;
+}
+
+.gb-admin-bar ul li {
+    list-style-type: none;
+    display: inline-block;
+    font-size: 20px;
+}
