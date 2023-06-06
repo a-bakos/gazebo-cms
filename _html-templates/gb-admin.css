@@ -48,3 +48,14 @@ ul {
     background: #afafaf;
     height: 100%;
 }
+
+.gb-admin-table {
+    width: 100%;
+    text-align: left;
+    background: #cca;
+    border-collapse: collapse;
+}
+
+.gb-admin-table tr {
+    border-bottom: 1px solid black;
+}
