@@ -85,17 +85,17 @@ pub fn is_password_valid(password: &str) -> bool {
 pub async fn is_password_match(
     pool: &PgPool,
     password: &str,
-    check_by: AccountExistsCheckBy,
+    check_by: CheckAccountExistsBy,
     value: &str,
 ) -> bool {
     let query = match check_by {
-        AccountExistsCheckBy::Email => {
+        CheckAccountExistsBy::Email => {
             format!(
                 "SELECT id FROM {} WHERE email = $1 AND password = $2",
                 DB_Table::Accounts
             )
         }
-        AccountExistsCheckBy::Login => {
+        CheckAccountExistsBy::Login => {
             format!(
                 "SELECT id FROM {} WHERE login = $1 AND password = $2",
                 DB_Table::Accounts
@@ -118,16 +118,21 @@ pub async fn is_password_match(
     }
 }
 
+pub enum CheckAccountExistsBy {
+    Email,
+    Login,
+}
+
 pub async fn check_account_exists(
     pool: PgPool,
-    param: AccountExistsCheckBy,
+    param: CheckAccountExistsBy,
     value: String,
 ) -> Result<bool, String> {
     let query = match param {
-        AccountExistsCheckBy::Email => {
+        CheckAccountExistsBy::Email => {
             format!("SELECT id FROM {} WHERE email = $1", DB_Table::Accounts)
         }
-        AccountExistsCheckBy::Login => {
+        CheckAccountExistsBy::Login => {
             format!("SELECT id FROM {} WHERE login = $1", DB_Table::Accounts)
         }
     };
@@ -160,9 +165,4 @@ mod test {
             false
         );
     }
-}
-
-pub enum AccountExistsCheckBy {
-    Email,
-    Login,
 }

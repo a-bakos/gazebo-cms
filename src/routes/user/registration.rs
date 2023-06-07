@@ -1,6 +1,6 @@
 use crate::database::db::DB_Table;
 use crate::users::user_manager;
-use crate::users::user_manager::AccountExistsCheckBy;
+use crate::users::user_manager::CheckAccountExistsBy;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgPool;
 
@@ -22,7 +22,7 @@ pub async fn registration(
     // check if user exists in accounts table
     let account_exists = user_manager::check_account_exists(
         pool.clone(),
-        AccountExistsCheckBy::Email,
+        CheckAccountExistsBy::Email,
         params.email.clone(),
     )
     .await;

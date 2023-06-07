@@ -3,7 +3,7 @@ use crate::errors::error_handler::ErrorResponse;
 use crate::http::response::HttpResponse;
 use crate::users::user_manager;
 use crate::users::user_manager::check_account_exists;
-use crate::users::user_manager::AccountExistsCheckBy;
+use crate::users::user_manager::CheckAccountExistsBy;
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 
@@ -49,7 +49,7 @@ pub async fn login(
     // if no email, look for login name
     if let Some(email) = params.email {
         let account_exists_by_email =
-            check_account_exists(pool.clone(), AccountExistsCheckBy::Email, email.clone()).await;
+            check_account_exists(pool.clone(), CheckAccountExistsBy::Email, email.clone()).await;
 
         return match account_exists_by_email {
             Ok(true) => {
@@ -60,7 +60,7 @@ pub async fn login(
                 if user_manager::is_password_match(
                     &pool,
                     &password,
-                    AccountExistsCheckBy::Email,
+                    CheckAccountExistsBy::Email,
                     &binding,
                 )
                 .await
@@ -84,7 +84,7 @@ pub async fn login(
         let _query = format!("SELECT * FROM {} WHERE login = $1", DB_Table::Accounts);
         let _binding = login.clone();
         let account_exists_by_login =
-            check_account_exists(pool.clone(), AccountExistsCheckBy::Login, login.clone()).await;
+            check_account_exists(pool.clone(), CheckAccountExistsBy::Login, login.clone()).await;
 
         return match account_exists_by_login {
             Ok(true) => {
@@ -95,7 +95,7 @@ pub async fn login(
                 if user_manager::is_password_match(
                     &pool,
                     &password,
-                    AccountExistsCheckBy::Login,
+                    CheckAccountExistsBy::Login,
                     &binding,
                 )
                 .await
