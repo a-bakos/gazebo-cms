@@ -3,9 +3,10 @@ use crate::entry::post::GB_Post;
 use crate::errors::error_handler::SqlxError;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgRow;
-use sqlx::PgPool;
+use sqlx::{PgPool, Row};
 use std::collections::HashMap;
 use warp::http::StatusCode;
+use warp::hyper::body::HttpBody;
 
 pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
     println!("Post requested: {:?}", id);
@@ -58,7 +59,7 @@ pub async fn insert_post(
     let excerpt = params.excerpt.clone();
 
     let query = format!(
-        "INSERT INTO {} ({}, {}, {}, {}, {}, {}, {}, {}) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+        "INSERT INTO {} ({}, {}, {}, {}, {}, {}, {}, {}) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id",
         DB_Table::Posts,
         crate::database::columns::COL_INDEX_POST_ID_AUTHOR,
         crate::database::columns::COL_INDEX_POST_TITLE,
@@ -69,24 +70,41 @@ pub async fn insert_post(
         crate::database::columns::COL_INDEX_POST_EXCERPT,
         crate::database::columns::COL_INDEX_POST_PASSWORD
     );
+
     match sqlx::query(&query)
         .bind(author_id)
-        .bind(title)
+        .bind(title.clone())
         .bind(content)
         .bind(post_type)
-        .bind(slug)
+        .bind(slug.clone())
         .bind(status)
         .bind(excerpt)
         .bind(password)
         .execute(&pool)
         .await
     {
-        Ok(_) => Ok(warp::reply::json(&"Post Created!")),
+        Ok(_) => {
+            let select_query = format!(
+                "SELECT id FROM {} WHERE title = $1 AND slug = $2",
+                DB_Table::Posts
+            );
+            // Retrieve the post_id with a subsequent select query
+            match sqlx::query(&select_query)
+                .bind(title.clone())
+                .bind(slug.clone())
+                .map(|row: PgRow| {
+                    let res: i32 = row.get("id");
+                    res
+                })
+                .fetch_one(&pool)
+                .await
+            {
+                Ok(id) => Ok(warp::reply::json(&format!("ID: {}", id))),
+                Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+            }
+        }
         Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
     }
-
-    // Ok(true) => Ok(warp::reply::json(&"Email address already in use")),
-    // Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
 }
 
 #[allow(dead_code)]
