@@ -41,7 +41,7 @@ pub struct NewPostInsertRequest {
 #[allow(dead_code)]
 pub async fn insert_post(
     pool: PgPool,
-    params: NewPostInsertRequest, //HashMap<String, String>,
+    params: NewPostInsertRequest,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     println!("{:?}", params);
 
@@ -59,7 +59,7 @@ pub async fn insert_post(
     let excerpt = params.excerpt.clone();
 
     let query = format!(
-        "INSERT INTO {} ({}, {}, {}, {}, {}, {}, {}, {}) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id",
+        "INSERT INTO {} ({}, {}, {}, {}, {}, {}, {}, {}) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
         DB_Table::Posts,
         crate::database::columns::COL_INDEX_POST_ID_AUTHOR,
         crate::database::columns::COL_INDEX_POST_TITLE,
@@ -92,10 +92,7 @@ pub async fn insert_post(
             match sqlx::query(&select_query)
                 .bind(title.clone())
                 .bind(slug.clone())
-                .map(|row: PgRow| {
-                    let res: i32 = row.get("id");
-                    res
-                })
+                .map(|row: PgRow| row.get::<i32, _>("id"))
                 .fetch_one(&pool)
                 .await
             {
