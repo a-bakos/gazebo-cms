@@ -1,25 +1,20 @@
 // Posts table
 
-pub const COL_INDEX_POST_ID: usize = 0;
-pub const COL_INDEX_POST_ID_AUTHOR: usize = 1;
-#[allow(dead_code)]
-pub const COL_INDEX_POST_PARENT: usize = 2;
-pub const COL_INDEX_POST_DATE_PUBLISH: usize = 3;
-pub const COL_INDEX_POST_DATE_MODIFIED: usize = 4;
-pub const COL_INDEX_POST_SLUG: usize = 5;
-#[allow(dead_code)]
-pub const COL_INDEX_POST_TYPE: usize = 6;
-pub const COL_INDEX_POST_TITLE: usize = 7;
-#[allow(dead_code)]
-pub const COL_INDEX_POST_EXCERPT: usize = 8;
-#[allow(dead_code)]
-pub const COL_INDEX_POST_CONTENT: usize = 9;
-#[allow(dead_code)]
-pub const COL_INDEX_POST_PASSWORD: usize = 10;
-pub const COL_INDEX_POST_STATUS: usize = 11;
+pub const COL_INDEX_POST_ID: &str = "id";
+pub const COL_INDEX_POST_ID_AUTHOR: &str = "author_id";
+pub const COL_INDEX_POST_PARENT: &str = "parent_id";
+pub const COL_INDEX_POST_DATE_PUBLISH: &str = "date_publish";
+pub const COL_INDEX_POST_DATE_MODIFIED: &str = "date_modified";
+pub const COL_INDEX_POST_SLUG: &str = "slug";
+pub const COL_INDEX_POST_TYPE: &str = "post_type";
+pub const COL_INDEX_POST_TITLE: &str = "title";
+pub const COL_INDEX_POST_EXCERPT: &str = "excerpt";
+pub const COL_INDEX_POST_CONTENT: &str = "content";
+pub const COL_INDEX_POST_PASSWORD: &str = "password";
+pub const COL_INDEX_POST_STATUS: &str = "status";
 
 #[allow(dead_code)]
-pub const COLUMNS_POSTS: [(&str, usize); 12] = [
+pub const COLUMNS_POSTS: [(&str, &str); 12] = [
     ("ID", COL_INDEX_POST_ID),
     ("ID_AUTHOR", COL_INDEX_POST_ID_AUTHOR),
     ("PARENT", COL_INDEX_POST_PARENT),

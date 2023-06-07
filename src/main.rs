@@ -101,6 +101,14 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(pool_filter.clone())
         .and_then(routes::post::crud::get_post_by_id);
 
+    let insert_post = warp::post()
+        .and(warp::path("post"))
+        .and(warp::path("add"))
+        .and(warp::path::end())
+        .and(pool_filter.clone())
+        .and(warp::body::json())
+        .and_then(routes::post::crud::insert_post);
+
     // todo
     //let create_post = warp::post()
     //    .and(warp::path(url::path::PATH_POST_ADD))
@@ -121,6 +129,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .or(login)
         .or(delete_user)
         .or(get_post)
+        .or(insert_post)
         .with(cors);
     warp::serve(routes).run(([127, 0, 0, 1], 1337)).await;
 
