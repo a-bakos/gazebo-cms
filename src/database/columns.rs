@@ -63,6 +63,29 @@ pub const COLUMNS_USER_META: [(&str, &str); 4] = [
     ("META_VALUE", COL_INDEX_ACCOUNT_META_VALUE),
 ];
 
+// Media table
+pub const COL_INDEX_MEDIA_ID: &str = "id";
+pub const COL_INDEX_MEDIA_UPLOADER_ID: &str = "uploader";
+pub const COL_INDEX_MEDIA_ATTACHED_TO: &str = "attached_to";
+pub const COL_INDEX_MEDIA_DATE_PUBLISH: &str = "date_publish";
+pub const COL_INDEX_MEDIA_DATE_MODIFIED: &str = "date_modified";
+pub const COL_INDEX_MEDIA_SLUG: &str = "slug";
+pub const COL_INDEX_MEDIA_TITLE: &str = "title";
+pub const COL_INDEX_MEDIA_DESCRIPTION: &str = "description";
+pub const COL_INDEX_MEDIA_ALT_TEXT: &str = "alt_text";
+
+pub const COLUMNS_MEDIA: [(&str, &str); 9] = [
+    ("ID", COL_INDEX_MEDIA_ID),
+    ("UPLOADER_ID", COL_INDEX_MEDIA_UPLOADER_ID),
+    ("ATTACHED_TO", COL_INDEX_MEDIA_ATTACHED_TO),
+    ("DATE_PUBLISH", COL_INDEX_MEDIA_DATE_PUBLISH),
+    ("DATE_MODIFIED", COL_INDEX_MEDIA_DATE_MODIFIED),
+    ("SLUG", COL_INDEX_MEDIA_SLUG),
+    ("TITLE", COL_INDEX_MEDIA_TITLE),
+    ("DESCRIPTION", COL_INDEX_MEDIA_DESCRIPTION),
+    ("ALT_TEXT", COL_INDEX_MEDIA_ALT_TEXT),
+];
+
 //
 // #[allow(dead_code)]
 // pub fn get_columns(table: DB_Table) -> HashMap<String, usize> {

@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS gb_media (
     --post_type VARCHAR(20) DEFAULT 'media', -- type is not needed if table is called "media"
     title VARCHAR(255) NOT NULL,
     description TEXT DEFAULT NULL,
+    alt_text VARCHAR(255) DEFAULT NULL
     --status VARCHAR(20) DEFAULT 'attached' -- status is not needed if we have attached_to
     --tags INTEGER[] DEFAULT NULL
     -- Mime type ??
