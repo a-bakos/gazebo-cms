@@ -2,9 +2,11 @@
 
 // todo rename GB_Post to GB_Entry
 
-// todo rename post_type column in posts table to entry_type
+// todo consider gb_config table : to store cms settings
 
-// todo consider gb_config table : eg. for logged in user IDs
+// todo consider gb_status table : eg. for logged in user IDs ??
+
+// todo gb_log table : whodunnit log
 
 ---
 
