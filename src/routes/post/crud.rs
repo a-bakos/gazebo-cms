@@ -5,8 +5,6 @@ use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgRow;
 use sqlx::{PgPool, Row};
 use std::collections::HashMap;
-use warp::http::StatusCode;
-use warp::hyper::body::HttpBody;
 
 pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
     println!("Post requested: {:?}", id);
@@ -22,7 +20,7 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
         .await
     {
         Ok(res) => Ok(warp::reply::json(&res)),
-        Err(e) => Err(warp::reject::custom(SqlxError(e))),
+        Err(e) => Err(warp::reject::custom(SqlxError(e))), // Unhandled rejection: SqlxError(RowNotFound)
     }
 }
 
@@ -30,7 +28,6 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
 pub struct NewPostInsertRequest {
     pub author_id: i32,
     pub slug: String,
-    pub the_type: String,
     pub title: String,
     pub content: String,
     pub status: String,
@@ -54,7 +51,7 @@ pub async fn insert_post(
     let slug = params.slug.clone();
     let status = params.status.clone();
 
-    let post_type = params.the_type.clone(); // maybe ignore this and default to "post"
+    let post_type = "post".to_string();
     let title = params.title.clone();
     let content = params.content.clone();
 
