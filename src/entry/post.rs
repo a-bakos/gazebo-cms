@@ -71,7 +71,7 @@ pub struct GB_Post {
     pub date_publish: String,
     pub date_modified: String,
     pub slug: Option<String>,
-    pub the_type: EntryType,
+    pub the_type: EntryType, // maybe remove this? if gb_post will only be used on "post" types
     pub status: EntryStatus,
     pub title: Option<String>,
     pub excerpt: Option<String>,
