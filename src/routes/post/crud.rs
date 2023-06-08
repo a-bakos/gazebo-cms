@@ -38,7 +38,6 @@ pub struct NewPostInsertRequest {
     pub password: Option<String>,
 }
 
-#[allow(dead_code)]
 pub async fn insert_post(
     pool: PgPool,
     params: NewPostInsertRequest,
@@ -47,12 +46,17 @@ pub async fn insert_post(
 
     // auth layer to check if user can add post
 
+    // checks needed for these values
+    // - check author id exists
+    // - check slug is unique and treat it if not
+    // - check status is valid variant
     let author_id = params.author_id;
     let slug = params.slug.clone();
-    let post_type = params.the_type.clone();
+    let status = params.status.clone();
+
+    let post_type = params.the_type.clone(); // maybe ignore this and default to "post"
     let title = params.title.clone();
     let content = params.content.clone();
-    let status = params.status.clone();
 
     // Don't unwrap the optional values
     let password = params.password.clone();
