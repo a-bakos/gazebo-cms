@@ -1,5 +1,5 @@
 use crate::database::consts::{
-    DB_TABLE_ACCOUNTS, DB_TABLE_ACCOUNT_META, DB_TABLE_POSTS, DB_TABLE_POST_META,
+    DB_TABLE_ACCOUNTS, DB_TABLE_ACCOUNT_META, DB_TABLE_MEDIA, DB_TABLE_POSTS, DB_TABLE_POST_META,
 };
 use std::fmt::{Display, Formatter};
 
@@ -11,6 +11,8 @@ pub enum DB_Table {
     Accounts,
     #[allow(dead_code)]
     AccountMeta,
+    #[allow(dead_code)]
+    Media,
 }
 impl Into<String> for DB_Table {
     fn into(self) -> String {
@@ -19,6 +21,7 @@ impl Into<String> for DB_Table {
             DB_Table::PostMeta => DB_TABLE_POST_META.to_string(),
             DB_Table::Accounts => DB_TABLE_ACCOUNTS.to_string(),
             DB_Table::AccountMeta => DB_TABLE_ACCOUNT_META.to_string(),
+            DB_Table::Media => DB_TABLE_MEDIA.to_string(),
         }
     }
 }
@@ -29,6 +32,7 @@ impl Display for DB_Table {
             DB_Table::PostMeta => write!(f, "{}", DB_TABLE_POST_META),
             DB_Table::Accounts => write!(f, "{}", DB_TABLE_ACCOUNTS),
             DB_Table::AccountMeta => write!(f, "{}", DB_TABLE_ACCOUNT_META),
+            DB_Table::Media => write!(f, "{}", DB_TABLE_MEDIA),
         }
     }
 }
