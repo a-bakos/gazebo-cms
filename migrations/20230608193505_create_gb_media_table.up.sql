@@ -10,4 +10,7 @@ CREATE TABLE IF NOT EXISTS gb_media (
     description TEXT DEFAULT NULL,
     --status VARCHAR(20) DEFAULT 'attached' -- status is not needed if we have attached_to
     --tags INTEGER[] DEFAULT NULL
+    -- Mime type ??
+    -- File/Image URL: The URL or file path of the image is essential for referencing and displaying the image on web pages. It can be stored as a separate field or derived from the uploaded file.
+    -- Dimensions: Including the width and height of the image can be useful for layout and responsive design purposes. These dimensions can be automatically extracted from the image file metadata or calculated when the image is uploaded.
 );
