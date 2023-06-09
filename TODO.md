@@ -8,6 +8,16 @@
 
 // todo gb_log table : whodunnit log
 
+```rust
+struct GB_Log {
+    date: String,
+    user_id: u32,
+    entry_id: u32,
+    event_code: u32,
+    note: String,
+}
+```
+
 ---
 
 Test structure:
