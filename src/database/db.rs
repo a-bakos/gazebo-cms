@@ -13,7 +13,10 @@ pub enum DB_Table {
     AccountMeta,
     #[allow(dead_code)]
     Media,
+    #[allow(dead_code)]
+    Log,
 }
+
 impl Into<String> for DB_Table {
     fn into(self) -> String {
         match self {
@@ -22,6 +25,7 @@ impl Into<String> for DB_Table {
             DB_Table::Accounts => DB_TABLE_ACCOUNTS.to_string(),
             DB_Table::AccountMeta => DB_TABLE_ACCOUNT_META.to_string(),
             DB_Table::Media => DB_TABLE_MEDIA.to_string(),
+            DB_Table::Log => DB_TABLE_LOG.to_string(),
         }
     }
 }
@@ -33,6 +37,7 @@ impl Display for DB_Table {
             DB_Table::Accounts => write!(f, "{}", DB_TABLE_ACCOUNTS),
             DB_Table::AccountMeta => write!(f, "{}", DB_TABLE_ACCOUNT_META),
             DB_Table::Media => write!(f, "{}", DB_TABLE_MEDIA),
+            DB_Table::Log => write!(f, "{}", DB_TABLE_LOG),
         }
     }
 }

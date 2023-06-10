@@ -11,7 +11,7 @@
 idea: 
 
 ```rust
-struct GB_Log {
+struct GB_LogItem {
     date: String,
     user_id: u32,
     entry_id: u32,
@@ -26,9 +26,8 @@ idea:
 
 ```rust
 struct GB_MenuItem {
-    id: u32,
     date: String,
-    user_id: u32,
+    added_by: u32,
     title: String,
     entry_id: Option<EntryID>,
     url: String

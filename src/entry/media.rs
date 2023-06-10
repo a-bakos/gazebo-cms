@@ -1,7 +1,7 @@
 use crate::entry::post::EntryID;
 use crate::users::user::UserID;
 
-struct GB_Media {
+struct GB_MediaItem {
     id: EntryID,
     uploader: UserID,
     attached_to: Vec<EntryID>,
