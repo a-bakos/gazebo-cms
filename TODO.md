@@ -8,6 +8,8 @@
 
 // todo gb_log table : whodunnit log
 
+idea: 
+
 ```rust
 struct GB_Log {
     date: String,
@@ -17,6 +19,20 @@ struct GB_Log {
     note: String,
 }
 ```
+
+// todo: menu item entry type
+
+idea: 
+
+```rust
+struct GB_MenuItem {
+    id: u32,
+    date: String,
+    user_id: u32,
+    title: String,
+    entry_id: Option<EntryID>,
+    url: String
+}
 
 ---
 
