@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="gb-style.css">
+    <title>Gazebo Login Page</title>
+</head>
+<body id="gb-gui">
+    <h1>LOGIN</h1>
+
+    <form id="gb-login-form" action="/login" method="POST">
+        <h2>Log In</h2>
+        <div>
+            <label for="gb-username-email">Username or Email:</label>
+            <input type="text" id="gb-username-email" name="login-name" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <button type="submit">Login</button>
+        </div>
+    </form>
+
+    <footer>
+
+    </footer>
+</body>
+</html>

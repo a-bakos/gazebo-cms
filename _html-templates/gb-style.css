@@ -71,3 +71,19 @@ ul {
 .gb-admin-table tr {
     border-bottom: 1px solid black;
 }
+
+#gb-login-form {
+    background: white;
+    padding: 1em;
+    width: fit-content;
+    margin: auto;
+    text-align: center;
+}
+
+#gb-login-form div {
+    margin-bottom: 10px;
+}
+
+#gb-login-form label {
+    display: block;
+}

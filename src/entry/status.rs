@@ -34,6 +34,8 @@ pub enum PostStatus {
     Publish,
     Private,
     Trash,
+    // Future
+    // Pending
     Unknown,
 }
 impl std::fmt::Display for PostStatus {
