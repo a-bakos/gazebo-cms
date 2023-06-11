@@ -6,7 +6,7 @@ use crate::database::columns::{
 };
 use crate::database::db::DB_Table;
 use crate::entry::entry_type::{get_entry_type_variant, EntryType};
-use crate::entry::post::{EntryID, GB_Post};
+use crate::entry::post::{EntryID, GB_PostItem};
 use crate::entry::status::{get_entry_status_variant, EntryStatus};
 use crate::errors::error_handler::SqlxError;
 use crate::users::user::UserID;
@@ -28,7 +28,7 @@ pub enum GB_QueryArg {
 #[allow(non_camel_case_types)]
 pub struct GB_Query {
     args: Vec<GB_QueryArg>,
-    results: Vec<GB_Post>,
+    results: Vec<GB_PostItem>,
     pool: PgPool, // Will be a pool clone
 }
 
@@ -50,7 +50,7 @@ impl GB_Query {
         match sqlx::query(&query)
             .bind("post")
             .map(|row: PgRow| {
-                let the_post: GB_Post = row.into();
+                let the_post: GB_PostItem = row.into();
                 self.results.push(the_post);
             })
             .fetch_all(&self.pool)
@@ -61,14 +61,14 @@ impl GB_Query {
         }
     }
 
-    pub fn get_results(&self) -> &Vec<GB_Post> {
+    pub fn get_results(&self) -> &Vec<GB_PostItem> {
         &self.results
     }
 }
 
 // Turn PgRow into GB_Post
-impl Into<GB_Post> for PgRow {
-    fn into(self) -> GB_Post {
+impl Into<GB_PostItem> for PgRow {
+    fn into(self) -> GB_PostItem {
         // Underscores' meaning here:
         // we don't need to specify a default/fallback value because the cell will never be empty
 
@@ -79,10 +79,6 @@ impl Into<GB_Post> for PgRow {
             .try_get(COL_INDEX_POST_PARENT)
             .ok()
             .unwrap_or(consts::ENTRY_ID_NO_PARENT) as u32;
-
-        // Entry type
-        let entry_type_as_str: &str = self.get(COL_INDEX_POST_TYPE);
-        let the_type: EntryType = get_entry_type_variant(entry_type_as_str);
 
         // Publish date
         let date_publish: NaiveDateTime = self.get::<NaiveDateTime, _>(COL_INDEX_POST_DATE_PUBLISH);
@@ -95,16 +91,15 @@ impl Into<GB_Post> for PgRow {
 
         // Entry status
         let entry_status_as_str: &str = self.get(COL_INDEX_POST_STATUS);
-        let status: EntryStatus = get_entry_status_variant(entry_status_as_str, &the_type);
+        let status: EntryStatus = get_entry_status_variant(entry_status_as_str, &EntryType::Post);
 
-        GB_Post {
+        GB_PostItem {
             id: EntryID(post_id),
             id_author: UserID(author_id),
             id_parent: Some(EntryID(parent_id)),
             date_publish,
             date_modified,
             slug: self.get(COL_INDEX_POST_SLUG),
-            the_type,
             status,
             title: self.get(COL_INDEX_POST_TITLE),
             excerpt: self.get(COL_INDEX_POST_EXCERPT),

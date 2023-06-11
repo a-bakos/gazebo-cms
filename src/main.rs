@@ -44,7 +44,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .connect(db_url)
         .await?;
 
-    mock_process::Imitate::gb_query_get_posts_by_id(pool.clone()).await;
+    //mock_process::Imitate::gb_query_get_posts_by_id(pool.clone()).await;
 
     // execute migrations before anything
     sqlx::migrate!().run(&pool.clone()).await?;

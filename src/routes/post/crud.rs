@@ -1,5 +1,5 @@
 use crate::database::db::DB_Table;
-use crate::entry::post::GB_Post;
+use crate::entry::post::GB_PostItem;
 use crate::errors::error_handler::SqlxError;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgRow;
@@ -13,7 +13,7 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
     match sqlx::query(&query)
         .bind(id)
         .map(|row: PgRow| {
-            let the_post: GB_Post = row.into();
+            let the_post: GB_PostItem = row.into();
             the_post
         })
         .fetch_one(&pool)

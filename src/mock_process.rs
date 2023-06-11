@@ -4,7 +4,7 @@
 
 use crate::app::App;
 use crate::entry::query::{GB_Query, GB_QueryArg};
-use crate::entry::{entry_type::EntryType, post::GB_Post};
+use crate::entry::{entry_type::EntryType, post::GB_PostItem};
 use sqlx::PgPool;
 
 pub(crate) struct Imitate {}
@@ -53,7 +53,7 @@ impl Imitate {
     #[allow(dead_code)]
     pub fn add_posts(app: &mut App) {
         // Imitate editing a new post - Eg. User clicks on a "add/create new post" button
-        let mut post = GB_Post::draft(app, EntryType::Post);
+        let mut post = GB_PostItem::draft(app);
 
         // User adds a title to the post with permalink
         // (The title contains special characters which will be treated when the permalink is generated)
