@@ -1,5 +1,13 @@
 # This file is just a collection of random ideas at this point
 
+Technologies:
+
+- Rust, Warp
+- PostgreSQL
+- Yew, WebAssembly 
+- Tailwind CSS, Bulma CSS
+- Main crates: sqlx, warp, tokio, serde, yew
+
 // todo rename GB_Post to GB_Entry
 
 // todo consider gb_config table : to store cms settings
