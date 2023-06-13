@@ -40,6 +40,7 @@ struct GB_MenuItem {
     entry_id: Option<EntryID>,
     url: String
 }
+```
 
 ---
 
@@ -160,6 +161,7 @@ enum GB_QueryArg {
     EntryStatus(EntryStatus), // like post_status
 }
 ```
+
 ---
 
 ## Roles and caps in WP
