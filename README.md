@@ -5,6 +5,10 @@ This is a project for myself to practice and grow my Rust skills. The main idea 
 re-create some parts of WordPress using Rust in order to pick up new things, solidify what I've learnt already, 
 understand and commit to muscle memory.
 
+Tech Stack so far:
+
+Rust, Warp, PostgreSQL
+
 **Why WordPress?**
 
 Because I love WordPress and I know it like the back of my hand. It's that simple.
