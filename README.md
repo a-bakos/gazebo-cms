@@ -9,6 +9,8 @@ Tech Stack so far:
 
 Rust, Warp, PostgreSQL
 
+Kick off: 2023 Jan 13
+
 **Why WordPress?**
 
 Because I love WordPress and I know it like the back of my hand. It's that simple.
