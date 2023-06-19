@@ -16,6 +16,8 @@ Technologies:
 
 // todo gb_log table : whodunnit log
 
+// anyhow for errors
+
 idea: 
 
 ```rust
@@ -300,9 +302,7 @@ enum GB_QueryArg {
 
 ---
 
-Some todo ideas
 
-- anyhow for errors
  
 ```php
 /**
