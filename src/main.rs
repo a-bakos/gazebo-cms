@@ -87,6 +87,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .and_then(routes::user::registration::registration);
 
     let login = warp::post()
+        .and(warp::path("api"))
         .and(warp::path(url::path::PATH_USER_LOGIN))
         .and(warp::path::end())
         .and(pool_filter.clone())
