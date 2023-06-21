@@ -1,3 +1,4 @@
+use yew::platform::spawn_local;
 use yew::prelude::*;
 
 use crate::components::input::{Input, InputProps};
@@ -33,6 +34,14 @@ pub fn login_form() -> Html {
             cloned_username.clone(),
             cloned_password.clone()
         );
+
+        let cloned_username = cloned_username.clone();
+        let cloned_password = cloned_password.clone();
+        spawn_local(async move {
+            crate::api::user::api_login(cloned_username, cloned_password)
+                .await
+                .unwrap();
+        });
     });
 
     html! {
