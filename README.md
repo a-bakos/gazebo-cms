@@ -7,7 +7,7 @@ understand and commit to muscle memory.
 
 Tech Stack so far:
 
-Rust, Warp, PostgreSQL
+Rust, Warp, PostgreSQL, Yew, Trunk
 
 Kick off: 2023 Jan 13
 
