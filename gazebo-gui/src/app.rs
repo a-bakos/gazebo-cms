@@ -1,5 +1,6 @@
 use yew::prelude::*;
 
+use crate::components::admin_bar::AdminBar;
 use crate::components::header::Header;
 use crate::components::login_form::LoginForm;
 
@@ -7,6 +8,7 @@ use crate::components::login_form::LoginForm;
 pub fn app() -> Html {
     html! {
         <>
+        <AdminBar />
         <Header />
         <main>
             <LoginForm />

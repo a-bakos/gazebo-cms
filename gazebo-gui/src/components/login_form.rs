@@ -1,31 +1,6 @@
-use std::collections::HashMap;
 use yew::prelude::*;
 
-#[derive(Properties, PartialEq)]
-pub struct InputProps {
-    pub label: AttrValue,
-    pub id: AttrValue,
-    pub name: AttrValue,
-    pub input_type: AttrValue,
-    pub value: AttrValue,
-    pub onchange: Callback<Event>,
-}
-
-#[function_component(Input)]
-pub fn input(props: &InputProps) -> Html {
-    html! {
-        <>
-            <label for={props.id.clone()}>{props.label.clone()}</label>
-            <input
-                id={props.id.clone()}
-                type={props.input_type.clone()}
-                name={props.name.clone()}
-                value={props.value.clone()}
-                onchange={props.onchange.clone()}
-            />
-        </>
-    }
-}
+use crate::components::input::{Input, InputProps};
 
 #[function_component(LoginForm)]
 pub fn login_form() -> Html {
@@ -33,8 +8,8 @@ pub fn login_form() -> Html {
     let username = (*username_handle).clone();
     let username_changed = Callback::from(move |event: Event| {
         let target = event.target_dyn_into::<web_sys::HtmlInputElement>(); // we need web_sys for this type
-        if let Some(input) = target {
-            username_handle.set(input.value());
+        if let Some(username_input) = target {
+            username_handle.set(username_input.value());
         }
     });
 
@@ -42,8 +17,8 @@ pub fn login_form() -> Html {
     let password = (*password_handle).clone();
     let password_changed = Callback::from(move |event: Event| {
         let target = event.target_dyn_into::<web_sys::HtmlInputElement>(); // we need web_sys for this type
-        if let Some(input) = target {
-            password_handle.set(input.value());
+        if let Some(password_input) = target {
+            password_handle.set(password_input.value());
         }
     });
 
@@ -51,9 +26,13 @@ pub fn login_form() -> Html {
     let cloned_password = password.clone();
     let on_form_submit = Callback::from(move |event: SubmitEvent| {
         event.prevent_default();
-        gloo_console::log!("Submitting form");
-        gloo_console::log!(cloned_username.clone());
-        gloo_console::log!(cloned_password.clone());
+
+        // Console logging for now
+        gloo_console::log!(
+            "Submitting form",
+            cloned_username.clone(),
+            cloned_password.clone()
+        );
     });
 
     html! {
