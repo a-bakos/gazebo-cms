@@ -44,6 +44,8 @@ pub fn login_form() -> Html {
             println!("{}", response);
 
             gloo_console::log!("Login request response: ", response);
+
+            // On success, create a cookie
         });
     });
 

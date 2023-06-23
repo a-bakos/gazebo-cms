@@ -37,6 +37,7 @@ pub const COL_INDEX_ACCOUNT_PASSWORD: &str = "password";
 pub const COL_INDEX_ACCOUNT_ROLE: &str = "role";
 pub const COL_INDEX_ACCOUNT_LOGIN: &str = "login";
 pub const COL_INDEX_ACCOUNT_REGISTERED: &str = "registered";
+pub const COL_INDEX_ACCOUNT_LAST_LOGIN: &str = "last_login";
 
 // Accounts meta
 
@@ -46,13 +47,14 @@ pub const COL_INDEX_ACCOUNT_META_KEY: &str = "meta_key";
 pub const COL_INDEX_ACCOUNT_META_VALUE: &str = "meta_value";
 
 #[allow(dead_code)]
-pub const COLUMNS_USERS: [(&str, &str); 6] = [
+pub const COLUMNS_USERS: [(&str, &str); 7] = [
     ("ID", COL_INDEX_ACCOUNT_ID),
     ("LOGIN_NAME", COL_INDEX_ACCOUNT_LOGIN),
     ("EMAIL", COL_INDEX_ACCOUNT_EMAIL),
     ("ROLE", COL_INDEX_ACCOUNT_ROLE),
     ("PASSWORD", COL_INDEX_ACCOUNT_PASSWORD),
     ("REGISTERED", COL_INDEX_ACCOUNT_REGISTERED),
+    ("LAST_LOGIN", COL_INDEX_ACCOUNT_LAST_LOGIN),
 ];
 
 #[allow(dead_code)]

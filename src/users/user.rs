@@ -57,6 +57,7 @@ pub struct User {
     pub role: UserRole,
     pub password: String,
     pub registered: String,
+    pub last_login: String,
 }
 
 impl User {

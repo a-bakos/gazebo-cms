@@ -1,3 +1,4 @@
+use crate::database::columns::COL_INDEX_ACCOUNT_LAST_LOGIN;
 use crate::database::{
     columns::{
         COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LOGIN,
@@ -41,6 +42,14 @@ pub async fn get_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
                 row.get::<NaiveDateTime, _>(COL_INDEX_ACCOUNT_REGISTERED);
             let registered = registered.to_string();
 
+            // Last login
+            let last_login: Option<NaiveDateTime> =
+                row.get::<Option<NaiveDateTime>, _>(COL_INDEX_ACCOUNT_LAST_LOGIN);
+            let last_login = match last_login {
+                Some(last_login_date) => last_login_date.to_string(),
+                None => String::from("None"),
+            };
+
             User {
                 login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
                 email: row.get(COL_INDEX_ACCOUNT_EMAIL),
@@ -48,6 +57,7 @@ pub async fn get_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
                 role,
                 password: row.get(COL_INDEX_ACCOUNT_PASSWORD), // todo: hide this later
                 registered,
+                last_login,
             }
         })
         .fetch_one(&pool)

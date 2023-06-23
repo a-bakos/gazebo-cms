@@ -33,6 +33,7 @@ pub async fn try_login(
             // if !app.users.contains(&user_email.to_string()) {
             //     app.users.push(user_email.to_string());
             // }
+            // todo store last login
             Ok(warp::reply::json(&MSG_LOGIN_SUCCESS))
         }
         Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
