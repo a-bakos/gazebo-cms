@@ -9,7 +9,7 @@ Tech Stack so far:
 
 Rust, Warp, PostgreSQL, Yew, Trunk
 
-Kick off: 2023 Jan 13
+Project kick off: 2023 Jan 13
 
 **Why WordPress?**
 
@@ -17,18 +17,18 @@ Because I love WordPress and I know it like the back of my hand. It's that simpl
 
 **Aims and limitations:**
 
-Eventually, I want a prototype for a basic CMS flow. _However..._
+Essentially, I want a prototype for a basic CMS flow. _However..._
 
 Certainly, re-implementing a WordPress-like CMS is a non-trivial and rather enormous undertaking, something I certainly 
-wouldn't be able to complete alone within a sensible timeframe.
+wouldn't be able to complete alone within a sensible timeframe and to the highest standards.
 
 But, at this point, it's not my goal to fully achieve that. I'm also not saying that I would not want it to be my goal in the future. 
 
-Right now, my aim is to learn about Rust, practice it regularly, and in varied ways, maybe even to show it to some people for feedback. 
+Right now, my aim is to learn more about Rust and related technologies, practice it regularly, and in varied ways, maybe even to show it to some people for feedback or a potential employer. 
 And for that purpose an extensive CMS (aka WP, which nowadays is more like a framework in my opinion) is a great subject.
 
 Cherrypicking certain parts for re-implementation is a great method for me to keep this project and the learning experience interesting. 
-It is a great exercise to think critically about data structures and modelling, databases and communication, content creation and user management, etc.
+It is a great exercise to think critically about data structures and modelling, databases and communication, content creation and user management, APIs, frontend/backend separation/connection etc.
 
 Even a small module, like permalink-generation has a lot of hidden knowledge, something that has already taught me a great deal and not just about Rust per se.
 
