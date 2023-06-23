@@ -1,3 +1,4 @@
+use crate::database::columns::{COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_LOGIN};
 use crate::database::db::DB_Table;
 use crate::errors::error_handler::ErrorResponse;
 use crate::http::response::HttpResponse;
@@ -18,14 +19,15 @@ const MSG_LOGIN_SUCCESS: &str = "Login successful";
 
 pub async fn try_login(
     query: &str,
-    pool: &PgPool,
+    pool: PgPool,
     password: String,
     binding: String,
+    login_variant: CheckAccountExistsBy,
 ) -> Result<warp::reply::Json, warp::Rejection> {
     match sqlx::query(query)
         .bind(password)
-        .bind(binding)
-        .execute(pool)
+        .bind(binding.clone())
+        .execute(&pool)
         .await
     {
         Ok(_) => {
@@ -33,7 +35,25 @@ pub async fn try_login(
             // if !app.users.contains(&user_email.to_string()) {
             //     app.users.push(user_email.to_string());
             // }
-            // todo store last login
+
+            let column_name = match login_variant {
+                CheckAccountExistsBy::Email => COL_INDEX_ACCOUNT_EMAIL,
+                CheckAccountExistsBy::Login => COL_INDEX_ACCOUNT_LOGIN,
+            };
+            let update_last_login_query = format!(
+                "UPDATE {} SET last_login = CURRENT_TIMESTAMP WHERE {} = $1",
+                DB_Table::Accounts,
+                column_name // email or username
+            );
+            match sqlx::query(&update_last_login_query)
+                .bind(binding)
+                .execute(&pool)
+                .await
+            {
+                Ok(_) => println!("Last login updated!"),
+                Err(e) => println!("Last login update error"),
+            }
+
             Ok(warp::reply::json(&MSG_LOGIN_SUCCESS))
         }
         Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
@@ -55,7 +75,7 @@ pub async fn login(
         return match account_exists_by_email {
             Ok(true) => {
                 // Acc exists / go login
-                let query = format!("SELECT * FROM {} WHERE email = $1", DB_Table::Accounts);
+                let query = format!("SELECT * FROM {} WHERE email = $1", DB_Table::Accounts); // this might go into try_login
                 let binding = email.clone();
                 let password = params.password.clone();
                 if user_manager::is_password_match(
@@ -67,7 +87,14 @@ pub async fn login(
                 .await
                 {
                     // Try login and return result
-                    try_login(&query, &pool, password, binding).await
+                    try_login(
+                        &query,
+                        pool.clone(),
+                        password,
+                        binding,
+                        CheckAccountExistsBy::Email,
+                    )
+                    .await
                 } else {
                     // System log
                     println!("Wrong password used for: {}", &binding);
@@ -103,7 +130,14 @@ pub async fn login(
                 .await
                 {
                     // Try login and return result
-                    try_login(&query, &pool, password, binding).await
+                    try_login(
+                        &query,
+                        pool.clone(),
+                        password,
+                        binding,
+                        CheckAccountExistsBy::Login,
+                    )
+                    .await
                 } else {
                     // System log
                     println!("Wrong password used for: {}", &binding);
