@@ -4,5 +4,6 @@ CREATE TABLE IF NOT EXISTS gb_accounts (
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100) NOT NULL,
     registered TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMP DEFAULT NULL,
     role VARCHAR(20) NOT NULL
 );
