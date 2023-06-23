@@ -18,13 +18,21 @@ pub struct LoginRequest {
 const MSG_LOGIN_SUCCESS: &str = "Login successful";
 
 pub async fn try_login(
-    query: &str,
     pool: PgPool,
     password: String,
     binding: String,
     login_variant: CheckAccountExistsBy,
 ) -> Result<warp::reply::Json, warp::Rejection> {
-    match sqlx::query(query)
+    let column_name = match login_variant {
+        CheckAccountExistsBy::Email => COL_INDEX_ACCOUNT_EMAIL,
+        CheckAccountExistsBy::Login => COL_INDEX_ACCOUNT_LOGIN,
+    };
+    let query = format!(
+        "SELECT * FROM {} WHERE {} = $1",
+        DB_Table::Accounts,
+        column_name
+    );
+    match sqlx::query(&query)
         .bind(password)
         .bind(binding.clone())
         .execute(&pool)
@@ -35,11 +43,6 @@ pub async fn try_login(
             // if !app.users.contains(&user_email.to_string()) {
             //     app.users.push(user_email.to_string());
             // }
-
-            let column_name = match login_variant {
-                CheckAccountExistsBy::Email => COL_INDEX_ACCOUNT_EMAIL,
-                CheckAccountExistsBy::Login => COL_INDEX_ACCOUNT_LOGIN,
-            };
             let update_last_login_query = format!(
                 "UPDATE {} SET last_login = CURRENT_TIMESTAMP WHERE {} = $1",
                 DB_Table::Accounts,
@@ -75,7 +78,7 @@ pub async fn login(
         return match account_exists_by_email {
             Ok(true) => {
                 // Acc exists / go login
-                let query = format!("SELECT * FROM {} WHERE email = $1", DB_Table::Accounts); // this might go into try_login
+
                 let binding = email.clone();
                 let password = params.password.clone();
                 if user_manager::is_password_match(
@@ -87,14 +90,7 @@ pub async fn login(
                 .await
                 {
                     // Try login and return result
-                    try_login(
-                        &query,
-                        pool.clone(),
-                        password,
-                        binding,
-                        CheckAccountExistsBy::Email,
-                    )
-                    .await
+                    try_login(pool.clone(), password, binding, CheckAccountExistsBy::Email).await
                 } else {
                     // System log
                     println!("Wrong password used for: {}", &binding);
@@ -109,8 +105,6 @@ pub async fn login(
     }
 
     if let Some(login) = params.login {
-        let _query = format!("SELECT * FROM {} WHERE login = $1", DB_Table::Accounts);
-        let _binding = login.clone();
         let account_exists_by_login =
             check_account_exists(pool.clone(), CheckAccountExistsBy::Login, login.clone()).await;
 
@@ -118,7 +112,7 @@ pub async fn login(
             Ok(true) => {
                 println!("We're here trying to get user");
                 // Acc exists
-                let query = format!("SELECT * FROM {} WHERE login = $1", DB_Table::Accounts);
+
                 let binding = login.clone();
                 let password = params.password.clone();
                 if user_manager::is_password_match(
@@ -130,14 +124,7 @@ pub async fn login(
                 .await
                 {
                     // Try login and return result
-                    try_login(
-                        &query,
-                        pool.clone(),
-                        password,
-                        binding,
-                        CheckAccountExistsBy::Login,
-                    )
-                    .await
+                    try_login(pool.clone(), password, binding, CheckAccountExistsBy::Login).await
                 } else {
                     // System log
                     println!("Wrong password used for: {}", &binding);
