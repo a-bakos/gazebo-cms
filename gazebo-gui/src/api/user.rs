@@ -6,13 +6,10 @@ use serde_json::json;
 
 #[derive(Deserialize)]
 pub struct LoginResponse {
-    pub token: String,
+    pub status: String,
 }
 
-pub async fn api_login(
-    username: String,
-    password: String,
-) -> Result<LoginResponse, gloo_net::Error> {
+pub async fn api_login(username: String, password: String) -> Result<String, gloo_net::Error> {
     // gloo-net
     let response = Request::post(&format!("{}/login", BACKEND_URL_BASE))
         .json(&json!({
@@ -22,7 +19,7 @@ pub async fn api_login(
         .send()
         .await?;
 
-    response.json::<LoginResponse>().await
+    response.json::<String>().await
 }
 
 #[derive(Deserialize)]

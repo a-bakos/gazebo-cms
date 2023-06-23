@@ -30,7 +30,7 @@ pub fn login_form() -> Html {
 
         // Console logging for now
         gloo_console::log!(
-            "Submitting form",
+            "Submitting form: ",
             cloned_username.clone(),
             cloned_password.clone()
         );
@@ -38,9 +38,12 @@ pub fn login_form() -> Html {
         let cloned_username = cloned_username.clone();
         let cloned_password = cloned_password.clone();
         spawn_local(async move {
-            crate::api::user::api_login(cloned_username, cloned_password)
+            let response = crate::api::user::api_login(cloned_username, cloned_password)
                 .await
                 .unwrap();
+            println!("{}", response);
+
+            gloo_console::log!("Login request response: ", response);
         });
     });
 

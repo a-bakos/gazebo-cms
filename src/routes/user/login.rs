@@ -88,6 +88,7 @@ pub async fn login(
 
         return match account_exists_by_login {
             Ok(true) => {
+                println!("We're here trying to get user");
                 // Acc exists
                 let query = format!("SELECT * FROM {} WHERE login = $1", DB_Table::Accounts);
                 let binding = login.clone();

@@ -1,4 +1,2 @@
-[dev]
-proxy = [
-    { path = "/api/*", upstream = "http://127.0.0.1:1337" }
-]
+[[proxy]]
+backend = "http://localhost:1337/"
