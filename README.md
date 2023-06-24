@@ -1,5 +1,5 @@
 # Gazebo CMS - A WIP Rust CMS
-## A thought experiment project inspired by WordPress
+## An experiment project inspired by WordPress
 
 This is a project for myself to practice and grow my Rust skills. The main idea behind this project is to explore and
 re-create some parts of WordPress using Rust in order to pick up new things, solidify what I've learnt already, 
@@ -9,7 +9,7 @@ Tech Stack so far:
 
 Rust, Warp, PostgreSQL, Yew, Trunk
 
-Project kick off: 2023 Jan 13
+Init: 2023 Jan 13
 
 **Why WordPress?**
 
