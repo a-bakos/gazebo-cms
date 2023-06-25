@@ -10,13 +10,13 @@ use crate::components::post_rollup::PostRollup;
 pub fn app() -> Html {
     html! {
         <>
-        <AdminBar />
-        <Header />
-        <main>
-            <LoginForm />
-            <PostRollup />
-        </main>
-        <Footer />
+            <AdminBar />
+            <Header />
+            <main>
+                <LoginForm />
+                <PostRollup />
+            </main>
+            <Footer />
         </>
     }
 }
