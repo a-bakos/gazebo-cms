@@ -53,8 +53,9 @@ async fn main() -> Result<(), sqlx::Error> {
 
     let cors = warp::cors()
         .allow_any_origin()
-        .allow_header("content-type")
-        .allow_methods(&[Method::PUT, Method::DELETE, Method::POST, Method::GET]);
+        .allow_headers(vec!["content-type"])
+        .allow_methods(&[Method::PUT, Method::DELETE, Method::POST, Method::GET])
+        .build();
 
     let get_user = warp::get()
         .and(warp::path(url::path::PATH_USER))
@@ -71,13 +72,6 @@ async fn main() -> Result<(), sqlx::Error> {
         // .and(warp::query()) // => this is the params: HashMap<String, String> parameter in the callback
         .and(pool_filter.clone())
         .and_then(routes::user::crud::delete_user_by_id);
-
-    let get_users_html = warp::get()
-        .and(warp::path("usershtml"))
-        .and(warp::path::end()) // ::end() closes the URI path
-        .and(warp::query())
-        .and(pool_filter.clone())
-        .and_then(get_users_html);
 
     let registration = warp::post()
         .and(warp::path(url::path::PATH_USER_REGISTRATION))
@@ -117,65 +111,21 @@ async fn main() -> Result<(), sqlx::Error> {
     //    .and(warp::body::json())
     //    .and_then(routes::post::crud::insert_post);
 
-    let index = warp::path::end() // Match the root path ("/")
-        .and(warp::get()) // Handle GET requests
-        .and(pool_filter.clone())
-        .and_then(get_index_html);
+    let fallback = warp::path::end()
+        .and(warp::get())
+        .map(|| warp::reply::html("404 Not Found"));
 
     let routes = get_user
-        .or(index)
-        .or(get_users_html)
-        .or(registration)
+        // .or(index)
+        //.or(get_users_html)
+        //.or(registration)
         .or(login)
-        .or(delete_user)
-        .or(get_post)
-        .or(insert_post)
-        .with(cors);
+        //.or(delete_user)
+        //.or(get_post)
+        //.or(insert_post)
+        .with(cors)
+        .or(fallback);
     warp::serve(routes).run(([127, 0, 0, 1], 1337)).await;
 
     Ok(())
-}
-
-async fn get_index_html(_pool: PgPool) -> Result<impl Reply, Infallible> {
-    let html = format!(
-        r#"<html><head><title>Gazebo CMS index page</title></head>
-            <body>
-            <h1>Login</h1>
-            <form method="post" action="/login">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required><br>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required><br>
-                <input type="submit" value="Login">
-            </form>
-        </body></html>"#
-    );
-
-    let response = Response::builder()
-        .header("content-type", "text/html")
-        .body(html)
-        .unwrap();
-    Ok(response.into_response())
-}
-
-// This is just an experimental feature
-// http://localhost:1337/users?name=what&age=whatwhat
-async fn get_users_html(
-    params: HashMap<String, String>,
-    _pool: PgPool,
-) -> Result<impl Reply, Infallible> {
-    let name = params
-        .get("name")
-        .unwrap_or(&"GAZEBO".to_owned())
-        .to_owned();
-    let html = format!(
-        r#"<html><head><title>Users Page</title></head><body><h1>Hello, {}!</h1></body></html>"#,
-        name
-    );
-
-    let response = Response::builder()
-        .header("content-type", "text/html")
-        .body(html)
-        .unwrap();
-    Ok(response.into_response())
 }

@@ -1,2 +1,2 @@
-[[proxy]]
-backend = "http://localhost:1337/"
+#[[proxy]]
+#backend = "http://127.0.0.1:1337/gazebo-backend-api"
