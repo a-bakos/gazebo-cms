@@ -6,12 +6,12 @@ pub fn admin_bar() -> Html {
         <>
             <nav class="gb-admin-bar">
                 <ul>
-                    <li><a href="">{"Hello"}</a></li>
-                    <li><a href="">{"Admin"}</a></li>
-                    <li><a href="">{"Front"}</a></li>
-                    <li><a href="">{"ID"}</a></li>
-                    <li><a href="">{"Add"}</a></li>
-                    <li><a href="">{"Exit"}</a></li>
+                    <li><a title="" href="">{"Hello"}</a></li>
+                    <li><a title="Admin area" href="">{"Admin"}</a></li>
+                    <li><a title="Front End" href="">{"Front"}</a></li>
+                    <li><a title="" href="">{"ID"}</a></li>
+                    <li><a title="Add new entry" href="">{"Create new entry"}</a></li>
+                    <li><a title="Logout" href="">{"Exit"}</a></li>
                 </ul>
             </nav>
         </>

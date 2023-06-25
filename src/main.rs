@@ -111,20 +111,14 @@ async fn main() -> Result<(), sqlx::Error> {
     //    .and(warp::body::json())
     //    .and_then(routes::post::crud::insert_post);
 
-    let fallback = warp::path::end()
-        .and(warp::get())
-        .map(|| warp::reply::html("404 Not Found"));
-
     let routes = get_user
         // .or(index)
-        //.or(get_users_html)
-        //.or(registration)
+        .or(registration)
         .or(login)
-        //.or(delete_user)
-        //.or(get_post)
-        //.or(insert_post)
-        .with(cors)
-        .or(fallback);
+        .or(delete_user)
+        .or(get_post)
+        .or(insert_post)
+        .with(cors);
     warp::serve(routes).run(([127, 0, 0, 1], 1337)).await;
 
     Ok(())
