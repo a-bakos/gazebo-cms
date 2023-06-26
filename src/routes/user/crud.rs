@@ -1,3 +1,4 @@
+use crate::consts::LABEL_NONE;
 use crate::database::columns::COL_INDEX_ACCOUNT_LAST_LOGIN;
 use crate::database::{
     columns::{
@@ -47,7 +48,7 @@ pub async fn get_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
                 row.get::<Option<NaiveDateTime>, _>(COL_INDEX_ACCOUNT_LAST_LOGIN);
             let last_login = match last_login {
                 Some(last_login_date) => last_login_date.to_string(),
-                None => String::from("None"),
+                None => String::from(LABEL_NONE),
             };
 
             User {

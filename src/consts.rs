@@ -3,8 +3,14 @@ use crate::users::user::UserID;
 /// App default
 pub const DEFAULT_APP_NAME: &str = "Gazebo CMS";
 pub const DEFAULT_APP_ADMIN_EMAIL: &str = "change_this@gazebocms.email";
-pub const VERSION: &str = "0.0.259";
+pub const VERSION: &str = "0.0.331";
 pub const SYSTEM_USER_ID: UserID = UserID(0);
+
+/// Labels
+pub const LABEL_NONE: &str = "none";
+pub const LABEL_UNKNOWN: &str = "unknown";
+pub const LABEL_YES: &str = "yes";
+pub const LABEL_NO: &str = "no";
 
 /// Permalink defaults
 #[allow(dead_code)]

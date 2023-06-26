@@ -94,7 +94,7 @@ pub async fn insert_post(
             match sqlx::query(&select_query)
                 .bind(title.clone())
                 .bind(slug.clone())
-                .map(|row: PgRow| row.get::<i32, _>("id"))
+                .map(|row: PgRow| row.get::<i32, _>(crate::database::columns::COL_INDEX_POST_ID))
                 .fetch_one(&pool)
                 .await
             {
@@ -150,7 +150,7 @@ pub async fn get_the_title(id: i32, pool: PgPool) -> Result<impl warp::Reply, wa
     match sqlx::query(&query)
         .bind(id)
         .map(|row: PgRow| {
-            let title: String = row.get("title");
+            let title: String = row.get(crate::database::columns::COL_INDEX_POST_TITLE);
             title
         })
         .fetch_one(&pool)
