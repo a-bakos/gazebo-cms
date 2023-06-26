@@ -116,3 +116,22 @@ pub fn delete_post(_pool: PgPool, _params: HashMap<String, String>) {
     // -> Result<impl warp::Reply, warp::Rejection> {
     todo!(); // w/ card
 }
+
+// Get post title
+pub async fn get_the_title(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
+    println!("Title requested of post: {:?}", id);
+
+    let query = format!("SELECT title FROM {} WHERE id = $1", DB_Table::Posts);
+    match sqlx::query(&query)
+        .bind(id)
+        .map(|row: PgRow| {
+            let title: String = row.get("title");
+            title
+        })
+        .fetch_one(&pool)
+        .await
+    {
+        Ok(res) => Ok(warp::reply::json(&res)),
+        Err(e) => Err(warp::reject::custom(SqlxError(e))), // Unhandled rejection: SqlxError(RowNotFound)
+    }
+}

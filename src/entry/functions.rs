@@ -1,13 +1,9 @@
+use crate::database::db::DB_Table;
+use crate::entry::post::GB_PostItem;
 use crate::entry::{entry_type::EntryType, post::EntryID};
 use crate::users::user::UserID;
-
-// Get post title
-#[allow(dead_code)]
-pub fn get_the_title(_post_id: u32) -> Option<String> {
-    todo!()
-    // let post = get_post_by_id(post_id).unwrap().unwrap();
-    // post.title
-}
+use sqlx::postgres::PgRow;
+use sqlx::PgPool;
 
 // Get post URL
 #[allow(dead_code)]

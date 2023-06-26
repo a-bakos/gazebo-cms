@@ -111,6 +111,13 @@ async fn main() -> Result<(), sqlx::Error> {
     //    .and(warp::body::json())
     //    .and_then(routes::post::crud::insert_post);
 
+    let get_post_title = warp::get()
+        .and(warp::path("title"))
+        .and(warp::path::param::<i32>())
+        .and(warp::path::end())
+        .and(pool_filter.clone())
+        .and_then(routes::post::crud::get_the_title);
+
     let routes = get_user
         // .or(index)
         .or(registration)
@@ -118,6 +125,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .or(delete_user)
         .or(get_post)
         .or(insert_post)
+        .or(get_post_title)
         .with(cors);
     warp::serve(routes).run(([127, 0, 0, 1], 1337)).await;
 
