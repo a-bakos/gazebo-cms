@@ -46,7 +46,7 @@ pub fn nav() -> Html {
                             <li
                                 key={nav_item.id}
                                 class={classes!("nav_item", if nav_item.is_active {"active"} else {""} )}>
-                                <Link<Route> to={nav_item.link.clone()}>{nav_item.label}</Link<Route>>
+                                <Link<Route> to={nav_item.link.clone()}>{nav_item.label.clone()}</Link<Route>>
                             </li>
                         }
                     }).collect::<Html>()

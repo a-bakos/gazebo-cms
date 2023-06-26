@@ -41,14 +41,16 @@ pub fn app() -> Html {
             <Switch<Route> render={switch} />
         </BrowserRouter>
 
-        <>
-            <AdminBar />
-            <Header />
-            <main>
-                <LoginForm />
-                <PostRollup />
-            </main>
-            <Footer />
-        </>
     }
 }
+
+//
+// <>
+//     <AdminBar />
+//     <Header />
+//     <main>
+//         <LoginForm />
+//         <PostRollup />
+//     </main>
+//     <Footer />
+// </>
