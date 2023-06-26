@@ -70,9 +70,9 @@ mod test {
 
     #[test]
     fn is_role_variant_correct() {
-        let role_1 = "administrator";
-        let role_2 = "editor";
-        let role_3 = "contributor";
+        let role_1 = consts::USER_ROLE_ADMIN;
+        let role_2 = consts::USER_ROLE_EDITOR;
+        let role_3 = consts::USER_ROLE_CONTRIBUTOR;
         let role_4 = "any_role";
 
         assert_eq!(UserRole::Admin, get_role_variant(role_1));
