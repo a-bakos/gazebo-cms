@@ -108,11 +108,11 @@ pub async fn insert_post(
 #[allow(dead_code)]
 pub fn update_post(_pool: PgPool, _params: HashMap<String, String>) {
     // -> Result<impl warp::Reply, warp::Rejection> {
-    todo!();
+    todo!(); // w/ card
 }
 
 #[allow(dead_code)]
 pub fn delete_post(_pool: PgPool, _params: HashMap<String, String>) {
     // -> Result<impl warp::Reply, warp::Rejection> {
-    todo!();
+    todo!(); // w/ card
 }

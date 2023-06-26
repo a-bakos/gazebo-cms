@@ -1,0 +1,238 @@
+{
+	"info": {
+		"_postman_id": "d72c5178-9cbe-460a-ad0e-81103836a1ca",
+		"name": "Gazebo-CMS-Rest-Routes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6500451"
+	},
+	"item": [
+		{
+			"name": "entry",
+			"item": [
+				{
+					"name": "Add Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"author_id\": 1000,\r\n    \"slug\": \"1000-this-is-the-slug-of-the-post\",\r\n    \"status\": \"private\",\r\n    \"title\": \"900 This is the title of the post\",\r\n    \"content\": \"NO EXCERPT NO PASSWORD\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:1337/post/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"post",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:1337/post/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"post",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get title by ID (todo)",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get permalink by ID (todo)",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get publish date by ID (todo)",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get modified date by ID (todo)",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get content by ID (todo)",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get author by ID (todo)",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get entry type by ID (todo",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get excerpt by ID (todo)",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "User Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"admin_fpassword\",\r\n    \"login\": \"admin\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:1337/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1337/user/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"user",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Simple get users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1337/user/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"hello@example.com\",\r\n    \"password\": \"cleartext\",\r\n    \"login\": \"hellologin\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:1337/registration",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"registration"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

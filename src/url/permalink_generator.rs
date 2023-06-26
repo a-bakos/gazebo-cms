@@ -27,10 +27,10 @@ pub enum PermalinkTruncationMethod {
     CutOffEnd,
     // Remove the least significant words
     #[allow(dead_code)]
-    RemoveLeastSignificantWords,
+    RemoveLeastSignificantWords, // w/ card
     // Remove longest words
     #[allow(dead_code)]
-    RemoveLongestWords,
+    RemoveLongestWords, // w/ card
 }
 
 #[derive(Debug)]
@@ -174,7 +174,7 @@ impl<'a> PermalinkGenerator<'a> {
         // Maybe limit length of permalink
         let permalink = self.maybe_limit_length(permalink);
 
-        // todo
+        // todo // w/ card
         // check for uniqueness
         let permalink = self.make_unique(permalink);
 
