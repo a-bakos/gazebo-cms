@@ -24,9 +24,23 @@ pub enum Route {
     NotFound,
 }
 
+pub fn switch(route: Route) -> Html {
+    match route {
+        Route::Home => html! { <Home /> },
+        Route::Login => html! { <Login /> },
+        Route::Admin => html! { <Admin /> },
+        Route::NotFound => html! { <h1>{ "404 not found" }</h1> },
+    }
+}
+
 #[function_component(App)]
 pub fn app() -> Html {
+    log::info!("YEW APP STARTED");
     html! {
+        <BrowserRouter>
+            <Switch<Route> render={switch} />
+        </BrowserRouter>
+
         <>
             <AdminBar />
             <Header />
