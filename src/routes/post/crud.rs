@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgRow;
 use sqlx::{PgPool, Row};
 use std::collections::HashMap;
+use warp::http::StatusCode;
 
 pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
     println!("Post requested: {:?}", id);
@@ -111,17 +112,41 @@ pub fn update_post(_pool: PgPool, _params: HashMap<String, String>) {
     todo!(); // w/ card
 }
 
-#[allow(dead_code)]
-pub fn delete_post(_pool: PgPool, _params: HashMap<String, String>) {
-    // -> Result<impl warp::Reply, warp::Rejection> {
-    todo!(); // w/ card
+pub async fn delete_post(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
+    println!("Post to be deleted ID: {}", id);
+
+    // TODO Authentication layer needs to be here.
+    // if ! auth { return Err(warp::reject::custom(AuthError)), }
+
+    let query = format!("DELETE FROM {} WHERE id = $1", DB_Table::Posts);
+    match sqlx::query(&query).bind(id).execute(&pool).await {
+        Ok(res) => {
+            if res.rows_affected() == 0 {
+                println!("Unknown post ID to be deleted");
+                return Ok(warp::reply::with_status(
+                    String::from("Unknown post ID"),
+                    StatusCode::OK,
+                ));
+            }
+            println!("Post deleted!");
+            Ok(warp::reply::with_status(
+                format!("Post {} deleted", id),
+                StatusCode::OK,
+            ))
+        }
+        Err(e) => Err(warp::reject::custom(SqlxError(e))),
+    }
 }
 
 // Get post title
 pub async fn get_the_title(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
     println!("Title requested of post: {:?}", id);
 
-    let query = format!("SELECT title FROM {} WHERE id = $1", DB_Table::Posts);
+    let query = format!(
+        "SELECT {} FROM {} WHERE id = $1",
+        crate::database::columns::COL_INDEX_POST_TITLE,
+        DB_Table::Posts
+    );
     match sqlx::query(&query)
         .bind(id)
         .map(|row: PgRow| {
