@@ -15,8 +15,6 @@ pub struct LoginRequest {
     pub password: String,
 }
 
-const MSG_LOGIN_SUCCESS: &str = "Login successful";
-
 pub async fn try_login(
     pool: PgPool,
     password: String,
@@ -57,7 +55,7 @@ pub async fn try_login(
                 Err(e) => println!("Last login update error"),
             }
 
-            Ok(warp::reply::json(&MSG_LOGIN_SUCCESS))
+            Ok(warp::reply::json(&crate::consts::MSG_LOGIN_SUCCESS))
         }
         Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
     }

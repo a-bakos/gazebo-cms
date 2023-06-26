@@ -12,6 +12,9 @@ pub const LABEL_UNKNOWN: &str = "unknown";
 pub const LABEL_YES: &str = "yes";
 pub const LABEL_NO: &str = "no";
 
+/// Messages
+pub const MSG_LOGIN_SUCCESS: &str = "Login successful";
+
 /// Permalink defaults
 #[allow(dead_code)]
 pub const PERMALINK_MAX_ALLOWED_LENGTH: usize = 1024;
