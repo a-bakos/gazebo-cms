@@ -37,7 +37,7 @@ pub fn nav() -> Html {
     html! {
         <nav>
             <Link<MainNavigationRoute> classes={classes!("testclass")} to={MainNavigationRoute::Home}>
-                <h1>{"home"}</h1>
+                <h1>{"standalone menu item"}</h1>
             </Link<MainNavigationRoute>>
             <ul>
                 {
