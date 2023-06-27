@@ -1,9 +1,11 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-use crate::pages::admin::Admin;
+use crate::pages::gazebo_admin_area::GazeboAdminArea;
 use crate::pages::home::Home;
 use crate::pages::login::Login;
+
+use crate::pages::logout::Logout;
 
 use crate::components::admin_bar::AdminBar;
 use crate::components::footer::Footer;
@@ -12,7 +14,7 @@ use crate::components::login_form::LoginForm;
 use crate::components::post_rollup::PostRollup;
 
 #[derive(Clone, PartialEq, Routable)]
-pub enum Route {
+pub enum MainNavigationRoute {
     #[at("/")]
     Home,
     #[at("/login")]
@@ -24,12 +26,12 @@ pub enum Route {
     NotFound,
 }
 
-pub fn switch(route: Route) -> Html {
+pub fn main_nav_switch(route: MainNavigationRoute) -> Html {
     match route {
-        Route::Home => html! { <Home /> },
-        Route::Login => html! { <Login /> },
-        Route::Admin => html! { <Admin /> },
-        Route::NotFound => html! { <h1>{ "404 not found" }</h1> },
+        MainNavigationRoute::Home => html! { <Home /> },
+        MainNavigationRoute::Login => html! { <Login /> },
+        MainNavigationRoute::Admin => html! { <GazeboAdminArea /> },
+        MainNavigationRoute::NotFound => html! { <h1>{ "1/ 404 not found" }</h1> },
     }
 }
 
@@ -38,19 +40,7 @@ pub fn app() -> Html {
     log::info!("YEW APP STARTED");
     html! {
         <BrowserRouter>
-            <Switch<Route> render={switch} />
+            <Switch<MainNavigationRoute> render={main_nav_switch} />
         </BrowserRouter>
-
     }
 }
-
-//
-// <>
-//     <AdminBar />
-//     <Header />
-//     <main>
-//         <LoginForm />
-//         <PostRollup />
-//     </main>
-//     <Footer />
-// </>
