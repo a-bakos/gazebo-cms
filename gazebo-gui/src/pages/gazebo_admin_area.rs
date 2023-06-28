@@ -11,7 +11,7 @@ use yew_router::prelude::Link;
 #[function_component(GazeboAdminArea)]
 pub fn gazebo_admin_area() -> Html {
     html! {
-        <main id={"gb-gui-admin"}>
+        <main id={"gb-gui-admin-area"}>
             <AdminBar />
 
             <div class={"gb-admin-panel"}>

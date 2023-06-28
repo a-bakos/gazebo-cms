@@ -1,5 +1,8 @@
 use yew::platform::spawn_local;
 use yew::prelude::*;
+use yew_router::prelude::Link;
+
+use crate::app::MainNavigationRoute;
 
 use crate::components::input::{Input, InputProps};
 
@@ -50,29 +53,33 @@ pub fn login_form() -> Html {
     });
 
     html! {
-        <form
-            id="gb-login-form"
-            onsubmit={on_form_submit}>
+        <div id={"gb-login-form"}>
+            <form
+                onsubmit={on_form_submit}>
 
-            <Input
-                label={"Username or Email"}
-                id={"gb-login-form-user"}
-                name={"gb-login-form-user"}
-                input_type={"text"}
-                value={username}
-                onchange={username_changed}
-            />
+                <Input
+                    label={"Username or Email"}
+                    id={"gb-login-form-user"}
+                    name={"gb-login-form-user"}
+                    input_type={"text"}
+                    value={username}
+                    onchange={username_changed}
+                />
 
-            <Input
-                label={"Password"}
-                id={"gb-login-form-pass"}
-                name={"gb-login-form-pass"}
-                input_type={"password"}
-                value={password}
-                onchange={password_changed}
-            />
+                <Input
+                    label={"Password"}
+                    id={"gb-login-form-pass"}
+                    name={"gb-login-form-pass"}
+                    input_type={"password"}
+                    value={password}
+                    onchange={password_changed}
+                />
 
-            <button type="submit">{"Login"}</button>
-        </form>
+                <button type="submit">{"Login"}</button>
+            </form>
+            <Link<MainNavigationRoute> classes={classes!("testclass")} to={MainNavigationRoute::LostPassword}>
+                {"Lost Password"}
+            </Link<MainNavigationRoute>>
+        </div>
     }
 }

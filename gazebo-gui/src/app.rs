@@ -21,6 +21,8 @@ pub enum MainNavigationRoute {
     Login,
     #[at("/admin")]
     Admin,
+    #[at("/lost-password")]
+    LostPassword,
     #[not_found]
     #[at("/404")]
     NotFound,
@@ -31,13 +33,14 @@ pub fn main_nav_switch(route: MainNavigationRoute) -> Html {
         MainNavigationRoute::Home => html! { <Home /> },
         MainNavigationRoute::Login => html! { <Login /> },
         MainNavigationRoute::Admin => html! { <GazeboAdminArea /> },
+        MainNavigationRoute::LostPassword => html! { <h1>{ "Soon." }</h1> },
         MainNavigationRoute::NotFound => html! { <h1>{ "1/ 404 not found" }</h1> },
     }
 }
 
 #[function_component(App)]
 pub fn app() -> Html {
-    log::info!("YEW APP STARTED");
+    log::info!("Gazebo GUI init");
     html! {
         <BrowserRouter>
             <Switch<MainNavigationRoute> render={main_nav_switch} />

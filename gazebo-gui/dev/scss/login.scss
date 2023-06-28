@@ -2,16 +2,12 @@
     background: blue;
 }
 
-#gb-login-form {
+#gb-login-form { // div
     background: white;
     padding: 1em;
     width: fit-content;
     margin: auto;
     text-align: center;
-
-    div {
-        margin-bottom: 10px;
-    }
 
     label {
         display: block;

@@ -8,7 +8,7 @@ use crate::components::nav::Nav;
 pub fn home() -> Html {
     html! {
         <>
-            <main>
+            <main id={"gb-gui-home-page"}>
                 <AdminBar />
                 <Nav />
                 <h1>{"Home"}</h1>
