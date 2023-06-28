@@ -5,6 +5,7 @@ use yew_router::prelude::Link;
 use crate::app::MainNavigationRoute;
 
 use crate::components::input::{Input, InputProps};
+use crate::components::lost_password::LostPassword;
 
 #[function_component(LoginForm)]
 pub fn login_form() -> Html {
@@ -74,12 +75,9 @@ pub fn login_form() -> Html {
                     value={password}
                     onchange={password_changed}
                 />
-
                 <button type="submit">{"Login"}</button>
             </form>
-            <Link<MainNavigationRoute> classes={classes!("testclass")} to={MainNavigationRoute::LostPassword}>
-                {"Lost Password"}
-            </Link<MainNavigationRoute>>
+            <LostPassword />
         </div>
     }
 }
