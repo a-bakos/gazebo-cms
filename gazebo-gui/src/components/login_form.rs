@@ -1,6 +1,6 @@
 use yew::platform::spawn_local;
 use yew::prelude::*;
-use yew_router::prelude::Link;
+use yew_router::prelude::*;
 
 use crate::app::MainNavigationRoute;
 
@@ -9,6 +9,10 @@ use crate::components::lost_password::LostPassword;
 
 #[function_component(LoginForm)]
 pub fn login_form() -> Html {
+    let navigator = use_navigator();
+
+    let mut login_error = String::new();
+
     let username_handle = use_state(|| String::default());
     let username = (*username_handle).clone();
     let username_changed = Callback::from(move |event: Event| {
@@ -41,11 +45,23 @@ pub fn login_form() -> Html {
 
         let cloned_username = cloned_username.clone();
         let cloned_password = cloned_password.clone();
+        let clone_navigator = navigator.clone();
+
         spawn_local(async move {
             let response = crate::api::user::api_login(cloned_username, cloned_password)
                 .await
                 .unwrap();
             println!("{}", response);
+
+            // This currently matches all login requests regardless of correct credentials!
+            if response == 1.to_string() {
+                if let Some(nav) = clone_navigator {
+                    nav.push(&MainNavigationRoute::Admin)
+                }
+            } else {
+                // show login error here
+                //login_error = "401 Unauthorized".to_string();
+            }
 
             gloo_console::log!("Login request response: ", response);
 
@@ -55,6 +71,11 @@ pub fn login_form() -> Html {
 
     html! {
         <div id={"gb-login-form"}>
+
+            if login_error == "401 Unauthorized".to_string() {
+                <p>{"LOGIN ERROR!"}</p>
+            }
+
             <form
                 onsubmit={on_form_submit}>
 
