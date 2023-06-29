@@ -1,3 +1,5 @@
+// Logout screen - Not needed
+
 use yew::prelude::*;
 
 use crate::components::nav::Nav;

@@ -1,3 +1,5 @@
+// Login page
+
 use crate::components::login_form::LoginForm;
 use crate::components::nav::Nav;
 use yew::prelude::*;

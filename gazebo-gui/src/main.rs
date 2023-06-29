@@ -1,6 +1,7 @@
 mod api;
 mod app;
 mod components;
+mod consts;
 mod pages;
 
 use app::App;

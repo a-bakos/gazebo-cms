@@ -1,14 +1,13 @@
-use yew::prelude::*;
+// 404 Not found page
 
-use crate::components::admin_bar::AdminBar;
-use crate::components::nav::Nav;
+use yew::prelude::*;
 
 #[function_component(NotFound)]
 pub fn not_found() -> Html {
     html! {
         <main>
-            <AdminBar />
-            <Nav />
+            <crate::components::admin_bar::AdminBar />
+            <crate::components::nav::Nav />
             <h1>{"404 Not found."}</h1>
         </main>
     }

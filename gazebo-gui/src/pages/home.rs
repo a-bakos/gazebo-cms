@@ -1,3 +1,5 @@
+// Homepage
+
 use yew::prelude::*;
 
 use crate::components::admin_bar::AdminBar;

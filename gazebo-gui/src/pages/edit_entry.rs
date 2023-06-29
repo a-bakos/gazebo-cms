@@ -1,4 +1,4 @@
-// This will be the post editor screen
+// Admin post/entry editor screen // move to admin/
 
 use yew::prelude::*;
 
@@ -9,7 +9,7 @@ use crate::components::entry_editor::EntryEditor;
 #[function_component(EntryEdit)]
 pub fn entry_edit() -> Html {
     html! {
-        <main id={"gb-gui-admin-area"}>
+         <main id={crate::consts::CSS_ID_ADMIN_AREA}>
             <AdminBar />
 
             <div class={"gb-admin-panel"}>

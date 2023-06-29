@@ -1,3 +1,5 @@
+// Admin Dashboard screen
+
 use yew::prelude::*;
 
 use crate::components::admin_bar::AdminBar;
@@ -6,7 +8,7 @@ use crate::components::admin_menu::AdminMenu;
 #[function_component(AdminDashboard)]
 pub fn admin_dashboard() -> Html {
     html! {
-        <main id={"gb-gui-admin-area"}>
+         <main id={crate::consts::CSS_ID_ADMIN_AREA}>
             <AdminBar />
 
             <div class={"gb-admin-panel"}>

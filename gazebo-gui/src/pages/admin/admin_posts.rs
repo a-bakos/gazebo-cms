@@ -1,3 +1,5 @@
+// Admin all posts/entries page
+
 use yew::prelude::*;
 
 use crate::components::admin_bar::AdminBar;
@@ -7,7 +9,7 @@ use crate::components::table_entries::EntriesTable;
 #[function_component(AdminPosts)]
 pub fn admin_posts() -> Html {
     html! {
-        <main id={"gb-gui-admin-area"}>
+        <main id={crate::consts::CSS_ID_ADMIN_AREA}>
             <AdminBar />
 
             <div class={"gb-admin-panel"}>
