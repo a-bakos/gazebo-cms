@@ -15,6 +15,7 @@ use crate::pages::edit_entry::EntryEdit;
 use crate::pages::home::Home;
 use crate::pages::login::Login;
 use crate::pages::logout::Logout;
+use crate::pages::not_found::NotFound;
 
 #[derive(Clone, PartialEq, Routable)]
 pub enum MainNavigationRoute {
@@ -37,16 +38,22 @@ pub enum MainNavigationRoute {
 
 pub fn main_nav_switch(route: MainNavigationRoute) -> Html {
     match route {
+        // Home page
         MainNavigationRoute::Home => html! { <Home /> },
+        // Login page
         MainNavigationRoute::Login => html! { <Login /> },
+        // Lost password page
+        MainNavigationRoute::LostPassword => html! { <h1>{ "Soon." }</h1> },
 
+        // Admin dashboard
         MainNavigationRoute::Admin => html! { <AdminDashboard /> },
+        // Admin all posts
         MainNavigationRoute::AdminPosts => html! { <AdminPosts /> },
-
+        // Admin entry editor
         MainNavigationRoute::EntryEdit => html! { <EntryEdit />},
 
-        MainNavigationRoute::LostPassword => html! { <h1>{ "Soon." }</h1> },
-        MainNavigationRoute::NotFound => html! { <h1>{ "1/ 404 not found" }</h1> },
+        // 404
+        MainNavigationRoute::NotFound => html! { <NotFound /> },
     }
 }
 
