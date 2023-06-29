@@ -9,3 +9,4 @@ pub mod lost_password;
 pub mod main_navigation;
 pub mod nav;
 pub mod post_rollup;
+pub mod table_entries;
