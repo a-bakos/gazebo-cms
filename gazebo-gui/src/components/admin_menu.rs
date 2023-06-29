@@ -8,11 +8,15 @@ pub fn admin_menu() -> Html {
         <nav class={"gb-admin-menu"}>
             <ul>
                 <li>
-                    <Link<MainNavigationRoute> classes={classes!("testclass")} to={MainNavigationRoute::Admin}>
-                        {"admin"}
+                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminDashboard}>
+                        {"Dashboard"}
                     </Link<MainNavigationRoute>>
                 </li>
-                <li><a href="">{"Posts"}</a></li>
+                <li>
+                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminPosts}>
+                        {"Posts"}
+                    </Link<MainNavigationRoute>>
+                </li>
                 <li><a href="">{"Media"}</a></li>
                 <li><a href="">{"Settings"}</a></li>
                 <li><a href="">{"Users"}</a></li>

@@ -1,12 +1,10 @@
-// This will be the admin (management) area
-
 use yew::prelude::*;
 
 use crate::components::admin_bar::AdminBar;
 use crate::components::admin_menu::AdminMenu;
 
-#[function_component(GazeboAdminArea)]
-pub fn gazebo_admin_area() -> Html {
+#[function_component(AdminDashboard)]
+pub fn admin_dashboard() -> Html {
     html! {
         <main id={"gb-gui-admin-area"}>
             <AdminBar />
