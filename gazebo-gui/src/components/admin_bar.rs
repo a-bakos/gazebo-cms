@@ -11,7 +11,7 @@ pub fn admin_bar() -> Html {
                     <li><a title="Front End" href="/">{"Front end"}</a></li>
                     // If frontend, show admin link todo
                     <li><a title="Admin area" href="/admin">{"Admin"}</a></li>
-                    <li><a title="Add new entry" href="">{"Create new entry"}</a></li>
+                    <li><a title="Add new entry" href="/entry-edit">{"Create new entry"}</a></li>
                     <li><a title="System info" href="/system">{"System"}</a></li>
                     <li><a title="Logout" href="/logout">{"Logout"}</a></li>
                 </ul>

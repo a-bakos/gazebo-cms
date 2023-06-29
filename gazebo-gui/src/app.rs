@@ -1,10 +1,10 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 
+use crate::pages::edit_entry::EntryEdit;
 use crate::pages::gazebo_admin_area::GazeboAdminArea;
 use crate::pages::home::Home;
 use crate::pages::login::Login;
-
 use crate::pages::logout::Logout;
 
 use crate::components::admin_bar::AdminBar;
@@ -21,6 +21,8 @@ pub enum MainNavigationRoute {
     Login,
     #[at("/admin")]
     Admin,
+    #[at("/entry-edit")]
+    EntryEdit,
     #[at("/lost-password")]
     LostPassword,
     #[not_found]
@@ -33,6 +35,9 @@ pub fn main_nav_switch(route: MainNavigationRoute) -> Html {
         MainNavigationRoute::Home => html! { <Home /> },
         MainNavigationRoute::Login => html! { <Login /> },
         MainNavigationRoute::Admin => html! { <GazeboAdminArea /> },
+
+        MainNavigationRoute::EntryEdit => html! { <EntryEdit />},
+
         MainNavigationRoute::LostPassword => html! { <h1>{ "Soon." }</h1> },
         MainNavigationRoute::NotFound => html! { <h1>{ "1/ 404 not found" }</h1> },
     }

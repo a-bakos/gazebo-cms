@@ -1,4 +1,6 @@
 pub mod admin_bar;
+pub mod admin_menu;
+pub mod entry_editor;
 pub mod footer;
 pub mod header;
 pub mod input;
