@@ -25,7 +25,6 @@ WP_POST
     public $comment_count = 0; // Cached comment count. A numeric string, for compatibility reasons.
 */
 
-use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
 use crate::app::App;
 use crate::datetime::functions as date_functions;
 use crate::entry::{
@@ -113,7 +112,7 @@ pub fn get_post(_post_id: EntryID) -> GB_PostItem {
 impl GB_PostItem {
     pub fn draft(app: &mut App) -> Self {
         Self {
-            id: get_next_available_entry_id(app),
+            id: EntryID(1),
             id_author: crate::users::functions::get_current_user_id(app),
             id_parent: get_entry_parent_id(),
             date_publish: date_functions::get_current_date(),

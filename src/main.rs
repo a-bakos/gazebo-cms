@@ -1,6 +1,5 @@
 extern crate core;
 
-mod allocator;
 mod app;
 mod consts;
 mod database;

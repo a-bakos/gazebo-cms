@@ -24,7 +24,6 @@
  * string $use_ssl
  */
 
-use crate::allocator::{ID_Allocator, ResourceID, ResourceType};
 use crate::app::App;
 use crate::users::roles::UserRole;
 use crate::users::user_manager::is_password_valid;
@@ -37,15 +36,6 @@ pub struct UserID(pub u32);
 impl Display for UserID {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.0)
-    }
-}
-
-impl ID_Allocator for UserID {
-    fn allocate(app: &mut App) -> Self {
-        let _ = &app
-            .resources
-            .add_to_allocated(ResourceType::User, ResourceID::UserID(1));
-        UserID(1)
     }
 }
 
