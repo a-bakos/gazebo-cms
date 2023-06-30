@@ -287,3 +287,32 @@ pub fn user_exists(email: &str) -> bool {
     }
     false
 }
+
+impl EntryID {
+    // get current ID
+    #[allow(dead_code)]
+    fn get() -> Self {
+        EntryID(200)
+    }
+}
+
+impl ID_Allocator for EntryID {
+    fn allocate(app: &mut App) -> Self {
+        let resource_entry_id = ResourceManager::get_next_available_id(app, ResourceType::Entry);
+        dbg!(&resource_entry_id);
+        let entry_id = match resource_entry_id {
+            ResourceID::EntryID(id) => EntryID(id),
+            // Todo: users ID
+            _ => EntryID(0),
+        };
+        let _ = &app
+            .resources
+            .add_to_allocated(ResourceType::Entry, resource_entry_id);
+        entry_id
+    }
+}
+
+#[allow(dead_code)]
+fn get_next_available_entry_id(app: &mut App) -> EntryID {
+    EntryID::allocate(app)
+}

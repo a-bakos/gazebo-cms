@@ -28,10 +28,13 @@ WP_POST
 use crate::allocator::{ID_Allocator, ResourceID, ResourceManager, ResourceType};
 use crate::app::App;
 use crate::datetime::functions as date_functions;
-use crate::entry::entry_type::EntryType;
-use crate::entry::status::{EntryStatus, PostStatus};
+use crate::entry::{
+    entry_type::EntryType,
+    status::{EntryStatus, PostStatus},
+};
 use crate::users::user::UserID;
 use crate::{consts, url};
+
 use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
 
@@ -55,12 +58,12 @@ pub enum PostSpecific {
 // pending
 // private
 // trash
-// auto-draft
-// inherit
-// request-pending
-// request-confirmed
-// request-failed
-// request-completed
+// NO/ auto-draft
+// NO/ inherit
+// NO/ request-pending
+// NO/ request-confirmed
+// NO/ request-failed
+// NO/ request-completed
 
 #[allow(non_camel_case_types)]
 #[derive(Debug, Serialize, Deserialize)]
@@ -92,35 +95,6 @@ impl PartialEq for EntryID {
     fn eq(&self, other: &Self) -> bool {
         self.0 == other.0
     }
-}
-
-impl EntryID {
-    // get current ID
-    #[allow(dead_code)]
-    fn get() -> Self {
-        EntryID(200)
-    }
-}
-
-impl ID_Allocator for EntryID {
-    fn allocate(app: &mut App) -> Self {
-        let resource_entry_id = ResourceManager::get_next_available_id(app, ResourceType::Entry);
-        dbg!(&resource_entry_id);
-        let entry_id = match resource_entry_id {
-            ResourceID::EntryID(id) => EntryID(id),
-            // Todo: users ID
-            _ => EntryID(0),
-        };
-        let _ = &app
-            .resources
-            .add_to_allocated(ResourceType::Entry, resource_entry_id);
-        entry_id
-    }
-}
-
-#[allow(dead_code)]
-fn get_next_available_entry_id(app: &mut App) -> EntryID {
-    EntryID::allocate(app)
 }
 
 #[allow(dead_code)]
@@ -183,25 +157,9 @@ impl GB_PostItem {
         self.content = Some(content);
     }
 
-    #[allow(dead_code)]
-    pub fn store(&mut self) -> bool {
-        true
-    }
-
     pub fn update_slug(&mut self, new_slug: &str) -> bool {
         self.slug = Some(new_slug.to_string());
         true
-    }
-
-    // Get current Entry ID
-    #[allow(dead_code)]
-    pub fn get_the_id(&self) -> EntryID {
-        self.id
-    }
-
-    #[allow(dead_code)]
-    pub fn get_author_id(&self) -> UserID {
-        self.id_author.clone()
     }
 }
 
@@ -211,7 +169,7 @@ mod test {
 
     #[test]
     fn is_title_and_permalink_added() {
-        let mut app = crate::app::App::init();
+        let mut app = App::init();
 
         let test_post_title: String = "Test title added".to_string();
         let test_post_slug: String = "test-title-added".to_string();

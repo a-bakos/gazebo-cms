@@ -5,5 +5,5 @@ CREATE TABLE IF NOT EXISTS gb_log (
     event_code INTEGER NOT NULL,
     event_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     title VARCHAR(255) NOT NULL,
-    description TEXT DEFAULT NULL,
+    description TEXT DEFAULT NULL
 );
