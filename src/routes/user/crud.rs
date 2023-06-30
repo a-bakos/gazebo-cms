@@ -17,7 +17,7 @@ use sqlx::{postgres::PgRow, PgPool, Row};
 use warp::http::StatusCode;
 
 use crate::users::user_manager;
-use crate::users::user_manager::CheckAccountExistsBy;
+use crate::users::user_manager::AccountIdentifier;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -36,9 +36,9 @@ pub async fn add(
     let email = params.email.clone(); // need email check
 
     // check if user exists in accounts table
-    let account_exists = user_manager::check_account_exists(
+    let account_exists = user_manager::find_account_by_identifier(
         pool.clone(),
-        CheckAccountExistsBy::Email,
+        AccountIdentifier::Email,
         params.email.clone(),
     )
     .await;

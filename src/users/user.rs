@@ -1,29 +1,3 @@
-/*
- * string $nickname
- * string $description
- * string $user_description
- * [x] string $first_name
- * string $user_firstname
- * [x] string $last_name
- * string $user_lastname
- * [x] string $user_login
- * [x] string $user_pass
- * string $user_nicename
- * [x] string $user_email
- * string $user_url
- * string $user_registered
- * string $user_activation_key
- * string $user_status
- * int    $user_level
- * string $display_name
- * string $spam
- * string $deleted
- * string $locale
- * string $rich_editing
- * string $syntax_highlighting
- * string $use_ssl
- */
-
 use crate::app::App;
 use crate::users::roles::UserRole;
 use crate::users::user_manager::is_password_valid;
@@ -78,7 +52,3 @@ mod test {
     #[test]
     fn test() {}
 }
-
-// TODO
-// define( 'COOKIEHASH', md5( $siteurl ) );
-// define( 'USER_COOKIE', 'wordpressuser_' . COOKIEHASH );
