@@ -1,23 +1,10 @@
-use crate::consts;
-use crate::database::columns::COL_INDEX_ACCOUNT_ID;
-use crate::database::db::DB_Table;
 use crate::{
+    consts,
+    database::{columns::COL_INDEX_ACCOUNT_ID, db::DB_Table},
     helpers::{str_contains_number, str_contains_special_char, str_contains_uppercase},
     users::user::UserID,
 };
 use sqlx::{PgPool, Row};
-
-#[allow(dead_code)]
-pub struct UserManager {
-    users: Vec<UserID>,
-}
-
-#[allow(dead_code)]
-impl UserManager {
-    pub fn new() -> Self {
-        Self { users: Vec::new() }
-    }
-}
 
 #[allow(unused_variables, dead_code)]
 pub fn is_email_valid(email: &str) -> bool {
@@ -85,17 +72,17 @@ pub fn is_password_valid(password: &str) -> bool {
 pub async fn is_password_match(
     pool: &PgPool,
     password: &str,
-    check_by: CheckAccountExistsBy,
+    check_by: AccountIdentifier,
     value: &str,
 ) -> bool {
     let query = match check_by {
-        CheckAccountExistsBy::Email => {
+        AccountIdentifier::Email => {
             format!(
                 "SELECT id FROM {} WHERE email = $1 AND password = $2",
                 DB_Table::Accounts
             )
         }
-        CheckAccountExistsBy::Login => {
+        AccountIdentifier::Login => {
             format!(
                 "SELECT id FROM {} WHERE login = $1 AND password = $2",
                 DB_Table::Accounts
@@ -118,26 +105,30 @@ pub async fn is_password_match(
     }
 }
 
-pub enum CheckAccountExistsBy {
+pub enum AccountIdentifier {
     Email,
     Login,
 }
 
-pub async fn check_account_exists(
+pub async fn find_account_by_identifier(
     pool: PgPool,
-    param: CheckAccountExistsBy,
-    value: String,
+    account_identifier: AccountIdentifier,
+    identifier_value: String,
 ) -> Result<bool, String> {
-    let query = match param {
-        CheckAccountExistsBy::Email => {
+    let query = match account_identifier {
+        AccountIdentifier::Email => {
             format!("SELECT id FROM {} WHERE email = $1", DB_Table::Accounts)
         }
-        CheckAccountExistsBy::Login => {
+        AccountIdentifier::Login => {
             format!("SELECT id FROM {} WHERE login = $1", DB_Table::Accounts)
         }
     };
 
-    match sqlx::query(&query).bind(value).fetch_optional(&pool).await {
+    match sqlx::query(&query)
+        .bind(identifier_value)
+        .fetch_optional(&pool)
+        .await
+    {
         Ok(Some(_)) => Ok(true), // email | login found
         Ok(None) => Ok(false),   // email | login not found
         Err(e) => Err(format!("Database error {}", e)),

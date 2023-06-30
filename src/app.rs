@@ -1,6 +1,4 @@
-use crate::allocator::ResourceManager;
-use crate::database::db::GBDB;
-use crate::users::user::UserID;
+use crate::{database::db::GBDB, users::user::UserID};
 use std::time::SystemTime;
 
 // Todo need to implement Debug for App
@@ -9,7 +7,6 @@ pub struct App {
     pub name: String,
     pub admin_email: String,
     pub version: String,
-    pub resources: ResourceManager,
     #[allow(dead_code)]
     pub(crate) db: GBDB,
     pub start: SystemTime,
@@ -26,7 +23,6 @@ impl App {
             name: crate::consts::DEFAULT_APP_NAME.to_string(),
             admin_email: crate::consts::DEFAULT_APP_ADMIN_EMAIL.to_string(),
             version: crate::consts::VERSION.to_string(),
-            resources: ResourceManager::new(), // HashMap<ResourceType, Vec<ResourceID>>
             db: GBDB::new(
                 "database".to_string(),
                 "user".to_string(),

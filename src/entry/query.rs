@@ -1,18 +1,25 @@
-use crate::consts;
-use crate::database::columns::{
-    COL_INDEX_POST_CONTENT, COL_INDEX_POST_DATE_MODIFIED, COL_INDEX_POST_DATE_PUBLISH,
-    COL_INDEX_POST_EXCERPT, COL_INDEX_POST_ID, COL_INDEX_POST_ID_AUTHOR, COL_INDEX_POST_PARENT,
-    COL_INDEX_POST_SLUG, COL_INDEX_POST_STATUS, COL_INDEX_POST_TITLE, COL_INDEX_POST_TYPE,
+use crate::{
+    consts,
+    database::{
+        columns::{
+            COL_INDEX_POST_CONTENT, COL_INDEX_POST_DATE_MODIFIED, COL_INDEX_POST_DATE_PUBLISH,
+            COL_INDEX_POST_EXCERPT, COL_INDEX_POST_ID, COL_INDEX_POST_ID_AUTHOR,
+            COL_INDEX_POST_PARENT, COL_INDEX_POST_SLUG, COL_INDEX_POST_STATUS,
+            COL_INDEX_POST_TITLE, COL_INDEX_POST_TYPE,
+        },
+        db::DB_Table,
+    },
+    entry::{
+        entry_type::{get_entry_type_variant, EntryType},
+        post::{EntryID, GB_PostItem},
+        status::{get_entry_status_variant, EntryStatus},
+    },
+    errors::error_handler::SqlxError,
+    users::user::UserID,
 };
-use crate::database::db::DB_Table;
-use crate::entry::entry_type::{get_entry_type_variant, EntryType};
-use crate::entry::post::{EntryID, GB_PostItem};
-use crate::entry::status::{get_entry_status_variant, EntryStatus};
-use crate::errors::error_handler::SqlxError;
-use crate::users::user::UserID;
+
 use chrono::NaiveDateTime;
-use sqlx::postgres::PgRow;
-use sqlx::{PgPool, Row};
+use sqlx::{postgres::PgRow, PgPool, Row};
 
 #[derive(Debug)]
 #[allow(non_camel_case_types)]

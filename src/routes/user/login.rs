@@ -1,10 +1,16 @@
-use crate::database::columns::{COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_LOGIN};
-use crate::database::db::DB_Table;
-use crate::errors::error_handler::ErrorResponse;
-use crate::http::response::HttpResponse;
-use crate::users::user_manager;
-use crate::users::user_manager::check_account_exists;
-use crate::users::user_manager::CheckAccountExistsBy;
+use crate::{
+    database::{
+        columns::{COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_LOGIN},
+        db::DB_Table,
+    },
+    errors::error_handler::ErrorResponse,
+    http::response::HttpResponse,
+    users::{
+        credentials,
+        credentials::{find_account_by_identifier, AccountIdentifier},
+    },
+};
+
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 
@@ -19,11 +25,11 @@ pub async fn try_login(
     pool: PgPool,
     password: String,
     binding: String,
-    login_variant: CheckAccountExistsBy,
+    login_variant: AccountIdentifier,
 ) -> Result<warp::reply::Json, warp::Rejection> {
     let column_name = match login_variant {
-        CheckAccountExistsBy::Email => COL_INDEX_ACCOUNT_EMAIL,
-        CheckAccountExistsBy::Login => COL_INDEX_ACCOUNT_LOGIN,
+        AccountIdentifier::Email => COL_INDEX_ACCOUNT_EMAIL,
+        AccountIdentifier::Login => COL_INDEX_ACCOUNT_LOGIN,
     };
     let query = format!(
         "SELECT * FROM {} WHERE {} = $1",
@@ -71,7 +77,7 @@ pub async fn login(
     // if no email, look for login name
     if let Some(email) = params.email {
         let account_exists_by_email =
-            check_account_exists(pool.clone(), CheckAccountExistsBy::Email, email.clone()).await;
+            find_account_by_identifier(pool.clone(), AccountIdentifier::Email, email.clone()).await;
 
         return match account_exists_by_email {
             Ok(true) => {
@@ -79,16 +85,16 @@ pub async fn login(
 
                 let binding = email.clone();
                 let password = params.password.clone();
-                if user_manager::is_password_match(
+                if credentials::is_password_match(
                     &pool,
                     &password,
-                    CheckAccountExistsBy::Email,
+                    AccountIdentifier::Email,
                     &binding,
                 )
                 .await
                 {
                     // Try login and return result
-                    try_login(pool.clone(), password, binding, CheckAccountExistsBy::Email).await
+                    try_login(pool.clone(), password, binding, AccountIdentifier::Email).await
                 } else {
                     // System log
                     println!("Wrong password used for: {}", &binding);
@@ -104,7 +110,7 @@ pub async fn login(
 
     if let Some(login) = params.login {
         let account_exists_by_login =
-            check_account_exists(pool.clone(), CheckAccountExistsBy::Login, login.clone()).await;
+            find_account_by_identifier(pool.clone(), AccountIdentifier::Login, login.clone()).await;
 
         return match account_exists_by_login {
             Ok(true) => {
@@ -113,16 +119,16 @@ pub async fn login(
 
                 let binding = login.clone();
                 let password = params.password.clone();
-                if user_manager::is_password_match(
+                if credentials::is_password_match(
                     &pool,
                     &password,
-                    CheckAccountExistsBy::Login,
+                    AccountIdentifier::Login,
                     &binding,
                 )
                 .await
                 {
                     // Try login and return result
-                    try_login(pool.clone(), password, binding, CheckAccountExistsBy::Login).await
+                    try_login(pool.clone(), password, binding, AccountIdentifier::Login).await
                 } else {
                     // System log
                     println!("Wrong password used for: {}", &binding);

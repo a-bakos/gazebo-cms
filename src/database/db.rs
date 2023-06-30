@@ -7,14 +7,10 @@ use std::fmt::{Display, Formatter};
 #[allow(non_camel_case_types)]
 pub enum DB_Table {
     Posts,
-    #[allow(dead_code)]
     PostMeta,
     Accounts,
-    #[allow(dead_code)]
     AccountMeta,
-    #[allow(dead_code)]
     Media,
-    #[allow(dead_code)]
     Log,
 }
 

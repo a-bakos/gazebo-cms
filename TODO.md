@@ -8,6 +8,11 @@ Technologies:
 - Tailwind CSS, Bulma CSS
 - Main crates: sqlx, warp, tokio, serde, yew
 
+
+// TODO
+// define( 'COOKIEHASH', md5( $siteurl ) );
+// define( 'USER_COOKIE', 'wordpressuser_' . COOKIEHASH );
+
 // todo rename GB_Post to GB_Entry
 
 // todo consider gb_config table : to store cms settings
@@ -17,6 +22,64 @@ Technologies:
 // todo gb_log table : whodunnit log
 
 // anyhow for errors
+
+```
+/*
+WP_POST
+[x] public $ID;
+[x] public $post_author = 0;
+[x] public $post_date = '0000-00-00 00:00:00'; // The entry's local publication time.
+public $post_date_gmt = '0000-00-00 00:00:00'; // The entry's GMT publication time.
+[x] public $post_content = '';
+[x] public $post_title = '';
+[x] public $post_excerpt = '';
+[x] public $post_status = 'publish';
+public $comment_status = 'open';
+public $ping_status = 'open'; // Whether pings are allowed
+[x] public $post_password = ''; // The entry's password in plain text.
+[x] public $post_name = ''; // The entry's slug.
+public $to_ping = ''; // URLs queued to be pinged.
+public $pinged = ''; // URLs that have been pinged.
+[x] public $post_modified = '0000-00-00 00:00:00'; // The entry's local modified time.
+public $post_modified_gmt = '0000-00-00 00:00:00'; // The entry's GMT modified time.
+public $post_content_filtered = ''; // A utility DB field for entry content.
+[x] public $post_parent = 0; // ID of a entry's parent entry.
+public $guid = ''; // The unique identifier for a entry, not necessarily a URL, used as the feed GUID.
+public $menu_order = 0; // A field used for ordering entry.
+[x] public $post_type = 'entry';
+public $post_mime_type = ''; // An attachment's mime type.
+public $comment_count = 0; // Cached comment count. A numeric string, for compatibility reasons.
+*/
+```
+
+```
+/*
+ * string $nickname
+ * string $description
+ * string $user_description
+ * [x] string $first_name
+ * string $user_firstname
+ * [x] string $last_name
+ * string $user_lastname
+ * [x] string $user_login
+ * [x] string $user_pass
+ * string $user_nicename
+ * [x] string $user_email
+ * string $user_url
+ * string $user_registered
+ * string $user_activation_key
+ * string $user_status
+ * int    $user_level
+ * string $display_name
+ * string $spam
+ * string $deleted
+ * string $locale
+ * string $rich_editing
+ * string $syntax_highlighting
+ * string $use_ssl
+ */
+```
+
 
 idea: 
 

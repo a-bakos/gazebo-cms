@@ -1,3 +1,17 @@
+// WP statuses:
+// [x] publish
+// ?? future
+// [x] draft
+// ?? pending
+// [x] private
+// [x] trash
+// NO/ auto-draft
+// NO/ inherit
+// NO/ request-pending
+// NO/ request-confirmed
+// NO/ request-failed
+// NO/ request-completed
+
 use crate::entry::entry_type::EntryType;
 use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
@@ -23,7 +37,6 @@ pub const ENTRY_STATUS_MEDIA_UNKNOWN: &str = "unknown";
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum EntryStatus {
     Post(PostStatus),
-    //PageStatus(PageStatus),
     Media(MediaStatus),
     Unknown,
 }
@@ -97,10 +110,6 @@ pub fn get_entry_status_variant(
             let post_status = get_post_status_variant(entry_status_as_str);
             EntryStatus::Post(post_status)
         }
-        // EntryType::Page => {
-        //     let page_status: PostStatus = get_page_status_variant();
-        //     EntryStatus::PageStatus(page_status)
-        // }
         EntryType::Media => {
             let media_status = get_media_status_variant(entry_status_as_str);
             EntryStatus::Media(media_status)

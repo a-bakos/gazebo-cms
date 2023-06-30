@@ -1,9 +1,9 @@
-use crate::database::db::DB_Table;
-use crate::entry::post::GB_PostItem;
-use crate::entry::{entry_type::EntryType, post::EntryID};
-use crate::users::user::UserID;
-use sqlx::postgres::PgRow;
-use sqlx::PgPool;
+use crate::{
+    database::db::DB_Table,
+    entry::{entry_type::EntryType, post::EntryID, post::GB_PostItem},
+    users::user::UserID,
+};
+use sqlx::{postgres::PgRow, PgPool};
 
 // Get post URL
 #[allow(dead_code)]

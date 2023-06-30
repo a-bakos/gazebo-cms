@@ -1,6 +1,10 @@
-use crate::app::App;
-use crate::users::roles::UserRole;
-use crate::users::user::{User, UserID};
+use crate::{
+    app::App,
+    users::{
+        roles::UserRole,
+        user::{User, UserID},
+    },
+};
 
 #[allow(dead_code)]
 fn get_current_user(app: &App) -> Option<User> {
