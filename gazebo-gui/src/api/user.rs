@@ -1,6 +1,6 @@
-use gloo_net::http::Request;
-
 use crate::api::BACKEND_URL_BASE;
+
+use gloo_net::http::Request;
 use serde::Deserialize;
 use serde_json::json;
 

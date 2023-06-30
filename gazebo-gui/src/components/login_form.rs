@@ -1,11 +1,13 @@
-use yew::platform::spawn_local;
-use yew::prelude::*;
+use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::*;
 
-use crate::app::MainNavigationRoute;
-
-use crate::components::input::{Input, InputProps};
-use crate::components::lost_password::LostPassword;
+use crate::{
+    app::MainNavigationRoute,
+    components::{
+        input::{Input, InputProps},
+        lost_password::LostPassword,
+    },
+};
 
 #[function_component(LoginForm)]
 pub fn login_form() -> Html {

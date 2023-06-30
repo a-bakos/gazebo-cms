@@ -1,21 +1,20 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-use crate::components::admin_bar::AdminBar;
-use crate::components::footer::Footer;
-use crate::components::header::Header;
-use crate::components::login_form::LoginForm;
-use crate::components::post_rollup::PostRollup;
-
-// pages::admin
-use crate::pages::admin::admin_dashboard::AdminDashboard;
-use crate::pages::admin::admin_posts::AdminPosts;
-
-use crate::pages::edit_entry::EntryEdit;
-use crate::pages::home::Home;
-use crate::pages::login::Login;
-use crate::pages::logout::Logout;
-use crate::pages::not_found::NotFound;
+use crate::{
+    components::{
+        admin_bar::AdminBar, footer::Footer, header::Header, login_form::LoginForm,
+        post_rollup::PostRollup,
+    },
+    pages::{
+        admin::{admin_dashboard::AdminDashboard, admin_posts::AdminPosts},
+        edit_entry::EntryEdit,
+        home::Home,
+        login::Login,
+        logout::Logout,
+        not_found::NotFound,
+    },
+};
 
 #[derive(Clone, PartialEq, Routable)]
 pub enum MainNavigationRoute {

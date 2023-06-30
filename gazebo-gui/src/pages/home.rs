@@ -2,9 +2,7 @@
 
 use yew::prelude::*;
 
-use crate::components::admin_bar::AdminBar;
-use crate::components::footer::Footer;
-use crate::components::nav::Nav;
+use crate::components::{admin_bar::AdminBar, footer::Footer, nav::Nav};
 
 #[function_component(Home)]
 pub fn home() -> Html {

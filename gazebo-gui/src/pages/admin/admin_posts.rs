@@ -2,9 +2,7 @@
 
 use yew::prelude::*;
 
-use crate::components::admin_bar::AdminBar;
-use crate::components::admin_menu::AdminMenu;
-use crate::components::table_entries::EntriesTable;
+use crate::components::{admin_bar::AdminBar, admin_menu::AdminMenu, table_entries::EntriesTable};
 
 #[function_component(AdminPosts)]
 pub fn admin_posts() -> Html {

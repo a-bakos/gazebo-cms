@@ -2,9 +2,7 @@
 
 use yew::prelude::*;
 
-use crate::components::admin_bar::AdminBar;
-use crate::components::admin_menu::AdminMenu;
-use crate::components::entry_editor::EntryEditor;
+use crate::components::{admin_bar::AdminBar, admin_menu::AdminMenu, entry_editor::EntryEditor};
 
 #[function_component(EntryEdit)]
 pub fn entry_edit() -> Html {
