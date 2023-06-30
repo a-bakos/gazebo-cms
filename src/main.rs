@@ -126,7 +126,6 @@ async fn main() -> Result<(), sqlx::Error> {
         .and_then(routes::post::crud::get_the_title);
 
     let routes = get_user
-        // .or(index)
         .or(registration)
         .or(login)
         .or(delete_user)
