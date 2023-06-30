@@ -2,9 +2,9 @@ use crate::database::columns::{COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_LOGIN}
 use crate::database::db::DB_Table;
 use crate::errors::error_handler::ErrorResponse;
 use crate::http::response::HttpResponse;
-use crate::users::user_manager;
-use crate::users::user_manager::find_account_by_identifier;
-use crate::users::user_manager::AccountIdentifier;
+use crate::users::credentials;
+use crate::users::credentials::find_account_by_identifier;
+use crate::users::credentials::AccountIdentifier;
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 
@@ -79,7 +79,7 @@ pub async fn login(
 
                 let binding = email.clone();
                 let password = params.password.clone();
-                if user_manager::is_password_match(
+                if credentials::is_password_match(
                     &pool,
                     &password,
                     AccountIdentifier::Email,
@@ -113,7 +113,7 @@ pub async fn login(
 
                 let binding = login.clone();
                 let password = params.password.clone();
-                if user_manager::is_password_match(
+                if credentials::is_password_match(
                     &pool,
                     &password,
                     AccountIdentifier::Login,

@@ -417,3 +417,15 @@ impl ResourceManager {
         }
     }
 }
+
+#[allow(dead_code)]
+pub struct UserManager {
+    users: Vec<UserID>,
+}
+
+#[allow(dead_code)]
+impl UserManager {
+    pub fn new() -> Self {
+        Self { users: Vec::new() }
+    }
+}

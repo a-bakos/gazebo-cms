@@ -1,6 +1,6 @@
 use crate::app::App;
+use crate::users::credentials::is_password_valid;
 use crate::users::roles::UserRole;
-use crate::users::user_manager::is_password_valid;
 use serde::{Deserialize, Serialize};
 use std::fmt::{Display, Formatter};
 

@@ -7,18 +7,6 @@ use crate::{
 };
 use sqlx::{PgPool, Row};
 
-#[allow(dead_code)]
-pub struct UserManager {
-    users: Vec<UserID>,
-}
-
-#[allow(dead_code)]
-impl UserManager {
-    pub fn new() -> Self {
-        Self { users: Vec::new() }
-    }
-}
-
 #[allow(unused_variables, dead_code)]
 pub fn is_email_valid(email: &str) -> bool {
     true
