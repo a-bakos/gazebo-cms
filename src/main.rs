@@ -15,14 +15,14 @@ mod users;
 
 mod mock_process;
 
-use std::collections::HashMap;
-use std::convert::Infallible;
+use std::{collections::HashMap, convert::Infallible};
 
 use sqlx::postgres::{PgPool, PgPoolOptions};
 
-use warp::http::Response;
-use warp::Reply;
-use warp::{http::Method, Filter};
+use warp::{
+    http::{Method, Response},
+    Filter, Reply,
+};
 
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {

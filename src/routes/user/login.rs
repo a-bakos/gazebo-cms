@@ -1,10 +1,16 @@
-use crate::database::columns::{COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_LOGIN};
-use crate::database::db::DB_Table;
-use crate::errors::error_handler::ErrorResponse;
-use crate::http::response::HttpResponse;
-use crate::users::credentials;
-use crate::users::credentials::find_account_by_identifier;
-use crate::users::credentials::AccountIdentifier;
+use crate::{
+    database::{
+        columns::{COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_LOGIN},
+        db::DB_Table,
+    },
+    errors::error_handler::ErrorResponse,
+    http::response::HttpResponse,
+    users::{
+        credentials,
+        credentials::{find_account_by_identifier, AccountIdentifier},
+    },
+};
+
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 

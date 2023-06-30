@@ -1,9 +1,18 @@
-use crate::database::db::DB_Table;
-use crate::entry::post::GB_PostItem;
-use crate::errors::error_handler::SqlxError;
+use crate::{
+    database::{
+        columns::{
+            COL_INDEX_POST_CONTENT, COL_INDEX_POST_EXCERPT, COL_INDEX_POST_ID,
+            COL_INDEX_POST_ID_AUTHOR, COL_INDEX_POST_PASSWORD, COL_INDEX_POST_SLUG,
+            COL_INDEX_POST_STATUS, COL_INDEX_POST_TITLE, COL_INDEX_POST_TYPE,
+        },
+        db::DB_Table,
+    },
+    entry::post::GB_PostItem,
+    errors::error_handler::SqlxError,
+};
+
 use serde::{Deserialize, Serialize};
-use sqlx::postgres::PgRow;
-use sqlx::{PgPool, Row};
+use sqlx::{postgres::PgRow, PgPool, Row};
 use std::collections::HashMap;
 use warp::http::StatusCode;
 
@@ -63,14 +72,14 @@ pub async fn insert_post(
     let query = format!(
         "INSERT INTO {} ({}, {}, {}, {}, {}, {}, {}, {}) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
         DB_Table::Posts,
-        crate::database::columns::COL_INDEX_POST_ID_AUTHOR,
-        crate::database::columns::COL_INDEX_POST_TITLE,
-        crate::database::columns::COL_INDEX_POST_CONTENT,
-        crate::database::columns::COL_INDEX_POST_TYPE,
-        crate::database::columns::COL_INDEX_POST_SLUG,
-        crate::database::columns::COL_INDEX_POST_STATUS,
-        crate::database::columns::COL_INDEX_POST_EXCERPT,
-        crate::database::columns::COL_INDEX_POST_PASSWORD
+        COL_INDEX_POST_ID_AUTHOR,
+        COL_INDEX_POST_TITLE,
+        COL_INDEX_POST_CONTENT,
+        COL_INDEX_POST_TYPE,
+        COL_INDEX_POST_SLUG,
+        COL_INDEX_POST_STATUS,
+        COL_INDEX_POST_EXCERPT,
+        COL_INDEX_POST_PASSWORD
     );
 
     match sqlx::query(&query)
@@ -94,7 +103,7 @@ pub async fn insert_post(
             match sqlx::query(&select_query)
                 .bind(title.clone())
                 .bind(slug.clone())
-                .map(|row: PgRow| row.get::<i32, _>(crate::database::columns::COL_INDEX_POST_ID))
+                .map(|row: PgRow| row.get::<i32, _>(COL_INDEX_POST_ID))
                 .fetch_one(&pool)
                 .await
             {
@@ -144,13 +153,13 @@ pub async fn get_the_title(id: i32, pool: PgPool) -> Result<impl warp::Reply, wa
 
     let query = format!(
         "SELECT {} FROM {} WHERE id = $1",
-        crate::database::columns::COL_INDEX_POST_TITLE,
+        COL_INDEX_POST_TITLE,
         DB_Table::Posts
     );
     match sqlx::query(&query)
         .bind(id)
         .map(|row: PgRow| {
-            let title: String = row.get(crate::database::columns::COL_INDEX_POST_TITLE);
+            let title: String = row.get(COL_INDEX_POST_TITLE);
             title
         })
         .fetch_one(&pool)

@@ -1,24 +1,26 @@
-use crate::consts::LABEL_NONE;
-use crate::database::columns::COL_INDEX_ACCOUNT_LAST_LOGIN;
-use crate::database::{
-    columns::{
-        COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LOGIN,
-        COL_INDEX_ACCOUNT_PASSWORD, COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE,
+use crate::{
+    consts::LABEL_NONE,
+    database::{
+        columns::{
+            COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LAST_LOGIN,
+            COL_INDEX_ACCOUNT_LOGIN, COL_INDEX_ACCOUNT_PASSWORD, COL_INDEX_ACCOUNT_REGISTERED,
+            COL_INDEX_ACCOUNT_ROLE,
+        },
+        db::DB_Table,
     },
-    db::DB_Table,
+    errors::error_handler::SqlxError,
+    users::{
+        credentials,
+        credentials::AccountIdentifier,
+        roles::get_role_variant,
+        user::{User, UserID},
+    },
 };
-use crate::errors::error_handler::SqlxError;
-use crate::users::{
-    roles::get_role_variant,
-    user::{User, UserID},
-};
+
 use chrono::NaiveDateTime;
+use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
 use warp::http::StatusCode;
-
-use crate::users::credentials;
-use crate::users::credentials::AccountIdentifier;
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct NewAccountRegistrationRequest {

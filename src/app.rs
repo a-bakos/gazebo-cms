@@ -1,5 +1,4 @@
-use crate::database::db::GBDB;
-use crate::users::user::UserID;
+use crate::{database::db::GBDB, users::user::UserID};
 use std::time::SystemTime;
 
 // Todo need to implement Debug for App

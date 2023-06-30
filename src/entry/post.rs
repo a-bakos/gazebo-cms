@@ -1,11 +1,14 @@
-use crate::app::App;
-use crate::datetime::functions as date_functions;
-use crate::entry::{
-    entry_type::EntryType,
-    status::{EntryStatus, PostStatus},
+use crate::{
+    app::App,
+    consts,
+    datetime::functions as date_functions,
+    entry::{
+        entry_type::EntryType,
+        status::{EntryStatus, PostStatus},
+    },
+    url,
+    users::user::UserID,
 };
-use crate::users::user::UserID;
-use crate::{consts, url};
 
 use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
