@@ -26,20 +26,6 @@ pub enum PostSpecific {
     Password,
 }
 
-// WP statuses:
-// publish
-// future
-// draft
-// pending
-// private
-// trash
-// NO/ auto-draft
-// NO/ inherit
-// NO/ request-pending
-// NO/ request-confirmed
-// NO/ request-failed
-// NO/ request-completed
-
 #[allow(non_camel_case_types)]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GB_PostItem {
