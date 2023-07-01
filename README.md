@@ -30,4 +30,4 @@ While it remains speculative and wishful thinking, if I can reach escape velocit
 
 ---
 
-2023 | Attila Bakos
+Gazebo CMS | 2023 | Attila Bakos | @a-bakos
