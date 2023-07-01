@@ -12,7 +12,7 @@ Why WordPress? Because I love WordPress and I know it like the back of my hand. 
 
 > **Why _Gazebo_?**
 >
-> A gazebo, typically an open-sided structure with a roof, metaphorically resembles a newsstand — a gathering place for people to access and exchange news and information. Like a newsstand offering diverse > publications, a gazebo serves as a platform for individuals to engage in conversations, share ideas, and exchange knowledge. It attracts people seeking social interaction, intellectual conversations, or a space to relax. As a focal point, it encourages gathering, discussion, and the enjoyment of each other's company.
+> A gazebo, typically an open-sided structure with a roof, metaphorically resembles a newsstand — a gathering place for people to access and exchange news and information. Like a newsstand offering diverse publications, a gazebo serves as a platform for individuals to engage in conversations, share ideas, and exchange knowledge. It attracts people seeking social interaction, intellectual conversations, or a space to relax. As a focal point, it encourages gathering, discussion, and the enjoyment of each other's company.
 
 **Aims and limitations:**
 
