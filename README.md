@@ -1,3 +1,5 @@
+<img src="gazebo-gui/assets/gazebo-logo.jpg" alt="Placeholder Example Gazebo Logo" width="150px"  />
+
 # Gazebo CMS
 ## An experiment CMS project inspired by WordPress, written in Rust
 
