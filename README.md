@@ -1,7 +1,7 @@
 <img src="gazebo-gui/assets/gazebo-logo.jpg" alt="Placeholder Example Gazebo Logo" width="150px"  />
 
 # Gazebo CMS
-## An experiment CMS project inspired by WordPress, written in Rust
+## An experiment project inspired by WordPress, written in Rust
 
 This is a side-project for myself to practice and grow my Rust (and related) skills. The main idea behind this project is to explore and
 re-create some parts of WordPress using Rust in order to pick up new things, solidify what I've learnt already, understand and commit to muscle memory.
