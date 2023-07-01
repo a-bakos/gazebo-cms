@@ -10,7 +10,7 @@ re-create some parts of WordPress using Rust in order to pick up new things, sol
 
 **Project state:** Active development (not ready for public use)
 
-Why WordPress? Because I love WordPress and I know it like the back of my hand. It's that simple. I also work in the publishing industry, building tools and platforms for editors and marketers, so _content management_ has a deeper meaning for me. However, I don't consider WP to "just" be a blogging platform (I don't think that's true anymore), but a framework. _Gazebo_ enables me to combine my technical expertise with my industry experience.
+Why WordPress? Because I love WordPress and I know it like the back of my hand. It's that simple. I also work in the publishing industry, building tools and platforms for editors and marketers, so _content management_ has a deeper meaning for me. However, I don't consider WP to "just" be a blogging platform (I don't think that's appropriate anymore), but a framework. _Gazebo_ enables me to combine my technical expertise with my industry experience.
 
 > **Why _Gazebo_?**
 >
