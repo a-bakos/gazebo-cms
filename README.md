@@ -1,42 +1,31 @@
-# Gazebo CMS - A WIP Rust CMS
-## An experiment project inspired by WordPress
+# Gazebo CMS
+## An experiment CMS project inspired by WordPress, written in Rust
 
-This is a project for myself to practice and grow my Rust skills. The main idea behind this project is to explore and
-re-create some parts of WordPress using Rust in order to pick up new things, solidify what I've learnt already, 
-understand and commit to muscle memory.
+This is a side-project for myself to practice and grow my Rust (and related) skills. The main idea behind this project is to explore and
+re-create some parts of WordPress using Rust in order to pick up new things, solidify what I've learnt already, understand and commit to muscle memory.
 
-Tech Stack so far:
+**The main tech stack so far:** Rust, Warp, PostgreSQL, Yew, Trunk, WebAssembly
 
-Rust, Warp, PostgreSQL, Yew, Trunk, WebAssembly
+Why WordPress? Because I love WordPress and I know it like the back of my hand. It's that simple. I also work in the publishing industry, building tools and platforms for editors and marketers, so _content management_ has a deeper meaning for me. However, I don't consider WP to "just" be a blogging platform (I don't think that's true anymore), but a framework. _Gazebo_ enables me to combine my technical expertise with my industry experience.
 
-Init: 2023 Jan 13
-
-**Why WordPress?**
-
-Because I love WordPress and I know it like the back of my hand. It's that simple.
+_Project init: 2023-Jan-13_
 
 **Aims and limitations:**
 
-Essentially, I want a prototype for a basic CMS flow. _However..._
+From a technical perspective, my goal with this project is to create a prototype for a basic CMS flow.
 
-Certainly, re-implementing a WordPress-like CMS is a non-trivial and rather enormous undertaking, something I certainly 
-wouldn't be able to complete alone within a sensible timeframe and to the highest standards.
+Certainly, re-implementing a full-fledged WordPress-like CMS is a non-trivial and substantial undertaking. Completing such a project alone within a reasonable timeframe and to the highest standards would be challenging.
 
-But, at this point, it's not my goal to fully achieve that. I'm also not saying that I would not want it to be my goal in the future. 
+At this stage, my primary aim is to deepen my knowledge of Rust and related technologies, and to practice regularly in diverse ways. I also intend to seek feedback from peers or potential employers, leveraging this project as a demonstration of my skills. The extensive nature of a CMS like WordPress, which has evolved into more of a framework, provides an ideal subject for this purpose.
 
-Right now, my aim is to learn more about Rust and related technologies, practice it regularly, and in varied ways, maybe even to show it to some people for feedback or a potential employer. 
-And for that purpose an extensive CMS (aka WP, which nowadays is more like a framework in my opinion) is a great subject.
+Cherrypicking certain parts to re-implement is a great method for me to keep the project engaging and the learning experience interesting. It helps me to maintain focus on thinking critically about data structures and modelling, databases and communication, content creation and user management, APIs, frontend/backend separation/connection etc.
 
-Cherrypicking certain parts for re-implementation is a great method for me to keep this project and the learning experience interesting. 
-It is a great exercise to think critically about data structures and modelling, databases and communication, content creation and user management, APIs, frontend/backend separation/connection etc.
-
-Even a small module, like permalink-generation has a lot of hidden knowledge, something that has already taught me a great deal and not just about Rust per se.
-
-I'm not concerned with asynchronous approaches right now. I do want to look at that soon, though. The same applies for security and authentication.
-
-Database-wise, I'm starting with one of the easiest possible ways, using a simple CSV format to store post and user data.
-Later, I will look into real solutions, like PostgreSQL or SurrealDB. 
+Even a smaller module, like permalink-generation has a lot of hidden knowledge, something that has already taught me a great deal and not just about Rust per se.
 
 **What if...**
 
-Who knows/wishful thinking/etc., and it's a big _if_ at this point, but if I can reach escape velocity with this prototyping exercise, there's always the potential it grows into a real product...
+While it remains speculative and wishful thinking, if I can reach escape velocity with this prototyping exercise and gain a certain level of (internal) success, there is always the potential for it to evolve into a real product. However, for now, my primary focus is on honing my skills, learning, and creating a valuable learning experience.
+
+---
+
+2023 | Attila Bakos
