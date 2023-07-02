@@ -6,7 +6,7 @@
 This is a side-project for myself to practice and grow my Rust (and related) skills. The main idea behind this project is to explore and
 re-create some parts of WordPress using Rust in order to pick up new things, solidify what I've learnt already, understand and commit to muscle memory.
 
-**The main tech stack so far:** Rust, Warp, PostgreSQL, Yew, Trunk, WebAssembly
+**The main tech stack so far:** Rust, obviosuly. Warp for the web server; PostgreSQL for the database; Yew (w/ router) for the front-end; Sass for styling (w/ a CSS framework TBD); Trunk to build the front-end assets & WebAssembly
 
 **Project state:** Active development (not ready for public use)
 
