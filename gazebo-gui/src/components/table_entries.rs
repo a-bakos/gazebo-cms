@@ -1,4 +1,5 @@
 use yew::prelude::*;
+use yew::{platform::spawn_local, prelude::*};
 
 struct TableRows {
     rows: Vec<EntryTableRow>,
@@ -59,6 +60,12 @@ pub fn table_entries() -> Html {
             },
         ],
     };
+
+    // TODO
+    spawn_local(async move {
+        let response = crate::api::post::api_get_all_posts().await.unwrap();
+        println!("{:#?}", response);
+    });
 
     html! {
         <table class={"gb-admin-table"}>
