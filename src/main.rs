@@ -94,6 +94,13 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(pool_filter.clone())
         .and_then(routes::post::crud::get_post_by_id);
 
+    let get_posts = warp::get()
+        .and(warp::path(url::path::PATH_POSTS))
+        .and(warp::path::end()) // ::end() closes the URI path
+        // .and(warp::query()) // => this is the params: HashMap<String, String> parameter in the callback
+        .and(pool_filter.clone())
+        .and_then(routes::post::crud::get_posts);
+
     let insert_post = warp::post()
         .and(warp::path("post"))
         .and(warp::path("add"))
@@ -129,6 +136,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .or(login)
         .or(delete_user)
         .or(get_post)
+        .or(get_posts)
         .or(insert_post)
         .or(delete_post)
         .or(get_post_title)

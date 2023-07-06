@@ -1,5 +1,6 @@
 // Top level paths
 pub const PATH_POST: &str = "post";
+pub const PATH_POSTS: &str = "posts";
 pub const PATH_USER: &str = "user";
 pub const PATH_USER_LOGIN: &str = "login";
 

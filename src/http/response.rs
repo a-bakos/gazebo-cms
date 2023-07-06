@@ -12,35 +12,9 @@ impl HttpResponse {
     }
 
     // todo
-    pub fn success<T: SuccessfulHttpResponse>(
-        _values_to_send: T::SuccessValue,
-    ) -> (HttpStatusCode, T::FinalHttpResponse) {
-        todo!()
-    }
-}
-
-// TODO
-
-pub struct TypeA;
-pub struct TypeB;
-
-pub trait SuccessfulHttpResponse {
-    type SuccessValue;
-    type FinalHttpResponse;
-}
-
-pub struct TypeAValue;
-pub struct TypeAHttpResponse;
-
-impl SuccessfulHttpResponse for TypeA {
-    type SuccessValue = TypeAValue;
-    type FinalHttpResponse = TypeAHttpResponse;
-}
-
-pub struct TypeBValue;
-pub struct TypeBHttpResponse;
-
-impl SuccessfulHttpResponse for TypeB {
-    type SuccessValue = TypeBValue;
-    type FinalHttpResponse = TypeBHttpResponse;
+    //pub fn success<T: SuccessfulHttpResponse>(
+    //    _values_to_send: T,
+    //) -> (HttpStatusCode, impl SuccessfulHttpResponse) {
+    //    todo!()
+    // }
 }

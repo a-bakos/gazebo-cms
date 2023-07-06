@@ -34,6 +34,23 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
     }
 }
 
+pub async fn get_posts(pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
+    println!("All posts requested");
+    let mut posts: Vec<GB_PostItem> = Vec::new();
+    let query = format!("SELECT * FROM {}", DB_Table::Posts);
+    match sqlx::query(&query)
+        .map(|row: PgRow| {
+            let the_post: GB_PostItem = row.into();
+            posts.push(the_post);
+        })
+        .fetch_all(&pool)
+        .await
+    {
+        Ok(res) => Ok(warp::reply::json(&posts)),
+        Err(e) => Err(warp::reject::custom(SqlxError(e))), // Unhandled rejection: SqlxError(RowNotFound)
+    }
+}
+
 #[derive(Debug, Deserialize, Serialize)]
 pub struct NewPostInsertRequest {
     pub author_id: i32,
