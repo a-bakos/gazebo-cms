@@ -2,7 +2,9 @@
 
 use yew::prelude::*;
 
-use crate::components::{admin_bar::AdminBar, admin_menu::AdminMenu};
+use crate::components::{
+    admin::widget_logged_in_users::WidgetLoggedInUsers, admin_bar::AdminBar, admin_menu::AdminMenu,
+};
 
 #[function_component(AdminDashboard)]
 pub fn admin_dashboard() -> Html {
@@ -15,6 +17,7 @@ pub fn admin_dashboard() -> Html {
 
                 <div class={"gb-admin-main"}>
                    <h1>{"Dashboard"}</h1>
+                    <WidgetLoggedInUsers />
                 </div>
             </div>
 
