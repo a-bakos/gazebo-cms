@@ -1,6 +1,7 @@
 pub mod admin;
 pub mod admin_bar;
 pub mod admin_menu;
+pub mod button_add_new_entry;
 pub mod entry_editor;
 pub mod footer;
 pub mod header;

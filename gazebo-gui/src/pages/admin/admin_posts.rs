@@ -2,7 +2,10 @@
 
 use yew::prelude::*;
 
-use crate::components::{admin_bar::AdminBar, admin_menu::AdminMenu, table_entries::EntriesTable};
+use crate::components::{
+    admin_bar::AdminBar, admin_menu::AdminMenu, button_add_new_entry::ButtonAddNewEntry,
+    table_entries::EntriesTable,
+};
 
 #[function_component(AdminPosts)]
 pub fn admin_posts() -> Html {
@@ -15,6 +18,7 @@ pub fn admin_posts() -> Html {
 
                 <div class={"gb-admin-main"}>
                     <h1>{"Posts"}</h1>
+                    <ButtonAddNewEntry />
                     <EntriesTable />
                 </div>
             </div>
