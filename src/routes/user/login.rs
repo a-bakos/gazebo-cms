@@ -4,7 +4,7 @@ use crate::{
         db::DB_Table,
     },
     errors::error_handler::ErrorResponse,
-    http::response::HttpResponse,
+    http::status_code::HttpStatusCode,
     users::{
         credentials,
         credentials::{find_account_by_identifier, AccountIdentifier},
@@ -61,9 +61,9 @@ pub async fn try_login(
                 Err(e) => println!("Last login update error"),
             }
 
-            Ok(warp::reply::json(&crate::consts::MSG_LOGIN_SUCCESS))
+            Ok(warp::reply::json(&HttpStatusCode::Ok.code()))
         }
-        Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+        Err(e) => Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code())),
     }
 }
 
@@ -100,10 +100,10 @@ pub async fn login(
                     println!("Wrong password used for: {}", &binding);
 
                     // Client response
-                    Ok(warp::reply::json(&HttpResponse::unauthorized()))
+                    Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code()))
                 }
             }
-            Ok(false) => Ok(warp::reply::json(&HttpResponse::unauthorized())),
+            Ok(false) => Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code())),
             Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
         };
     }
@@ -133,10 +133,10 @@ pub async fn login(
                     // System log
                     println!("Wrong password used for: {}", &binding);
                     // Client response
-                    Ok(warp::reply::json(&HttpResponse::unauthorized()))
+                    Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code()))
                 }
             }
-            Ok(false) => Ok(warp::reply::json(&HttpResponse::unauthorized())),
+            Ok(false) => Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code())),
             Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
         };
     }

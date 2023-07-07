@@ -9,7 +9,7 @@ pub struct LoginResponse {
     pub status: String,
 }
 
-pub async fn api_login(username: String, password: String) -> Result<String, gloo_net::Error> {
+pub async fn api_login(username: String, password: String) -> Result<u16, gloo_net::Error> {
     // gloo-net
     let response = Request::post(&format!("{}/login", BACKEND_URL_BASE))
         .json(&json!({
@@ -19,7 +19,7 @@ pub async fn api_login(username: String, password: String) -> Result<String, glo
         .send()
         .await?;
 
-    response.json::<String>().await
+    response.json::<u16>().await
 }
 
 #[derive(Deserialize)]

@@ -56,7 +56,7 @@ pub fn login_form() -> Html {
             println!("{}", response);
 
             // todo change response from backend API
-            if response == "Login successful".to_string() {
+            if response == 200 {
                 gloo_console::log!("success case");
                 if let Some(nav) = clone_navigator {
                     nav.push(&MainNavigationRoute::Admin)
