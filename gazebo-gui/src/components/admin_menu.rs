@@ -17,9 +17,21 @@ pub fn admin_menu() -> Html {
                         {"Posts"}
                     </Link<MainNavigationRoute>>
                 </li>
-                <li><a href="">{"Media"}</a></li>
-                <li><a href="">{"Settings"}</a></li>
-                <li><a href="">{"Users"}</a></li>
+                <li>
+                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminMedia}>
+                        {"Media"}
+                    </Link<MainNavigationRoute>>
+                </li>
+                <li>
+                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminSettings}>
+                        {"Settings"}
+                    </Link<MainNavigationRoute>>
+                </li>
+                <li>
+                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminUsers}>
+                        {"Users"}
+                    </Link<MainNavigationRoute>>
+                </li>
             </ul>
         </nav>
     }

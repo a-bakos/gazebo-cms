@@ -40,7 +40,7 @@ pub fn login_form() -> Html {
 
         // Console logging for now
         gloo_console::log!(
-            "Submitting form: ",
+            "Submitting login form: ",
             cloned_username.clone(),
             cloned_password.clone()
         );
@@ -55,24 +55,21 @@ pub fn login_form() -> Html {
                 .unwrap();
             println!("{}", response.0);
 
-            // todo change response from backend API
             if response.0 == 200 {
-                gloo_console::log!("success case");
+                gloo_console::log!(
+                    "Successful login: ",
+                    response.0,
+                    response.1.id,
+                    response.1.name
+                );
                 if let Some(nav) = clone_navigator {
                     nav.push(&MainNavigationRoute::Admin)
                 }
             } else {
-                gloo_console::log!("error case");
+                gloo_console::log!("Login error!");
                 // show login error here
                 //login_error = "401 Unauthorized".to_string();
             }
-
-            gloo_console::log!(
-                "Login request response: ",
-                response.0,
-                response.1.id,
-                response.1.name
-            );
 
             // On success, create a cookie
         });

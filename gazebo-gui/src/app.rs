@@ -7,7 +7,10 @@ use crate::{
         post_rollup::PostRollup,
     },
     pages::{
-        admin::{admin_dashboard::AdminDashboard, admin_posts::AdminPosts},
+        admin::{
+            admin_dashboard::AdminDashboard, admin_media::AdminMedia, admin_posts::AdminPosts,
+            admin_settings::AdminSettings, admin_users::AdminUsers,
+        },
         edit_entry::EntryEdit,
         home::Home,
         login::Login,
@@ -26,6 +29,12 @@ pub enum MainNavigationRoute {
     Admin,
     #[at("/admin-posts")]
     AdminPosts,
+    #[at("/admin-media")]
+    AdminMedia,
+    #[at("/admin-settings")]
+    AdminSettings,
+    #[at("/admin-users")]
+    AdminUsers,
     #[at("/entry-edit")]
     EntryEdit,
     #[at("/lost-password")]
@@ -50,6 +59,10 @@ pub fn main_nav_switch(route: MainNavigationRoute) -> Html {
         MainNavigationRoute::AdminPosts => html! { <AdminPosts /> },
         // Admin entry editor
         MainNavigationRoute::EntryEdit => html! { <EntryEdit />},
+        // Admin media lib
+        MainNavigationRoute::AdminMedia => html! { <AdminMedia />},
+        MainNavigationRoute::AdminSettings => html! { <AdminSettings />},
+        MainNavigationRoute::AdminUsers => html! { <AdminUsers />},
 
         // 404
         MainNavigationRoute::NotFound => html! { <NotFound /> },
