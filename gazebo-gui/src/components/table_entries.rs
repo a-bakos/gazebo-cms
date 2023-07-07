@@ -64,56 +64,66 @@ pub fn table_entries() -> Html {
     // TODO
     spawn_local(async move {
         let response = crate::api::post::api_get_all_posts().await.unwrap();
-        println!("{:#?}", response);
+
+        for title in response.iter() {
+            gloo_console::log!("response: ", title);
+        }
     });
 
     html! {
-        <table class={"gb-admin-table"}>
-            <thead>
-                <tr>
-                    <th>{"Title"}</th>
-                    <th>{"Status"}</th>
-                    <th>{"Author"}</th>
-                    <th>{"Category"}</th>
-                    <th>{"Published"}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    for table_rows.rows.iter().map(|row| html! {
-                        <tr>
-                            <td>
-                                <a
-                                    title={ row.title.clone() }
-                                    href="">{ row.title.clone() }</a>
-                            </td>
-                            <td>{ &row.status }</td>
-                            <td>{ &row.author }</td>
-                            <td>
-                                {
-                                    if let Some(categories) = &row.category {
-                                        html! {
-                                            <>
-                                                {
-                                                    for categories.iter().map(|tag| html! {
-                                                        <>
-                                                            <span>{ tag }</span>
-                                                            <br />
-                                                        </>
-                                                    } )
-                                                }
-                                            </>
+        <>
+          // {
+          //   for response.iter().map(|title| html! {
+          //     <p>{title.clone()}</p>
+          //   } )
+          // }
+            <table class={"gb-admin-table"}>
+                <thead>
+                    <tr>
+                        <th>{"Title"}</th>
+                        <th>{"Status"}</th>
+                        <th>{"Author"}</th>
+                        <th>{"Category"}</th>
+                        <th>{"Published"}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        for table_rows.rows.iter().map(|row| html! {
+                            <tr>
+                                <td>
+                                    <a
+                                        title={ row.title.clone() }
+                                        href="">{ row.title.clone() }</a>
+                                </td>
+                                <td>{ &row.status }</td>
+                                <td>{ &row.author }</td>
+                                <td>
+                                    {
+                                        if let Some(categories) = &row.category {
+                                            html! {
+                                                <>
+                                                    {
+                                                        for categories.iter().map(|tag| html! {
+                                                            <>
+                                                                <span>{ tag }</span>
+                                                                <br />
+                                                            </>
+                                                        } )
+                                                    }
+                                                </>
+                                            }
+                                        } else {
+                                            html! { <></> }
                                         }
-                                    } else {
-                                        html! { <></> }
                                     }
-                                }
-                            </td>
-                            <td>{ &row.date }</td>
-                        </tr>
-                    } )
-                }
-            </tbody>
-        </table>
+                                </td>
+                                <td>{ &row.date }</td>
+                            </tr>
+                        } )
+                    }
+                </tbody>
+            </table>
+        </>
     }
 }

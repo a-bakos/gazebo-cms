@@ -55,12 +55,14 @@ pub fn login_form() -> Html {
                 .unwrap();
             println!("{}", response);
 
-            // This currently matches all login requests regardless of correct credentials!
-            if response == 1.to_string() {
+            // todo change response from backend API
+            if response == "Login successful".to_string() {
+                gloo_console::log!("success case");
                 if let Some(nav) = clone_navigator {
                     nav.push(&MainNavigationRoute::Admin)
                 }
             } else {
+                gloo_console::log!("error case");
                 // show login error here
                 //login_error = "401 Unauthorized".to_string();
             }
