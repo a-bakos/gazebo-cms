@@ -61,10 +61,22 @@ pub async fn try_login(
                 Err(e) => println!("Last login update error"),
             }
 
-            Ok(warp::reply::json(&HttpStatusCode::Ok.code()))
+            Ok(warp::reply::json(&(
+                HttpStatusCode::Ok.code(),
+                TryThis {
+                    id: 100,
+                    name: "Hello".to_string(),
+                },
+            )))
         }
         Err(e) => Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code())),
     }
+}
+
+#[derive(Serialize)]
+pub struct TryThis {
+    pub id: u32,
+    pub name: String,
 }
 
 pub async fn login(
@@ -104,7 +116,9 @@ pub async fn login(
                 }
             }
             Ok(false) => Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code())),
-            Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+            Err(e) => Ok(warp::reply::json(
+                &HttpStatusCode::InternalServerError.code(),
+            )),
         };
     }
 
@@ -137,7 +151,9 @@ pub async fn login(
                 }
             }
             Ok(false) => Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code())),
-            Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+            Err(e) => Ok(warp::reply::json(
+                &HttpStatusCode::InternalServerError.code(),
+            )),
         };
     }
 

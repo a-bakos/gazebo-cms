@@ -9,7 +9,10 @@ pub struct LoginResponse {
     pub status: String,
 }
 
-pub async fn api_login(username: String, password: String) -> Result<u16, gloo_net::Error> {
+pub async fn api_login(
+    username: String,
+    password: String,
+) -> Result<(u16, OtherEndTryThis), gloo_net::Error> {
     // gloo-net
     let response = Request::post(&format!("{}/login", BACKEND_URL_BASE))
         .json(&json!({
@@ -19,7 +22,13 @@ pub async fn api_login(username: String, password: String) -> Result<u16, gloo_n
         .send()
         .await?;
 
-    response.json::<u16>().await
+    response.json::<(u16, OtherEndTryThis)>().await
+}
+
+#[derive(Deserialize, Debug, PartialEq)]
+pub struct OtherEndTryThis {
+    pub id: u32,
+    pub name: String,
 }
 
 #[derive(Deserialize)]

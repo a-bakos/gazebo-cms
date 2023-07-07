@@ -53,10 +53,10 @@ pub fn login_form() -> Html {
             let response = crate::api::user::api_login(cloned_username, cloned_password)
                 .await
                 .unwrap();
-            println!("{}", response);
+            println!("{}", response.0);
 
             // todo change response from backend API
-            if response == 200 {
+            if response.0 == 200 {
                 gloo_console::log!("success case");
                 if let Some(nav) = clone_navigator {
                     nav.push(&MainNavigationRoute::Admin)
@@ -67,7 +67,12 @@ pub fn login_form() -> Html {
                 //login_error = "401 Unauthorized".to_string();
             }
 
-            gloo_console::log!("Login request response: ", response);
+            gloo_console::log!(
+                "Login request response: ",
+                response.0,
+                response.1.id,
+                response.1.name
+            );
 
             // On success, create a cookie
         });
