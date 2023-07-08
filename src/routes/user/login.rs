@@ -10,9 +10,15 @@ use crate::{
         credentials::{find_account_by_identifier, AccountIdentifier},
     },
 };
+use chrono::NaiveDateTime;
 
+use crate::database::columns::{
+    COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE,
+};
+use crate::users::roles::get_role_variant;
 use serde::{Deserialize, Serialize};
-use sqlx::PgPool;
+use sqlx::postgres::PgRow;
+use sqlx::{PgPool, Row};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct LoginRequest {
@@ -32,17 +38,33 @@ pub async fn try_login(
         AccountIdentifier::Login => COL_INDEX_ACCOUNT_LOGIN,
     };
     let query = format!(
-        "SELECT * FROM {} WHERE {} = $1",
+        "SELECT * FROM {} WHERE {} = $1 AND password = $2",
         DB_Table::Accounts,
         column_name
     );
+    println!("{}", query);
     match sqlx::query(&query)
-        .bind(password)
         .bind(binding.clone())
-        .execute(&pool)
+        .bind(password)
+        .map(|row: PgRow| {
+            println!("Were in trylogin");
+            // Underscores' meaning here:
+            // we don't need to specify a default/fallback value because the cell will never be empty
+            let id = row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32;
+            let role = row.get::<&str, _>(COL_INDEX_ACCOUNT_ROLE);
+            LoginResponse {
+                id,
+                login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
+                email: row.get(COL_INDEX_ACCOUNT_EMAIL),
+                role: role.to_string(),
+            }
+        })
+        .fetch_one(&pool)
         .await
     {
-        Ok(_) => {
+        Ok(user) => {
+            println!("{:?}", user);
+
             let update_last_login_query = format!(
                 "UPDATE {} SET last_login = CURRENT_TIMESTAMP WHERE {} = $1",
                 DB_Table::Accounts,
@@ -57,22 +79,21 @@ pub async fn try_login(
                 Err(e) => println!("Last login update error"),
             }
 
-            Ok(warp::reply::json(&(
-                HttpStatusCode::Ok.code(),
-                TryThis {
-                    id: 100,
-                    name: "GAZEBO-USER".to_string(),
-                },
-            )))
+            Ok(warp::reply::json(&LoginResponseWithStatusCode(200, user)))
         }
         Err(e) => Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code())),
     }
 }
 
-#[derive(Serialize)]
-pub struct TryThis {
+#[derive(Deserialize, Serialize)]
+pub struct LoginResponseWithStatusCode(pub u32, pub LoginResponse);
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct LoginResponse {
     pub id: u32,
-    pub name: String,
+    pub login_name: String,
+    pub email: String,
+    pub role: String,
 }
 
 pub async fn login(
@@ -106,7 +127,6 @@ pub async fn login(
                 } else {
                     // System log
                     println!("Wrong password used for: {}", &binding);
-
                     // Client response
                     Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code()))
                 }

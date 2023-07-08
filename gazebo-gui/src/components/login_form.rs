@@ -3,7 +3,7 @@ use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::*;
 
 use crate::{
-    api::user::{api_login_request, LoginResponse, LoginResponseWithStatusCode, MeResponse},
+    api::user::{api_login_request, LoginResponse, LoginResponseWithStatusCode},
     app::MainNavigationRoute,
     components::{
         input::{Input, InputProps},
@@ -73,18 +73,12 @@ pub fn login_form() -> Html {
                         "Successful login: ",
                         response.0,
                         response.1.id.clone(),
-                        response.1.name.clone()
+                        response.1.login_name.clone()
                     );
-
-                    let me_response = MeResponse {
-                        id: response.1.id.clone(),
-                        name: response.1.name.clone(),
-                    };
 
                     clone_current_user_ctx.dispatch(CurrentUserDispatchActions {
                         action_type: LoginSuccess,
                         login_response: Some(response.1),
-                        me_response: Some(me_response),
                     });
 
                     // Redirect to Home

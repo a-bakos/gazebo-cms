@@ -1,4 +1,4 @@
-use crate::api::user::{LoginResponse, MeResponse, User};
+use crate::api::user::{LoginResponse, User};
 use std::rc::Rc;
 use yew::{context::ContextProvider, prelude::*, Reducible, UseReducerHandle};
 
@@ -19,13 +19,13 @@ impl Reducible for CurrentUser {
     fn reduce(self: Rc<Self>, action: Self::Action) -> Rc<Self> {
         match action.action_type {
             UserAction::LoginSuccess => {
-                let me_response = action.me_response.expect("Missing ME response");
                 let login_response = action.login_response.expect("Missing login response");
                 Self {
                     user: Some(User {
-                        id: me_response.id,
-                        username: me_response.name,
-                        //created_at: login_response.created_at,
+                        id: login_response.id,
+                        username: login_response.login_name,
+                        email: login_response.email,
+                        role: login_response.role,
                     }),
                 }
                 .into()
@@ -39,7 +39,6 @@ impl Reducible for CurrentUser {
 pub struct CurrentUserDispatchActions {
     pub action_type: UserAction,
     pub login_response: Option<LoginResponse>,
-    pub me_response: Option<MeResponse>,
 }
 
 #[derive(Properties, PartialEq)]

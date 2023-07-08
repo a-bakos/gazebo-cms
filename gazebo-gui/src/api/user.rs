@@ -9,20 +9,16 @@ pub struct LoginResponseWithStatusCode(pub HttpStatusCode, pub LoginResponse);
 pub struct User {
     pub id: u32,
     pub username: String,
-    // pub created_at: String,
+    pub email: String,
+    pub role: String,
 }
 
 #[derive(Deserialize, Debug, PartialEq)]
 pub struct LoginResponse {
     pub id: u32,
-    pub name: String,
-}
-
-#[derive(Deserialize)]
-pub struct MeResponse {
-    pub id: u32,
-    pub name: String,
-    //pub created_at: String,
+    pub login_name: String,
+    pub email: String,
+    pub role: String,
 }
 
 pub async fn api_login_request(
@@ -38,17 +34,4 @@ pub async fn api_login_request(
         .await?;
 
     response.json::<LoginResponseWithStatusCode>().await
-}
-
-// TODO
-pub async fn api_me() -> Result<MeResponse, gloo_net::Error> {
-    let response = gloo_net::http::Request::post(&format!("{}/login", BACKEND_URL_BASE))
-        .json(&json!({
-            "login": "username",
-            "password": "password"
-        }))?
-        .send()
-        .await?;
-
-    response.json::<MeResponse>().await
 }
