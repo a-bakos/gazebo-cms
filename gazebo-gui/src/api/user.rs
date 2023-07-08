@@ -4,6 +4,13 @@ use gloo_net::http::Request;
 use serde::Deserialize;
 use serde_json::json;
 
+#[derive(PartialEq)]
+pub struct User {
+    pub id: i32,
+    pub username: String,
+    pub created_at: String,
+}
+
 #[derive(Deserialize, Debug, PartialEq)]
 pub struct LoginResponse {
     pub id: u32,

@@ -18,7 +18,7 @@ pub fn admin_bar() -> Html {
                         </Link<MainNavigationRoute>>
                     </li>
                     <li>
-                        <Link<MainNavigationRoute> to={MainNavigationRoute::EditEntry}>
+                        <Link<MainNavigationRoute> to={MainNavigationRoute::EntryEdit}>
                             {"Create new entry"}
                         </Link<MainNavigationRoute>>
                     </li>
