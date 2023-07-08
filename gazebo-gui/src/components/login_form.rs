@@ -1,3 +1,4 @@
+use std::thread::current;
 use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::*;
 
@@ -12,6 +13,8 @@ use crate::{
 #[function_component(LoginForm)]
 pub fn login_form() -> Html {
     let navigator = use_navigator();
+    let current_user_ctx = use_context::<crate::context::CurrentUserContext>()
+        .expect("Current user context is missing");
 
     let mut login_error = String::new();
 
@@ -48,20 +51,30 @@ pub fn login_form() -> Html {
         let cloned_username = cloned_username.clone();
         let cloned_password = cloned_password.clone();
         let clone_navigator = navigator.clone();
+        let clone_current_user_ctx = current_user_ctx.clone();
 
         spawn_local(async move {
-            let response = crate::api::user::api_login(cloned_username, cloned_password)
-                .await
-                .unwrap();
+            // we can match on response instead
+            let response: (u16, crate::api::user::LoginResponse) =
+                crate::api::user::api_login(cloned_username, cloned_password)
+                    .await
+                    .unwrap();
             println!("{}", response.0);
 
             if response.0 == 200 {
                 gloo_console::log!(
                     "Successful login: ",
                     response.0,
-                    response.1.id,
-                    response.1.name
+                    response.1.id.clone(),
+                    response.1.name.clone()
                 );
+
+                clone_current_user_ctx.dispatch(crate::context::CurrentUserDispatchActions {
+                    action_type: crate::context::UserAction::LoginSuccess,
+                    login_response: Some(response.1),
+                    // me_response: Some(response.1),
+                });
+
                 if let Some(nav) = clone_navigator {
                     nav.push(&MainNavigationRoute::Admin)
                 }

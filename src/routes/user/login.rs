@@ -65,7 +65,7 @@ pub async fn try_login(
                 HttpStatusCode::Ok.code(),
                 TryThis {
                     id: 100,
-                    name: "Hello".to_string(),
+                    name: "GAZEBO-USER".to_string(),
                 },
             )))
         }
