@@ -1,11 +1,6 @@
-use crate::api::user::User;
+use crate::api::user::{LoginResponse, MeResponse, User};
 use std::rc::Rc;
-use yew::{Reducible, UseReducerHandle};
-
-use crate::api::user::LoginResponse;
-use crate::api::user::MeResponse;
-use yew::context::ContextProvider;
-use yew::prelude::*;
+use yew::{context::ContextProvider, prelude::*, Reducible, UseReducerHandle};
 
 pub type CurrentUserContext = UseReducerHandle<CurrentUser>;
 
