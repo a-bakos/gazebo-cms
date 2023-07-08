@@ -37,9 +37,9 @@ pub async fn api_login(
 
 #[derive(Deserialize)]
 pub struct MeResponse {
-    pub id: i32,
-    pub username: String,
-    pub created_at: String,
+    pub id: u32,
+    pub name: String,
+    //pub created_at: String,
 }
 
 pub async fn api_me() -> Result<MeResponse, gloo_net::Error> {

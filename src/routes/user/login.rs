@@ -43,10 +43,6 @@ pub async fn try_login(
         .await
     {
         Ok(_) => {
-            // Add to users list - if in list: already logged in
-            // if !app.users.contains(&user_email.to_string()) {
-            //     app.users.push(user_email.to_string());
-            // }
             let update_last_login_query = format!(
                 "UPDATE {} SET last_login = CURRENT_TIMESTAMP WHERE {} = $1",
                 DB_Table::Accounts,

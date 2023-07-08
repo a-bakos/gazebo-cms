@@ -1,9 +1,7 @@
 use crate::app::MainNavigationRoute;
-use std::fs::read_dir;
 use yew::prelude::*;
 use yew_router::prelude::{Link, Redirect};
 
-// todo only show admin bar if logged in
 #[function_component(AdminBar)]
 pub fn admin_bar() -> Html {
     let current_user_ctx =
@@ -11,9 +9,9 @@ pub fn admin_bar() -> Html {
     match &current_user_ctx.user {
         Some(user) => html! {
             <>
-                <p>{"Hello, "}{user.username.clone()}</p>
                 <nav class="gb-admin-bar">
                     <ul>
+                        <li>{"Hello, "}{user.username.clone()}</li>
                         // If admin, show front end link
                         <li><a title="Front End" href="/">{"Front end"}</a></li>
                         // If frontend, show admin link todo
@@ -33,7 +31,8 @@ pub fn admin_bar() -> Html {
             </>
         },
         None => html! {
-            <Redirect<MainNavigationRoute> to={MainNavigationRoute::Login} />
+            //<p>{"NOT LOGGED IN"}</p>
+            <Redirect<MainNavigationRoute> to={MainNavigationRoute::Home} />
         },
     }
 }

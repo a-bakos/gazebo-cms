@@ -69,10 +69,15 @@ pub fn login_form() -> Html {
                     response.1.name.clone()
                 );
 
+                let me_response = crate::api::user::MeResponse {
+                    id: response.1.id.clone(),
+                    name: response.1.name.clone(),
+                };
+
                 clone_current_user_ctx.dispatch(crate::context::CurrentUserDispatchActions {
                     action_type: crate::context::UserAction::LoginSuccess,
                     login_response: Some(response.1),
-                    // me_response: Some(response.1),
+                    me_response: Some(me_response),
                 });
 
                 if let Some(nav) = clone_navigator {
