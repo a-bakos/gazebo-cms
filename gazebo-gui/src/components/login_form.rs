@@ -3,7 +3,7 @@ use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::*;
 
 use crate::{
-    api::user::{api_login_request, LoginResponse, LoginResponseWithStatusCode},
+    api::user::{api_login_request, LoginResponseAccountDetails, LoginResponseWithStatusCode},
     app::MainNavigationRoute,
     components::{
         input::{Input, InputProps},
@@ -66,19 +66,19 @@ pub fn login_form() -> Html {
 
             // Check status code
             // Todo create type for statuscode
-            match response.0 {
+            match response.http_status_code {
                 200 => {
                     // IDEA todo: gb_console_log(GB_Log::LoginResponseWithStatusCode, response)
                     gloo_console::log!(
                         "Successful login: ",
-                        response.0,
-                        response.1.id.clone(),
-                        response.1.login_name.clone()
+                        response.http_status_code,
+                        response.account_details.id.clone(),
+                        response.account_details.login_name.clone()
                     );
 
                     clone_current_user_ctx.dispatch(CurrentUserDispatchActions {
                         action_type: LoginSuccess,
-                        login_response: Some(response.1),
+                        login_response: Some(response.account_details),
                     });
 
                     // Redirect to Home

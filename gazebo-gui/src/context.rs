@@ -1,4 +1,4 @@
-use crate::api::user::{LoginResponse, User};
+use crate::api::user::{LoginResponseAccountDetails, User};
 use std::rc::Rc;
 use yew::{context::ContextProvider, prelude::*, Reducible, UseReducerHandle};
 
@@ -38,7 +38,7 @@ impl Reducible for CurrentUser {
 
 pub struct CurrentUserDispatchActions {
     pub action_type: UserAction,
-    pub login_response: Option<LoginResponse>,
+    pub login_response: Option<LoginResponseAccountDetails>,
 }
 
 #[derive(Properties, PartialEq)]

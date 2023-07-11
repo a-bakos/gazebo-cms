@@ -3,7 +3,10 @@ use serde::Deserialize;
 use serde_json::json;
 
 #[derive(Deserialize)]
-pub struct LoginResponseWithStatusCode(pub HttpStatusCode, pub LoginResponse);
+pub struct LoginResponseWithStatusCode {
+    pub http_status_code: HttpStatusCode,
+    pub account_details: LoginResponseAccountDetails,
+}
 
 #[derive(PartialEq)]
 pub struct User {
@@ -14,7 +17,7 @@ pub struct User {
 }
 
 #[derive(Deserialize, Debug, PartialEq)]
-pub struct LoginResponse {
+pub struct LoginResponseAccountDetails {
     pub id: u32,
     pub login_name: String,
     pub email: String,
