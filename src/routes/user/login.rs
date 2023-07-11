@@ -25,7 +25,7 @@ pub struct LoginRequest {
     pub password: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct LoginResponse {
     pub id: u32,
     pub login_name: String,
@@ -78,13 +78,19 @@ pub async fn try_login(
                 .execute(&pool)
                 .await
             {
-                Ok(_) => println!("Last login updated!"),
-                Err(e) => println!("Last login update error"),
+                Ok(_) => println!("Last login datetime updated!"),
+                Err(e) => println!("Last login datetime update error!"),
             }
 
-            Ok(warp::reply::json(&LoginResponseWithStatusCode(200, user)))
+            Ok(warp::reply::json(&LoginResponseWithStatusCode(
+                HttpStatusCode::Ok.code(),
+                user,
+            )))
         }
-        Err(e) => Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code())),
+        Err(e) => Ok(warp::reply::json(&LoginResponseWithStatusCode(
+            HttpStatusCode::Unauthorized.code(),
+            LoginResponse::default(),
+        ))),
     }
 }
 
@@ -92,18 +98,18 @@ pub async fn login(
     pool: PgPool,
     params: LoginRequest,
 ) -> Result<impl warp::Reply, warp::Rejection> {
-    println!("{:?}", params);
-
-    // if email found, ignore login name
-    // if no email, look for login name
+    // println!("{:?}", params);
+    // If email found, ignore login name
+    // If no email, look for login name
     if let Some(email) = params.email {
         let account_exists_by_email =
             find_account_by_identifier(pool.clone(), AccountIdentifier::Email, email.clone()).await;
 
         return match account_exists_by_email {
             Ok(true) => {
-                // Acc exists / go login
-
+                /**
+                 * Account exists, now go and login
+                 */
                 let binding = email.clone();
                 let password = params.password.clone();
                 if credentials::is_password_match(
@@ -120,13 +126,20 @@ pub async fn login(
                     // System log
                     println!("Wrong password used for: {}", &binding);
                     // Client response
-                    Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code()))
+                    Ok(warp::reply::json(&LoginResponseWithStatusCode(
+                        HttpStatusCode::Unauthorized.code(),
+                        LoginResponse::default(),
+                    )))
                 }
             }
-            Ok(false) => Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code())),
-            Err(e) => Ok(warp::reply::json(
-                &HttpStatusCode::InternalServerError.code(),
-            )),
+            Ok(false) => Ok(warp::reply::json(&LoginResponseWithStatusCode(
+                HttpStatusCode::Unauthorized.code(),
+                LoginResponse::default(),
+            ))),
+            Err(_e) => Ok(warp::reply::json(&LoginResponseWithStatusCode(
+                HttpStatusCode::InternalServerError.code(),
+                LoginResponse::default(),
+            ))),
         };
     }
 
@@ -153,13 +166,20 @@ pub async fn login(
                     // System log
                     println!("Wrong password used for: {}", &binding);
                     // Client response
-                    Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code()))
+                    Ok(warp::reply::json(&LoginResponseWithStatusCode(
+                        HttpStatusCode::Unauthorized.code(),
+                        LoginResponse::default(),
+                    )))
                 }
             }
-            Ok(false) => Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code())),
-            Err(e) => Ok(warp::reply::json(
-                &HttpStatusCode::InternalServerError.code(),
-            )),
+            Ok(false) => Ok(warp::reply::json(&LoginResponseWithStatusCode(
+                HttpStatusCode::Unauthorized.code(),
+                LoginResponse::default(),
+            ))),
+            Err(e) => Ok(warp::reply::json(&LoginResponseWithStatusCode(
+                HttpStatusCode::InternalServerError.code(),
+                LoginResponse::default(),
+            ))),
         };
     }
 
