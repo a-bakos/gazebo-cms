@@ -8,16 +8,15 @@ use crate::{
     },
     errors::error_handler::ErrorResponse,
     http::status_code::HttpStatusCode,
-    roles::get_role_variant,
     users::{
         credentials,
         credentials::{find_account_by_identifier, AccountIdentifier},
+        roles::get_role_variant,
     },
 };
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
-use sqlx::postgres::PgRow;
-use sqlx::{PgPool, Row};
+use sqlx::{postgres::PgRow, PgPool, Row};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct LoginRequest {
