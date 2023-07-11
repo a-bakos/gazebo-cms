@@ -1,21 +1,20 @@
 use crate::{
     database::{
-        columns::{COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_LOGIN},
+        columns::{
+            COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LOGIN,
+            COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE,
+        },
         db::DB_Table,
     },
     errors::error_handler::ErrorResponse,
     http::status_code::HttpStatusCode,
+    roles::get_role_variant,
     users::{
         credentials,
         credentials::{find_account_by_identifier, AccountIdentifier},
     },
 };
 use chrono::NaiveDateTime;
-
-use crate::database::columns::{
-    COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE,
-};
-use crate::users::roles::get_role_variant;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgRow;
 use sqlx::{PgPool, Row};
@@ -26,6 +25,17 @@ pub struct LoginRequest {
     pub email: Option<String>,
     pub password: String,
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct LoginResponse {
+    pub id: u32,
+    pub login_name: String,
+    pub email: String,
+    pub role: String,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct LoginResponseWithStatusCode(pub u32, pub LoginResponse);
 
 pub async fn try_login(
     pool: PgPool,
@@ -42,29 +52,23 @@ pub async fn try_login(
         DB_Table::Accounts,
         column_name
     );
-    println!("{}", query);
     match sqlx::query(&query)
         .bind(binding.clone())
         .bind(password)
         .map(|row: PgRow| {
-            println!("Were in trylogin");
             // Underscores' meaning here:
             // we don't need to specify a default/fallback value because the cell will never be empty
-            let id = row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32;
-            let role = row.get::<&str, _>(COL_INDEX_ACCOUNT_ROLE);
             LoginResponse {
-                id,
+                id: row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32,
                 login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
                 email: row.get(COL_INDEX_ACCOUNT_EMAIL),
-                role: role.to_string(),
+                role: row.get::<&str, _>(COL_INDEX_ACCOUNT_ROLE).to_string(),
             }
         })
         .fetch_one(&pool)
         .await
     {
         Ok(user) => {
-            println!("{:?}", user);
-
             let update_last_login_query = format!(
                 "UPDATE {} SET last_login = CURRENT_TIMESTAMP WHERE {} = $1",
                 DB_Table::Accounts,
@@ -83,17 +87,6 @@ pub async fn try_login(
         }
         Err(e) => Ok(warp::reply::json(&HttpStatusCode::Unauthorized.code())),
     }
-}
-
-#[derive(Deserialize, Serialize)]
-pub struct LoginResponseWithStatusCode(pub u32, pub LoginResponse);
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct LoginResponse {
-    pub id: u32,
-    pub login_name: String,
-    pub email: String,
-    pub role: String,
 }
 
 pub async fn login(
@@ -144,9 +137,7 @@ pub async fn login(
 
         return match account_exists_by_login {
             Ok(true) => {
-                println!("We're here trying to get user");
                 // Acc exists
-
                 let binding = login.clone();
                 let password = params.password.clone();
                 if credentials::is_password_match(
