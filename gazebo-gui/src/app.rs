@@ -74,7 +74,9 @@ pub fn app() -> Html {
     log::info!("Gazebo GUI init");
     html! {
         <BrowserRouter>
-            <Switch<MainNavigationRoute> render={main_nav_switch} />
+            <crate::context::CurrentUserProvider>
+                <Switch<MainNavigationRoute> render={main_nav_switch} />
+            </crate::context::CurrentUserProvider>
         </BrowserRouter>
     }
 }

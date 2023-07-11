@@ -1,21 +1,34 @@
-use crate::api::BACKEND_URL_BASE;
-
-use gloo_net::http::Request;
+use crate::api::{HttpStatusCode, BACKEND_URL_BASE};
 use serde::Deserialize;
 use serde_json::json;
 
-#[derive(Deserialize, Debug, PartialEq)]
-pub struct LoginResponse {
-    pub id: u32,
-    pub name: String,
+#[derive(Deserialize)]
+pub struct LoginResponseWithStatusCode {
+    pub http_status_code: HttpStatusCode,
+    pub account_details: LoginResponseAccountDetails,
 }
 
-pub async fn api_login(
+#[derive(PartialEq)]
+pub struct User {
+    pub id: u32,
+    pub username: String,
+    pub email: String,
+    pub role: String,
+}
+
+#[derive(Deserialize, Debug, PartialEq)]
+pub struct LoginResponseAccountDetails {
+    pub id: u32,
+    pub login_name: String,
+    pub email: String,
+    pub role: String,
+}
+
+pub async fn api_login_request(
     username: String,
     password: String,
-) -> Result<(u16, LoginResponse), gloo_net::Error> {
-    // gloo-net
-    let response = Request::post(&format!("{}/login", BACKEND_URL_BASE))
+) -> Result<LoginResponseWithStatusCode, gloo_net::Error> {
+    let response = gloo_net::http::Request::post(&format!("{}/login", BACKEND_URL_BASE))
         .json(&json!({
             "login": username,
             "password": password
@@ -23,24 +36,5 @@ pub async fn api_login(
         .send()
         .await?;
 
-    response.json::<(u16, LoginResponse)>().await
-}
-
-#[derive(Deserialize)]
-pub struct MeResponse {
-    pub id: i32,
-    pub username: String,
-    pub created_at: String,
-}
-
-pub async fn api_me() -> Result<MeResponse, gloo_net::Error> {
-    let response = Request::post(&format!("{}/login", BACKEND_URL_BASE))
-        .json(&json!({
-            "login": "username",
-            "password": "password"
-        }))?
-        .send()
-        .await?;
-
-    response.json::<MeResponse>().await
+    response.json::<LoginResponseWithStatusCode>().await
 }
