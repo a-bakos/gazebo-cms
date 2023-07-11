@@ -1,3 +1,4 @@
+use crate::database::db::DB_Table::Log;
 use crate::{
     database::{
         columns::{
@@ -40,6 +41,33 @@ pub struct LoginResponseAccountDetails {
 pub struct LoginResponseWithStatusCode {
     pub http_status_code: u32,
     pub account_details: LoginResponseAccountDetails,
+}
+enum LoginStatus {
+    Authorized,
+    Unauthorized,
+    ServerError,
+}
+impl LoginResponseWithStatusCode {
+    fn response(
+        login_status: LoginStatus,
+        account_details: Option<LoginResponseAccountDetails>,
+    ) -> Self {
+        let (http_status_code, account_details) = match login_status {
+            LoginStatus::Authorized => (HttpStatusCode::Ok.code(), account_details.unwrap()),
+            LoginStatus::Unauthorized => (
+                HttpStatusCode::Unauthorized.code(),
+                LoginResponseAccountDetails::default(),
+            ),
+            LoginStatus::ServerError => (
+                HttpStatusCode::InternalServerError.code(),
+                LoginResponseAccountDetails::default(),
+            ),
+        };
+        Self {
+            http_status_code,
+            account_details,
+        }
+    }
 }
 
 pub async fn try_login(
@@ -88,15 +116,15 @@ pub async fn try_login(
                 Err(e) => println!("Last login datetime update error!"),
             }
 
-            Ok(warp::reply::json(&LoginResponseWithStatusCode {
-                http_status_code: HttpStatusCode::Ok.code(),
-                account_details: user,
-            }))
+            Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                LoginStatus::Authorized,
+                Some(user),
+            )))
         }
-        Err(e) => Ok(warp::reply::json(&LoginResponseWithStatusCode {
-            http_status_code: HttpStatusCode::Unauthorized.code(),
-            account_details: LoginResponseAccountDetails::default(),
-        })),
+        Err(e) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+            LoginStatus::Unauthorized,
+            None,
+        ))),
     }
 }
 
@@ -130,20 +158,20 @@ pub async fn login(
                     try_login(pool.clone(), password, binding, AccountIdentifier::Email).await
                 } else {
                     println!("Wrong password used for: {}", &binding);
-                    Ok(warp::reply::json(&LoginResponseWithStatusCode {
-                        http_status_code: HttpStatusCode::Unauthorized.code(),
-                        account_details: LoginResponseAccountDetails::default(),
-                    }))
+                    Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                        LoginStatus::Unauthorized,
+                        None,
+                    )))
                 }
             }
-            Ok(false) => Ok(warp::reply::json(&LoginResponseWithStatusCode {
-                http_status_code: HttpStatusCode::Unauthorized.code(),
-                account_details: LoginResponseAccountDetails::default(),
-            })),
-            Err(_e) => Ok(warp::reply::json(&LoginResponseWithStatusCode {
-                http_status_code: HttpStatusCode::InternalServerError.code(),
-                account_details: LoginResponseAccountDetails::default(),
-            })),
+            Ok(false) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                LoginStatus::Unauthorized,
+                None,
+            ))),
+            Err(_e) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                LoginStatus::ServerError,
+                None,
+            ))),
         };
     }
 
@@ -169,20 +197,20 @@ pub async fn login(
                 } else {
                     // System log
                     println!("Wrong password used for: {}", &binding);
-                    Ok(warp::reply::json(&LoginResponseWithStatusCode {
-                        http_status_code: HttpStatusCode::Unauthorized.code(),
-                        account_details: LoginResponseAccountDetails::default(),
-                    }))
+                    Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                        LoginStatus::Unauthorized,
+                        None,
+                    )))
                 }
             }
-            Ok(false) => Ok(warp::reply::json(&LoginResponseWithStatusCode {
-                http_status_code: HttpStatusCode::Unauthorized.code(),
-                account_details: LoginResponseAccountDetails::default(),
-            })),
-            Err(e) => Ok(warp::reply::json(&LoginResponseWithStatusCode {
-                http_status_code: HttpStatusCode::InternalServerError.code(),
-                account_details: LoginResponseAccountDetails::default(),
-            })),
+            Ok(false) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                LoginStatus::Unauthorized,
+                None,
+            ))),
+            Err(e) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                LoginStatus::ServerError,
+                None,
+            ))),
         };
     }
 
