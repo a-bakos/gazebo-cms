@@ -116,6 +116,7 @@ pub async fn try_login(
     }
 }
 
+// TODO: can potentially be optimized by abstracting the inner logic
 pub async fn login(
     pool: PgPool,
     params: LoginRequest,
@@ -124,9 +125,11 @@ pub async fn login(
     // If email found, ignore login name
     // If no email, look for login name
     if let Some(email) = params.email {
+        // See if account exists with this "email" address
         let account_exists_by_email =
             find_account_by_identifier(pool.clone(), AccountIdentifier::Email, email.clone()).await;
 
+        // Deal with account exists question
         return match account_exists_by_email {
             Ok(true) => {
                 // Account exists, now go and login
@@ -161,9 +164,11 @@ pub async fn login(
     }
 
     if let Some(login) = params.login {
+        // See if account exists with this "login" name
         let account_exists_by_login =
             find_account_by_identifier(pool.clone(), AccountIdentifier::Login, login.clone()).await;
 
+        // Deal with account exists question
         return match account_exists_by_login {
             Ok(true) => {
                 // Account exists
