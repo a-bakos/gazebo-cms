@@ -1,9 +1,8 @@
-use crate::database::db::DB_Table::Log;
 use crate::{
     database::{
         columns::{
             COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LOGIN,
-            COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE,
+            COL_INDEX_ACCOUNT_ROLE,
         },
         db::DB_Table,
     },
@@ -12,12 +11,11 @@ use crate::{
     users::{
         credentials,
         credentials::{find_account_by_identifier, AccountIdentifier},
-        roles::get_role_variant,
     },
 };
-use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
+use warp::Buf;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct LoginRequest {
@@ -26,7 +24,7 @@ pub struct LoginRequest {
     pub password: String,
 }
 
-/// Account details to send back for a login request
+/// Account details to send back on login request
 /// Default() is used with error cases
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct LoginResponseAccountDetails {
@@ -36,16 +34,18 @@ pub struct LoginResponseAccountDetails {
     pub role: String,
 }
 
-/// This is the structure that is returned for a login request
-#[derive(Deserialize, Serialize)]
-pub struct LoginResponseWithStatusCode {
-    pub http_status_code: u32,
-    pub account_details: LoginResponseAccountDetails,
-}
+/// Login status variants
 enum LoginStatus {
     Authorized,
     Unauthorized,
     ServerError,
+}
+
+/// This is the final structure that is returned on a login request
+#[derive(Deserialize, Serialize)]
+pub struct LoginResponseWithStatusCode {
+    pub http_status_code: u32,
+    pub account_details: LoginResponseAccountDetails,
 }
 impl LoginResponseWithStatusCode {
     fn response(
@@ -89,9 +89,9 @@ pub async fn try_login(
         .bind(binding.clone())
         .bind(password)
         .map(|row: PgRow| {
-            // Underscores' meaning here:
-            // we don't need to specify a default/fallback value because the cell will never be empty
             LoginResponseAccountDetails {
+                // Underscores' meaning in row.get():
+                // we don't need to specify a default/fallback value because the cell will never be empty
                 id: row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32,
                 login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
                 email: row.get(COL_INDEX_ACCOUNT_EMAIL),
@@ -102,26 +102,14 @@ pub async fn try_login(
         .await
     {
         Ok(user) => {
-            let update_last_login_query = format!(
-                "UPDATE {} SET last_login = CURRENT_TIMESTAMP WHERE {} = $1",
-                DB_Table::Accounts,
-                column_name // email or username
-            );
-            match sqlx::query(&update_last_login_query)
-                .bind(binding)
-                .execute(&pool)
-                .await
-            {
-                Ok(_) => println!("Last login datetime updated!"),
-                Err(e) => println!("Last login datetime update error!"),
-            }
+            update_last_login_timestamp(pool.clone(), login_variant, binding).await;
 
             Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
                 LoginStatus::Authorized,
                 Some(user),
             )))
         }
-        Err(e) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+        Err(_e) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
             LoginStatus::Unauthorized,
             None,
         ))),
@@ -141,9 +129,7 @@ pub async fn login(
 
         return match account_exists_by_email {
             Ok(true) => {
-                /**
-                 * Account exists, now go and login
-                 */
+                // Account exists, now go and login
                 let binding = email.clone();
                 let password = params.password.clone();
                 if credentials::is_password_match(
@@ -154,7 +140,6 @@ pub async fn login(
                 )
                 .await
                 {
-                    // Try login and return result
                     try_login(pool.clone(), password, binding, AccountIdentifier::Email).await
                 } else {
                     println!("Wrong password used for: {}", &binding);
@@ -181,7 +166,7 @@ pub async fn login(
 
         return match account_exists_by_login {
             Ok(true) => {
-                // Acc exists
+                // Account exists
                 let binding = login.clone();
                 let password = params.password.clone();
                 if credentials::is_password_match(
@@ -192,10 +177,9 @@ pub async fn login(
                 )
                 .await
                 {
-                    // Try login and return result
                     try_login(pool.clone(), password, binding, AccountIdentifier::Login).await
                 } else {
-                    // System log
+                    // Account exists, but wrong creds
                     println!("Wrong password used for: {}", &binding);
                     Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
                         LoginStatus::Unauthorized,
@@ -203,11 +187,14 @@ pub async fn login(
                     )))
                 }
             }
-            Ok(false) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
-                LoginStatus::Unauthorized,
-                None,
-            ))),
-            Err(e) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+            Ok(false) => {
+                // No account
+                Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                    LoginStatus::Unauthorized,
+                    None,
+                )))
+            }
+            Err(_e) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
                 LoginStatus::ServerError,
                 None,
             ))),
@@ -217,4 +204,33 @@ pub async fn login(
     Ok(warp::reply::json(&ErrorResponse::new(
         "Empty login".to_owned(),
     )))
+}
+
+// Get the "email" or "login" column name based on the login variant
+fn get_column_name_by_login_variant<'a>(login_variant: AccountIdentifier) -> &'a str {
+    match login_variant {
+        AccountIdentifier::Email => COL_INDEX_ACCOUNT_EMAIL,
+        AccountIdentifier::Login => COL_INDEX_ACCOUNT_LOGIN,
+    }
+}
+
+/// Update Last Login timestamp for user
+pub async fn update_last_login_timestamp(
+    pool: PgPool,
+    login_variant: AccountIdentifier,
+    value: String,
+) {
+    let update_last_login_query = format!(
+        "UPDATE {} SET last_login = CURRENT_TIMESTAMP WHERE {} = $1",
+        DB_Table::Accounts,
+        get_column_name_by_login_variant(login_variant) // email or username
+    );
+    match sqlx::query(&update_last_login_query)
+        .bind(value)
+        .execute(&pool)
+        .await
+    {
+        Ok(_) => println!("Last login datetime updated!"),
+        Err(_e) => println!("Last login datetime update error!"),
+    }
 }
