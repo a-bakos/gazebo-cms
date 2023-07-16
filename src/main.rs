@@ -125,7 +125,8 @@ async fn main() -> Result<(), sqlx::Error> {
     //    .and_then(routes::post::crud::insert_post);
 
     let get_post_title = warp::get()
-        .and(warp::path("title"))
+        .and(warp::path(url::path::PATH_POST))
+        .and(warp::path(url::path::PATH_TITLE))
         .and(warp::path::param::<i32>())
         .and(warp::path::end())
         .and(pool_filter.clone())
