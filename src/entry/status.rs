@@ -1,17 +1,3 @@
-// WP statuses:
-// [x] publish
-// ?? future
-// [x] draft
-// ?? pending
-// [x] private
-// [x] trash
-// NO/ auto-draft
-// NO/ inherit
-// NO/ request-pending
-// NO/ request-confirmed
-// NO/ request-failed
-// NO/ request-completed
-
 use crate::entry::entry_type::EntryType;
 use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
