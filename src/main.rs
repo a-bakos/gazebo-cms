@@ -29,6 +29,7 @@ async fn main() -> Result<(), sqlx::Error> {
     dbg!(&app.start);
     //app.change_admin_email("admin@example.com");
     //app.change_app_name("Gazebo CMS");
+    dbg!(&app);
 
     // DB Setup
     // let pool = db_setup(...).await;

@@ -8,22 +8,12 @@ use crate::{
 
 #[allow(dead_code)]
 fn get_current_user(app: &App) -> Option<User> {
-    if app.current_user.is_some() {
-        // get user row from DB and fill in details
-        let _current_user_id = app.current_user.clone();
-        todo!()
-        // let current_user = get_user_by_id(current_user_id.unwrap());
-        // return Some(current_user);
-    }
-    None
+    todo!()
 }
 
 #[allow(dead_code)]
 pub fn get_current_user_id(app: &App) -> UserID {
-    if app.current_user.is_some() {
-        return app.current_user.clone().unwrap();
-    }
-    crate::consts::SYSTEM_USER_ID
+    todo!()
 }
 
 #[allow(dead_code)]

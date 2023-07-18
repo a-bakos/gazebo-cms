@@ -1,4 +1,5 @@
 use crate::{database::db::GBDB, users::user::UserID};
+use std::fmt::{Debug, Formatter};
 use std::time::SystemTime;
 
 // Todo need to implement Debug for App
@@ -14,7 +15,16 @@ pub struct App {
     debug_mode: bool,
     // logged in users
     pub users: Vec<String>,
-    pub current_user: Option<UserID>, // this is just an idea. it doesn't have an effect until we go async...
+}
+
+impl Debug for App {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "App name: {} \nApp Version: {}\nDebug mode: {}\nApp Start: {:?}\nAdmin Email: {}\nLogged-In Users: {:?}",
+            self.name, self.version, self.debug_mode, self.start, self.admin_email, self.users
+        )
+    }
 }
 
 impl App {
@@ -34,7 +44,6 @@ impl App {
             start: SystemTime::now(),
             debug_mode: false,
             users: Vec::new(),
-            current_user: None,
         }
     }
 
