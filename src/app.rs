@@ -2,7 +2,6 @@ use crate::{database::db::GBDB, users::user::UserID};
 use std::fmt::{Debug, Formatter};
 use std::time::SystemTime;
 
-// Todo need to implement Debug for App
 // #[derive(Debug)]
 pub struct App {
     pub name: String,

@@ -3,7 +3,7 @@ use crate::users::user::UserID;
 /// App default
 pub const DEFAULT_APP_NAME: &str = "Gazebo CMS";
 pub const DEFAULT_APP_ADMIN_EMAIL: &str = "change_this@gazebocms.email";
-pub const VERSION: &str = "0.0.331";
+pub const VERSION: &str = "0.0.402";
 pub const SYSTEM_USER_ID: UserID = UserID(0);
 
 /// Labels
@@ -41,6 +41,8 @@ pub const USER_ROLE_NOT_FOUND: &str = "not_found";
 pub const ENTRY_TYPE_POST: &str = "post";
 pub const ENTRY_TYPE_PAGE: &str = "page";
 pub const ENTRY_TYPE_MEDIA: &str = "media";
+pub const ENTRY_TYPE_LOG: &str = "log"; // todo
+pub const ENTRY_TYPE_SEARCH: &str = "search"; // todo
 pub const ENTRY_TYPE_UNKNOWN: &str = "unknown";
 
 pub const ENTRY_ID_NO_PARENT: i32 = 0;
