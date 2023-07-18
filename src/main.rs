@@ -28,7 +28,7 @@ async fn main() -> Result<(), sqlx::Error> {
     // App started timestamp:
     dbg!(&app.start);
     //app.change_admin_email("admin@example.com");
-    //app.change_app_name("THE RUST CMS");
+    //app.change_app_name("Gazebo CMS");
 
     // DB Setup
     // let pool = db_setup(...).await;
@@ -40,9 +40,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .connect(db_url)
         .await?;
 
-    //mock_process::Imitate::gb_query_get_posts_by_id(pool.clone()).await;
-
-    // execute migrations before anything
+    // Execute migrations before anything
     sqlx::migrate!().run(&pool.clone()).await?;
 
     let pool_filter = warp::any().map(move || pool.clone());
@@ -57,7 +55,6 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(warp::path(url::path::PATH_USER))
         .and(warp::path::param::<i32>())
         .and(warp::path::end()) // ::end() closes the URI path
-        // .and(warp::query()) // => this is the params: HashMap<String, String> parameter in the callback
         .and(pool_filter.clone())
         .and_then(routes::user::crud::get_user_by_id);
 
@@ -65,7 +62,6 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(warp::path(url::path::PATH_USER))
         .and(warp::path::param::<i32>())
         .and(warp::path::end()) // ::end() closes the URI path
-        // .and(warp::query()) // => this is the params: HashMap<String, String> parameter in the callback
         .and(pool_filter.clone())
         .and_then(routes::user::crud::delete_user_by_id);
 
@@ -87,7 +83,6 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(warp::path(url::path::PATH_POST))
         .and(warp::path::param::<i32>())
         .and(warp::path::end()) // ::end() closes the URI path
-        // .and(warp::query()) // => this is the params: HashMap<String, String> parameter in the callback
         .and(pool_filter.clone())
         .and_then(routes::post::crud::get_post_by_id);
 
