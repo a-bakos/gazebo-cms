@@ -13,11 +13,8 @@ mod routes;
 mod url;
 mod users;
 
-mod mock_process;
-
-use std::{collections::HashMap, convert::Infallible};
-
 use sqlx::postgres::{PgPool, PgPoolOptions};
+use std::collections::HashMap;
 
 use warp::{
     http::{Method, Response},
@@ -27,11 +24,11 @@ use warp::{
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {
     // Start the App
-    let _app = app::App::init();
+    let mut app = app::App::init();
     // App started timestamp:
-    // dbg!(&app.start);
-
-    // mock_process::Imitate::update_app_defaults(&mut app);
+    dbg!(&app.start);
+    //app.change_admin_email("admin@example.com");
+    //app.change_app_name("THE RUST CMS");
 
     // DB Setup
     // let pool = db_setup(...).await;
