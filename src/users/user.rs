@@ -1,7 +1,4 @@
-use crate::{
-    app::App,
-    users::{credentials::is_password_valid, roles::UserRole},
-};
+use crate::{app::App, users::roles::UserRole};
 
 use serde::{Deserialize, Serialize};
 use std::fmt::{Display, Formatter};
@@ -26,26 +23,7 @@ pub struct User {
     pub last_login: String,
 }
 
-impl User {
-    #[allow(unused_variables)]
-    #[allow(dead_code)]
-    pub fn change_username(&mut self, new_username: &str) {
-        // username change functionality
-        // self.login = new_username
-    }
-
-    #[allow(unused_variables)]
-    #[allow(dead_code)]
-    pub fn reset_password(&mut self, new_password: &str) -> bool {
-        // password reset functionality
-        if is_password_valid(new_password) {
-            // todo store new password logic here
-            return true;
-        }
-
-        false
-    }
-}
+impl User {}
 
 #[cfg(test)]
 mod test {

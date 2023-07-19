@@ -10,6 +10,7 @@ use crate::{
     users::user::UserID,
 };
 
+use crate::users::user::User;
 use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
 
@@ -75,7 +76,7 @@ impl GB_PostItem {
     pub fn draft(app: &mut App) -> Self {
         Self {
             id: EntryID(1),
-            id_author: crate::users::functions::get_current_user_id(app),
+            id_author: UserID(1),
             id_parent: get_entry_parent_id(),
             date_publish: date_functions::get_current_date(),
             date_modified: date_functions::get_current_date(),

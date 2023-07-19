@@ -11,12 +11,13 @@ use crate::{
     errors::error_handler::SqlxError,
     users::{
         credentials,
-        credentials::AccountIdentifier,
+        credentials::{is_password_valid, AccountIdentifier},
         roles::get_role_variant,
         user::{User, UserID},
     },
 };
 
+use crate::users::roles::UserRole;
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
@@ -156,4 +157,38 @@ pub async fn delete_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply
         )),
         Err(e) => Err(warp::reject::custom(SqlxError(e))),
     }
+}
+
+#[allow(dead_code)]
+fn add_role_to_user(_user_id: u32, _role: UserRole) -> bool {
+    // get user by id
+    // check role
+    // change role
+
+    true
+}
+
+#[allow(dead_code)]
+pub fn get_user_by_email(_email: &str) -> Option<User> {
+    todo!()
+}
+
+#[allow(unused_variables)]
+#[allow(dead_code)]
+pub fn change_username(user_id: UserID, new_username: &str) {
+    // username change functionality
+    // check if username valid
+    // self.login = new_username
+}
+
+#[allow(unused_variables)]
+#[allow(dead_code)]
+pub fn reset_password(user_id: UserID, new_password: &str) -> bool {
+    // password reset functionality
+    if is_password_valid(new_password) {
+        // todo store new password logic here
+        return true;
+    }
+
+    false
 }
