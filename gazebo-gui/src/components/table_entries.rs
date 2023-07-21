@@ -15,7 +15,7 @@ struct EntryTableRow {
     id: u32,
 }
 
-fn table_entry_row(row_data: EntryTableRow) -> Html {
+fn table_entry_row(row_data: &EntryTableRow) -> Html {
     html! {
         <tr>
             <td>
@@ -78,7 +78,7 @@ pub fn table_entries() -> Html {
                 <tbody>
                     {
                         for row_titles.iter().map(|entry_row| html! {
-                            table_entry_row(entry_row.clone())
+                            table_entry_row(entry_row)
                         } )
                     }
                 </tbody>
