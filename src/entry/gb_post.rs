@@ -44,11 +44,6 @@ pub struct GB_Post {
     pub password: Option<String>,
 }
 
-#[allow(dead_code)]
-pub fn get_post(_post_id: EntryID) -> GB_Post {
-    todo!()
-}
-
 impl GB_Post {
     pub fn draft(app: &mut App) -> Self {
         Self {

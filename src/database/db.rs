@@ -1,6 +1,6 @@
 use crate::database::consts::{
-    DB_TABLE_ACCOUNTS, DB_TABLE_ACCOUNT_META, DB_TABLE_LOG, DB_TABLE_MEDIA, DB_TABLE_POSTS,
-    DB_TABLE_POST_META,
+    DB_TABLE_ACCOUNTS, DB_TABLE_ACCOUNT_META, DB_TABLE_LOG, DB_TABLE_MEDIA, DB_TABLE_PAGES,
+    DB_TABLE_PAGE_META, DB_TABLE_POSTS, DB_TABLE_POST_META, DB_TABLE_SEARCH,
 };
 use std::fmt::{Display, Formatter};
 
@@ -8,10 +8,13 @@ use std::fmt::{Display, Formatter};
 pub enum DB_Table {
     Posts,
     PostMeta,
+    Pages,
+    PageMeta,
     Accounts,
     AccountMeta,
     Media,
     Log,
+    Search,
 }
 
 impl Into<String> for DB_Table {
@@ -19,10 +22,13 @@ impl Into<String> for DB_Table {
         match self {
             DB_Table::Posts => DB_TABLE_POSTS.to_string(),
             DB_Table::PostMeta => DB_TABLE_POST_META.to_string(),
+            DB_Table::Pages => DB_TABLE_PAGES.to_string(),
+            DB_Table::PageMeta => DB_TABLE_PAGE_META.to_string(),
             DB_Table::Accounts => DB_TABLE_ACCOUNTS.to_string(),
             DB_Table::AccountMeta => DB_TABLE_ACCOUNT_META.to_string(),
             DB_Table::Media => DB_TABLE_MEDIA.to_string(),
             DB_Table::Log => DB_TABLE_LOG.to_string(),
+            DB_Table::Search => DB_TABLE_SEARCH.to_string(),
         }
     }
 }
@@ -31,10 +37,13 @@ impl Display for DB_Table {
         match self {
             DB_Table::Posts => write!(f, "{}", DB_TABLE_POSTS),
             DB_Table::PostMeta => write!(f, "{}", DB_TABLE_POST_META),
+            DB_Table::Pages => write!(f, "{}", DB_TABLE_PAGES),
+            DB_Table::PageMeta => write!(f, "{}", DB_TABLE_PAGE_META),
             DB_Table::Accounts => write!(f, "{}", DB_TABLE_ACCOUNTS),
             DB_Table::AccountMeta => write!(f, "{}", DB_TABLE_ACCOUNT_META),
             DB_Table::Media => write!(f, "{}", DB_TABLE_MEDIA),
             DB_Table::Log => write!(f, "{}", DB_TABLE_LOG),
+            DB_Table::Search => write!(f, "{}", DB_TABLE_SEARCH),
         }
     }
 }

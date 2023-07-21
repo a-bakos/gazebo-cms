@@ -40,6 +40,7 @@ pub async fn get_posts(pool: PgPool) -> Result<impl warp::Reply, warp::Rejection
     let query = format!("SELECT * FROM {}", DB_Table::Posts);
     match sqlx::query(&query)
         .map(|row: PgRow| {
+            // todo - only title for now
             let the_title: String = row.get(COL_INDEX_POST_TITLE); //row.into();
             posts.push(the_title);
         })
