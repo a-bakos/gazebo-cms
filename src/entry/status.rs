@@ -2,61 +2,60 @@ use crate::entry::entry_type::EntryType;
 use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
 
-/// Post entry "draft" status
-pub const ENTRY_STATUS_POST_DRAFT: &str = "draft";
-/// Post entry "publish" status
-pub const ENTRY_STATUS_POST_PUBLISH: &str = "publish";
-/// Post entry "private" status
-pub const ENTRY_STATUS_POST_PRIVATE: &str = "private";
-/// Post entry "trash" status
-pub const ENTRY_STATUS_POST_TRASH: &str = "trash";
-/// Post entry "unknown" status
-pub const ENTRY_STATUS_POST_UNKNOWN: &str = "unknown";
+/// Post | Page entry "draft" status
+pub const ENTRY_STATUS_CONTENT_DRAFT: &str = "draft";
+/// Post | Page entry "publish" status
+pub const ENTRY_STATUS_CONTENT_PUBLISH: &str = "publish";
+/// Post | Page entry "private" status
+pub const ENTRY_STATUS_CONTENT_PRIVATE: &str = "private";
+/// Post | Page entry "trash" status
+pub const ENTRY_STATUS_CONTENT_TRASH: &str = "trash";
+
+/// Any entry "unknown" status
+pub const ENTRY_STATUS_UNKNOWN: &str = "unknown";
 
 /// Media entry "attached" status
 pub const ENTRY_STATUS_MEDIA_ATTACHED: &str = "attached";
 /// Media entry "unattached" status
 pub const ENTRY_STATUS_MEDIA_UNATTACHED: &str = "unattached";
-/// Media entry "unknown" status
-pub const ENTRY_STATUS_MEDIA_UNKNOWN: &str = "unknown";
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum EntryStatus {
-    Post(PostStatus),
+    Post(ContentStatus),
     Media(MediaStatus),
     Unknown,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum PostStatus {
+pub enum ContentStatus {
     Draft,
     Publish,
     Private,
     Trash,
+    Unknown,
     // Future
     // Pending
-    Unknown,
 }
-impl std::fmt::Display for PostStatus {
+impl std::fmt::Display for ContentStatus {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            PostStatus::Draft => write!(f, "{}", ENTRY_STATUS_POST_DRAFT),
-            PostStatus::Publish => write!(f, "{}", ENTRY_STATUS_POST_PUBLISH),
-            PostStatus::Private => write!(f, "{}", ENTRY_STATUS_POST_PRIVATE),
-            PostStatus::Trash => write!(f, "{}", ENTRY_STATUS_POST_TRASH),
-            PostStatus::Unknown => write!(f, "{}", ENTRY_STATUS_POST_UNKNOWN),
+            ContentStatus::Draft => write!(f, "{}", ENTRY_STATUS_CONTENT_DRAFT),
+            ContentStatus::Publish => write!(f, "{}", ENTRY_STATUS_CONTENT_PUBLISH),
+            ContentStatus::Private => write!(f, "{}", ENTRY_STATUS_CONTENT_PRIVATE),
+            ContentStatus::Trash => write!(f, "{}", ENTRY_STATUS_CONTENT_TRASH),
+            ContentStatus::Unknown => write!(f, "{}", ENTRY_STATUS_UNKNOWN),
         }
     }
 }
 
-impl Into<String> for PostStatus {
+impl Into<String> for ContentStatus {
     fn into(self) -> String {
         match self {
-            PostStatus::Draft => ENTRY_STATUS_POST_DRAFT.to_string(),
-            PostStatus::Publish => ENTRY_STATUS_POST_PUBLISH.to_string(),
-            PostStatus::Private => ENTRY_STATUS_POST_PRIVATE.to_string(),
-            PostStatus::Trash => ENTRY_STATUS_POST_TRASH.to_string(),
-            PostStatus::Unknown => ENTRY_STATUS_POST_UNKNOWN.to_string(),
+            ContentStatus::Draft => ENTRY_STATUS_CONTENT_DRAFT.to_string(),
+            ContentStatus::Publish => ENTRY_STATUS_CONTENT_PUBLISH.to_string(),
+            ContentStatus::Private => ENTRY_STATUS_CONTENT_PRIVATE.to_string(),
+            ContentStatus::Trash => ENTRY_STATUS_CONTENT_TRASH.to_string(),
+            ContentStatus::Unknown => ENTRY_STATUS_UNKNOWN.to_string(),
         }
     }
 }
@@ -72,7 +71,7 @@ impl std::fmt::Display for MediaStatus {
         match self {
             MediaStatus::Attached => write!(f, "{}", ENTRY_STATUS_MEDIA_ATTACHED),
             MediaStatus::Unattached => write!(f, "{}", ENTRY_STATUS_MEDIA_UNATTACHED),
-            MediaStatus::Unknown => write!(f, "{}", ENTRY_STATUS_MEDIA_UNKNOWN),
+            MediaStatus::Unknown => write!(f, "{}", ENTRY_STATUS_UNKNOWN),
         }
     }
 }
@@ -82,7 +81,7 @@ impl Into<String> for MediaStatus {
         match self {
             MediaStatus::Attached => ENTRY_STATUS_MEDIA_ATTACHED.to_string(),
             MediaStatus::Unattached => ENTRY_STATUS_MEDIA_UNATTACHED.to_string(),
-            MediaStatus::Unknown => ENTRY_STATUS_MEDIA_UNKNOWN.to_string(),
+            MediaStatus::Unknown => ENTRY_STATUS_UNKNOWN.to_string(),
         }
     }
 }
@@ -93,7 +92,7 @@ pub fn get_entry_status_variant(
 ) -> EntryStatus {
     match *the_entry_type {
         EntryType::Post => {
-            let post_status = get_post_status_variant(entry_status_as_str);
+            let post_status = get_content_status_variant(entry_status_as_str);
             EntryStatus::Post(post_status)
         }
         EntryType::Media => {
@@ -104,13 +103,13 @@ pub fn get_entry_status_variant(
     }
 }
 
-pub fn get_post_status_variant(entry_status_as_str: &str) -> PostStatus {
+pub fn get_content_status_variant(entry_status_as_str: &str) -> ContentStatus {
     match entry_status_as_str {
-        ENTRY_STATUS_POST_DRAFT => PostStatus::Draft,
-        ENTRY_STATUS_POST_PUBLISH => PostStatus::Publish,
-        ENTRY_STATUS_POST_PRIVATE => PostStatus::Private,
-        ENTRY_STATUS_POST_TRASH => PostStatus::Trash,
-        _ => PostStatus::Publish,
+        ENTRY_STATUS_CONTENT_DRAFT => ContentStatus::Draft,
+        ENTRY_STATUS_CONTENT_PUBLISH => ContentStatus::Publish,
+        ENTRY_STATUS_CONTENT_PRIVATE => ContentStatus::Private,
+        ENTRY_STATUS_CONTENT_TRASH => ContentStatus::Trash,
+        _ => ContentStatus::Publish,
     }
 }
 

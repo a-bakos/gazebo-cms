@@ -4,7 +4,7 @@ use crate::{
     datetime::functions as date_functions,
     entry::{
         entry_type::EntryType,
-        status::{EntryStatus, PostStatus},
+        status::{ContentStatus, EntryStatus},
     },
     url,
     users::user::UserID,
@@ -81,7 +81,7 @@ impl GB_Post {
             date_publish: date_functions::get_current_date(),
             date_modified: date_functions::get_current_date(),
             slug: None,
-            status: EntryStatus::Post(PostStatus::Draft),
+            status: EntryStatus::Post(ContentStatus::Draft),
             title: Some(consts::POST_UNTITLED_DEFAULT_TITLE.to_string()),
             excerpt: None,
             content: None,
