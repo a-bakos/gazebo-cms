@@ -1,7 +1,10 @@
 pub mod consts;
 pub mod entry_type;
 pub mod functions;
+pub mod gb_log;
+pub mod gb_media;
+pub mod gb_page;
 pub mod gb_post;
-pub mod media;
+pub mod gb_search;
 pub mod query;
 pub mod status;
