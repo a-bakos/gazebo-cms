@@ -1,4 +1,5 @@
 pub mod consts;
+pub mod entry_id;
 pub mod entry_type;
 pub mod functions;
 pub mod gb_log;

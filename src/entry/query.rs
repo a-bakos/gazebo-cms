@@ -11,13 +11,14 @@ use crate::{
     },
     entry::{
         entry_type::{get_entry_type_variant, EntryType},
-        gb_post::{EntryID, GB_Post},
+        gb_post::GB_Post,
         status::{get_entry_status_variant, EntryStatus},
     },
     errors::error_handler::SqlxError,
     users::user::UserID,
 };
 
+use crate::entry::entry_id::EntryID;
 use chrono::NaiveDateTime;
 use sqlx::{postgres::PgRow, PgPool, Row};
 

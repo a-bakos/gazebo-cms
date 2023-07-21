@@ -1,6 +1,7 @@
+use crate::entry::entry_id::EntryID;
 use crate::{
     database::db::DB_Table,
-    entry::{entry_type::EntryType, gb_post::EntryID, gb_post::GB_Post},
+    entry::{entry_type::EntryType, gb_post::GB_Post},
     users::user::UserID,
 };
 use sqlx::{postgres::PgRow, PgPool};
