@@ -2,6 +2,8 @@ use serde::Deserialize;
 use yew::prelude::*;
 use yew::{platform::spawn_local, prelude::*};
 
+// TODO - rename this to Post and create a separate file for the Page type
+
 #[derive(Clone, PartialEq, Deserialize)]
 struct EntryTableRow {
     title: String,
