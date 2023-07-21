@@ -21,7 +21,7 @@ fn table_entry_row(row_data: &EntryTableRow) -> Html {
                 <a
                     title={ row_data.title.clone() }
                     href="#">
-                    { row_data.title.clone() }
+                    { row_data.title.clone() } { row_data.id.clone() }
                 </a>
             </td>
             <td>{row_data.status.clone()}</td>
@@ -42,16 +42,16 @@ pub fn table_entries() -> Html {
                 let mut entry_rows: Vec<EntryTableRow> = vec![];
                 let response = crate::api::post::api_get_all_posts().await.unwrap();
                 // todo - now make this work with the full post structure
-                for title in response.iter() {
-                    gloo_console::log!("response: ", title);
+                for tuple in response.iter() {
+                    gloo_console::log!("response: ", tuple.0, tuple.1.clone());
 
                     let entry_row = EntryTableRow {
-                        title: title.to_string(),
+                        title: tuple.1.clone(),
                         status: "status".to_string(),
                         author: "author".to_string(),
                         category: Some(vec!["cat".to_string()]),
                         date: "date".to_string(),
-                        id: 1000,
+                        id: tuple.0,
                     };
                     entry_rows.push(entry_row);
                 }
