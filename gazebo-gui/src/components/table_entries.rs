@@ -1,5 +1,4 @@
 use serde::Deserialize;
-use std::any::Any;
 use yew::prelude::*;
 use yew::{platform::spawn_local, prelude::*};
 
