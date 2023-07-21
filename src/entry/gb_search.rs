@@ -1,0 +1,1 @@
+struct GB_Search;

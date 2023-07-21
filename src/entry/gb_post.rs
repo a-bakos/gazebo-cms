@@ -3,16 +3,15 @@ use crate::{
     consts,
     datetime::functions as date_functions,
     entry::{
+        entry_id,
+        entry_id::EntryID,
         entry_type::EntryType,
         status::{ContentStatus, EntryStatus},
     },
     url,
-    users::user::UserID,
+    users::user::{User, UserID},
 };
 
-use crate::entry::entry_id;
-use crate::entry::entry_id::EntryID;
-use crate::users::user::User;
 use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
 
