@@ -82,7 +82,7 @@ impl GB_PostItem {
             date_modified: date_functions::get_current_date(),
             slug: None,
             status: EntryStatus::Post(PostStatus::Draft),
-            title: Some(consts::POST_UNTITLED_DEFAULT.to_string()),
+            title: Some(consts::POST_UNTITLED_DEFAULT_TITLE.to_string()),
             excerpt: None,
             content: None,
             password: None,

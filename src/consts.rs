@@ -25,7 +25,11 @@ pub const DEFAULT_PERMALINK_NOT_ALLOWED_CHARS: [&str; 9] =
     ["&", "#", "?", "%", "<", ">", "\"", "'", "/"];
 
 pub const ID_START_VALUE: u32 = 0;
-pub const POST_UNTITLED_DEFAULT: &str = "Untitled Gazebo Post";
+
+pub const POST_UNTITLED_DEFAULT_TITLE: &str = "Untitled Gazebo Post";
+pub const POST_UNTITLED_DEFAULT_PERMALINK: &str = "untitled-gazebo-post";
+pub const PAGE_UNTITLED_DEFAULT_TITLE: &str = "Untitled Gazebo Page";
+pub const PAGE_UNTITLED_DEFAULT_PERMALINK: &str = "untitled-gazebo-page";
 
 pub const MIN_PASSWORD_LENGTH: usize = 8;
 pub const MIN_USER_NAME_LENGTH: usize = 4;
