@@ -7,7 +7,7 @@ use crate::{
         },
         db::DB_Table,
     },
-    entry::post::GB_PostItem,
+    entry::post::GB_Post,
     errors::error_handler::SqlxError,
 };
 
@@ -23,7 +23,7 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
     match sqlx::query(&query)
         .bind(id)
         .map(|row: PgRow| {
-            let the_post: GB_PostItem = row.into();
+            let the_post: GB_Post = row.into();
             the_post
         })
         .fetch_one(&pool)

@@ -29,7 +29,7 @@ pub enum PostSpecific {
 
 #[allow(non_camel_case_types)]
 #[derive(Debug, Serialize, Deserialize)]
-pub struct GB_PostItem {
+pub struct GB_Post {
     pub id: EntryID,
     pub id_author: UserID,
     pub id_parent: Option<EntryID>,
@@ -68,11 +68,11 @@ fn get_entry_parent_id() -> Option<EntryID> {
 }
 
 #[allow(dead_code)]
-pub fn get_post(_post_id: EntryID) -> GB_PostItem {
+pub fn get_post(_post_id: EntryID) -> GB_Post {
     todo!()
 }
 
-impl GB_PostItem {
+impl GB_Post {
     pub fn draft(app: &mut App) -> Self {
         Self {
             id: EntryID(1),
@@ -136,7 +136,7 @@ mod test {
         let test_post_title: String = "Test title added".to_string();
         let test_post_slug: String = "test-title-added".to_string();
 
-        let mut post = GB_PostItem::draft(&mut app);
+        let mut post = GB_Post::draft(&mut app);
         post.add_title(test_post_title.clone(), true);
 
         //assert_eq!(Some(test_post_title), post.title);

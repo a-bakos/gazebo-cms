@@ -11,7 +11,7 @@ use crate::{
     },
     entry::{
         entry_type::{get_entry_type_variant, EntryType},
-        post::{EntryID, GB_PostItem},
+        post::{EntryID, GB_Post},
         status::{get_entry_status_variant, EntryStatus},
     },
     errors::error_handler::SqlxError,
@@ -35,7 +35,7 @@ pub enum GB_QueryArg {
 #[allow(non_camel_case_types)]
 pub struct GB_Query {
     args: Vec<GB_QueryArg>,
-    results: Vec<GB_PostItem>,
+    results: Vec<GB_Post>,
     pool: PgPool, // Will be a pool clone
 }
 
@@ -57,7 +57,7 @@ impl GB_Query {
         match sqlx::query(&query)
             .bind("post")
             .map(|row: PgRow| {
-                let the_post: GB_PostItem = row.into();
+                let the_post: GB_Post = row.into();
                 self.results.push(the_post);
             })
             .fetch_all(&self.pool)
@@ -68,14 +68,14 @@ impl GB_Query {
         }
     }
 
-    pub fn get_results(&self) -> &Vec<GB_PostItem> {
+    pub fn get_results(&self) -> &Vec<GB_Post> {
         &self.results
     }
 }
 
 // Turn PgRow into GB_Post
-impl Into<GB_PostItem> for PgRow {
-    fn into(self) -> GB_PostItem {
+impl Into<GB_Post> for PgRow {
+    fn into(self) -> GB_Post {
         // Underscores' meaning here:
         // we don't need to specify a default/fallback value because the cell will never be empty
 
@@ -100,7 +100,7 @@ impl Into<GB_PostItem> for PgRow {
         let entry_status_as_str: &str = self.get(COL_INDEX_POST_STATUS);
         let status: EntryStatus = get_entry_status_variant(entry_status_as_str, &EntryType::Post);
 
-        GB_PostItem {
+        GB_Post {
             id: EntryID(post_id),
             id_author: UserID(author_id),
             id_parent: Some(EntryID(parent_id)),
