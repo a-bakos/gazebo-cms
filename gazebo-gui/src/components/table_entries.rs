@@ -1,4 +1,5 @@
 use serde::Deserialize;
+use std::any::Any;
 use yew::prelude::*;
 use yew::{platform::spawn_local, prelude::*};
 
@@ -7,11 +8,11 @@ use yew::{platform::spawn_local, prelude::*};
 #[derive(Clone, PartialEq, Deserialize)]
 struct EntryTableRow {
     title: String,
-    // status: String,
-    // author: String,
-    // category: Option<Vec<String>>,
-    // date: String,
-    // id: u32,
+    status: String,
+    author: String,
+    category: Option<Vec<String>>,
+    date: String,
+    id: u32,
 }
 
 fn table_entry_row(row_data: EntryTableRow) -> Html {
@@ -24,10 +25,10 @@ fn table_entry_row(row_data: EntryTableRow) -> Html {
                     { row_data.title.clone() }
                 </a>
             </td>
-            // <td>{row_data.status.clone()}</td>
-            // <td>{row_data.author.clone()}</td>
-            // <td>{"None"}</td> // category
-            // <td>{row_data.date.clone()}</td>
+            <td>{row_data.status.clone()}</td>
+            <td>{row_data.author.clone()}</td>
+            <td>{"Category TBC"}</td>
+            <td>{row_data.date.clone()}</td>
         </tr>
     }
 }
@@ -47,6 +48,11 @@ pub fn table_entries() -> Html {
 
                     let entry_row = EntryTableRow {
                         title: title.to_string(),
+                        status: "status".to_string(),
+                        author: "author".to_string(),
+                        category: Some(vec!["cat".to_string()]),
+                        date: "date".to_string(),
+                        id: 1000,
                     };
                     entry_rows.push(entry_row);
                 }
