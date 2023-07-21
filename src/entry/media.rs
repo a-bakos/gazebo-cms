@@ -1,4 +1,4 @@
-use crate::{entry::post::EntryID, users::user::UserID};
+use crate::{entry::gb_post::EntryID, users::user::UserID};
 
 struct GB_MediaItem {
     id: EntryID,

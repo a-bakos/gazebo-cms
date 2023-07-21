@@ -11,7 +11,7 @@ use crate::{
     },
     entry::{
         entry_type::{get_entry_type_variant, EntryType},
-        post::{EntryID, GB_Post},
+        gb_post::{EntryID, GB_Post},
         status::{get_entry_status_variant, EntryStatus},
     },
     errors::error_handler::SqlxError,

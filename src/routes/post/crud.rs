@@ -7,7 +7,7 @@ use crate::{
         },
         db::DB_Table,
     },
-    entry::post::GB_Post,
+    entry::gb_post::GB_Post,
     errors::error_handler::SqlxError,
 };
 
