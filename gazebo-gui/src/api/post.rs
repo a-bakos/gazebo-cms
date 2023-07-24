@@ -3,7 +3,8 @@ use gloo_net::http::Request;
 use serde::Deserialize;
 use serde_json::json;
 
-#[derive(Deserialize, Debug, PartialEq)]
+// todo - will be added to common lib
+#[derive(Deserialize, Clone, Debug, PartialEq)]
 pub struct GB_Post {
     pub id: u32,
     pub id_author: u32,
@@ -17,14 +18,14 @@ pub struct GB_Post {
     pub content: Option<String>,
     pub password: Option<String>,
 }
-
+// todo - will be added to common lib
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 pub enum EntryStatus {
     Post(ContentStatus),
     Media(MediaStatus),
     Unknown,
 }
-
+// todo - will be added to common lib
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 pub enum ContentStatus {
     Draft,
@@ -35,7 +36,7 @@ pub enum ContentStatus {
     // Future
     // Pending
 }
-
+// todo - will be added to common lib
 impl From<String> for ContentStatus {
     fn from(value: String) -> Self {
         match value.as_str() {
@@ -47,7 +48,7 @@ impl From<String> for ContentStatus {
         }
     }
 }
-
+// todo - will be added to common lib
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 pub enum MediaStatus {
     Attached,
@@ -57,11 +58,8 @@ pub enum MediaStatus {
 
 pub async fn api_get_all_posts() -> Result<Vec<GB_Post>, gloo_net::Error> {
     // gloo-net
-
-    // todo : turn response into Vec<GB_Post>
     let response = Request::get(&format!("{}/posts", BACKEND_URL_BASE))
         .send()
         .await?;
-
     response.json::<Vec<GB_Post>>().await
 }
