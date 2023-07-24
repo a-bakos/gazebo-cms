@@ -1,3 +1,4 @@
+use crate::api::post::{ContentStatus, EntryStatus};
 use serde::Deserialize;
 use yew::prelude::*;
 use yew::{platform::spawn_local, prelude::*};
@@ -13,7 +14,7 @@ pub struct EntryTableRow {
     pub date_publish: String,
     pub date_modified: String,
     pub slug: Option<String>,
-    //pub status: String, // todo
+    pub status: String,
     pub title: Option<String>,
     pub excerpt: Option<String>,
     pub content: Option<String>,
@@ -30,7 +31,7 @@ fn table_entry_row(row_data: &EntryTableRow) -> Html {
                     { row_data.title.clone() } { row_data.id.clone() }
                 </a>
             </td>
-            <td></td>//{row_data.status.clone()}</td>
+            <td>{row_data.status.clone()}</td>
             <td>{row_data.id_author.clone()}</td>
             <td>{"Category TBC"}</td>
             <td>{row_data.date_publish.clone()}</td>
@@ -51,6 +52,17 @@ pub fn table_entries() -> Html {
                 for response_gb_post in response.iter() {
                     gloo_console::log!("response: ", response_gb_post.title.clone());
 
+                    let status = match response_gb_post.status.clone() {
+                        EntryStatus::Post(content_status) => match content_status {
+                            ContentStatus::Draft => "draft".to_string(),
+                            ContentStatus::Publish => "publish".to_string(),
+                            ContentStatus::Private => "private".to_string(),
+                            ContentStatus::Trash => "trash".to_string(),
+                            _ => "unknown".to_string(),
+                        },
+                        _ => "unknown".to_string(),
+                    };
+
                     let entry_row = EntryTableRow {
                         id: response_gb_post.id,
                         id_author: response_gb_post.id_author,
@@ -58,7 +70,7 @@ pub fn table_entries() -> Html {
                         date_publish: response_gb_post.date_publish.clone(),
                         date_modified: response_gb_post.date_modified.clone(),
                         slug: response_gb_post.slug.clone(),
-                        //status: response_gb_post.status.clone(),
+                        status,
                         title: response_gb_post.title.clone(),
                         excerpt: response_gb_post.excerpt.clone(),
                         content: response_gb_post.content.clone(),
