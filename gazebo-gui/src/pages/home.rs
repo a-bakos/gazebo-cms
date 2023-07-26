@@ -6,8 +6,8 @@ use crate::components::{admin_bar::AdminBar, footer::Footer, nav::Nav};
 
 #[function_component(Home)]
 pub fn home() -> Html {
-    let current_user_ctx =
-        use_context::<crate::context::CurrentUserContext>().expect("Current user context missing");
+    let current_user_ctx = use_context::<crate::context::CurrentUserContext>()
+        .expect("Current accounts context missing");
 
     let name = match &current_user_ctx.user {
         Some(user) => &user.username,

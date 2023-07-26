@@ -34,7 +34,7 @@ impl App {
             version: crate::consts::VERSION.to_string(),
             db: GBDB::new(
                 "database".to_string(),
-                "user".to_string(),
+                "accounts".to_string(),
                 "pass".to_string(),
                 "host".to_string(),
                 "charset".to_string(),
