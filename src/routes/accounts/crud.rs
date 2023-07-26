@@ -38,7 +38,7 @@ pub async fn add(
 
     let email = params.email.clone(); // need email check
 
-    // check if user exists in accounts table
+    // check if accounts exists in accounts table
     let account_exists = credentials::find_account_by_identifier(
         pool.clone(),
         AccountIdentifier::Email,
@@ -75,7 +75,7 @@ pub async fn add(
             {
                 Ok(_) => {
                     // User notification to go out.
-                    // new_user_notification(user.id);
+                    // new_user_notification(accounts.id);
                     // send_notification_to_admin( NOTIFICATION::NEW_USER_ADDED)
 
                     Ok(warp::reply::json(&"Registration successful"))
@@ -161,7 +161,7 @@ pub async fn delete_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply
 
 #[allow(dead_code)]
 fn add_role_to_user(_user_id: u32, _role: UserRole) -> bool {
-    // get user by id
+    // get accounts by id
     // check role
     // change role
 

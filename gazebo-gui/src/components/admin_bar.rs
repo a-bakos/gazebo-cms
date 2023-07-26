@@ -4,8 +4,8 @@ use yew_router::prelude::{Link, Redirect};
 
 #[function_component(AdminBar)]
 pub fn admin_bar() -> Html {
-    let current_user_ctx =
-        use_context::<crate::context::CurrentUserContext>().expect("Current user context missing");
+    let current_user_ctx = use_context::<crate::context::CurrentUserContext>()
+        .expect("Current accounts context missing");
     match &current_user_ctx.user {
         Some(user) => html! {
             <>
