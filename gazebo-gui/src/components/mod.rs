@@ -1,3 +1,4 @@
+pub mod accounts_table;
 pub mod admin;
 pub mod admin_bar;
 pub mod admin_menu;

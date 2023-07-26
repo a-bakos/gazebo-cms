@@ -2,7 +2,9 @@
 
 use yew::prelude::*;
 
-use crate::components::{admin_bar::AdminBar, admin_menu::AdminMenu};
+use crate::components::{
+    accounts_table::AccountsTable, admin_bar::AdminBar, admin_menu::AdminMenu,
+};
 
 #[function_component(AdminUsers)]
 pub fn admin_users() -> Html {
@@ -15,6 +17,7 @@ pub fn admin_users() -> Html {
 
                 <div class={"gb-admin-main"}>
                    <h1>{"Users"}</h1>
+                    <AccountsTable />
                 </div>
             </div>
 
