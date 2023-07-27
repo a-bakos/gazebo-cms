@@ -57,28 +57,28 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(warp::path::param::<i32>())
         .and(warp::path::end()) // ::end() closes the URI path
         .and(pool_filter.clone())
-        .and_then(routes::user::crud::get_user_by_id);
+        .and_then(routes::accounts::crud::get_user_by_id);
 
     let delete_user = warp::delete()
         .and(warp::path(url::path::PATH_USER))
         .and(warp::path::param::<i32>())
         .and(warp::path::end()) // ::end() closes the URI path
         .and(pool_filter.clone())
-        .and_then(routes::user::crud::delete_user_by_id);
+        .and_then(routes::accounts::crud::delete_user_by_id);
 
     let registration = warp::post()
         .and(warp::path(url::path::PATH_USER_REGISTRATION))
         .and(warp::path::end())
         .and(pool_filter.clone())
         .and(warp::body::json())
-        .and_then(routes::user::crud::add);
+        .and_then(routes::accounts::crud::add);
 
     let login = warp::post()
         .and(warp::path(url::path::PATH_USER_LOGIN))
         .and(warp::path::end())
         .and(pool_filter.clone())
         .and(warp::body::json())
-        .and_then(routes::user::login::login);
+        .and_then(routes::accounts::login::login);
 
     let get_post = warp::get()
         .and(warp::path(url::path::PATH_POST))

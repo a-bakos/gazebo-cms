@@ -18,7 +18,7 @@ use crate::{
 pub fn login_form() -> Html {
     let navigator = use_navigator();
     let current_user_ctx =
-        use_context::<CurrentUserContext>().expect("Current user context is missing");
+        use_context::<CurrentUserContext>().expect("Current accounts context is missing");
 
     let mut login_error = String::new();
 
@@ -105,8 +105,8 @@ pub fn login_form() -> Html {
 
                 <Input
                     label={"Username or Email"}
-                    id={"gb-login-form-user"}
-                    name={"gb-login-form-user"}
+                    id={"gb-login-form-accounts"}
+                    name={"gb-login-form-accounts"}
                     input_type={"text"}
                     value={username}
                     onchange={username_changed}

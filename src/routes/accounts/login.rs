@@ -219,7 +219,7 @@ fn get_column_name_by_login_variant<'a>(login_variant: AccountIdentifier) -> &'a
     }
 }
 
-/// Update Last Login timestamp for user
+/// Update Last Login timestamp for accounts
 pub async fn update_last_login_timestamp(
     pool: PgPool,
     login_variant: AccountIdentifier,

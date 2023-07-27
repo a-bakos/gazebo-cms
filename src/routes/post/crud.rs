@@ -68,7 +68,7 @@ pub async fn insert_post(
 ) -> Result<impl warp::Reply, warp::Rejection> {
     println!("{:?}", params);
 
-    // auth layer to check if user can add post
+    // auth layer to check if accounts can add post
 
     // checks needed for these values
     // - check author id exists
