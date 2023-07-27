@@ -6,8 +6,8 @@ use crate::components::{
     accounts_table::AccountsTable, admin_bar::AdminBar, admin_menu::AdminMenu,
 };
 
-#[function_component(AdminUsers)]
-pub fn admin_users() -> Html {
+#[function_component(AdminAccounts)]
+pub fn admin_accounts() -> Html {
     html! {
          <main id={crate::consts::CSS_ID_ADMIN_AREA}>
             <AdminBar />
@@ -16,7 +16,7 @@ pub fn admin_users() -> Html {
                 <AdminMenu />
 
                 <div class={"gb-admin-main"}>
-                   <h1>{"Users"}</h1>
+                   <h1>{"Accounts"}</h1>
                     <AccountsTable />
                 </div>
             </div>
