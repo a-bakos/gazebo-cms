@@ -36,14 +36,12 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
 
 pub async fn get_posts(pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
     println!("All posts requested");
-    let mut posts: Vec<(i32, String)> = Vec::new();
+    let mut posts: Vec<GB_Post> = Vec::new();
     let query = format!("SELECT * FROM {}", DB_Table::Posts);
     match sqlx::query(&query)
         .map(|row: PgRow| {
-            // todo - only title for now
-            let post_id: i32 = row.get(COL_INDEX_POST_ID);
-            let the_title: String = row.get(COL_INDEX_POST_TITLE); //row.into();
-            posts.push((post_id, the_title));
+            let gb_post = row.into();
+            posts.push(gb_post);
         })
         .fetch_all(&pool)
         .await
