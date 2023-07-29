@@ -7,7 +7,7 @@ use yew::prelude::*;
 pub fn login() -> Html {
     html! {
         <main id={"gb-gui-login-page"}>
-            <h1>{"Login"}</h1>
+            <h1>{"Hello."}</h1>
             <LoginForm />
         </main>
     }

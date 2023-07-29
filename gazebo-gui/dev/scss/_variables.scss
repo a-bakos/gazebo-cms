@@ -1,5 +1,10 @@
+@import "functions";
+
+$gb-black: #3a3735;
 $gb-cyan: #00B4CC;
 $gb-orange: #FF7F50;
 $gb-offwhite: #F9F6F2;
 $gb-grey: #707070;
 $gb-complementary: #DB60A0;
+
+$gb-cyan-to-orange: $gb-cyan linear-gradient(45deg, $gb-cyan, $gb-orange);

@@ -1,7 +1,12 @@
 @import "variables";
 
 #gb-gui-login-page {
+    height: 100%;
+    background: $gb-cyan-to-orange;
 
+    h1 {
+        text-align: center;
+    }
 }
 
 #gb-login-form { // div
@@ -11,6 +16,7 @@
     background: white;
     border-radius: 10px;
     text-align: center;
+    box-shadow: 0 2px 10px black(0.15);
 
     input[type="text"],
     input[type="password"] {
@@ -31,5 +37,18 @@
         }
         display: block;
         color: $gb-orange;
+    }
+
+    .gb-login-lost-password {
+        > a {
+            font: {
+                color: $gb-black;
+                size: 16px;
+            }
+
+            &:hover {
+                color: $gb-orange;
+            }
+        }
     }
 }
