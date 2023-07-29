@@ -1,16 +1,35 @@
+@import "variables";
+
 #gb-gui-login-page {
-    background: blue;
+
 }
 
 #gb-login-form { // div
-    background: white;
-    padding: 1em;
     width: fit-content;
     margin: auto;
+    padding: 1em;
+    background: white;
+    border-radius: 10px;
     text-align: center;
 
-    label {
+    input[type="text"],
+    input[type="password"] {
         display: block;
+        background: $gb-offwhite;
+        padding: 4px 12px;
+        text-align: center;
+        margin-bottom: 10px;
+        outline: none;
+        border: none;
+        font-size: 24px;
+    }
+
+    label {
+        font: {
+            size: 18px;
+            weight: bold;
+        }
+        display: block;
+        color: $gb-orange;
     }
 }
-
