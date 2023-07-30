@@ -1,23 +1,43 @@
+use crate::api::user::GB_Account;
 use serde::Deserialize;
+use std::thread::spawn;
 use yew::prelude::*;
 use yew::{platform::spawn_local, prelude::*};
 
-fn table_entry_row() -> Html {
+fn table_account_row(row_data: &GB_Account) -> Html {
     html! {
         <tr>
-            <td>{"ID"}</td>
+            <td>{row_data.id.clone()}</td>
             <td>{"Name"}</td>
-            <td>{"Email"}</td>
-            <td>{"login"}</td>
-            <td>{"role"}</td>
-            <td>{"registered"}</td>
-            <td>{"last login"}</td>
+            <td>{row_data.email.clone()}</td>
+            <td>{row_data.login_name.clone()}</td>
+            <td>{row_data.role.clone()}</td>
+            <td>{row_data.registered.clone()}</td>
+            <td>{row_data.last_login.clone()}</td>
         </tr>
     }
 }
 
 #[function_component(AccountsTable)]
 pub fn table_accounts() -> Html {
+    let row_accounts_handle = use_state(|| Vec::<GB_Account>::new());
+    let row_accounts = row_accounts_handle.clone();
+    use_effect_with_deps(
+        move |_| {
+            spawn_local(async move {
+                let mut accounts_rows: Vec<GB_Account> = vec![];
+                let response = crate::api::user::api_get_all_accounts().await.unwrap();
+                for response_gb_account in response.iter() {
+                    gloo_console::log!("response: ", response_gb_account.email.clone());
+                    accounts_rows.push(response_gb_account.clone());
+                }
+                row_accounts_handle.set(accounts_rows);
+            });
+            || ()
+        },
+        (),
+    );
+
     html! {
         <>
             <table class={"gb-admin-table"}>
@@ -34,7 +54,9 @@ pub fn table_accounts() -> Html {
                 </thead>
                 <tbody>
                     {
-                        table_entry_row()
+                        for row_accounts.iter().map(|account_row| html! {
+                            table_account_row(account_row)
+                        } )
                     }
                 </tbody>
             </table>
