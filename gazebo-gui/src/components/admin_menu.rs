@@ -28,8 +28,8 @@ pub fn admin_menu() -> Html {
                     </Link<MainNavigationRoute>>
                 </li>
                 <li>
-                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminUsers}>
-                        {"Users"}
+                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminAccounts}>
+                        {"Accounts"}
                     </Link<MainNavigationRoute>>
                 </li>
             </ul>

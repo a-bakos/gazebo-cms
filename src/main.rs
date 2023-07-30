@@ -59,6 +59,12 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(pool_filter.clone())
         .and_then(routes::accounts::crud::get_user_by_id);
 
+    let get_users = warp::get()
+        .and(warp::path(url::path::PATH_USER))
+        .and(warp::path::end()) // ::end() closes the URI path
+        .and(pool_filter.clone())
+        .and_then(routes::accounts::crud::get_all_accounts);
+
     let delete_user = warp::delete()
         .and(warp::path(url::path::PATH_USER))
         .and(warp::path::param::<i32>())
@@ -126,6 +132,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .and_then(routes::post::crud::get_the_title);
 
     let routes = get_user
+        .or(get_users)
         .or(registration)
         .or(login)
         .or(delete_user)

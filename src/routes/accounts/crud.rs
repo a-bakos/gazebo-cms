@@ -16,11 +16,14 @@ use crate::{
         user::{User, UserID},
     },
 };
+use std::fmt::format;
 
+use crate::entry::query::GB_QueryArg;
 use crate::users::roles::UserRole;
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
+use warp::body::form;
 use warp::http::StatusCode;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -85,6 +88,56 @@ pub async fn add(
         }
         Ok(true) => Ok(warp::reply::json(&"Email address already in use")),
         Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+    }
+}
+
+pub async fn get_all_accounts(pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
+    println!("All accounts requested");
+    let mut accounts: Vec<User> = Vec::new();
+    let query = format!(
+        "SELECT {}, {}, {}, {}, {}, {} FROM {}",
+        COL_INDEX_ACCOUNT_LOGIN,
+        COL_INDEX_ACCOUNT_EMAIL,
+        COL_INDEX_ACCOUNT_ID,
+        COL_INDEX_ACCOUNT_ROLE,
+        COL_INDEX_ACCOUNT_REGISTERED,
+        COL_INDEX_ACCOUNT_LAST_LOGIN,
+        DB_Table::Accounts
+    );
+    match sqlx::query(&query)
+        .map(|row: PgRow| {
+            // Registered date
+            let registered: NaiveDateTime =
+                row.get::<NaiveDateTime, _>(COL_INDEX_ACCOUNT_REGISTERED);
+            let registered = registered.to_string();
+
+            // Last login date
+            let last_login: Option<NaiveDateTime> =
+                row.get::<Option<NaiveDateTime>, _>(COL_INDEX_ACCOUNT_LAST_LOGIN);
+            let last_login = match last_login {
+                Some(last_login_date) => last_login_date.to_string(),
+                None => String::from(LABEL_NONE),
+            };
+
+            let role: String = row.get(COL_INDEX_ACCOUNT_ROLE);
+            let role: UserRole = get_role_variant(&role);
+
+            let the_account = User {
+                login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
+                email: row.get(COL_INDEX_ACCOUNT_EMAIL),
+                id: UserID(row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32),
+                role,
+                password: "hidden".to_string(),
+                registered,
+                last_login,
+            };
+            accounts.push(the_account);
+        })
+        .fetch_all(&pool)
+        .await
+    {
+        Ok(_res) => Ok(warp::reply::json(&accounts)),
+        Err(e) => Err(warp::reject::custom(SqlxError(e))), // Unhandled rejection: SqlxError(RowNotFound)
     }
 }
 
