@@ -92,19 +92,44 @@ pub async fn add(
 }
 
 pub async fn get_all_accounts(pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
-    println!("All accoutns requested");
+    println!("All accounts requested");
     let mut accounts: Vec<User> = Vec::new();
-    let query = format!("SELECT * FROM {}", DB_Table::Accounts);
+    let query = format!(
+        "SELECT {}, {}, {}, {}, {}, {} FROM {}",
+        COL_INDEX_ACCOUNT_LOGIN,
+        COL_INDEX_ACCOUNT_EMAIL,
+        COL_INDEX_ACCOUNT_ID,
+        COL_INDEX_ACCOUNT_ROLE,
+        COL_INDEX_ACCOUNT_REGISTERED,
+        COL_INDEX_ACCOUNT_LAST_LOGIN,
+        DB_Table::Accounts
+    );
     match sqlx::query(&query)
         .map(|row: PgRow| {
+            // Registered date
+            let registered: NaiveDateTime =
+                row.get::<NaiveDateTime, _>(COL_INDEX_ACCOUNT_REGISTERED);
+            let registered = registered.to_string();
+
+            // Last login date
+            let last_login: Option<NaiveDateTime> =
+                row.get::<Option<NaiveDateTime>, _>(COL_INDEX_ACCOUNT_LAST_LOGIN);
+            let last_login = match last_login {
+                Some(last_login_date) => last_login_date.to_string(),
+                None => String::from(LABEL_NONE),
+            };
+
+            let role: String = row.get(COL_INDEX_ACCOUNT_ROLE);
+            let role: UserRole = get_role_variant(&role);
+
             let the_account = User {
-                login_name: "login_name".to_string(),
-                email: "email".to_string(),
+                login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
+                email: row.get(COL_INDEX_ACCOUNT_EMAIL),
                 id: UserID(row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32),
-                role: UserRole::Admin,
-                password: "pass".to_string(),
-                registered: "reg".to_string(),
-                last_login: "last".to_string(),
+                role,
+                password: "hidden".to_string(),
+                registered,
+                last_login,
             };
             accounts.push(the_account);
         })

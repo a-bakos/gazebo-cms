@@ -44,15 +44,23 @@ pub async fn api_login_request(
 
 //////////////////
 
+#[derive(Debug, Clone, Deserialize, PartialEq)]
+pub enum AccountRole {
+    Admin,       // read, write, delete, add ??
+    Editor,      // read, write, delete
+    Contributor, // read
+    NotFound,    // missing or incorrect role
+}
+
 #[derive(Deserialize, Clone, Debug, PartialEq)]
 pub struct GB_Account {
     pub login_name: String,
     pub email: String,
-    pub id: u32,      //UserID,
-    pub role: String, //UserRole,
+    pub id: u32, //UserID,
+    pub role: AccountRole,
     pub password: String,
     pub registered: String,
-    pub last_login: String,
+    pub last_login: Option<String>,
 }
 
 pub async fn api_get_all_accounts() -> Result<Vec<GB_Account>, gloo_net::Error> {

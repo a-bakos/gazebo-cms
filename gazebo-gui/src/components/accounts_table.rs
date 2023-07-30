@@ -1,17 +1,24 @@
-use crate::api::user::GB_Account;
+use crate::api::user::{AccountRole, GB_Account};
 use serde::Deserialize;
 use std::thread::spawn;
 use yew::prelude::*;
 use yew::{platform::spawn_local, prelude::*};
 
 fn table_account_row(row_data: &GB_Account) -> Html {
+    let role = match row_data.role.clone() {
+        AccountRole::Admin => "admin".to_string(),
+        AccountRole::Editor => "editor".to_string(),
+        AccountRole::Contributor => "contributor".to_string(),
+        _ => "unknown".to_string(),
+    };
+
     html! {
         <tr>
             <td>{row_data.id.clone()}</td>
             <td>{"Name"}</td>
             <td>{row_data.email.clone()}</td>
             <td>{row_data.login_name.clone()}</td>
-            <td>{row_data.role.clone()}</td>
+            <td>{role}</td>
             <td>{row_data.registered.clone()}</td>
             <td>{row_data.last_login.clone()}</td>
         </tr>
