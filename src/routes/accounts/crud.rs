@@ -16,11 +16,14 @@ use crate::{
         user::{User, UserID},
     },
 };
+use std::fmt::format;
 
+use crate::entry::query::GB_QueryArg;
 use crate::users::roles::UserRole;
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
+use warp::body::form;
 use warp::http::StatusCode;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -85,6 +88,31 @@ pub async fn add(
         }
         Ok(true) => Ok(warp::reply::json(&"Email address already in use")),
         Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+    }
+}
+
+pub async fn get_all_accounts(pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
+    println!("All accoutns requested");
+    let mut accounts: Vec<User> = Vec::new();
+    let query = format!("SELECT * FROM {}", DB_Table::Accounts);
+    match sqlx::query(&query)
+        .map(|row: PgRow| {
+            let the_account = User {
+                login_name: "login_name".to_string(),
+                email: "email".to_string(),
+                id: UserID(row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32),
+                role: UserRole::Admin,
+                password: "pass".to_string(),
+                registered: "reg".to_string(),
+                last_login: "last".to_string(),
+            };
+            accounts.push(the_account);
+        })
+        .fetch_all(&pool)
+        .await
+    {
+        Ok(_res) => Ok(warp::reply::json(&accounts)),
+        Err(e) => Err(warp::reject::custom(SqlxError(e))), // Unhandled rejection: SqlxError(RowNotFound)
     }
 }
 
