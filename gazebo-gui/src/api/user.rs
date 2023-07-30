@@ -1,4 +1,7 @@
+// todo: rename this module to account
+
 use crate::api::{HttpStatusCode, BACKEND_URL_BASE};
+use gloo_net::http::Request;
 use serde::Deserialize;
 use serde_json::json;
 
@@ -37,4 +40,24 @@ pub async fn api_login_request(
         .await?;
 
     response.json::<LoginResponseWithStatusCode>().await
+}
+
+//////////////////
+
+#[derive(Deserialize, Clone, Debug, PartialEq)]
+pub struct GB_Account {
+    pub login_name: String,
+    pub email: String,
+    pub id: u32,      //UserID,
+    pub role: String, //UserRole,
+    pub password: String,
+    pub registered: String,
+    pub last_login: String,
+}
+
+pub async fn api_get_all_accounts() -> Result<Vec<GB_Account>, gloo_net::Error> {
+    let response = Request::get(&format!("{}/accounts", BACKEND_URL_BASE))
+        .send()
+        .await?;
+    response.json::<Vec<GB_Account>>().await
 }
