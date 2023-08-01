@@ -12,7 +12,9 @@ use crate::{
     users::user::{User, UserID},
 };
 
+use crate::traits::row_transformer::RowTransformer;
 use serde::{Deserialize, Serialize};
+use sqlx::postgres::PgRow;
 use std::fmt::Formatter;
 
 #[derive(Debug)]
@@ -42,6 +44,15 @@ pub struct GB_Post {
     pub excerpt: Option<String>,
     pub content: Option<String>,
     pub password: Option<String>,
+}
+
+impl RowTransformer<PgRow> for GB_Post {
+    type Output = GB_Post;
+
+    fn transform(row: &PgRow) -> Self::Output {
+        todo!();
+        // Self {}
+    }
 }
 
 impl GB_Post {

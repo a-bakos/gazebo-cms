@@ -19,6 +19,7 @@ use crate::{
 use std::fmt::format;
 
 use crate::entry::query::GB_QueryArg;
+use crate::traits::row_transformer::RowTransformer;
 use crate::users::roles::UserRole;
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
@@ -106,6 +107,9 @@ pub async fn get_all_accounts(pool: PgPool) -> Result<impl warp::Reply, warp::Re
     );
     match sqlx::query(&query)
         .map(|row: PgRow| {
+            // Trait implementation test
+            let test_user = User::transform(&row);
+
             // Registered date
             let registered: NaiveDateTime =
                 row.get::<NaiveDateTime, _>(COL_INDEX_ACCOUNT_REGISTERED);

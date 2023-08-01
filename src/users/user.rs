@@ -1,6 +1,8 @@
 use crate::{app::App, users::roles::UserRole};
 
+use crate::traits::row_transformer::RowTransformer;
 use serde::{Deserialize, Serialize};
+use sqlx::postgres::PgRow;
 use std::fmt::{Display, Formatter};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -24,6 +26,15 @@ pub struct User {
 }
 
 impl User {}
+
+impl RowTransformer<PgRow> for User {
+    type Output = User;
+
+    fn transform(row: &PgRow) -> Self::Output {
+        todo!();
+        // Self {}
+    }
+}
 
 #[cfg(test)]
 mod test {

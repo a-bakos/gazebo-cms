@@ -10,6 +10,7 @@ mod helpers;
 mod http;
 mod private;
 mod routes;
+mod traits;
 mod url;
 mod users;
 
