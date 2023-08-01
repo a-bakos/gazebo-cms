@@ -23,10 +23,7 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
     let query = format!("SELECT * FROM {} WHERE id = $1", DB_Table::Posts);
     match sqlx::query(&query)
         .bind(id)
-        .map(|row: PgRow| {
-            let the_post: GB_Post = row.into();
-            the_post
-        })
+        .map(|row: PgRow| GB_Post::transform(&row))
         .fetch_one(&pool)
         .await
     {
