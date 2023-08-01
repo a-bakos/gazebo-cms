@@ -11,6 +11,7 @@ use crate::{
     errors::error_handler::SqlxError,
 };
 
+use crate::traits::RowTransformer;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
 use std::collections::HashMap;
@@ -40,7 +41,7 @@ pub async fn get_posts(pool: PgPool) -> Result<impl warp::Reply, warp::Rejection
     let query = format!("SELECT * FROM {}", DB_Table::Posts);
     match sqlx::query(&query)
         .map(|row: PgRow| {
-            let gb_post = row.into();
+            let gb_post = GB_Post::transform(&row);
             posts.push(gb_post);
         })
         .fetch_all(&pool)
