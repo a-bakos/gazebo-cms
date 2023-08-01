@@ -19,6 +19,7 @@ use crate::{
 };
 
 use crate::entry::entry_id::EntryID;
+use crate::traits::RowTransformer;
 use chrono::NaiveDateTime;
 use sqlx::{postgres::PgRow, PgPool, Row};
 
@@ -58,8 +59,8 @@ impl GB_Query {
         match sqlx::query(&query)
             .bind("post")
             .map(|row: PgRow| {
-                let the_post: GB_Post = row.into();
-                self.results.push(the_post);
+                let gb_post = GB_Post::transform(&row);
+                self.results.push(gb_post);
             })
             .fetch_all(&self.pool)
             .await
@@ -71,48 +72,5 @@ impl GB_Query {
 
     pub fn get_results(&self) -> &Vec<GB_Post> {
         &self.results
-    }
-}
-
-// Turn PgRow into GB_Post
-impl Into<GB_Post> for PgRow {
-    fn into(self) -> GB_Post {
-        // Underscores' meaning here:
-        // we don't need to specify a default/fallback value because the cell will never be empty
-
-        // IDs
-        let post_id = self.get::<i32, _>(COL_INDEX_POST_ID) as u32;
-        let author_id = self.get::<i32, _>(COL_INDEX_POST_ID_AUTHOR) as u32;
-        let parent_id = self
-            .try_get(COL_INDEX_POST_PARENT)
-            .ok()
-            .unwrap_or(consts::ENTRY_ID_NO_PARENT) as u32;
-
-        // Publish date
-        let date_publish: NaiveDateTime = self.get::<NaiveDateTime, _>(COL_INDEX_POST_DATE_PUBLISH);
-        let date_publish = date_publish.to_string();
-
-        // Modified date
-        let date_modified: NaiveDateTime =
-            self.get::<NaiveDateTime, _>(COL_INDEX_POST_DATE_MODIFIED);
-        let date_modified = date_modified.to_string();
-
-        // Entry status
-        let entry_status_as_str: &str = self.get(COL_INDEX_POST_STATUS);
-        let status: EntryStatus = get_entry_status_variant(entry_status_as_str, &EntryType::Post);
-
-        GB_Post {
-            id: EntryID(post_id),
-            id_author: UserID(author_id),
-            id_parent: Some(EntryID(parent_id)),
-            date_publish,
-            date_modified,
-            slug: self.get(COL_INDEX_POST_SLUG),
-            status,
-            title: self.get(COL_INDEX_POST_TITLE),
-            excerpt: self.get(COL_INDEX_POST_EXCERPT),
-            content: self.get(COL_INDEX_POST_CONTENT),
-            password: None,
-        }
     }
 }
