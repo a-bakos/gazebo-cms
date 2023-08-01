@@ -10,16 +10,16 @@ use crate::{
         db::DB_Table,
     },
     entry::{
+        entry_id::EntryID,
         entry_type::{get_entry_type_variant, EntryType},
         gb_post::GB_Post,
         status::{get_entry_status_variant, EntryStatus},
     },
     errors::error_handler::SqlxError,
+    traits::RowTransformer,
     users::user::UserID,
 };
 
-use crate::entry::entry_id::EntryID;
-use crate::traits::RowTransformer;
 use chrono::NaiveDateTime;
 use sqlx::{postgres::PgRow, PgPool, Row};
 

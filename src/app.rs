@@ -1,6 +1,8 @@
 use crate::{database::db::GBDB, users::user::UserID};
-use std::fmt::{Debug, Formatter};
-use std::time::SystemTime;
+use std::{
+    fmt::{Debug, Formatter},
+    time::SystemTime,
+};
 
 // #[derive(Debug)]
 pub struct App {

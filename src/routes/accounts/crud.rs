@@ -8,24 +8,22 @@ use crate::{
         },
         db::DB_Table,
     },
+    entry::query::GB_QueryArg,
     errors::error_handler::SqlxError,
+    traits::RowTransformer,
     users::{
         credentials,
         credentials::{is_password_valid, AccountIdentifier},
-        roles::get_role_variant,
+        roles::{get_role_variant, UserRole},
         user::{User, UserID},
     },
 };
-use std::fmt::format;
 
-use crate::entry::query::GB_QueryArg;
-use crate::traits::RowTransformer;
-use crate::users::roles::UserRole;
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
-use warp::body::form;
-use warp::http::StatusCode;
+use std::fmt::format;
+use warp::{body::form, http::StatusCode};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct NewAccountRegistrationRequest {

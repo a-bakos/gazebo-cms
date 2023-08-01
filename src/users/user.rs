@@ -4,14 +4,16 @@ use sqlx::postgres::PgRow;
 use sqlx::Row;
 use std::fmt::{Display, Formatter};
 
-use crate::consts::LABEL_NONE;
-use crate::database::columns::{
-    COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LAST_LOGIN,
-    COL_INDEX_ACCOUNT_LOGIN, COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE,
+use crate::{
+    app::App,
+    consts::LABEL_NONE,
+    database::columns::{
+        COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LAST_LOGIN,
+        COL_INDEX_ACCOUNT_LOGIN, COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE,
+    },
+    traits::RowTransformer,
+    users::roles::{get_role_variant, UserRole},
 };
-use crate::traits::RowTransformer;
-use crate::users::roles::get_role_variant;
-use crate::{app::App, users::roles::UserRole};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserID(pub u32);
