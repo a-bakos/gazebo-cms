@@ -1,9 +1,7 @@
 use crate::{
-    database::db::DB_Table,
-    entry::{entry_id::EntryID, entry_type::EntryType, gb_post::GB_Post},
+    entry::{entry_id::EntryID, entry_type::EntryType},
     users::user::UserID,
 };
-use sqlx::{postgres::PgRow, PgPool};
 
 // Get post URL
 #[allow(dead_code)]

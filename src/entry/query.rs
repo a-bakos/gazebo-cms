@@ -1,27 +1,8 @@
 use crate::{
-    consts,
-    database::{
-        columns::{
-            COL_INDEX_POST_CONTENT, COL_INDEX_POST_DATE_MODIFIED, COL_INDEX_POST_DATE_PUBLISH,
-            COL_INDEX_POST_EXCERPT, COL_INDEX_POST_ID, COL_INDEX_POST_ID_AUTHOR,
-            COL_INDEX_POST_PARENT, COL_INDEX_POST_SLUG, COL_INDEX_POST_STATUS,
-            COL_INDEX_POST_TITLE, COL_INDEX_POST_TYPE,
-        },
-        db::DB_Table,
-    },
-    entry::{
-        entry_id::EntryID,
-        entry_type::{get_entry_type_variant, EntryType},
-        gb_post::GB_Post,
-        status::{get_entry_status_variant, EntryStatus},
-    },
-    errors::error_handler::SqlxError,
-    traits::RowTransformer,
-    users::user::UserID,
+    database::db::DB_Table, entry::gb_post::GB_Post, errors::error_handler::SqlxError,
+    traits::RowTransformer, users::user::UserID,
 };
-
-use chrono::NaiveDateTime;
-use sqlx::{postgres::PgRow, PgPool, Row};
+use sqlx::{postgres::PgRow, PgPool};
 
 #[derive(Debug)]
 #[allow(non_camel_case_types)]

@@ -15,13 +15,12 @@ use crate::{
     },
     traits::RowTransformer,
     url,
-    users::user::{User, UserID},
+    users::user::UserID,
 };
 
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, Row};
-use std::fmt::Formatter;
 
 #[derive(Debug)]
 #[allow(dead_code)]

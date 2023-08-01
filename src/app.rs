@@ -1,4 +1,4 @@
-use crate::{database::db::GBDB, users::user::UserID};
+use crate::database::db::GBDB;
 use std::{
     fmt::{Debug, Formatter},
     time::SystemTime,
