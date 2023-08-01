@@ -12,7 +12,7 @@ use crate::{
     users::user::{User, UserID},
 };
 
-use crate::traits::row_transformer::RowTransformer;
+use crate::traits::RowTransformer;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgRow;
 use std::fmt::Formatter;
