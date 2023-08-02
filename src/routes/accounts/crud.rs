@@ -14,7 +14,7 @@ use crate::{
         credentials,
         credentials::{is_password_valid, AccountIdentifier},
         roles::{get_role_variant, AccountRole},
-        user::{AccountID, User},
+        user::{Account, AccountID},
     },
 };
 
@@ -90,7 +90,7 @@ pub async fn add(
 
 pub async fn get_all_accounts(pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
     println!("All accounts requested");
-    let mut accounts: Vec<User> = Vec::new();
+    let mut accounts: Vec<Account> = Vec::new();
     let query = format!(
         "SELECT {}, {}, {}, {}, {}, {} FROM {}",
         COL_INDEX_ACCOUNT_LOGIN,
@@ -103,7 +103,7 @@ pub async fn get_all_accounts(pool: PgPool) -> Result<impl warp::Reply, warp::Re
     );
     match sqlx::query(&query)
         .map(|row: PgRow| {
-            let the_account = User::transform(&row);
+            let the_account = Account::transform(&row);
             accounts.push(the_account);
         })
         .fetch_all(&pool)
@@ -149,7 +149,7 @@ pub async fn get_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
                 None => String::from(LABEL_NONE),
             };
 
-            User {
+            Account {
                 login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
                 email: row.get(COL_INDEX_ACCOUNT_EMAIL),
                 id: AccountID(user_id),
@@ -195,7 +195,7 @@ fn add_role_to_user(_user_id: u32, _role: AccountRole) -> bool {
 }
 
 #[allow(dead_code)]
-pub fn get_user_by_email(_email: &str) -> Option<User> {
+pub fn get_user_by_email(_email: &str) -> Option<Account> {
     todo!()
 }
 

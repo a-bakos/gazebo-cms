@@ -23,7 +23,7 @@ impl Display for AccountID {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct User {
+pub struct Account {
     pub login_name: String,
     pub email: String,
     pub id: AccountID,
@@ -33,10 +33,10 @@ pub struct User {
     pub last_login: String,
 }
 
-impl User {}
+impl Account {}
 
-impl RowTransformer<PgRow> for User {
-    type Output = User;
+impl RowTransformer<PgRow> for Account {
+    type Output = Account;
 
     fn transform(row: &PgRow) -> Self::Output {
         // Registered date
