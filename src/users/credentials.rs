@@ -19,7 +19,7 @@ pub fn is_username_valid(username: &str) -> bool {
     }
 
     // Make sure it doesn't contain special characters
-    let special_characters = str_contains_special_char(username); // must be false
+    let special_characters = str_contains_special_char(username);
 
     min_length_ok && !special_characters
 }
@@ -50,6 +50,11 @@ pub fn is_username_valid(username: &str) -> bool {
 ///
 /// This function also has a unit test suite in the same module.
 pub fn is_password_valid(password: &str) -> bool {
+    // TODO - remove this when not needed anymore!
+    if crate::private::DEV_BYPASS {
+        return true;
+    }
+
     let mut ok_pw_len: bool = false;
 
     // Password length check

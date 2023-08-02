@@ -1,4 +1,4 @@
-use crate::users::credentials::{is_email_valid, is_username_valid};
+use crate::users::credentials::{is_email_valid, is_password_valid, is_username_valid};
 use crate::{
     database::{
         columns::{
@@ -125,8 +125,8 @@ pub async fn login(
     // If email found, ignore login name
     // If no email, look for login name
     if let Some(email) = params.email {
-        // If email is invalid, terminate, don't even go to the database
-        if !is_email_valid(&email) {
+        // If email or password format is invalid, terminate, don't even go to the database
+        if !is_email_valid(&email) || !is_password_valid(&params.password) {
             return Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
                 LoginStatus::Unauthorized,
                 None,
@@ -172,8 +172,8 @@ pub async fn login(
     }
 
     if let Some(login) = params.login {
-        // If username is invalid, terminate, don't even go to the database
-        if !is_username_valid(&login) {
+        // If username or password format is invalid, terminate, don't even go to the database
+        if !is_username_valid(&login) || !is_password_valid(&params.password) {
             return Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
                 LoginStatus::Unauthorized,
                 None,
