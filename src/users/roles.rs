@@ -45,9 +45,9 @@ impl From<&str> for UserRole {
     }
 }
 
-impl Into<String> for UserRole {
-    fn into(self) -> String {
-        match self {
+impl From<UserRole> for String {
+    fn from(val: UserRole) -> Self {
+        match val {
             UserRole::Admin => consts::USER_ROLE_ADMIN.to_string(),
             UserRole::Editor => consts::USER_ROLE_EDITOR.to_string(),
             UserRole::Contributor => consts::USER_ROLE_CONTRIBUTOR.to_string(),

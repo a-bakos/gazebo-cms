@@ -8,7 +8,6 @@ use crate::{
         },
         db::DB_Table,
     },
-    entry::query::GB_QueryArg,
     errors::error_handler::SqlxError,
     traits::RowTransformer,
     users::{
@@ -22,8 +21,7 @@ use crate::{
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
-use std::fmt::format;
-use warp::{body::form, http::StatusCode};
+use warp::http::StatusCode;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct NewAccountRegistrationRequest {

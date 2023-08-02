@@ -28,9 +28,9 @@ impl std::fmt::Display for EntryType {
     }
 }
 
-impl Into<String> for EntryType {
-    fn into(self) -> String {
-        match self {
+impl From<EntryType> for String {
+    fn from(val: EntryType) -> Self {
+        match val {
             EntryType::Post => ENTRY_TYPE_POST.to_string(),
             EntryType::Page => ENTRY_TYPE_PAGE.to_string(),
             EntryType::Log => ENTRY_TYPE_LOG.to_string(),
@@ -41,6 +41,7 @@ impl Into<String> for EntryType {
     }
 }
 
+#[allow(dead_code)]
 pub fn get_entry_type_variant(entry_type: &str) -> EntryType {
     match entry_type {
         ENTRY_TYPE_POST => EntryType::Post,

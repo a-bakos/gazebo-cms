@@ -9,6 +9,7 @@ use sqlx::{postgres::PgRow, PgPool};
 pub enum GB_QueryArg {
     #[allow(dead_code)]
     AuthorID(Vec<UserID>),
+    #[allow(dead_code)]
     EntryID(Vec<u32>),
     #[allow(dead_code)]
     Title(String),
@@ -17,12 +18,16 @@ pub enum GB_QueryArg {
 #[derive(Debug)]
 #[allow(non_camel_case_types)]
 pub struct GB_Query {
+    #[allow(dead_code)]
     args: Vec<GB_QueryArg>,
+    #[allow(dead_code)]
     results: Vec<GB_Post>,
+    #[allow(dead_code)]
     pool: PgPool, // Will be a pool clone
 }
 
 impl GB_Query {
+    #[allow(dead_code)]
     pub fn new(args: Vec<GB_QueryArg>, pool: PgPool) -> Self {
         Self {
             args,
@@ -32,6 +37,7 @@ impl GB_Query {
     }
 
     // Collect results into self.results
+    #[allow(dead_code)]
     pub async fn run(&mut self) -> Result<bool, SqlxError> {
         // query will be highly varied based on self.args!
         println!("{:?}", self.args);
@@ -51,6 +57,7 @@ impl GB_Query {
         }
     }
 
+    #[allow(dead_code)]
     pub fn get_results(&self) -> &Vec<GB_Post> {
         &self.results
     }

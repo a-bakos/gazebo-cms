@@ -15,7 +15,6 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
-use warp::Buf;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct LoginRequest {

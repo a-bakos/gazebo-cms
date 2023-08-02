@@ -5,7 +5,6 @@ use sqlx::Row;
 use std::fmt::{Display, Formatter};
 
 use crate::{
-    app::App,
     consts::LABEL_NONE,
     database::columns::{
         COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LAST_LOGIN,

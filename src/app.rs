@@ -52,12 +52,14 @@ impl App {
         App::new()
     }
 
+    #[allow(dead_code)]
     pub fn change_admin_email(&mut self, new_admin_email: &str) -> bool {
         self.admin_email = new_admin_email.to_owned();
         // todo send admin notification
         true
     }
 
+    #[allow(dead_code)]
     pub fn change_app_name(&mut self, new_app_name: &str) -> bool {
         self.name = new_app_name.to_owned();
         // todo send admin notification

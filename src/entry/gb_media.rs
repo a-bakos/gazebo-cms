@@ -1,6 +1,7 @@
 use crate::entry::entry_id::EntryID;
 use crate::users::user::UserID;
 
+#[allow(dead_code)]
 #[allow(non_camel_case_types)]
 struct GB_Media {
     id: EntryID,

@@ -52,7 +52,8 @@ pub struct GB_Post {
 }
 
 impl GB_Post {
-    pub fn draft(app: &mut App) -> Self {
+    #[allow(dead_code)]
+    pub fn draft(_app: &mut App) -> Self {
         Self {
             id: EntryID(1),
             id_author: UserID(1),
@@ -73,6 +74,7 @@ impl GB_Post {
         todo!();
     }
 
+    #[allow(dead_code)]
     pub fn add_title(&mut self, title: String, create_permalink: bool) {
         let mut post_specifics_to_update: Vec<PostSpecific> = Vec::new();
         self.title = Some(title.clone());
@@ -87,6 +89,7 @@ impl GB_Post {
         // let _update_post = update_post(self, post_specifics_to_update);
     }
 
+    #[allow(dead_code)]
     pub fn add_permalink(&mut self, slug: String) {
         let mut permalink_generator = url::permalink_generator::PermalinkGenerator::new(true);
         let slug = permalink_generator.create_permalink_from(slug);
@@ -98,6 +101,7 @@ impl GB_Post {
         self.content = Some(content);
     }
 
+    #[allow(dead_code)]
     pub fn update_slug(&mut self, new_slug: &str) -> bool {
         self.slug = Some(new_slug.to_string());
         true
