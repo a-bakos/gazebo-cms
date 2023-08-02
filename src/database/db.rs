@@ -7,19 +7,27 @@ use std::fmt::{Display, Formatter};
 #[allow(non_camel_case_types)]
 pub enum DB_Table {
     Posts,
+    #[allow(dead_code)]
     PostMeta,
+    #[allow(dead_code)]
     Pages,
+    #[allow(dead_code)]
     PageMeta,
+    #[allow(dead_code)]
     Accounts,
+    #[allow(dead_code)]
     AccountMeta,
+    #[allow(dead_code)]
     Media,
+    #[allow(dead_code)]
     Log,
+    #[allow(dead_code)]
     Search,
 }
 
-impl Into<String> for DB_Table {
-    fn into(self) -> String {
-        match self {
+impl From<DB_Table> for String {
+    fn from(val: DB_Table) -> Self {
+        match val {
             DB_Table::Posts => DB_TABLE_POSTS.to_string(),
             DB_Table::PostMeta => DB_TABLE_POST_META.to_string(),
             DB_Table::Pages => DB_TABLE_PAGES.to_string(),
@@ -48,6 +56,7 @@ impl Display for DB_Table {
     }
 }
 
+#[allow(clippy::upper_case_acronyms)]
 pub struct GBDB {
     pub name: String,
     pub user: String,

@@ -9,9 +9,9 @@ use crate::{
     },
     entry::gb_post::GB_Post,
     errors::error_handler::SqlxError,
+    traits::RowTransformer,
 };
 
-use crate::traits::RowTransformer;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
 use std::collections::HashMap;

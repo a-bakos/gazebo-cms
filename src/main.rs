@@ -14,18 +14,13 @@ mod traits;
 mod url;
 mod users;
 
-use sqlx::postgres::{PgPool, PgPoolOptions};
-use std::collections::HashMap;
-
-use warp::{
-    http::{Method, Response},
-    Filter, Reply,
-};
+use sqlx::postgres::PgPoolOptions;
+use warp::{http::Method, Filter};
 
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {
     // Start the App
-    let mut app = app::App::init();
+    let app = app::App::init();
     // App started timestamp:
     dbg!(&app.start);
     //app.change_admin_email("admin@example.com");

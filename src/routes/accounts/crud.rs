@@ -9,22 +9,18 @@ use crate::{
         db::DB_Table,
     },
     errors::error_handler::SqlxError,
+    traits::RowTransformer,
     users::{
         credentials,
         credentials::{is_password_valid, AccountIdentifier},
-        roles::get_role_variant,
-        user::{User, UserID},
+        roles::{get_role_variant, AccountRole},
+        user::{Account, AccountID},
     },
 };
-use std::fmt::format;
 
-use crate::entry::query::GB_QueryArg;
-use crate::traits::RowTransformer;
-use crate::users::roles::UserRole;
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
-use warp::body::form;
 use warp::http::StatusCode;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -59,7 +55,7 @@ pub async fn add(
 
             let login = params.login.clone(); // todo need login name check
 
-            let role = crate::users::roles::UserRole::Contributor.to_string();
+            let role = crate::users::roles::AccountRole::Contributor.to_string();
 
             let query = format!(
                 "INSERT INTO {} ({}, {}, {}, {}) VALUES ($1, $2, $3, $4)",
@@ -94,7 +90,7 @@ pub async fn add(
 
 pub async fn get_all_accounts(pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
     println!("All accounts requested");
-    let mut accounts: Vec<User> = Vec::new();
+    let mut accounts: Vec<Account> = Vec::new();
     let query = format!(
         "SELECT {}, {}, {}, {}, {}, {} FROM {}",
         COL_INDEX_ACCOUNT_LOGIN,
@@ -107,7 +103,7 @@ pub async fn get_all_accounts(pool: PgPool) -> Result<impl warp::Reply, warp::Re
     );
     match sqlx::query(&query)
         .map(|row: PgRow| {
-            let the_account = User::transform(&row);
+            let the_account = Account::transform(&row);
             accounts.push(the_account);
         })
         .fetch_all(&pool)
@@ -153,10 +149,10 @@ pub async fn get_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
                 None => String::from(LABEL_NONE),
             };
 
-            User {
+            Account {
                 login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
                 email: row.get(COL_INDEX_ACCOUNT_EMAIL),
-                id: UserID(user_id),
+                id: AccountID(user_id),
                 role,
                 password: row.get(COL_INDEX_ACCOUNT_PASSWORD), // todo: hide this later
                 registered,
@@ -190,7 +186,7 @@ pub async fn delete_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply
 }
 
 #[allow(dead_code)]
-fn add_role_to_user(_user_id: u32, _role: UserRole) -> bool {
+fn add_role_to_user(_user_id: u32, _role: AccountRole) -> bool {
     // get accounts by id
     // check role
     // change role
@@ -199,13 +195,13 @@ fn add_role_to_user(_user_id: u32, _role: UserRole) -> bool {
 }
 
 #[allow(dead_code)]
-pub fn get_user_by_email(_email: &str) -> Option<User> {
+pub fn get_user_by_email(_email: &str) -> Option<Account> {
     todo!()
 }
 
 #[allow(unused_variables)]
 #[allow(dead_code)]
-pub fn change_username(user_id: UserID, new_username: &str) {
+pub fn change_username(user_id: AccountID, new_username: &str) {
     // username change functionality
     // check if username valid
     // self.login = new_username
@@ -213,7 +209,7 @@ pub fn change_username(user_id: UserID, new_username: &str) {
 
 #[allow(unused_variables)]
 #[allow(dead_code)]
-pub fn reset_password(user_id: UserID, new_password: &str) -> bool {
+pub fn reset_password(user_id: AccountID, new_password: &str) -> bool {
     // password reset functionality
     if is_password_valid(new_password) {
         // todo store new password logic here

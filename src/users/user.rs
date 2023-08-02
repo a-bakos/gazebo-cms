@@ -1,42 +1,42 @@
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
-use sqlx::postgres::PgRow;
-use sqlx::Row;
+use sqlx::{postgres::PgRow, Row};
 use std::fmt::{Display, Formatter};
 
-use crate::consts::LABEL_NONE;
-use crate::database::columns::{
-    COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LAST_LOGIN,
-    COL_INDEX_ACCOUNT_LOGIN, COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE,
+use crate::{
+    consts::LABEL_NONE,
+    database::columns::{
+        COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LAST_LOGIN,
+        COL_INDEX_ACCOUNT_LOGIN, COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE,
+    },
+    traits::RowTransformer,
+    users::roles::{get_role_variant, AccountRole},
 };
-use crate::traits::RowTransformer;
-use crate::users::roles::get_role_variant;
-use crate::{app::App, users::roles::UserRole};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct UserID(pub u32);
+pub struct AccountID(pub u32);
 
-impl Display for UserID {
+impl Display for AccountID {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.0)
     }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct User {
+pub struct Account {
     pub login_name: String,
     pub email: String,
-    pub id: UserID,
-    pub role: UserRole,
+    pub id: AccountID,
+    pub role: AccountRole,
     pub password: String,
     pub registered: String,
     pub last_login: String,
 }
 
-impl User {}
+impl Account {}
 
-impl RowTransformer<PgRow> for User {
-    type Output = User;
+impl RowTransformer<PgRow> for Account {
+    type Output = Account;
 
     fn transform(row: &PgRow) -> Self::Output {
         // Registered date
@@ -52,12 +52,12 @@ impl RowTransformer<PgRow> for User {
         };
 
         let role: String = row.get(COL_INDEX_ACCOUNT_ROLE);
-        let role: UserRole = get_role_variant(&role);
+        let role: AccountRole = get_role_variant(&role);
 
         Self {
             login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
             email: row.get(COL_INDEX_ACCOUNT_EMAIL),
-            id: UserID(row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32),
+            id: AccountID(row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32),
             role,
             password: "hidden".to_string(),
             registered,

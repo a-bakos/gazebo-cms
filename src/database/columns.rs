@@ -66,16 +66,26 @@ pub const COLUMNS_USER_META: [(&str, &str); 4] = [
 ];
 
 // Media table
+#[allow(dead_code)]
 pub const COL_INDEX_MEDIA_ID: &str = "id";
+#[allow(dead_code)]
 pub const COL_INDEX_MEDIA_UPLOADER_ID: &str = "uploader";
+#[allow(dead_code)]
 pub const COL_INDEX_MEDIA_ATTACHED_TO: &str = "attached_to";
+#[allow(dead_code)]
 pub const COL_INDEX_MEDIA_DATE_PUBLISH: &str = "date_publish";
+#[allow(dead_code)]
 pub const COL_INDEX_MEDIA_DATE_MODIFIED: &str = "date_modified";
+#[allow(dead_code)]
 pub const COL_INDEX_MEDIA_SLUG: &str = "slug";
+#[allow(dead_code)]
 pub const COL_INDEX_MEDIA_TITLE: &str = "title";
+#[allow(dead_code)]
 pub const COL_INDEX_MEDIA_DESCRIPTION: &str = "description";
+#[allow(dead_code)]
 pub const COL_INDEX_MEDIA_ALT_TEXT: &str = "alt_text";
 
+#[allow(dead_code)]
 pub const COLUMNS_MEDIA: [(&str, &str); 9] = [
     ("ID", COL_INDEX_MEDIA_ID),
     ("UPLOADER_ID", COL_INDEX_MEDIA_UPLOADER_ID),

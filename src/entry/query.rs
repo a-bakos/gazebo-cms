@@ -1,33 +1,15 @@
 use crate::{
-    consts,
-    database::{
-        columns::{
-            COL_INDEX_POST_CONTENT, COL_INDEX_POST_DATE_MODIFIED, COL_INDEX_POST_DATE_PUBLISH,
-            COL_INDEX_POST_EXCERPT, COL_INDEX_POST_ID, COL_INDEX_POST_ID_AUTHOR,
-            COL_INDEX_POST_PARENT, COL_INDEX_POST_SLUG, COL_INDEX_POST_STATUS,
-            COL_INDEX_POST_TITLE, COL_INDEX_POST_TYPE,
-        },
-        db::DB_Table,
-    },
-    entry::{
-        entry_type::{get_entry_type_variant, EntryType},
-        gb_post::GB_Post,
-        status::{get_entry_status_variant, EntryStatus},
-    },
-    errors::error_handler::SqlxError,
-    users::user::UserID,
+    database::db::DB_Table, entry::gb_post::GB_Post, errors::error_handler::SqlxError,
+    traits::RowTransformer, users::user::AccountID,
 };
-
-use crate::entry::entry_id::EntryID;
-use crate::traits::RowTransformer;
-use chrono::NaiveDateTime;
-use sqlx::{postgres::PgRow, PgPool, Row};
+use sqlx::{postgres::PgRow, PgPool};
 
 #[derive(Debug)]
 #[allow(non_camel_case_types)]
 pub enum GB_QueryArg {
     #[allow(dead_code)]
-    AuthorID(Vec<UserID>),
+    AuthorID(Vec<AccountID>),
+    #[allow(dead_code)]
     EntryID(Vec<u32>),
     #[allow(dead_code)]
     Title(String),
@@ -36,12 +18,16 @@ pub enum GB_QueryArg {
 #[derive(Debug)]
 #[allow(non_camel_case_types)]
 pub struct GB_Query {
+    #[allow(dead_code)]
     args: Vec<GB_QueryArg>,
+    #[allow(dead_code)]
     results: Vec<GB_Post>,
+    #[allow(dead_code)]
     pool: PgPool, // Will be a pool clone
 }
 
 impl GB_Query {
+    #[allow(dead_code)]
     pub fn new(args: Vec<GB_QueryArg>, pool: PgPool) -> Self {
         Self {
             args,
@@ -51,6 +37,7 @@ impl GB_Query {
     }
 
     // Collect results into self.results
+    #[allow(dead_code)]
     pub async fn run(&mut self) -> Result<bool, SqlxError> {
         // query will be highly varied based on self.args!
         println!("{:?}", self.args);
@@ -70,6 +57,7 @@ impl GB_Query {
         }
     }
 
+    #[allow(dead_code)]
     pub fn get_results(&self) -> &Vec<GB_Post> {
         &self.results
     }
