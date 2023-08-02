@@ -16,52 +16,52 @@ use std::fmt::Formatter;
 // UpdateUser
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
-pub enum UserRole {
+pub enum AccountRole {
     Admin,       // read, write, delete, add ??
     Editor,      // read, write, delete
     Contributor, // read
     NotFound,    // missing or incorrect role
 }
 
-impl std::fmt::Display for UserRole {
+impl std::fmt::Display for AccountRole {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match *self {
-            UserRole::Admin => write!(f, "{}", consts::USER_ROLE_ADMIN),
-            UserRole::Editor => write!(f, "{}", consts::USER_ROLE_EDITOR),
-            UserRole::Contributor => write!(f, "{}", consts::USER_ROLE_CONTRIBUTOR),
-            UserRole::NotFound => write!(f, "{}", consts::USER_ROLE_NOT_FOUND),
+            AccountRole::Admin => write!(f, "{}", consts::USER_ROLE_ADMIN),
+            AccountRole::Editor => write!(f, "{}", consts::USER_ROLE_EDITOR),
+            AccountRole::Contributor => write!(f, "{}", consts::USER_ROLE_CONTRIBUTOR),
+            AccountRole::NotFound => write!(f, "{}", consts::USER_ROLE_NOT_FOUND),
         }
     }
 }
 
-impl From<&str> for UserRole {
+impl From<&str> for AccountRole {
     fn from(value: &str) -> Self {
         match value {
-            consts::USER_ROLE_ADMIN => UserRole::Admin,
-            consts::USER_ROLE_EDITOR => UserRole::Editor,
-            consts::USER_ROLE_CONTRIBUTOR => UserRole::Contributor,
-            _ => UserRole::NotFound,
+            consts::USER_ROLE_ADMIN => AccountRole::Admin,
+            consts::USER_ROLE_EDITOR => AccountRole::Editor,
+            consts::USER_ROLE_CONTRIBUTOR => AccountRole::Contributor,
+            _ => AccountRole::NotFound,
         }
     }
 }
 
-impl From<UserRole> for String {
-    fn from(val: UserRole) -> Self {
+impl From<AccountRole> for String {
+    fn from(val: AccountRole) -> Self {
         match val {
-            UserRole::Admin => consts::USER_ROLE_ADMIN.to_string(),
-            UserRole::Editor => consts::USER_ROLE_EDITOR.to_string(),
-            UserRole::Contributor => consts::USER_ROLE_CONTRIBUTOR.to_string(),
-            UserRole::NotFound => consts::USER_ROLE_NOT_FOUND.to_string(),
+            AccountRole::Admin => consts::USER_ROLE_ADMIN.to_string(),
+            AccountRole::Editor => consts::USER_ROLE_EDITOR.to_string(),
+            AccountRole::Contributor => consts::USER_ROLE_CONTRIBUTOR.to_string(),
+            AccountRole::NotFound => consts::USER_ROLE_NOT_FOUND.to_string(),
         }
     }
 }
 
-pub fn get_role_variant(role: &str) -> UserRole {
+pub fn get_role_variant(role: &str) -> AccountRole {
     match role {
-        consts::USER_ROLE_ADMIN => UserRole::Admin,
-        consts::USER_ROLE_EDITOR => UserRole::Editor,
-        consts::USER_ROLE_CONTRIBUTOR => UserRole::Contributor,
-        _ => UserRole::NotFound,
+        consts::USER_ROLE_ADMIN => AccountRole::Admin,
+        consts::USER_ROLE_EDITOR => AccountRole::Editor,
+        consts::USER_ROLE_CONTRIBUTOR => AccountRole::Contributor,
+        _ => AccountRole::NotFound,
     }
 }
 
@@ -76,9 +76,9 @@ mod test {
         let role_3 = consts::USER_ROLE_CONTRIBUTOR;
         let role_4 = "any_role";
 
-        assert_eq!(UserRole::Admin, get_role_variant(role_1));
-        assert_eq!(UserRole::Editor, get_role_variant(role_2));
-        assert_eq!(UserRole::Contributor, get_role_variant(role_3));
-        assert_eq!(UserRole::NotFound, get_role_variant(role_4));
+        assert_eq!(AccountRole::Admin, get_role_variant(role_1));
+        assert_eq!(AccountRole::Editor, get_role_variant(role_2));
+        assert_eq!(AccountRole::Contributor, get_role_variant(role_3));
+        assert_eq!(AccountRole::NotFound, get_role_variant(role_4));
     }
 }

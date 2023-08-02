@@ -10,7 +10,7 @@ use crate::{
         COL_INDEX_ACCOUNT_LOGIN, COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE,
     },
     traits::RowTransformer,
-    users::roles::{get_role_variant, UserRole},
+    users::roles::{get_role_variant, AccountRole},
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -27,7 +27,7 @@ pub struct User {
     pub login_name: String,
     pub email: String,
     pub id: AccountID,
-    pub role: UserRole,
+    pub role: AccountRole,
     pub password: String,
     pub registered: String,
     pub last_login: String,
@@ -52,7 +52,7 @@ impl RowTransformer<PgRow> for User {
         };
 
         let role: String = row.get(COL_INDEX_ACCOUNT_ROLE);
-        let role: UserRole = get_role_variant(&role);
+        let role: AccountRole = get_role_variant(&role);
 
         Self {
             login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),

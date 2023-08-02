@@ -13,7 +13,7 @@ use crate::{
     users::{
         credentials,
         credentials::{is_password_valid, AccountIdentifier},
-        roles::{get_role_variant, UserRole},
+        roles::{get_role_variant, AccountRole},
         user::{AccountID, User},
     },
 };
@@ -55,7 +55,7 @@ pub async fn add(
 
             let login = params.login.clone(); // todo need login name check
 
-            let role = crate::users::roles::UserRole::Contributor.to_string();
+            let role = crate::users::roles::AccountRole::Contributor.to_string();
 
             let query = format!(
                 "INSERT INTO {} ({}, {}, {}, {}) VALUES ($1, $2, $3, $4)",
@@ -186,7 +186,7 @@ pub async fn delete_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply
 }
 
 #[allow(dead_code)]
-fn add_role_to_user(_user_id: u32, _role: UserRole) -> bool {
+fn add_role_to_user(_user_id: u32, _role: AccountRole) -> bool {
     // get accounts by id
     // check role
     // change role
