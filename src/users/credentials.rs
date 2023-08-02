@@ -11,7 +11,6 @@ pub fn is_email_valid(email: &str) -> bool {
     true
 }
 
-#[allow(dead_code)]
 pub fn is_username_valid(username: &str) -> bool {
     // Min length validation
     let mut min_length_ok = false;

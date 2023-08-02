@@ -1,3 +1,4 @@
+use crate::users::credentials::is_username_valid;
 use crate::{
     database::{
         columns::{
@@ -163,6 +164,14 @@ pub async fn login(
     }
 
     if let Some(login) = params.login {
+        // If username is invalid, terminate, don't even go to the database
+        if !is_username_valid(&login) {
+            return Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                LoginStatus::Unauthorized,
+                None,
+            )));
+        }
+
         // See if account exists with this "login" name
         let account_exists_by_login =
             find_account_by_identifier(pool.clone(), AccountIdentifier::Login, login.clone()).await;
