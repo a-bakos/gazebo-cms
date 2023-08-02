@@ -6,8 +6,8 @@ use crate::{
 };
 use sqlx::{PgPool, Row};
 
-#[allow(unused_variables, dead_code)]
-pub fn is_email_valid(email: &str) -> bool {
+pub fn is_email_valid(_email: &str) -> bool {
+    // todo
     true
 }
 

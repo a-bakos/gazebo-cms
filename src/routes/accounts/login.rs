@@ -1,4 +1,4 @@
-use crate::users::credentials::is_username_valid;
+use crate::users::credentials::{is_email_valid, is_username_valid};
 use crate::{
     database::{
         columns::{
@@ -125,6 +125,14 @@ pub async fn login(
     // If email found, ignore login name
     // If no email, look for login name
     if let Some(email) = params.email {
+        // If email is invalid, terminate, don't even go to the database
+        if !is_email_valid(&email) {
+            return Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                LoginStatus::Unauthorized,
+                None,
+            )));
+        }
+
         // See if account exists with this "email" address
         let account_exists_by_email =
             find_account_by_identifier(pool.clone(), AccountIdentifier::Email, email.clone()).await;
