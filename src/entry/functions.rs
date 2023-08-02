@@ -1,6 +1,6 @@
 use crate::{
     entry::{entry_id::EntryID, entry_type::EntryType},
-    users::user::UserID,
+    users::user::AccountID,
 };
 
 // Get post URL
@@ -37,7 +37,7 @@ pub fn get_the_content(_post_id: u32) -> Option<String> {
 
 // Get post author
 #[allow(dead_code)]
-pub fn get_the_author(_post_id: u32) -> Option<UserID> {
+pub fn get_the_author(_post_id: u32) -> Option<AccountID> {
     todo!()
     // let post = get_post_by_id(post_id).unwrap().unwrap();
     // Some(post.id_author)

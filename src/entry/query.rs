@@ -1,6 +1,6 @@
 use crate::{
     database::db::DB_Table, entry::gb_post::GB_Post, errors::error_handler::SqlxError,
-    traits::RowTransformer, users::user::UserID,
+    traits::RowTransformer, users::user::AccountID,
 };
 use sqlx::{postgres::PgRow, PgPool};
 
@@ -8,7 +8,7 @@ use sqlx::{postgres::PgRow, PgPool};
 #[allow(non_camel_case_types)]
 pub enum GB_QueryArg {
     #[allow(dead_code)]
-    AuthorID(Vec<UserID>),
+    AuthorID(Vec<AccountID>),
     #[allow(dead_code)]
     EntryID(Vec<u32>),
     #[allow(dead_code)]

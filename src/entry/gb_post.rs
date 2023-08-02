@@ -15,7 +15,7 @@ use crate::{
     },
     traits::RowTransformer,
     url,
-    users::user::UserID,
+    users::user::AccountID,
 };
 
 use chrono::NaiveDateTime;
@@ -39,7 +39,7 @@ pub enum PostSpecific {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GB_Post {
     pub id: EntryID,
-    pub id_author: UserID,
+    pub id_author: AccountID,
     pub id_parent: Option<EntryID>,
     pub date_publish: String,
     pub date_modified: String,
@@ -56,7 +56,7 @@ impl GB_Post {
     pub fn draft(_app: &mut App) -> Self {
         Self {
             id: EntryID(1),
-            id_author: UserID(1),
+            id_author: AccountID(1),
             id_parent: entry_id::get_entry_parent_id(),
             date_publish: date_functions::get_current_date(),
             date_modified: date_functions::get_current_date(),
@@ -138,7 +138,7 @@ impl RowTransformer<PgRow> for GB_Post {
 
         Self {
             id: EntryID(post_id),
-            id_author: UserID(author_id),
+            id_author: AccountID(author_id),
             id_parent: Some(EntryID(parent_id)),
             date_publish,
             date_modified,

@@ -1,11 +1,11 @@
-use crate::users::user::UserID;
+use crate::users::user::AccountID;
 
 /// App default
 pub const DEFAULT_APP_NAME: &str = "Gazebo CMS";
 pub const DEFAULT_APP_ADMIN_EMAIL: &str = "change_this@gazebocms.email";
 pub const VERSION: &str = "0.0.402";
 #[allow(dead_code)]
-pub const SYSTEM_USER_ID: UserID = UserID(0);
+pub const SYSTEM_USER_ID: AccountID = AccountID(0);
 
 /// Labels
 pub const LABEL_NONE: &str = "none";

@@ -1,7 +1,6 @@
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
-use sqlx::postgres::PgRow;
-use sqlx::Row;
+use sqlx::{postgres::PgRow, Row};
 use std::fmt::{Display, Formatter};
 
 use crate::{
@@ -15,9 +14,9 @@ use crate::{
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct UserID(pub u32);
+pub struct AccountID(pub u32);
 
-impl Display for UserID {
+impl Display for AccountID {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.0)
     }
@@ -27,7 +26,7 @@ impl Display for UserID {
 pub struct User {
     pub login_name: String,
     pub email: String,
-    pub id: UserID,
+    pub id: AccountID,
     pub role: UserRole,
     pub password: String,
     pub registered: String,
@@ -58,7 +57,7 @@ impl RowTransformer<PgRow> for User {
         Self {
             login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
             email: row.get(COL_INDEX_ACCOUNT_EMAIL),
-            id: UserID(row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32),
+            id: AccountID(row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32),
             role,
             password: "hidden".to_string(),
             registered,

@@ -14,7 +14,7 @@ use crate::{
         credentials,
         credentials::{is_password_valid, AccountIdentifier},
         roles::{get_role_variant, UserRole},
-        user::{User, UserID},
+        user::{AccountID, User},
     },
 };
 
@@ -152,7 +152,7 @@ pub async fn get_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
             User {
                 login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
                 email: row.get(COL_INDEX_ACCOUNT_EMAIL),
-                id: UserID(user_id),
+                id: AccountID(user_id),
                 role,
                 password: row.get(COL_INDEX_ACCOUNT_PASSWORD), // todo: hide this later
                 registered,
@@ -201,7 +201,7 @@ pub fn get_user_by_email(_email: &str) -> Option<User> {
 
 #[allow(unused_variables)]
 #[allow(dead_code)]
-pub fn change_username(user_id: UserID, new_username: &str) {
+pub fn change_username(user_id: AccountID, new_username: &str) {
     // username change functionality
     // check if username valid
     // self.login = new_username
@@ -209,7 +209,7 @@ pub fn change_username(user_id: UserID, new_username: &str) {
 
 #[allow(unused_variables)]
 #[allow(dead_code)]
-pub fn reset_password(user_id: UserID, new_password: &str) -> bool {
+pub fn reset_password(user_id: AccountID, new_password: &str) -> bool {
     // password reset functionality
     if is_password_valid(new_password) {
         // todo store new password logic here

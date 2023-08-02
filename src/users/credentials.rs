@@ -2,7 +2,7 @@ use crate::{
     consts,
     database::{columns::COL_INDEX_ACCOUNT_ID, db::DB_Table},
     helpers::{str_contains_number, str_contains_special_char, str_contains_uppercase},
-    users::user::UserID,
+    users::user::AccountID,
 };
 use sqlx::{PgPool, Row};
 
@@ -95,7 +95,7 @@ pub async fn is_password_match(
         .bind(password)
         .map(|row| {
             let user_id = row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32;
-            UserID(user_id)
+            AccountID(user_id)
         })
         .fetch_one(pool)
         .await
