@@ -1,4 +1,4 @@
-// todo: rename this module to account
+// todo: rename this module to accounts
 
 use crate::api::{HttpStatusCode, BACKEND_URL_BASE};
 use gloo_net::http::Request;
