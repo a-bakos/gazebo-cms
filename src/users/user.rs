@@ -33,8 +33,6 @@ pub struct Account {
     pub last_login: String,
 }
 
-impl Account {}
-
 impl RowTransformer<PgRow> for Account {
     type Output = Account;
 
