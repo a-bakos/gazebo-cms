@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, Row};
 use std::fmt::{Display, Formatter};
 
+use crate::traits::IntoSqlQuery;
 use crate::{
     consts::LABEL_NONE,
     database::columns::{
