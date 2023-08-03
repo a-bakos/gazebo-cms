@@ -1,10 +1,7 @@
-use crate::entry::entry_id::EntryID;
 use crate::{
-    database::db::DB_Table,
-    entry::{entry_type::EntryType, gb_post::GB_Post},
-    users::user::UserID,
+    entry::{entry_id::EntryID, entry_type::EntryType},
+    users::user::AccountID,
 };
-use sqlx::{postgres::PgRow, PgPool};
 
 // Get post URL
 #[allow(dead_code)]
@@ -40,7 +37,7 @@ pub fn get_the_content(_post_id: u32) -> Option<String> {
 
 // Get post author
 #[allow(dead_code)]
-pub fn get_the_author(_post_id: u32) -> Option<UserID> {
+pub fn get_the_author(_post_id: u32) -> Option<AccountID> {
     todo!()
     // let post = get_post_by_id(post_id).unwrap().unwrap();
     // Some(post.id_author)

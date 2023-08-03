@@ -4,8 +4,8 @@ use yew_router::prelude::{Link, Redirect};
 
 #[function_component(AdminBar)]
 pub fn admin_bar() -> Html {
-    let current_user_ctx =
-        use_context::<crate::context::CurrentUserContext>().expect("Current user context missing");
+    let current_user_ctx = use_context::<crate::context::CurrentUserContext>()
+        .expect("Current accounts context missing");
     match &current_user_ctx.user {
         Some(user) => html! {
             <>
@@ -13,7 +13,10 @@ pub fn admin_bar() -> Html {
                     <ul>
                         <li>{"Hello, "}{user.username.clone()}</li>
                         // If admin, show front end link
-                        <li><a title="Front End" href="/">{"Front end"}</a></li>
+                        <li>
+                            <Link<MainNavigationRoute> to={MainNavigationRoute::Home}>
+                                {"Front end"}
+                            </Link<MainNavigationRoute>></li>
                         // If frontend, show admin link todo
                         <li>
                             <Link<MainNavigationRoute> to={MainNavigationRoute::Admin}>

@@ -9,6 +9,7 @@ use crate::{
     },
     entry::gb_post::GB_Post,
     errors::error_handler::SqlxError,
+    traits::RowTransformer,
 };
 
 use serde::{Deserialize, Serialize};
@@ -22,10 +23,7 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
     let query = format!("SELECT * FROM {} WHERE id = $1", DB_Table::Posts);
     match sqlx::query(&query)
         .bind(id)
-        .map(|row: PgRow| {
-            let the_post: GB_Post = row.into();
-            the_post
-        })
+        .map(|row: PgRow| GB_Post::transform(&row))
         .fetch_one(&pool)
         .await
     {
@@ -36,14 +34,12 @@ pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
 
 pub async fn get_posts(pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
     println!("All posts requested");
-    let mut posts: Vec<(i32, String)> = Vec::new();
+    let mut posts: Vec<GB_Post> = Vec::new();
     let query = format!("SELECT * FROM {}", DB_Table::Posts);
     match sqlx::query(&query)
         .map(|row: PgRow| {
-            // todo - only title for now
-            let post_id: i32 = row.get(COL_INDEX_POST_ID);
-            let the_title: String = row.get(COL_INDEX_POST_TITLE); //row.into();
-            posts.push((post_id, the_title));
+            let gb_post = GB_Post::transform(&row);
+            posts.push(gb_post);
         })
         .fetch_all(&pool)
         .await
@@ -70,7 +66,7 @@ pub async fn insert_post(
 ) -> Result<impl warp::Reply, warp::Rejection> {
     println!("{:?}", params);
 
-    // auth layer to check if user can add post
+    // auth layer to check if accounts can add post
 
     // checks needed for these values
     // - check author id exists

@@ -26,6 +26,30 @@ pub enum EntryStatus {
     Unknown,
 }
 
+impl EntryStatus {
+    #[allow(dead_code)]
+    pub fn get_entry_status_as_string(self, entry_status: EntryStatus) -> String {
+        match entry_status {
+            EntryStatus::Post(content_status) => match content_status {
+                ContentStatus::Draft => ENTRY_STATUS_CONTENT_DRAFT.to_string(),
+                ContentStatus::Publish => ENTRY_STATUS_CONTENT_PUBLISH.to_string(),
+                ContentStatus::Private => ENTRY_STATUS_CONTENT_PRIVATE.to_string(),
+                ContentStatus::Trash => ENTRY_STATUS_CONTENT_TRASH.to_string(),
+                ContentStatus::Unknown => ENTRY_STATUS_UNKNOWN.to_string(),
+            },
+            EntryStatus::Media(media_status) => match media_status {
+                MediaStatus::Attached => ENTRY_STATUS_MEDIA_ATTACHED.to_string(),
+                MediaStatus::Unattached => ENTRY_STATUS_MEDIA_UNATTACHED.to_string(),
+                MediaStatus::Unknown => ENTRY_STATUS_UNKNOWN.to_string(),
+            },
+            EntryStatus::Unknown => {
+                // "unreachable_unknown".to_string()
+                unreachable!()
+            }
+        }
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum ContentStatus {
     Draft,
@@ -48,9 +72,9 @@ impl std::fmt::Display for ContentStatus {
     }
 }
 
-impl Into<String> for ContentStatus {
-    fn into(self) -> String {
-        match self {
+impl From<ContentStatus> for String {
+    fn from(val: ContentStatus) -> Self {
+        match val {
             ContentStatus::Draft => ENTRY_STATUS_CONTENT_DRAFT.to_string(),
             ContentStatus::Publish => ENTRY_STATUS_CONTENT_PUBLISH.to_string(),
             ContentStatus::Private => ENTRY_STATUS_CONTENT_PRIVATE.to_string(),
@@ -76,9 +100,9 @@ impl std::fmt::Display for MediaStatus {
     }
 }
 
-impl Into<String> for MediaStatus {
-    fn into(self) -> String {
-        match self {
+impl From<MediaStatus> for String {
+    fn from(val: MediaStatus) -> Self {
+        match val {
             MediaStatus::Attached => ENTRY_STATUS_MEDIA_ATTACHED.to_string(),
             MediaStatus::Unattached => ENTRY_STATUS_MEDIA_UNATTACHED.to_string(),
             MediaStatus::Unknown => ENTRY_STATUS_UNKNOWN.to_string(),

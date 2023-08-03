@@ -1,32 +1,15 @@
 use crate::{
-    consts,
-    database::{
-        columns::{
-            COL_INDEX_POST_CONTENT, COL_INDEX_POST_DATE_MODIFIED, COL_INDEX_POST_DATE_PUBLISH,
-            COL_INDEX_POST_EXCERPT, COL_INDEX_POST_ID, COL_INDEX_POST_ID_AUTHOR,
-            COL_INDEX_POST_PARENT, COL_INDEX_POST_SLUG, COL_INDEX_POST_STATUS,
-            COL_INDEX_POST_TITLE, COL_INDEX_POST_TYPE,
-        },
-        db::DB_Table,
-    },
-    entry::{
-        entry_type::{get_entry_type_variant, EntryType},
-        gb_post::GB_Post,
-        status::{get_entry_status_variant, EntryStatus},
-    },
-    errors::error_handler::SqlxError,
-    users::user::UserID,
+    database::db::DB_Table, entry::gb_post::GB_Post, errors::error_handler::SqlxError,
+    traits::RowTransformer, users::user::AccountID,
 };
-
-use crate::entry::entry_id::EntryID;
-use chrono::NaiveDateTime;
-use sqlx::{postgres::PgRow, PgPool, Row};
+use sqlx::{postgres::PgRow, PgPool};
 
 #[derive(Debug)]
 #[allow(non_camel_case_types)]
 pub enum GB_QueryArg {
     #[allow(dead_code)]
-    AuthorID(Vec<UserID>),
+    AuthorID(Vec<AccountID>),
+    #[allow(dead_code)]
     EntryID(Vec<u32>),
     #[allow(dead_code)]
     Title(String),
@@ -35,12 +18,16 @@ pub enum GB_QueryArg {
 #[derive(Debug)]
 #[allow(non_camel_case_types)]
 pub struct GB_Query {
+    #[allow(dead_code)]
     args: Vec<GB_QueryArg>,
+    #[allow(dead_code)]
     results: Vec<GB_Post>,
+    #[allow(dead_code)]
     pool: PgPool, // Will be a pool clone
 }
 
 impl GB_Query {
+    #[allow(dead_code)]
     pub fn new(args: Vec<GB_QueryArg>, pool: PgPool) -> Self {
         Self {
             args,
@@ -50,6 +37,7 @@ impl GB_Query {
     }
 
     // Collect results into self.results
+    #[allow(dead_code)]
     pub async fn run(&mut self) -> Result<bool, SqlxError> {
         // query will be highly varied based on self.args!
         println!("{:?}", self.args);
@@ -58,8 +46,8 @@ impl GB_Query {
         match sqlx::query(&query)
             .bind("post")
             .map(|row: PgRow| {
-                let the_post: GB_Post = row.into();
-                self.results.push(the_post);
+                let gb_post = GB_Post::transform(&row);
+                self.results.push(gb_post);
             })
             .fetch_all(&self.pool)
             .await
@@ -69,50 +57,8 @@ impl GB_Query {
         }
     }
 
+    #[allow(dead_code)]
     pub fn get_results(&self) -> &Vec<GB_Post> {
         &self.results
-    }
-}
-
-// Turn PgRow into GB_Post
-impl Into<GB_Post> for PgRow {
-    fn into(self) -> GB_Post {
-        // Underscores' meaning here:
-        // we don't need to specify a default/fallback value because the cell will never be empty
-
-        // IDs
-        let post_id = self.get::<i32, _>(COL_INDEX_POST_ID) as u32;
-        let author_id = self.get::<i32, _>(COL_INDEX_POST_ID_AUTHOR) as u32;
-        let parent_id = self
-            .try_get(COL_INDEX_POST_PARENT)
-            .ok()
-            .unwrap_or(consts::ENTRY_ID_NO_PARENT) as u32;
-
-        // Publish date
-        let date_publish: NaiveDateTime = self.get::<NaiveDateTime, _>(COL_INDEX_POST_DATE_PUBLISH);
-        let date_publish = date_publish.to_string();
-
-        // Modified date
-        let date_modified: NaiveDateTime =
-            self.get::<NaiveDateTime, _>(COL_INDEX_POST_DATE_MODIFIED);
-        let date_modified = date_modified.to_string();
-
-        // Entry status
-        let entry_status_as_str: &str = self.get(COL_INDEX_POST_STATUS);
-        let status: EntryStatus = get_entry_status_variant(entry_status_as_str, &EntryType::Post);
-
-        GB_Post {
-            id: EntryID(post_id),
-            id_author: UserID(author_id),
-            id_parent: Some(EntryID(parent_id)),
-            date_publish,
-            date_modified,
-            slug: self.get(COL_INDEX_POST_SLUG),
-            status,
-            title: self.get(COL_INDEX_POST_TITLE),
-            excerpt: self.get(COL_INDEX_POST_EXCERPT),
-            content: self.get(COL_INDEX_POST_CONTENT),
-            password: None,
-        }
     }
 }

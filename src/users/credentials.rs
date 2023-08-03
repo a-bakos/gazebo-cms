@@ -2,16 +2,15 @@ use crate::{
     consts,
     database::{columns::COL_INDEX_ACCOUNT_ID, db::DB_Table},
     helpers::{str_contains_number, str_contains_special_char, str_contains_uppercase},
-    users::user::UserID,
+    users::user::AccountID,
 };
 use sqlx::{PgPool, Row};
 
-#[allow(unused_variables, dead_code)]
-pub fn is_email_valid(email: &str) -> bool {
+pub fn is_email_valid(_email: &str) -> bool {
+    // todo
     true
 }
 
-#[allow(dead_code)]
 pub fn is_username_valid(username: &str) -> bool {
     // Min length validation
     let mut min_length_ok = false;
@@ -20,7 +19,7 @@ pub fn is_username_valid(username: &str) -> bool {
     }
 
     // Make sure it doesn't contain special characters
-    let special_characters = str_contains_special_char(username); // must be false
+    let special_characters = str_contains_special_char(username);
 
     min_length_ok && !special_characters
 }
@@ -51,6 +50,11 @@ pub fn is_username_valid(username: &str) -> bool {
 ///
 /// This function also has a unit test suite in the same module.
 pub fn is_password_valid(password: &str) -> bool {
+    // TODO - remove this when not needed anymore!
+    if crate::private::DEV_BYPASS {
+        return true;
+    }
+
     let mut ok_pw_len: bool = false;
 
     // Password length check
@@ -95,7 +99,7 @@ pub async fn is_password_match(
         .bind(password)
         .map(|row| {
             let user_id = row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32;
-            UserID(user_id)
+            AccountID(user_id)
         })
         .fetch_one(pool)
         .await
