@@ -1,4 +1,4 @@
-use crate::users::user::AccountID;
+use gazebo_core_common::account::gb_account::AccountID;
 
 /// App default
 pub const DEFAULT_APP_NAME: &str = "Gazebo CMS";

@@ -1,7 +1,7 @@
 use crate::{
     entry::{entry_id::EntryID, entry_type::EntryType},
-    users::user::AccountID,
 };
+use gazebo_core_common::account::gb_account::AccountID;
 
 // Get post URL
 #[allow(dead_code)]

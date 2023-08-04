@@ -15,8 +15,9 @@ use crate::{
     },
     traits::RowTransformer,
     url,
-    users::user::AccountID,
 };
+
+use gazebo_core_common::account::gb_account::AccountID;
 
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
