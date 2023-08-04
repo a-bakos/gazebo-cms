@@ -18,6 +18,7 @@ use crate::{
 };
 
 use gazebo_core_common::account::gb_account::AccountID;
+ use gazebo_core_common::consts::POST_UNTITLED_DEFAULT_TITLE;
 
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
@@ -63,7 +64,7 @@ impl GB_Post {
             date_modified: date_functions::get_current_date(),
             slug: None,
             status: EntryStatus::Post(ContentStatus::Draft),
-            title: Some(consts::POST_UNTITLED_DEFAULT_TITLE.to_string()),
+            title: Some(POST_UNTITLED_DEFAULT_TITLE.to_string()),
             excerpt: None,
             content: None,
             password: None,

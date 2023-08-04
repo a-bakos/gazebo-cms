@@ -14,7 +14,7 @@ pub fn is_email_valid(_email: &str) -> bool {
 pub fn is_username_valid(username: &str) -> bool {
     // Min length validation
     let mut min_length_ok = false;
-    if username.len() >= consts::MIN_USER_NAME_LENGTH {
+    if username.len() >= gazebo_core_common::consts::MIN_USER_NAME_LENGTH {
         min_length_ok = true;
     }
 
@@ -58,7 +58,7 @@ pub fn is_password_valid(password: &str) -> bool {
     let mut ok_pw_len: bool = false;
 
     // Password length check
-    if password.len() >= consts::MIN_PASSWORD_LENGTH {
+    if password.len() >= gazebo_core_common::consts::MIN_PASSWORD_LENGTH {
         ok_pw_len = true;
     }
 

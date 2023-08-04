@@ -34,18 +34,6 @@ pub const DEFAULT_PERMALINK_NOT_ALLOWED_CHARS: [&str; 9] =
     ["&", "#", "?", "%", "<", ">", "\"", "'", "/"];
 
 #[allow(dead_code)]
-pub const POST_UNTITLED_DEFAULT_TITLE: &str = "Untitled Gazebo Post";
-#[allow(dead_code)]
-pub const POST_UNTITLED_DEFAULT_PERMALINK: &str = "untitled-gazebo-post";
-#[allow(dead_code)]
-pub const PAGE_UNTITLED_DEFAULT_TITLE: &str = "Untitled Gazebo Page";
-#[allow(dead_code)]
-pub const PAGE_UNTITLED_DEFAULT_PERMALINK: &str = "untitled-gazebo-page";
-
-pub const MIN_PASSWORD_LENGTH: usize = 8;
-pub const MIN_USER_NAME_LENGTH: usize = 4;
-
-#[allow(dead_code)]
 pub const USER_ID_TEMPORARY_DEFAULT: u32 = 0;
 
 pub const USER_ROLE_ADMIN: &str = "administrator";
