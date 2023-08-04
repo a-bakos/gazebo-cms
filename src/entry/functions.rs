@@ -1,6 +1,6 @@
 use gazebo_core_common::{
-    entry::{entry_id::EntryID, entry_type::EntryType},
     account::gb_account::AccountID,
+    entry::{entry_id::EntryID, entry_type::EntryType},
 };
 
 // Get post URL

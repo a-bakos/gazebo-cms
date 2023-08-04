@@ -1,7 +1,4 @@
-use gazebo_core_common::{
-    entry::entry_id::EntryID,
-    account::gb_account::AccountID,
-};
+use gazebo_core_common::{account::gb_account::AccountID, entry::entry_id::EntryID};
 
 #[allow(dead_code)]
 #[allow(non_camel_case_types)]

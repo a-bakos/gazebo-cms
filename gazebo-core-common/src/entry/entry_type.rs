@@ -1,8 +1,8 @@
-use serde::{Deserialize, Serialize};
 use crate::consts::{
     ENTRY_TYPE_LOG, ENTRY_TYPE_MEDIA, ENTRY_TYPE_PAGE, ENTRY_TYPE_POST, ENTRY_TYPE_SEARCH,
     ENTRY_TYPE_UNKNOWN,
 };
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum EntryType {

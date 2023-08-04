@@ -15,10 +15,10 @@ use gazebo_core_common::{
     account::gb_account::AccountID,
     consts::POST_UNTITLED_DEFAULT_TITLE,
     entry::{
-        gb_post::GB_Post,
         entry_id::EntryID,
         entry_type::EntryType,
-        status::{EntryStatus, ContentStatus, get_entry_status_variant},
+        gb_post::GB_Post,
+        status::{get_entry_status_variant, ContentStatus, EntryStatus},
     },
 };
 

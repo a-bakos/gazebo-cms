@@ -1,6 +1,6 @@
-use std::fmt::Formatter;
-use serde::{Deserialize, Serialize};
 use crate::entry::entry_type::EntryType;
+use serde::{Deserialize, Serialize};
+use std::fmt::Formatter;
 
 /// Post | Page entry "draft" status
 pub const ENTRY_STATUS_CONTENT_DRAFT: &str = "draft";

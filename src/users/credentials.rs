@@ -4,7 +4,7 @@ use crate::{
 };
 use gazebo_core_common::{
     account::gb_account::AccountID,
-    helpers::{str_contains_uppercase, str_contains_number, str_contains_special_char},
+    helpers::{str_contains_number, str_contains_special_char, str_contains_uppercase},
 };
 use sqlx::{PgPool, Row};
 

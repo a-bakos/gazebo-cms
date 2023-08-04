@@ -27,3 +27,16 @@ pub const ENTRY_TYPE_LOG: &str = "log";
 pub const ENTRY_TYPE_SEARCH: &str = "search";
 /// Unknown entry type group
 pub const ENTRY_TYPE_UNKNOWN: &str = "unknown";
+
+/// Messages
+#[allow(dead_code)]
+pub const MSG_LOGIN_SUCCESS: &str = "Login successful";
+
+/// Labels
+pub const LABEL_NONE: &str = "none";
+#[allow(dead_code)]
+pub const LABEL_UNKNOWN: &str = "unknown";
+#[allow(dead_code)]
+pub const LABEL_YES: &str = "yes";
+#[allow(dead_code)]
+pub const LABEL_NO: &str = "no";

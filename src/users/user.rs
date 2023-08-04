@@ -4,7 +4,6 @@ use sqlx::{postgres::PgRow, Row};
 use std::fmt::{Display, Formatter};
 
 use crate::{
-    consts::LABEL_NONE,
     database::columns::{
         COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LAST_LOGIN,
         COL_INDEX_ACCOUNT_LOGIN, COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE,
@@ -12,9 +11,12 @@ use crate::{
     traits::RowTransformer,
 };
 
-use gazebo_core_common::account::{
-    gb_account::{GB_Account, AccountID},
-    role::{AccountRole, get_role_variant},
+use gazebo_core_common::{
+    account::{
+        gb_account::{AccountID, GB_Account},
+        role::{get_role_variant, AccountRole},
+    },
+    consts::LABEL_NONE,
 };
 
 impl RowTransformer<PgRow> for GB_Account {
