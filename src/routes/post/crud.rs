@@ -7,10 +7,10 @@ use crate::{
         },
         db::DB_Table,
     },
-    entry::gb_post::GB_Post,
     errors::error_handler::SqlxError,
     traits::RowTransformer,
 };
+use gazebo_core_common::entry::gb_post::GB_Post;
 
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};

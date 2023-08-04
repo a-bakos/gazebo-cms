@@ -1,13 +1,24 @@
+use crate::account::gb_account::AccountID;
+use crate::consts::POST_UNTITLED_DEFAULT_TITLE;
+use crate::entry::entry_id::{EntryID, get_entry_parent_id};
+use crate::entry::status::{ContentStatus, EntryStatus};
+use crate::datetime::functions::get_current_date;
+use serde::{Deserialize, Serialize};
+
+#[allow(non_camel_case_types)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct GB_Post {
-    pub id: u32,
-    pub id_author: u32,
-    pub id_parent: Option<u32>,
+    pub id: EntryID,
+    pub id_author: AccountID,
+    pub id_parent: Option<EntryID>,
     pub date_publish: String,
     pub date_modified: String,
     pub slug: Option<String>,
-    pub status: String,
+    pub status: EntryStatus,
     pub title: Option<String>,
     pub excerpt: Option<String>,
     pub content: Option<String>,
     pub password: Option<String>,
 }
+
+impl GB_Post {}

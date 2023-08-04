@@ -1,3 +1,4 @@
+pub mod entry_id;
 pub mod entry_type;
 pub mod gb_log;
 pub mod gb_media;

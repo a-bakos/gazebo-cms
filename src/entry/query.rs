@@ -1,8 +1,9 @@
 use crate::{
-    database::db::DB_Table, entry::gb_post::GB_Post, errors::error_handler::SqlxError,
+    database::db::DB_Table, errors::error_handler::SqlxError,
     traits::RowTransformer,
 };
 use gazebo_core_common::account::gb_account::AccountID;
+use gazebo_core_common::entry::gb_post::GB_Post;
 use sqlx::{postgres::PgRow, PgPool};
 
 #[derive(Debug)]
