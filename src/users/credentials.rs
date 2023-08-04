@@ -1,9 +1,11 @@
 use crate::{
     consts,
     database::{columns::COL_INDEX_ACCOUNT_ID, db::DB_Table},
-    helpers::{str_contains_number, str_contains_special_char, str_contains_uppercase},
 };
-use gazebo_core_common::account::gb_account::AccountID;
+use gazebo_core_common::{
+    account::gb_account::AccountID,
+    helpers::{str_contains_uppercase, str_contains_number, str_contains_special_char},
+};
 use sqlx::{PgPool, Row};
 
 pub fn is_email_valid(_email: &str) -> bool {

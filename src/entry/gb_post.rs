@@ -6,9 +6,9 @@ use crate::{
         COL_INDEX_POST_EXCERPT, COL_INDEX_POST_ID, COL_INDEX_POST_ID_AUTHOR, COL_INDEX_POST_PARENT,
         COL_INDEX_POST_SLUG, COL_INDEX_POST_STATUS, COL_INDEX_POST_TITLE,
     },
-    datetime::functions as date_functions,
     traits::RowTransformer,
     url,
+    url::permalink_generator::PermalinkGenerator,
 };
 
 use gazebo_core_common::{
@@ -25,7 +25,6 @@ use gazebo_core_common::{
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, Row};
-use crate::url::permalink_generator::PermalinkGenerator;
 
 #[derive(Debug)]
 #[allow(dead_code)]
