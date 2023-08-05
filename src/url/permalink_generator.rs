@@ -25,6 +25,7 @@ use urlencoding::encode;
 #[derive(Debug)]
 pub enum PermalinkTruncationMethod {
     // Simply cut the string at the end
+    #[allow(dead_code)]
     CutOffEnd,
     // Remove the least significant words
     #[allow(dead_code)]
@@ -41,10 +42,12 @@ struct PermalinksConfig {
     allow_unlimited_length: bool,
     #[allow(dead_code)]
     allow_stop_words: bool,
+    #[allow(dead_code)]
     truncation_method: PermalinkTruncationMethod,
 }
 
 impl PermalinksConfig {
+    #[allow(dead_code)]
     fn new() -> Self {
         Self {
             length_limit: consts::DEFAULT_PERMALINK_LIMIT,
@@ -65,6 +68,7 @@ pub struct PermalinkGenerator<'a> {
 }
 
 impl<'a> PermalinkGenerator<'a> {
+    #[allow(dead_code)]
     pub fn new(use_dash_as_separator: bool) -> Self {
         let separator = if use_dash_as_separator {
             consts::DEFAULT_PERMALINK_SEPARATOR
@@ -116,6 +120,7 @@ impl<'a> PermalinkGenerator<'a> {
         }
     }
 
+    #[allow(dead_code)]
     fn remove_unwanted_characters(&self, permalink: String) -> String {
         let permalink = permalink
             .chars()
@@ -133,6 +138,7 @@ impl<'a> PermalinkGenerator<'a> {
         permalink
     }
 
+    #[allow(dead_code)]
     fn maybe_remove_stop_words(&self, permalink: String) -> Vec<String> {
         let permalink_as_words: Vec<&str> = permalink.split(' ').collect();
         let mut filtered_words: Vec<String> = Vec::new();
@@ -144,6 +150,7 @@ impl<'a> PermalinkGenerator<'a> {
         filtered_words
     }
 
+    #[allow(dead_code)]
     fn remove_duplicate_dashes(&self, permalink: String) -> String {
         let permalink: String = permalink
             .chars()
@@ -161,6 +168,7 @@ impl<'a> PermalinkGenerator<'a> {
         permalink
     }
 
+    #[allow(dead_code)]
     pub fn create_permalink_from(&mut self, slug: String) -> String {
         // Basic clean: Trim + Lowercase
         let permalink = slug.trim().to_lowercase();
@@ -187,6 +195,7 @@ impl<'a> PermalinkGenerator<'a> {
         permalink
     }
 
+    #[allow(dead_code)]
     fn make_unique(&self, permalink: String) -> String {
         // Get all entry, clean results, only keep a list of permalinks
         let all_permalinks: HashSet<String> = HashSet::new();
@@ -236,11 +245,13 @@ impl<'a> PermalinkGenerator<'a> {
         permalink
     }
 
+    #[allow(dead_code)]
     fn encode_permalink(&self, permalink: String) -> String {
         // Encoding done using the external crate
         encode(&permalink).to_string()
     }
 
+    #[allow(dead_code)]
     fn maybe_limit_length(&self, permalink: String) -> String {
         match self.config.truncation_method {
             PermalinkTruncationMethod::CutOffEnd => {

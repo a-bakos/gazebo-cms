@@ -10,21 +10,17 @@ mod helpers;
 mod http;
 mod private;
 mod routes;
+mod traits;
 mod url;
 mod users;
 
-use sqlx::postgres::{PgPool, PgPoolOptions};
-use std::collections::HashMap;
-
-use warp::{
-    http::{Method, Response},
-    Filter, Reply,
-};
+use sqlx::postgres::PgPoolOptions;
+use warp::{http::Method, Filter};
 
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {
     // Start the App
-    let mut app = app::App::init();
+    let app = app::App::init();
     // App started timestamp:
     dbg!(&app.start);
     //app.change_admin_email("admin@example.com");
@@ -58,6 +54,12 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(warp::path::end()) // ::end() closes the URI path
         .and(pool_filter.clone())
         .and_then(routes::accounts::crud::get_user_by_id);
+
+    let get_users = warp::get()
+        .and(warp::path(url::path::PATH_USER))
+        .and(warp::path::end()) // ::end() closes the URI path
+        .and(pool_filter.clone())
+        .and_then(routes::accounts::crud::get_all_accounts);
 
     let delete_user = warp::delete()
         .and(warp::path(url::path::PATH_USER))
@@ -126,6 +128,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .and_then(routes::post::crud::get_the_title);
 
     let routes = get_user
+        .or(get_users)
         .or(registration)
         .or(login)
         .or(delete_user)

@@ -8,8 +8,8 @@ use crate::{
     },
     pages::{
         admin::{
-            admin_dashboard::AdminDashboard, admin_media::AdminMedia, admin_posts::AdminPosts,
-            admin_settings::AdminSettings, admin_users::AdminUsers,
+            admin_accounts::AdminAccounts, admin_dashboard::AdminDashboard,
+            admin_media::AdminMedia, admin_posts::AdminPosts, admin_settings::AdminSettings,
         },
         edit_entry::EntryEdit,
         home::Home,
@@ -33,8 +33,8 @@ pub enum MainNavigationRoute {
     AdminMedia,
     #[at("/admin-settings")]
     AdminSettings,
-    #[at("/admin-users")]
-    AdminUsers,
+    #[at("/admin-accounts")]
+    AdminAccounts,
     #[at("/entry-edit")]
     EntryEdit,
     #[at("/lost-password")]
@@ -62,7 +62,7 @@ pub fn main_nav_switch(route: MainNavigationRoute) -> Html {
         // Admin media lib
         MainNavigationRoute::AdminMedia => html! { <AdminMedia />},
         MainNavigationRoute::AdminSettings => html! { <AdminSettings />},
-        MainNavigationRoute::AdminUsers => html! { <AdminUsers />},
+        MainNavigationRoute::AdminAccounts => html! { <AdminAccounts />},
 
         // 404
         MainNavigationRoute::NotFound => html! { <NotFound /> },

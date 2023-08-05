@@ -136,6 +136,7 @@ impl HttpStatusCode {
         }
     }
 
+    #[allow(dead_code)]
     pub fn message(&self) -> &str {
         match self {
             HttpStatusCode::Continue => "Continue",

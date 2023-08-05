@@ -1,19 +1,26 @@
 use crate::{
     app::App,
     consts,
+    database::columns::{
+        COL_INDEX_POST_CONTENT, COL_INDEX_POST_DATE_MODIFIED, COL_INDEX_POST_DATE_PUBLISH,
+        COL_INDEX_POST_EXCERPT, COL_INDEX_POST_ID, COL_INDEX_POST_ID_AUTHOR, COL_INDEX_POST_PARENT,
+        COL_INDEX_POST_SLUG, COL_INDEX_POST_STATUS, COL_INDEX_POST_TITLE,
+    },
     datetime::functions as date_functions,
     entry::{
         entry_id,
         entry_id::EntryID,
         entry_type::EntryType,
-        status::{ContentStatus, EntryStatus},
+        status::{get_entry_status_variant, ContentStatus, EntryStatus},
     },
+    traits::RowTransformer,
     url,
-    users::user::{User, UserID},
+    users::user::AccountID,
 };
 
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
-use std::fmt::Formatter;
+use sqlx::{postgres::PgRow, Row};
 
 #[derive(Debug)]
 #[allow(dead_code)]
@@ -32,7 +39,7 @@ pub enum PostSpecific {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GB_Post {
     pub id: EntryID,
-    pub id_author: UserID,
+    pub id_author: AccountID,
     pub id_parent: Option<EntryID>,
     pub date_publish: String,
     pub date_modified: String,
@@ -45,10 +52,11 @@ pub struct GB_Post {
 }
 
 impl GB_Post {
-    pub fn draft(app: &mut App) -> Self {
+    #[allow(dead_code)]
+    pub fn draft(_app: &mut App) -> Self {
         Self {
             id: EntryID(1),
-            id_author: UserID(1),
+            id_author: AccountID(1),
             id_parent: entry_id::get_entry_parent_id(),
             date_publish: date_functions::get_current_date(),
             date_modified: date_functions::get_current_date(),
@@ -66,6 +74,7 @@ impl GB_Post {
         todo!();
     }
 
+    #[allow(dead_code)]
     pub fn add_title(&mut self, title: String, create_permalink: bool) {
         let mut post_specifics_to_update: Vec<PostSpecific> = Vec::new();
         self.title = Some(title.clone());
@@ -80,6 +89,7 @@ impl GB_Post {
         // let _update_post = update_post(self, post_specifics_to_update);
     }
 
+    #[allow(dead_code)]
     pub fn add_permalink(&mut self, slug: String) {
         let mut permalink_generator = url::permalink_generator::PermalinkGenerator::new(true);
         let slug = permalink_generator.create_permalink_from(slug);
@@ -91,9 +101,54 @@ impl GB_Post {
         self.content = Some(content);
     }
 
+    #[allow(dead_code)]
     pub fn update_slug(&mut self, new_slug: &str) -> bool {
         self.slug = Some(new_slug.to_string());
         true
+    }
+}
+
+impl RowTransformer<PgRow> for GB_Post {
+    type Output = GB_Post;
+
+    fn transform(row: &PgRow) -> Self::Output {
+        // Underscores' meaning here:
+        // we don't need to specify a default/fallback value because the cell will never be empty
+
+        // IDs
+        let post_id = row.get::<i32, _>(COL_INDEX_POST_ID) as u32;
+        let author_id = row.get::<i32, _>(COL_INDEX_POST_ID_AUTHOR) as u32;
+        let parent_id = row
+            .try_get(COL_INDEX_POST_PARENT)
+            .ok()
+            .unwrap_or(consts::ENTRY_ID_NO_PARENT) as u32;
+
+        // Publish date
+        let date_publish: NaiveDateTime = row.get::<NaiveDateTime, _>(COL_INDEX_POST_DATE_PUBLISH);
+        let date_publish = date_publish.to_string();
+
+        // Modified date
+        let date_modified: NaiveDateTime =
+            row.get::<NaiveDateTime, _>(COL_INDEX_POST_DATE_MODIFIED);
+        let date_modified = date_modified.to_string();
+
+        // Entry status
+        let entry_status_as_str: &str = row.get(COL_INDEX_POST_STATUS);
+        let status: EntryStatus = get_entry_status_variant(entry_status_as_str, &EntryType::Post);
+
+        Self {
+            id: EntryID(post_id),
+            id_author: AccountID(author_id),
+            id_parent: Some(EntryID(parent_id)),
+            date_publish,
+            date_modified,
+            slug: row.get(COL_INDEX_POST_SLUG),
+            status,
+            title: row.get(COL_INDEX_POST_TITLE),
+            excerpt: row.get(COL_INDEX_POST_EXCERPT),
+            content: row.get(COL_INDEX_POST_CONTENT),
+            password: None,
+        }
     }
 }
 

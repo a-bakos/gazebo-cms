@@ -9,6 +9,7 @@ pub(crate) struct GB_DateTime {
 }
 
 impl GB_DateTime {
+    #[allow(dead_code)]
     pub(crate) fn new() -> Self {
         let now = Utc::now();
         Self {
