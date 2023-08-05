@@ -94,13 +94,14 @@ pub fn login_form() -> Html {
     });
 
     html! {
-        <div id={"gb-login-form"} class={"mx-auto"}>
+        <div id={"gb-login-form"}>
 
             if login_error == "401 Unauthorized".to_string() {
                 <p>{"LOGIN ERROR!"}</p>
             }
 
             <form
+                class={"bg-blue-100"}
                 onsubmit={on_form_submit}>
 
                 <Input
@@ -120,7 +121,11 @@ pub fn login_form() -> Html {
                     value={password}
                     onchange={password_changed}
                 />
-                <button class={"action"} type="submit">{"Login"}</button>
+                <button
+                    class={"px-10 py-2 text-2xl bg-red-100 block hover:bg-red-300"}
+                    type="submit">
+                    {"Login"}
+                </button>
             </form>
             <LostPassword />
         </div>
