@@ -36,7 +36,7 @@ pub enum MainNavigationRoute {
     AdminSettings,
     #[at("/admin-accounts")]
     AdminAccounts,
-    #[at("/admin-profile-edit")]
+    #[at("/admin-profile")]
     AdminProfile,
     #[at("/entry-edit")]
     EntryEdit,

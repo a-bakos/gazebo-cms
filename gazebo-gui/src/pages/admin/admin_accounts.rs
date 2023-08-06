@@ -2,6 +2,7 @@
 
 use yew::prelude::*;
 
+
 use crate::components::{
     accounts_table::AccountsTable, admin_bar::AdminBar, admin_menu::AdminMenu,
 };
@@ -19,6 +20,9 @@ pub fn admin_accounts() -> Html {
                    <h1>{"Accounts"}</h1>
                     <AccountsTable />
                 </div>
+
+
+
             </div>
 
         </main>

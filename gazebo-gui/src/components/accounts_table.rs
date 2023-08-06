@@ -4,6 +4,9 @@ use std::thread::spawn;
 use yew::prelude::*;
 use yew::{platform::spawn_local, prelude::*};
 
+use crate::app::MainNavigationRoute;
+use yew_router::prelude::Link;
+
 fn table_account_row(row_data: &GB_Account) -> Html {
     let role = match row_data.role.clone() {
         AccountRole::Admin => "admin".to_string(),
@@ -15,7 +18,12 @@ fn table_account_row(row_data: &GB_Account) -> Html {
     html! {
         <tr>
             <td>{row_data.id.clone()}</td>
-            <td>{"Name"}</td>
+            <td>
+                {"Name / "}
+                <Link<MainNavigationRoute> to={MainNavigationRoute::AdminProfile}>
+                    {"PROFILE EDIT"}
+                </Link<MainNavigationRoute>>
+            </td>
             <td>{row_data.email.clone()}</td>
             <td>{row_data.login_name.clone()}</td>
             <td>{role}</td>
@@ -53,10 +61,10 @@ pub fn table_accounts() -> Html {
                         <th>{"ID"}</th>
                         <th>{"Name"}</th>
                         <th>{"Email"}</th>
-                        <th>{"login"}</th>
-                        <th>{"role"}</th>
-                        <th>{"registered"}</th>
-                        <th>{"last login"}</th>
+                        <th>{"Login name"}</th>
+                        <th>{"Role"}</th>
+                        <th>{"Registered"}</th>
+                        <th>{"Last login"}</th>
                     </tr>
                 </thead>
                 <tbody>
