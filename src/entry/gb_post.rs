@@ -38,63 +38,6 @@ pub enum PostSpecific {
     Content,
     Password,
 }
-/*
-impl GB_Post {
-    #[allow(dead_code)]
-    pub fn draft() -> Self {
-        Self {
-            id: EntryID(1),
-            id_author: AccountID(1),
-            id_parent: get_entry_parent_id(),
-            date_publish: get_current_date(),
-            date_modified: get_current_date(),
-            slug: None,
-            status: EntryStatus::Post(ContentStatus::Draft),
-            title: Some(POST_UNTITLED_DEFAULT_TITLE.to_string()),
-            excerpt: None,
-            content: None,
-            password: None,
-        }
-    }
-
-    #[allow(dead_code)]
-    pub fn update(self, _entry_data: Vec<String>) -> Self {
-        todo!();
-    }
-
-    #[allow(dead_code)]
-    pub fn add_title(&mut self, title: String, create_permalink: bool) {
-       // let mut post_specifics_to_update: Vec<PostSpecific> = Vec::new();
-        self.title = Some(title.clone());
-        //post_specifics_to_update.push(PostSpecific::Title);
-
-        if create_permalink {
-            self.add_permalink(title);
-            //post_specifics_to_update.push(PostSpecific::Permalink);
-        }
-
-        // #[allow(clippy::let_unit_value)]
-        // let _update_post = update_post(self, post_specifics_to_update);
-    }
-
-    #[allow(dead_code)]
-    pub fn add_permalink(&mut self, slug: String) {
-        let mut permalink_generator = PermalinkGenerator::new(true);
-        let slug = permalink_generator.create_permalink_from(slug);
-        self.slug = Some(slug);
-    }
-
-    #[allow(dead_code)]
-    pub fn add_content(&mut self, content: String) {
-        self.content = Some(content);
-    }
-
-    #[allow(dead_code)]
-    pub fn update_slug(&mut self, new_slug: &str) -> bool {
-        self.slug = Some(new_slug.to_string());
-        true
-    }
-}*/
 
 impl RowTransformer<PgRow> for GB_Post {
     type Output = GB_Post;
