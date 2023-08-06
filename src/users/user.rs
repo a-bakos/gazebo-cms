@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, Row};
 use std::fmt::{Display, Formatter};
 
+use crate::traits::IntoSqlQuery;
 use crate::{
     database::columns::{
         COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LAST_LOGIN,

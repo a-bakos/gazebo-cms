@@ -133,11 +133,11 @@ pub async fn login(
             )));
         }
 
-        // See if account exists with this "email" address
+        // See if accounts exists with this "email" address
         let account_exists_by_email =
             find_account_by_identifier(pool.clone(), AccountIdentifier::Email, email.clone()).await;
 
-        // Deal with account exists question
+        // Deal with accounts exists question
         return match account_exists_by_email {
             Ok(true) => {
                 // Account exists, now go and login
@@ -180,11 +180,11 @@ pub async fn login(
             )));
         }
 
-        // See if account exists with this "login" name
+        // See if accounts exists with this "login" name
         let account_exists_by_login =
             find_account_by_identifier(pool.clone(), AccountIdentifier::Login, login.clone()).await;
 
-        // Deal with account exists question
+        // Deal with accounts exists question
         return match account_exists_by_login {
             Ok(true) => {
                 // Account exists
@@ -209,7 +209,7 @@ pub async fn login(
                 }
             }
             Ok(false) => {
-                // No account
+                // No accounts
                 Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
                     LoginStatus::Unauthorized,
                     None,

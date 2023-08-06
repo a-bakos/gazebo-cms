@@ -9,8 +9,8 @@ pub fn admin_bar() -> Html {
     match &current_user_ctx.user {
         Some(user) => html! {
             <>
-                <nav class="gb-admin-bar">
-                    <ul>
+                <nav class="gb-admin-bar bg-yellow-100 w-full">
+                    <ul class={"flex"}>
                         <li>{"Hello, "}{user.username.clone()}</li>
                         // If admin, show front end link
                         <li>

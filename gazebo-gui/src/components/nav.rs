@@ -36,16 +36,16 @@ pub fn nav() -> Html {
     });
     html! {
         <nav>
-            <Link<MainNavigationRoute> classes={classes!("testclass")} to={MainNavigationRoute::Home}>
-                <h1>{"standalone menu item"}</h1>
-            </Link<MainNavigationRoute>>
-            <ul>
+            // <Link<MainNavigationRoute> classes={classes!("testclass")} to={MainNavigationRoute::Home}>
+            //     <h1>{"standalone menu item"}</h1>
+            // </Link<MainNavigationRoute>>
+            <ul class={"flex bg-purple-100"}>
                 {
                     nav_items.iter().map(|nav_item| {
                         html!{
                             <li
                                 key={nav_item.id}
-                                class={classes!("nav_item", if nav_item.is_active {"active"} else {""} )}>
+                                class={classes!("bg-green-100","mx-3", "nav_item", if nav_item.is_active {"active"} else {""} )}>
                                 <Link<MainNavigationRoute> to={nav_item.link.clone()}>{nav_item.label.clone()}</Link<MainNavigationRoute>>
                             </li>
                         }

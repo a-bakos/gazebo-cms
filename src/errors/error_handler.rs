@@ -58,7 +58,7 @@ pub async fn return_error(r: Rejection) -> Result<impl warp::Reply, warp::Reject
             StatusCode::UNAUTHORIZED,
         ))
     // } else if let Some(GB_Error::Unauthorized) = r.find() {
-    //     // event!(Level::ERROR, "Not matching account ID");
+    //     // event!(Level::ERROR, "Not matching accounts ID");
     //     Ok(warp::reply::with_status(
     //         "No permission to change resource".to_string(),
     //         StatusCode::UNAUTHORIZED,

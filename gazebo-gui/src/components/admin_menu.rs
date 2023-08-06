@@ -5,7 +5,7 @@ use yew_router::prelude::Link;
 #[function_component(AdminMenu)]
 pub fn admin_menu() -> Html {
     html! {
-        <nav class={"gb-admin-menu"}>
+        <nav class={"w-max bg-green-100"}>
             <ul>
                 <li>
                     <Link<MainNavigationRoute> to={MainNavigationRoute::Admin}>
