@@ -16,7 +16,7 @@ pub fn input(props: &InputProps) -> Html {
         <>
             <label for={props.id.clone()}>{props.label.clone()}</label>
             <input
-                class={"block"}
+                class={"block border-2 rounded-lg px-3 py-1"}
                 id={props.id.clone()}
                 type={props.input_type.clone()}
                 name={props.name.clone()}
