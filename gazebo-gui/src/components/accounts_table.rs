@@ -47,9 +47,9 @@ pub fn table_accounts() -> Html {
 
     html! {
         <>
-            <table class={"gb-admin-table"}>
+            <table class={"w-full bg-blue-100"}>
                 <thead>
-                    <tr>
+                    <tr class={"text-left"}>
                         <th>{"ID"}</th>
                         <th>{"Name"}</th>
                         <th>{"Email"}</th>

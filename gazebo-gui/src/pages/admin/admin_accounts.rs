@@ -12,10 +12,10 @@ pub fn admin_accounts() -> Html {
          <main id={crate::consts::CSS_ID_ADMIN_AREA}>
             <AdminBar />
 
-            <div class={"gb-admin-panel"}>
+            <div class={"flex bg-red-100"}>
                 <AdminMenu />
 
-                <div class={"gb-admin-main"}>
+                <div class={"w-full"}>
                    <h1>{"Accounts"}</h1>
                     <AccountsTable />
                 </div>

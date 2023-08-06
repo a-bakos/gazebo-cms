@@ -19,7 +19,7 @@ pub fn home() -> Html {
             <main id={"gb-gui-home-page"}>
                 <AdminBar />
                 <Nav />
-                <h1>{"Home "}{name.clone()}</h1>
+                <h1 class={"text-3xl"}>{"Home "}{name.clone()}</h1>
             </main>
             <Footer />
         </>
