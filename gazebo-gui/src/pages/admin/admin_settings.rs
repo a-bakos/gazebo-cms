@@ -10,7 +10,7 @@ pub fn admin_settings() -> Html {
          <main id={crate::consts::CSS_ID_ADMIN_AREA}>
             <AdminBar />
 
-            <div class={"gb-admin-panel"}>
+            <div class={"flex bg-red-100"}>
                 <AdminMenu />
 
                 <div class={"gb-admin-main"}>

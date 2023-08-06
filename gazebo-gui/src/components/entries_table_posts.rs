@@ -20,6 +20,7 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
         <tr>
             <td>
                 <a
+                    class={"font-bold text-blue-600"}
                     title={ row_data.title.clone() }
                     href="#">
                     { row_data.title.clone() } { row_data.id.clone() }
@@ -55,9 +56,9 @@ pub fn table_entries() -> Html {
 
     html! {
         <>
-            <table class={"gb-admin-table"}>
+            <table class={"w-full bg-blue-100"}>
                 <thead>
-                    <tr>
+                    <tr class={"text-left"}>
                         <th>{"Title"}</th>
                         <th>{"Status"}</th>
                         <th>{"Author"}</th>
@@ -65,7 +66,7 @@ pub fn table_entries() -> Html {
                         <th>{"Published"}</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y">
                     {
                         for row_titles.iter().map(|entry_row| html! {
                             table_entry_row(entry_row)

@@ -1,0 +1,33 @@
+/**
+ * Functions partial
+ */
+
+/**
+ * Direct color return function: Black
+ * @param  float  $opacity The opacity you want on the black color
+ * @return string          The calculated RGBA code
+ */
+@function black($opacity) {
+	@return rgba(0, 0, 0, $opacity);
+}
+
+/**
+ * Direct color return function: White
+ * @param  float  $opacity The opacity you want on the white color
+ * @return string          The calculated RGBA code
+ */
+@function white($opacity) {
+	@return rgba(255, 255, 255, $opacity);
+}
+
+/*
+ * Transparentize any color value
+ *
+ * @param  string/function $color   The color value to turn into transparent RGBA
+ * @param  float           $opacity Default is 1
+ * @return string                   The computed RGBA color value
+ */
+@function transparent($color, $opacity: 1) {
+	$get-color: rgba($color, $opacity);
+	@return $get-color;
+}
