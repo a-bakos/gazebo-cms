@@ -14,6 +14,7 @@
 /// # Example
 ///
 ///  ```
+/// use gazebo_core_common::helpers::str_contains_special_char;
 ///  assert_eq!(str_contains_special_char("abc123"), false);
 ///  assert_eq!(str_contains_special_char("abc$123"), true);
 ///  ```
@@ -41,6 +42,7 @@ pub fn str_contains_special_char(str_to_check: &str) -> bool {
 /// let valid_str = "Abcdefg123";
 /// let invalid_str = "abcdefg123";
 ///
+/// use gazebo_core_common::helpers::str_contains_uppercase;
 /// assert_eq!(str_contains_uppercase(valid_str), true);
 /// assert_eq!(str_contains_uppercase(invalid_str), false);
 /// ```
@@ -71,6 +73,7 @@ pub fn str_contains_uppercase(str_to_check: &str) -> bool {
 /// let valid_str = "Abcdefg123";
 /// let invalid_str = "abcdefg";
 ///
+/// use gazebo_core_common::helpers::str_contains_number;
 /// assert_eq!(str_contains_number(valid_str), true);
 /// assert_eq!(str_contains_number(invalid_str), false);
 /// ```

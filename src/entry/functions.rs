@@ -1,6 +1,6 @@
-use crate::{
+use gazebo_core_common::{
+    account::gb_account::AccountID,
     entry::{entry_id::EntryID, entry_type::EntryType},
-    users::user::AccountID,
 };
 
 // Get post URL

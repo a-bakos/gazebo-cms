@@ -13,3 +13,11 @@ serde = { version = "1.0", features = ["derive"] }
 tokio = { version = "1.28.1", features = ["full"] }
 warp = "0.3.5"
 sqlx = { version = "0.6.3", features = ["runtime-tokio-rustls", "migrate", "postgres", "chrono"] }
+# Gazebo crates
+gazebo-core-common = { version = "0.1.0", path = "gazebo-core-common" }
+
+[workspace]
+members = [
+    "gazebo-core-common",
+    "gazebo-gui"
+]

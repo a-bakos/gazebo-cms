@@ -5,39 +5,23 @@ use std::fmt::{Display, Formatter};
 
 use crate::traits::IntoSqlQuery;
 use crate::{
-    consts::LABEL_NONE,
     database::columns::{
         COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LAST_LOGIN,
         COL_INDEX_ACCOUNT_LOGIN, COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE,
     },
     traits::RowTransformer,
-    users::roles::{get_role_variant, AccountRole},
 };
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct AccountID(pub u32);
+use gazebo_core_common::{
+    account::{
+        gb_account::{AccountID, GB_Account},
+        role::{get_role_variant, AccountRole},
+    },
+    consts::LABEL_NONE,
+};
 
-impl Display for AccountID {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.0)
-    }
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Account {
-    pub login_name: String,
-    pub email: String,
-    pub id: AccountID,
-    pub role: AccountRole,
-    pub password: String,
-    pub registered: String,
-    pub last_login: String,
-}
-
-impl Account {}
-
-impl RowTransformer<PgRow> for Account {
-    type Output = Account;
+impl RowTransformer<PgRow> for GB_Account {
+    type Output = GB_Account;
 
     fn transform(row: &PgRow) -> Self::Output {
         // Registered date

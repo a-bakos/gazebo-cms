@@ -6,16 +6,20 @@ use crate::{
         COL_INDEX_POST_EXCERPT, COL_INDEX_POST_ID, COL_INDEX_POST_ID_AUTHOR, COL_INDEX_POST_PARENT,
         COL_INDEX_POST_SLUG, COL_INDEX_POST_STATUS, COL_INDEX_POST_TITLE,
     },
-    datetime::functions as date_functions,
-    entry::{
-        entry_id,
-        entry_id::EntryID,
-        entry_type::EntryType,
-        status::{get_entry_status_variant, ContentStatus, EntryStatus},
-    },
     traits::RowTransformer,
     url,
-    users::user::AccountID,
+    url::permalink_generator::PermalinkGenerator,
+};
+
+use gazebo_core_common::{
+    account::gb_account::AccountID,
+    consts::POST_UNTITLED_DEFAULT_TITLE,
+    entry::{
+        entry_id::EntryID,
+        entry_type::EntryType,
+        gb_post::GB_Post,
+        status::{get_entry_status_variant, ContentStatus, EntryStatus},
+    },
 };
 
 use chrono::NaiveDateTime;
@@ -34,35 +38,19 @@ pub enum PostSpecific {
     Content,
     Password,
 }
-
-#[allow(non_camel_case_types)]
-#[derive(Debug, Serialize, Deserialize)]
-pub struct GB_Post {
-    pub id: EntryID,
-    pub id_author: AccountID,
-    pub id_parent: Option<EntryID>,
-    pub date_publish: String,
-    pub date_modified: String,
-    pub slug: Option<String>,
-    pub status: EntryStatus,
-    pub title: Option<String>,
-    pub excerpt: Option<String>,
-    pub content: Option<String>,
-    pub password: Option<String>,
-}
-
+/*
 impl GB_Post {
     #[allow(dead_code)]
-    pub fn draft(_app: &mut App) -> Self {
+    pub fn draft() -> Self {
         Self {
             id: EntryID(1),
             id_author: AccountID(1),
-            id_parent: entry_id::get_entry_parent_id(),
-            date_publish: date_functions::get_current_date(),
-            date_modified: date_functions::get_current_date(),
+            id_parent: get_entry_parent_id(),
+            date_publish: get_current_date(),
+            date_modified: get_current_date(),
             slug: None,
             status: EntryStatus::Post(ContentStatus::Draft),
-            title: Some(consts::POST_UNTITLED_DEFAULT_TITLE.to_string()),
+            title: Some(POST_UNTITLED_DEFAULT_TITLE.to_string()),
             excerpt: None,
             content: None,
             password: None,
@@ -76,13 +64,13 @@ impl GB_Post {
 
     #[allow(dead_code)]
     pub fn add_title(&mut self, title: String, create_permalink: bool) {
-        let mut post_specifics_to_update: Vec<PostSpecific> = Vec::new();
+       // let mut post_specifics_to_update: Vec<PostSpecific> = Vec::new();
         self.title = Some(title.clone());
-        post_specifics_to_update.push(PostSpecific::Title);
+        //post_specifics_to_update.push(PostSpecific::Title);
 
         if create_permalink {
             self.add_permalink(title);
-            post_specifics_to_update.push(PostSpecific::Permalink);
+            //post_specifics_to_update.push(PostSpecific::Permalink);
         }
 
         // #[allow(clippy::let_unit_value)]
@@ -91,7 +79,7 @@ impl GB_Post {
 
     #[allow(dead_code)]
     pub fn add_permalink(&mut self, slug: String) {
-        let mut permalink_generator = url::permalink_generator::PermalinkGenerator::new(true);
+        let mut permalink_generator = PermalinkGenerator::new(true);
         let slug = permalink_generator.create_permalink_from(slug);
         self.slug = Some(slug);
     }
@@ -106,7 +94,7 @@ impl GB_Post {
         self.slug = Some(new_slug.to_string());
         true
     }
-}
+}*/
 
 impl RowTransformer<PgRow> for GB_Post {
     type Output = GB_Post;

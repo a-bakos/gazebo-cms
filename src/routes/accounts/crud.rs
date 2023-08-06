@@ -1,5 +1,4 @@
 use crate::{
-    consts::LABEL_NONE,
     database::{
         columns::{
             COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LAST_LOGIN,
@@ -13,9 +12,15 @@ use crate::{
     users::{
         credentials,
         credentials::{is_password_valid, AccountIdentifier},
-        roles::{get_role_variant, AccountRole},
-        user::{Account, AccountID},
     },
+};
+
+use gazebo_core_common::{
+    account::{
+        gb_account::{AccountID, GB_Account},
+        role::{get_role_variant, AccountRole},
+    },
+    consts::LABEL_NONE,
 };
 
 use chrono::NaiveDateTime;
@@ -55,15 +60,15 @@ pub async fn add(
 
             let login = params.login.clone(); // todo need login name check
 
-            let role = crate::users::roles::AccountRole::Contributor.to_string();
+            let role = AccountRole::Contributor.to_string();
 
             let query = format!(
                 "INSERT INTO {} ({}, {}, {}, {}) VALUES ($1, $2, $3, $4)",
                 DB_Table::Accounts,
-                crate::database::columns::COL_INDEX_ACCOUNT_LOGIN,
-                crate::database::columns::COL_INDEX_ACCOUNT_PASSWORD,
-                crate::database::columns::COL_INDEX_ACCOUNT_EMAIL,
-                crate::database::columns::COL_INDEX_ACCOUNT_ROLE
+                COL_INDEX_ACCOUNT_LOGIN,
+                COL_INDEX_ACCOUNT_PASSWORD,
+                COL_INDEX_ACCOUNT_EMAIL,
+                COL_INDEX_ACCOUNT_ROLE
             );
             match sqlx::query(&query)
                 .bind(login)
@@ -90,7 +95,7 @@ pub async fn add(
 
 pub async fn get_all_accounts(pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
     println!("All accounts requested");
-    let mut accounts: Vec<Account> = Vec::new();
+    let mut accounts: Vec<GB_Account> = Vec::new();
     let query = format!(
         "SELECT {}, {}, {}, {}, {}, {} FROM {}",
         COL_INDEX_ACCOUNT_LOGIN,
@@ -103,7 +108,7 @@ pub async fn get_all_accounts(pool: PgPool) -> Result<impl warp::Reply, warp::Re
     );
     match sqlx::query(&query)
         .map(|row: PgRow| {
-            let the_account = Account::transform(&row);
+            let the_account = GB_Account::transform(&row);
             accounts.push(the_account);
         })
         .fetch_all(&pool)
@@ -125,40 +130,7 @@ pub async fn get_user_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, w
     let query = format!("SELECT * FROM {} WHERE id = $1", DB_Table::Accounts);
     match sqlx::query(&query)
         .bind(id)
-        .map(|row: PgRow| {
-            // Underscores' meaning here:
-            // we don't need to specify a default/fallback value because the cell will never be empty
-
-            // ID
-            let user_id = row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32;
-
-            // Role
-            let role = row.get::<&str, _>(COL_INDEX_ACCOUNT_ROLE);
-            let role = get_role_variant(role);
-
-            // Registered date
-            let registered: NaiveDateTime =
-                row.get::<NaiveDateTime, _>(COL_INDEX_ACCOUNT_REGISTERED);
-            let registered = registered.to_string();
-
-            // Last login
-            let last_login: Option<NaiveDateTime> =
-                row.get::<Option<NaiveDateTime>, _>(COL_INDEX_ACCOUNT_LAST_LOGIN);
-            let last_login = match last_login {
-                Some(last_login_date) => last_login_date.to_string(),
-                None => String::from(LABEL_NONE),
-            };
-
-            Account {
-                login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
-                email: row.get(COL_INDEX_ACCOUNT_EMAIL),
-                id: AccountID(user_id),
-                role,
-                password: row.get(COL_INDEX_ACCOUNT_PASSWORD), // todo: hide this later
-                registered,
-                last_login,
-            }
-        })
+        .map(|row: PgRow| GB_Account::transform(&row))
         .fetch_one(&pool)
         .await
     {
@@ -195,7 +167,7 @@ fn add_role_to_user(_user_id: u32, _role: AccountRole) -> bool {
 }
 
 #[allow(dead_code)]
-pub fn get_user_by_email(_email: &str) -> Option<Account> {
+pub fn get_user_by_email(_email: &str) -> Option<GB_Account> {
     todo!()
 }
 

@@ -26,6 +26,22 @@ pub enum EntryStatus {
     Unknown,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum ContentStatus {
+    Draft,
+    Publish,
+    Private,
+    Trash,
+    Unknown,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum MediaStatus {
+    Attached,
+    Unattached,
+    Unknown,
+}
+
 impl EntryStatus {
     #[allow(dead_code)]
     pub fn get_entry_status_as_string(self, entry_status: EntryStatus) -> String {
@@ -50,16 +66,6 @@ impl EntryStatus {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum ContentStatus {
-    Draft,
-    Publish,
-    Private,
-    Trash,
-    Unknown,
-    // Future
-    // Pending
-}
 impl std::fmt::Display for ContentStatus {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -84,12 +90,6 @@ impl From<ContentStatus> for String {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum MediaStatus {
-    Attached,
-    Unattached,
-    Unknown,
-}
 impl std::fmt::Display for MediaStatus {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
