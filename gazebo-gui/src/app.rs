@@ -10,6 +10,7 @@ use crate::{
         admin::{
             admin_accounts::AdminAccounts, admin_dashboard::AdminDashboard,
             admin_media::AdminMedia, admin_posts::AdminPosts, admin_settings::AdminSettings,
+            admin_profile::AdminProfile,
         },
         edit_entry::EntryEdit,
         home::Home,
@@ -35,6 +36,8 @@ pub enum MainNavigationRoute {
     AdminSettings,
     #[at("/admin-accounts")]
     AdminAccounts,
+    #[at("/admin-profile-edit")]
+    AdminProfile,
     #[at("/entry-edit")]
     EntryEdit,
     #[at("/lost-password")]
@@ -63,6 +66,7 @@ pub fn main_nav_switch(route: MainNavigationRoute) -> Html {
         MainNavigationRoute::AdminMedia => html! { <AdminMedia />},
         MainNavigationRoute::AdminSettings => html! { <AdminSettings />},
         MainNavigationRoute::AdminAccounts => html! { <AdminAccounts />},
+        MainNavigationRoute::AdminProfile => html! { <AdminProfile /> },
 
         // 404
         MainNavigationRoute::NotFound => html! { <NotFound /> },
