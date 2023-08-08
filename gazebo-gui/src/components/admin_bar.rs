@@ -25,9 +25,12 @@ pub fn admin_bar() -> Html {
                                 </Link<MainNavigationRoute>>
                             </li>
                             <li class="bg-gray-500 text-center text-white">
-                                <p>{"[USER]"}</p>
-                                <p>{"User Name"}</p>
-                                <p>{"administrator"}</p>
+                                <Link<MainNavigationRoute>
+                                    to={MainNavigationRoute::AdminProfile}>
+                                    <p>{"[USER]"}</p>
+                                    <p>{"User Name"}</p>
+                                    <p>{"administrator"}</p>
+                                </Link<MainNavigationRoute>>
                             </li>
                             <li class="flex-1 text-center">
                                 <p class="text-xl font-bold">{"SITETITLE"}</p>

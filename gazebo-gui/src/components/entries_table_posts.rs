@@ -7,16 +7,16 @@ use crate::app::MainNavigationRoute;
 use yew_router::prelude::Link;
 
 fn table_entry_row(row_data: &GB_Post) -> Html {
-    let status = match row_data.status.clone() {
+    let (status, class) = match row_data.status.clone() {
         // todo - will be added to common lib
         EntryStatus::Post(content_status) => match content_status {
-            ContentStatus::Draft => "draft".to_string(),
-            ContentStatus::Publish => "publish".to_string(),
-            ContentStatus::Private => "private".to_string(),
-            ContentStatus::Trash => "trash".to_string(),
-            _ => "unknown".to_string(),
+            ContentStatus::Draft => ("draft".to_string(), "bg-pink-200"),
+            ContentStatus::Publish => ("publish".to_string(), "bg-green-200"),
+            ContentStatus::Private => ("private".to_string(), "bg-yellow-200"),
+            ContentStatus::Trash => ("trash".to_string(), "bg-gray-200"),
+            _ => ("unknown".to_string(), "bg-white-100"),
         },
-        _ => "unknown".to_string(),
+        _ => ("unknown".to_string(), "bg-white-100"),
     };
 
     html! {
@@ -37,7 +37,7 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
             <td>{"cat 1, cat 2"}</td>
             <td>{row_data.id_author.clone()}</td>
             <td>
-                <span class="bg-pink-100 px-2 rounded-md">{status.clone()}</span>
+                <span class={format!("{} px-2 rounded-md", class)}>{status.clone()}</span>
                 {
                     if status == "draft" {
                         html! {
