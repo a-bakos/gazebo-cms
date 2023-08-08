@@ -1,4 +1,5 @@
 use crate::app::MainNavigationRoute;
+use crate::components::admin_menu::AdminMenu;
 use yew::prelude::*;
 use yew_router::prelude::{Link, Redirect};
 
@@ -9,28 +10,42 @@ pub fn admin_bar() -> Html {
     match &current_user_ctx.user {
         Some(user) => html! {
             <>
-                <nav class="gb-admin-bar bg-yellow-100 w-full">
-                    <ul class={"flex"}>
-                        <li>{"Hello, "}{user.username.clone()}</li>
-                        // If admin, show front end link
-                        <li>
-                            <Link<MainNavigationRoute> to={MainNavigationRoute::Home}>
-                                {"Front end"}
-                            </Link<MainNavigationRoute>></li>
-                        // If frontend, show admin link todo
-                        <li>
-                            <Link<MainNavigationRoute> to={MainNavigationRoute::Admin}>
-                                {"Admin"}
-                            </Link<MainNavigationRoute>>
-                        </li>
-                        <li>
-                            <Link<MainNavigationRoute> to={MainNavigationRoute::EntryEdit}>
-                                {"Create new entry"}
-                            </Link<MainNavigationRoute>>
-                        </li>
-                        <li><a title="Logout" href="/logout">{"Logout (will be btn)"}</a></li>
-                    </ul>
-                </nav>
+                <div class="sticky top-0">
+                    <nav class="bg-gray-400 w-full">
+                        <ul class="flex items-center">
+                            // If admin, show front end link
+                            <li class="bg-black text-white">
+                                <Link<MainNavigationRoute> to={MainNavigationRoute::Home} classes="h-full inline-block p-4">
+                                    {"Front"}
+                                </Link<MainNavigationRoute>></li>
+                            // If frontend, show admin link todo
+                            <li class="bg-black text-white">
+                                <Link<MainNavigationRoute> to={MainNavigationRoute::Admin}>
+                                    {"Admin"}
+                                </Link<MainNavigationRoute>>
+                            </li>
+                            <li class="bg-gray-500 text-center text-white">
+                                <p>{"[USER]"}</p>
+                                <p>{"User Name"}</p>
+                                <p>{"administrator"}</p>
+                            </li>
+                            <li class="flex-1 text-center">
+                                <p class="text-xl font-bold">{"SITETITLE"}</p>
+                                <p>{"www.siteaddress.com"}</p>
+                            </li>
+                            // <li>
+                            //     <Link<MainNavigationRoute> to={MainNavigationRoute::EntryEdit}>
+                            //         {"Create new entry"}
+                            //     </Link<MainNavigationRoute>>
+                            // </li>
+                            <li class="bg-gray-500 text-white">
+                               {"?Help"}
+                            </li>
+                            <li class="bg-black text-white"><a class="h-full inline-block p-4" title="Logout" href="/logout">{"?Logout"}</a></li>
+                        </ul>
+                    </nav>
+                    <AdminMenu />
+                </div>
             </>
         },
         None => html! {

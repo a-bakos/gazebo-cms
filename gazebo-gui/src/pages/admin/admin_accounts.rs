@@ -14,8 +14,6 @@ pub fn admin_accounts() -> Html {
             <AdminBar />
 
             <div class={"flex bg-red-100"}>
-                <AdminMenu />
-
                 <div class={"w-full"}>
                    <h1>{"Accounts"}</h1>
                     <AccountsTable />

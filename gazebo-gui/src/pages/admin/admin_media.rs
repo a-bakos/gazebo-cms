@@ -11,8 +11,6 @@ pub fn admin_media() -> Html {
             <AdminBar />
 
             <div class={"flex bg-red-100"}>
-                <AdminMenu />
-
                 <div class={"gb-admin-main"}>
                    <h1>{"Media Lib"}</h1>
                 </div>

@@ -12,8 +12,6 @@ pub fn admin_profile() -> Html {
             <AdminBar />
 
             <div class={"flex bg-red-100"}>
-                <AdminMenu />
-
                 <div class={"w-full"}>
                     <h1>{"Profile editor"}</h1>
                     <ProfileEditor />

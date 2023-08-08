@@ -11,8 +11,6 @@ pub fn admin_settings() -> Html {
             <AdminBar />
 
             <div class={"flex bg-red-100"}>
-                <AdminMenu />
-
                 <div class={"gb-admin-main"}>
                    <h1>{"Settings"}</h1>
                 </div>

@@ -13,8 +13,6 @@ pub fn admin_dashboard() -> Html {
             <AdminBar />
 
             <div class={"flex bg-red-100"}>
-                <AdminMenu />
-
                 <div class={"w-full"}>
                    <h1 class={"text-2xl"}>{"Dashboard"}</h1>
                     <WidgetLoggedInUsers />
