@@ -2,19 +2,15 @@ use yew::prelude::*;
 use yew_router::prelude::*;
 
 use crate::{
-    components::{
-        admin_bar::AdminBar, footer::Footer, header::Header, login_form::LoginForm,
-        post_rollup::PostRollup,
-    },
     pages::{
         admin::{
             admin_accounts::AdminAccounts, admin_dashboard::AdminDashboard,
             admin_media::AdminMedia, admin_posts::AdminPosts, admin_settings::AdminSettings,
+            admin_profile::AdminProfile,
         },
         edit_entry::EntryEdit,
         home::Home,
         login::Login,
-        logout::Logout,
         not_found::NotFound,
     },
 };
@@ -35,6 +31,8 @@ pub enum MainNavigationRoute {
     AdminSettings,
     #[at("/admin-accounts")]
     AdminAccounts,
+    #[at("/admin-profile")]
+    AdminProfile,
     #[at("/entry-edit")]
     EntryEdit,
     #[at("/lost-password")]
@@ -63,6 +61,7 @@ pub fn main_nav_switch(route: MainNavigationRoute) -> Html {
         MainNavigationRoute::AdminMedia => html! { <AdminMedia />},
         MainNavigationRoute::AdminSettings => html! { <AdminSettings />},
         MainNavigationRoute::AdminAccounts => html! { <AdminAccounts />},
+        MainNavigationRoute::AdminProfile => html! { <AdminProfile /> },
 
         // 404
         MainNavigationRoute::NotFound => html! { <NotFound /> },

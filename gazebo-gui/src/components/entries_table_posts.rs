@@ -1,35 +1,64 @@
 use crate::api::post::{ContentStatus, EntryStatus, GB_Post};
-use serde::Deserialize;
-use yew::prelude::*;
+use crate::app::MainNavigationRoute;
 use yew::{platform::spawn_local, prelude::*};
+use yew_router::prelude::Link;
 
 fn table_entry_row(row_data: &GB_Post) -> Html {
-    let status = match row_data.status.clone() {
+    let (status_label, status_label_class) = match row_data.status.clone() {
         // todo - will be added to common lib
         EntryStatus::Post(content_status) => match content_status {
-            ContentStatus::Draft => "draft".to_string(),
-            ContentStatus::Publish => "publish".to_string(),
-            ContentStatus::Private => "private".to_string(),
-            ContentStatus::Trash => "trash".to_string(),
-            _ => "unknown".to_string(),
+            ContentStatus::Draft => ("draft".to_string(), "bg-pink-200"),
+            ContentStatus::Publish => ("publish".to_string(), "bg-green-200"),
+            ContentStatus::Private => ("private".to_string(), "bg-yellow-200"),
+            ContentStatus::Trash => ("trash".to_string(), "bg-gray-200"),
+            _ => ("unknown".to_string(), "bg-white-100"),
         },
-        _ => "unknown".to_string(),
+        _ => ("unknown".to_string(), "bg-white-100"),
     };
 
     html! {
-        <tr>
+        <tr class="bg-white rounded-xl border hover:bg-yellow-100">
             <td>
-                <a
-                    class={"font-bold text-blue-600"}
-                    title={ row_data.title.clone() }
-                    href="#">
-                    { row_data.title.clone() } { row_data.id.clone() }
-                </a>
+                <Link<MainNavigationRoute>
+                    to={MainNavigationRoute::EntryEdit}
+                    classes="font-bold text-blue-600">
+                    {row_data.title.clone()}
+                </Link<MainNavigationRoute>>
+                <span class="block">
+                    <button class="underline">{ "?view" }</button>
+                    <button class="underline">{ "?edit" }</button>
+                    <button class="underline">{ "?clone" }</button>
+                    <button class="underline">{ "?bin" }</button>
+                </span>
             </td>
-            <td>{status}</td>
+            <td>{"cat 1, cat 2"}</td>
             <td>{row_data.id_author.clone()}</td>
-            <td>{"Category TBC"}</td>
-            <td>{row_data.date_publish.clone()}</td>
+            <td>
+                <span class={ format!("{} px-2 rounded-md", status_label_class) }>
+                    { status_label.clone() }
+                </span>
+                {
+                    if status_label == "draft" {
+                        html! {
+                            <span class="block">
+                                <a href="" class="underline">
+                                    { "publish now" }
+                                </a>
+                            </span>
+                        }
+                    } else {
+                        html! {}
+                    }
+                }
+            </td>
+            <td>
+                <p>{ row_data.date_publish.clone() }</p>
+                <p>{ "?by admin" }</p>
+            </td>
+            <td>
+                <p>{ row_data.date_modified.clone() }</p>
+                <p>{ "?by editor" }</p>
+            </td>
         </tr>
     }
 }
@@ -56,17 +85,18 @@ pub fn table_entries() -> Html {
 
     html! {
         <>
-            <table class={"w-full bg-blue-100"}>
+            <table class={"text-left w-full border"}>
                 <thead>
-                    <tr class={"text-left"}>
+                    <tr>
                         <th>{"Title"}</th>
-                        <th>{"Status"}</th>
-                        <th>{"Author"}</th>
                         <th>{"Category"}</th>
-                        <th>{"Published"}</th>
+                        <th>{"Author"}</th>
+                        <th>{"Status"}</th>
+                        <th>{"Created"}</th>
+                        <th>{"Modified"}</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y">
+                <tbody>
                     {
                         for row_titles.iter().map(|entry_row| html! {
                             table_entry_row(entry_row)

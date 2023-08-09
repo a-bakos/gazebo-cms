@@ -2,7 +2,7 @@
 
 use yew::prelude::*;
 
-use crate::components::{admin_bar::AdminBar, admin_menu::AdminMenu};
+use crate::components::{admin_bar::AdminBar};
 
 #[function_component(AdminMedia)]
 pub fn admin_media() -> Html {
@@ -11,8 +11,6 @@ pub fn admin_media() -> Html {
             <AdminBar />
 
             <div class={"flex bg-red-100"}>
-                <AdminMenu />
-
                 <div class={"gb-admin-main"}>
                    <h1>{"Media Lib"}</h1>
                 </div>

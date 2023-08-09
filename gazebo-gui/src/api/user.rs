@@ -52,6 +52,7 @@ pub enum AccountRole {
     NotFound,    // missing or incorrect role
 }
 
+#[allow(non_camel_case_types)]
 #[derive(Deserialize, Clone, Debug, PartialEq)]
 pub struct GB_Account {
     pub login_name: String,

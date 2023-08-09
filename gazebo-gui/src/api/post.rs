@@ -1,9 +1,9 @@
 use crate::api::BACKEND_URL_BASE;
 use gloo_net::http::Request;
 use serde::Deserialize;
-use serde_json::json;
 
 // todo - will be added to common lib
+#[allow(non_camel_case_types)]
 #[derive(Deserialize, Clone, Debug, PartialEq)]
 pub struct GB_Post {
     pub id: u32,

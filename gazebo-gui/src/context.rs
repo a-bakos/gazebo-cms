@@ -11,6 +11,7 @@ pub struct CurrentUser {
 
 pub enum UserAction {
     LoginSuccess,
+    #[allow(dead_code)]
     LoginFailure,
 }
 

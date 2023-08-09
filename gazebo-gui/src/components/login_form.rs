@@ -1,12 +1,11 @@
-use std::thread::current;
 use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::*;
 
 use crate::{
-    api::user::{api_login_request, LoginResponseAccountDetails, LoginResponseWithStatusCode},
+    api::user::{api_login_request, LoginResponseWithStatusCode},
     app::MainNavigationRoute,
     components::{
-        input::{Input, InputProps},
+        input::Input,
         lost_password::LostPassword,
     },
     context::{CurrentUserContext, CurrentUserDispatchActions, UserAction::LoginSuccess},
@@ -20,7 +19,7 @@ pub fn login_form() -> Html {
     let current_user_ctx =
         use_context::<CurrentUserContext>().expect("Current accounts context is missing");
 
-    let mut login_error = String::new();
+    let login_error = String::new();
 
     let username_handle = use_state(|| String::default());
     let username = (*username_handle).clone();
@@ -100,7 +99,7 @@ pub fn login_form() -> Html {
             }
 
             <form
-                class={"bg-blue-100 w-max content-center mx-auto"}
+                class={"bg-white p-4 border-2 rounded-lg w-max content-center mx-auto"}
                 onsubmit={on_form_submit}>
 
                 <Input
@@ -121,7 +120,7 @@ pub fn login_form() -> Html {
                     onchange={password_changed}
                 />
                 <button
-                    class={"px-10 py-2 text-2xl bg-red-100 block hover:bg-red-300"}
+                    class={"w-full mt-4 p-4 border-2 rounded-lg py-2 text-2xl block hover:bg-red-300"}
                     type="submit">
                     {"Login"}
                 </button>
