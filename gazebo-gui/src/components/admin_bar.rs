@@ -8,7 +8,7 @@ pub fn admin_bar() -> Html {
     let current_user_ctx = use_context::<crate::context::CurrentUserContext>()
         .expect("Current accounts context missing");
     match &current_user_ctx.user {
-        Some(user) => html! {
+        Some(_user) => html! {
             <>
                 <div class="sticky top-0">
                     <nav class="bg-gray-400 w-full">

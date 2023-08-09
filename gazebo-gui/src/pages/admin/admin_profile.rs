@@ -1,7 +1,7 @@
 use yew::prelude::*;
 
 use crate::components::{
-    admin_bar::AdminBar, admin_menu::AdminMenu,
+    admin_bar::AdminBar, 
     admin::profile_editor::ProfileEditor
 };
 

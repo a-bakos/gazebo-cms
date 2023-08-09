@@ -4,7 +4,7 @@ use yew::prelude::*;
 
 
 use crate::components::{
-    accounts_table::AccountsTable, admin_bar::AdminBar, admin_menu::AdminMenu,
+    accounts_table::AccountsTable, admin_bar::AdminBar
 };
 
 #[function_component(AdminAccounts)]

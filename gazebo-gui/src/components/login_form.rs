@@ -1,12 +1,11 @@
-use std::thread::current;
 use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::*;
 
 use crate::{
-    api::user::{api_login_request, LoginResponseAccountDetails, LoginResponseWithStatusCode},
+    api::user::{api_login_request, LoginResponseWithStatusCode},
     app::MainNavigationRoute,
     components::{
-        input::{Input, InputProps},
+        input::Input,
         lost_password::LostPassword,
     },
     context::{CurrentUserContext, CurrentUserDispatchActions, UserAction::LoginSuccess},
@@ -20,7 +19,7 @@ pub fn login_form() -> Html {
     let current_user_ctx =
         use_context::<CurrentUserContext>().expect("Current accounts context is missing");
 
-    let mut login_error = String::new();
+    let login_error = String::new();
 
     let username_handle = use_state(|| String::default());
     let username = (*username_handle).clone();

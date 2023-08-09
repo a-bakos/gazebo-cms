@@ -2,10 +2,6 @@ use yew::prelude::*;
 use yew_router::prelude::*;
 
 use crate::{
-    components::{
-        admin_bar::AdminBar, footer::Footer, header::Header, login_form::LoginForm,
-        post_rollup::PostRollup,
-    },
     pages::{
         admin::{
             admin_accounts::AdminAccounts, admin_dashboard::AdminDashboard,
@@ -15,7 +11,6 @@ use crate::{
         edit_entry::EntryEdit,
         home::Home,
         login::Login,
-        logout::Logout,
         not_found::NotFound,
     },
 };

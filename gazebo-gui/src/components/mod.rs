@@ -13,5 +13,3 @@ pub mod lost_password;
 pub mod main_navigation;
 pub mod nav;
 pub mod post_rollup;
-
-const CLASS_ENTRIES_TABLE: &str = "w-full bg-blue-100";

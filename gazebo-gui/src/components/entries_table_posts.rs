@@ -1,13 +1,10 @@
 use crate::api::post::{ContentStatus, EntryStatus, GB_Post};
-use serde::Deserialize;
-use yew::prelude::*;
-use yew::{platform::spawn_local, prelude::*};
-
 use crate::app::MainNavigationRoute;
+use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::Link;
 
 fn table_entry_row(row_data: &GB_Post) -> Html {
-    let (status, class) = match row_data.status.clone() {
+    let (status_label, status_label_class) = match row_data.status.clone() {
         // todo - will be added to common lib
         EntryStatus::Post(content_status) => match content_status {
             ContentStatus::Draft => ("draft".to_string(), "bg-pink-200"),
@@ -28,20 +25,26 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
                     {row_data.title.clone()}
                 </Link<MainNavigationRoute>>
                 <span class="block">
-                    <button class="underline">{"?view"}</button>
-                    <button class="underline">{"?edit"}</button>
-                    <button class="underline">{"?clone"}</button>
-                    <button class="underline">{"?bin"}</button>
+                    <button class="underline">{ "?view" }</button>
+                    <button class="underline">{ "?edit" }</button>
+                    <button class="underline">{ "?clone" }</button>
+                    <button class="underline">{ "?bin" }</button>
                 </span>
             </td>
             <td>{"cat 1, cat 2"}</td>
             <td>{row_data.id_author.clone()}</td>
             <td>
-                <span class={format!("{} px-2 rounded-md", class)}>{status.clone()}</span>
+                <span class={ format!("{} px-2 rounded-md", status_label_class) }>
+                    { status_label.clone() }
+                </span>
                 {
-                    if status == "draft" {
+                    if status_label == "draft" {
                         html! {
-                            <span class="block"><a href="" class="underline">{"publish now"}</a></span>
+                            <span class="block">
+                                <a href="" class="underline">
+                                    { "publish now" }
+                                </a>
+                            </span>
                         }
                     } else {
                         html! {}
@@ -49,12 +52,12 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
                 }
             </td>
             <td>
-                <p>{row_data.date_publish.clone()}</p>
-                <p>{"?by admin"}</p>
+                <p>{ row_data.date_publish.clone() }</p>
+                <p>{ "?by admin" }</p>
             </td>
             <td>
-                <p>{row_data.date_modified.clone()}</p>
-                <p>{"?by editor"}</p>
+                <p>{ row_data.date_modified.clone() }</p>
+                <p>{ "?by editor" }</p>
             </td>
         </tr>
     }
