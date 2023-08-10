@@ -25,10 +25,10 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
                     {row_data.title.clone()}
                 </Link<MainNavigationRoute>>
                 <span class="block">
-                    <button class="underline">{ "?view" }</button>
-                    <button class="underline">{ "?edit" }</button>
-                    <button class="underline">{ "?clone" }</button>
-                    <button class="underline">{ "?bin" }</button>
+                    <button class="underline mr-1">{ "?view" }</button>
+                    <button class="underline mr-1">{ "?edit" }</button>
+                    <button class="underline mr-1">{ "?clone" }</button>
+                    <button class="underline mr-1">{ "?bin" }</button>
                 </span>
             </td>
             <td>{"cat 1, cat 2"}</td>
