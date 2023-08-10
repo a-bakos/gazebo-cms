@@ -63,3 +63,9 @@ pub async fn api_get_all_posts() -> Result<Vec<GB_Post>, gloo_net::Error> {
         .await?;
     response.json::<Vec<GB_Post>>().await
 }
+
+pub async fn api_delete_entry_by_id(entry_id: u32) -> Result<bool, gloo_net::Error> {
+    let response = Request::delete(&format!("{}/post/{}", BACKEND_URL_BASE, entry_id)).send().await?;
+    // todo match on response and turn it into bool!
+    response.json::<bool>().await
+}

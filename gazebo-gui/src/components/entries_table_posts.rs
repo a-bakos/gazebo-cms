@@ -2,6 +2,32 @@ use crate::api::post::{ContentStatus, EntryStatus, GB_Post};
 use crate::app::MainNavigationRoute;
 use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::Link;
+use crate::{
+    api::post::api_delete_entry_by_id,
+    components::{
+        input::Input
+    }
+};
+
+use yew::prelude::*;
+
+#[derive(Properties, PartialEq)]
+pub struct SimpleButtonProps {
+    pub label: AttrValue,
+    // pub class_list: AttrValue,
+    pub button_type: AttrValue,
+}
+
+#[function_component(SimpleButton)]
+pub fn simple_button(props: &SimpleButtonProps) -> Html {
+    html! {
+        <button
+            // class={props.class_list.clone()}
+            type={props.button_type.clone()}>
+            {props.label.clone()}
+        </button>
+    }
+}
 
 fn table_entry_row(row_data: &GB_Post) -> Html {
     let (status_label, status_label_class) = match row_data.status.clone() {
@@ -16,6 +42,19 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
         _ => ("unknown".to_string(), "bg-white-100"),
     };
 
+    let post_id = row_data.id.clone();
+    let on_form_submit_bin = Callback::from(move |event: SubmitEvent| {
+        event.prevent_default();
+        spawn_local(async move {
+            match api_delete_entry_by_id(post_id)
+                .await
+                .unwrap() {
+                true => gloo_console::log!("Successful deletion"),
+                _ => gloo_console::log!("Can't delete"),
+            }
+        });
+    });
+
     html! {
         <tr class="bg-white rounded-xl border hover:bg-yellow-100">
             <td>
@@ -28,7 +67,21 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
                     <button class="underline mr-1">{ "?view" }</button>
                     <button class="underline mr-1">{ "?edit" }</button>
                     <button class="underline mr-1">{ "?clone" }</button>
-                    <button class="underline mr-1">{ "?bin" }</button>
+
+                    <form
+                        class={"inline"}
+                        onsubmit={on_form_submit_bin}>
+                        <SimpleButton
+                            button_type="submit"
+                            label="Bin it!"
+                        />
+                        // <button
+                        //     class={"underline mr-1 hover:bg-red-200"}
+                        //     type="submit">
+                        //     {"Bin it"}
+                        // </button>
+                    </form>
+
                 </span>
             </td>
             <td>{"cat 1, cat 2"}</td>
