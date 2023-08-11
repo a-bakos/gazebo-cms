@@ -126,19 +126,30 @@ pub async fn insert_post(
     }
 }
 
-pub async fn update_post(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
-    let query = format!("UPDATE {} SET status = 'trash' WHERE id = $1", DB_Table::Posts);
-    match sqlx::query(&query).bind(id).execute(&pool).await {
+// todo - common data structure will be used
+#[derive(Deserialize, Serialize)]
+pub struct UpdateEntryParams {
+    pub to_update: String,
+    pub value: String,
+}
+// TODO
+fn get_column_name_by_update_params(params: &UpdateEntryParams) -> String {
+    COL_INDEX_POST_TITLE.to_string()
+}
+pub async fn update_post(id: i32, pool: PgPool, params: UpdateEntryParams) -> Result<impl warp::Reply, warp::Rejection> {
+    let column_to_update = get_column_name_by_update_params(&params);
+    let query = format!("UPDATE {} SET {} = $1 WHERE id = $2", DB_Table::Posts, column_to_update.clone());
+    match sqlx::query(&query).bind(params.value.clone()).bind(id).execute(&pool).await {
         Ok(res) => {
             if res.rows_affected() == 0 {
                 return Ok(warp::reply::with_status(
-                    String::from("Unknown post ID"),
+                    false.to_string(),
                     StatusCode::OK,
                 ));
             }
-            println!("Post updated!");
+            println!("Post updated! ID: {}, Param: {}, Value: {}", id, column_to_update, params.value);
             Ok(warp::reply::with_status(
-                format!("Post status updated! ID: {}", id),
+                true.to_string(),
                 StatusCode::OK,
             ))
         }

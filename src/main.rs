@@ -114,6 +114,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(warp::path::param::<i32>())
         .and(warp::path::end())
         .and(pool_filter.clone())
+        .and(warp::body::json())
         .and_then(routes::post::crud::update_post);
 
     // todo
