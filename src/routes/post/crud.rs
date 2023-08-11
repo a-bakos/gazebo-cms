@@ -75,8 +75,6 @@ pub async fn insert_post(
     let author_id = params.author_id;
     let slug = params.slug.clone();
     let status = params.status.clone();
-
-    let post_type = "post".to_string();
     let title = params.title.clone();
     let content = params.content.clone();
 
@@ -85,27 +83,25 @@ pub async fn insert_post(
     let excerpt = params.excerpt.clone();
 
     let query = format!(
-        "INSERT INTO {} ({}, {}, {}, {}, {}, {}, {}, {}) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+        "INSERT INTO {} ({}, {}, {}, {}, {}, {}, {}) VALUES ($1, $2, $3, $4, $5, $6, $7)",
         DB_Table::Posts,
         COL_INDEX_POST_ID_AUTHOR,
-        COL_INDEX_POST_TITLE,
-        COL_INDEX_POST_CONTENT,
-        COL_INDEX_POST_TYPE,
         COL_INDEX_POST_SLUG,
-        COL_INDEX_POST_STATUS,
+        COL_INDEX_POST_TITLE,
         COL_INDEX_POST_EXCERPT,
-        COL_INDEX_POST_PASSWORD
+        COL_INDEX_POST_CONTENT,
+        COL_INDEX_POST_PASSWORD,
+        COL_INDEX_POST_STATUS
     );
 
     match sqlx::query(&query)
         .bind(author_id)
-        .bind(title.clone())
-        .bind(content)
-        .bind(post_type)
         .bind(slug.clone())
-        .bind(status)
+        .bind(title.clone())
         .bind(excerpt)
+        .bind(content)
         .bind(password)
+        .bind(status)
         .execute(&pool)
         .await
     {
