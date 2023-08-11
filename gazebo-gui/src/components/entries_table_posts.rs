@@ -1,35 +1,18 @@
 use crate::api::post::{ContentStatus, EntryStatus, GB_Post};
 use crate::app::MainNavigationRoute;
 use yew::{platform::spawn_local, prelude::*};
+use yew::html::IntoPropValue;
 use yew_router::prelude::Link;
 use crate::{
     api::post::api_delete_entry_by_id,
     components::{
+        button::Button,
+        button::{FormWithButton,ButtonProps},
         input::Input
     }
 };
 
 use yew::prelude::*;
-
-#[derive(Properties, PartialEq)]
-pub struct ButtonProps {
-    pub label: AttrValue,
-    // pub class_list: AttrValue,
-    pub button_type: AttrValue,
-    pub value: Option<AttrValue>
-}
-
-#[function_component(Button)]
-pub fn simple_button(props: &ButtonProps) -> Html {
-    html! {
-        <button
-            // class={props.class_list.clone()}
-            type={props.button_type.clone()}
-            value={props.value.clone()}>
-            {props.label.clone()}
-        </button>
-    }
-}
 
 fn table_entry_row(row_data: &GB_Post) -> Html {
     let (status_label, status_label_class) = match row_data.status.clone() {
