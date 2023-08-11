@@ -126,9 +126,9 @@ pub async fn insert_post(
     }
 }
 
-pub async fn update_post(_id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
-    let query = format!("UPDATE {} SET status = 'trash' WHERE id = 9", DB_Table::Posts);
-    match sqlx::query(&query).execute(&pool).await {
+pub async fn update_post(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
+    let query = format!("UPDATE {} SET status = 'trash' WHERE id = $1", DB_Table::Posts);
+    match sqlx::query(&query).bind(id).execute(&pool).await {
         Ok(res) => {
             if res.rows_affected() == 0 {
                 return Ok(warp::reply::with_status(
@@ -138,7 +138,7 @@ pub async fn update_post(_id: i32, pool: PgPool) -> Result<impl warp::Reply, war
             }
             println!("Post updated!");
             Ok(warp::reply::with_status(
-                format!("Post updated"),
+                format!("Post status updated! ID: {}", id),
                 StatusCode::OK,
             ))
         }

@@ -1,4 +1,6 @@
-use crate::api::post::{ContentStatus, EntryStatus, GB_Post};
+use std::panic;
+use gloo_console::__macro::JsValue;
+use crate::api::post::{ContentStatus, EntryStatus, EntryUpdateProps, EntryUpdateType, GB_Post, update_entry_single_param};
 use crate::app::MainNavigationRoute;
 use yew::{platform::spawn_local, prelude::*};
 use yew::html::IntoPropValue;
@@ -31,12 +33,16 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
     let on_form_submit_bin = Callback::from(move |event: SubmitEvent| {
         event.prevent_default();
         spawn_local(async move {
-            let response = api_delete_entry_by_id(post_id)
-                .await
-                .unwrap();
-            match response.http_status_code {
-                200 => gloo_console::log!("{}, Successful deletion", response.details),
-                _ => gloo_console::log!("Can't delete"),
+            let update_props = EntryUpdateProps {
+                to_update: "status",
+                value: "trash",
+            };
+            let response = update_entry_single_param(post_id, update_props)
+                .await;
+
+            match response {
+                Ok(response) => gloo_console::log!(response),
+                Err(err) => gloo_console::log!(format!("{:?}", err))
             }
         });
     });

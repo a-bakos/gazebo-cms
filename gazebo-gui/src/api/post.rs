@@ -1,6 +1,6 @@
 use crate::api::{BACKEND_URL_BASE, HttpStatusCode};
 use gloo_net::http::Request;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::json;
 
 // todo - will be added to common lib
@@ -78,20 +78,24 @@ pub struct ResponseWithStatusCode {
     pub details: String,
 }
 
-/*
-pub struct EntryUpdateProps {
-    pub update: EntryUpdateType,
-    pub value:
-}
-*/
 
 // TODO WIP
-pub async fn update_entry(entry_id: u32) -> Result<bool, gloo_net::Error> {
+
+
+#[derive(Serialize)]
+pub enum EntryUpdateType {
+    Status
+}
+#[derive(Serialize)]
+pub struct EntryUpdateProps<'a> {
+    pub to_update: &'a str,//EntryUpdateType,
+    pub value: &'a str,
+}
+pub async fn update_entry_single_param<'a>(entry_id: u32, update_props: EntryUpdateProps<'a>) -> Result<String, gloo_net::Error> {
     let response = Request::put(&format!("{}/post/{}", BACKEND_URL_BASE, entry_id))
         .json(&json!({
-            "update": "status",
-            "value": "trash"
+            "update": update_props.to_update,
+            "value": update_props.value
         }))?.send().await?;
-    // todo match on response and turn it into bool!
-    response.json::<bool>().await
+    response.text().await
 }
