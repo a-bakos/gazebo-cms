@@ -1,6 +1,7 @@
-use crate::api::BACKEND_URL_BASE;
+use crate::api::{BACKEND_URL_BASE, HttpStatusCode};
 use gloo_net::http::Request;
 use serde::Deserialize;
+use serde_json::json;
 
 // todo - will be added to common lib
 #[allow(non_camel_case_types)]
@@ -64,8 +65,33 @@ pub async fn api_get_all_posts() -> Result<Vec<GB_Post>, gloo_net::Error> {
     response.json::<Vec<GB_Post>>().await
 }
 
-pub async fn api_delete_entry_by_id(entry_id: u32) -> Result<bool, gloo_net::Error> {
+pub async fn api_delete_entry_by_id(entry_id: u32) -> Result<ResponseWithStatusCode, gloo_net::Error> {
     let response = Request::delete(&format!("{}/post/{}", BACKEND_URL_BASE, entry_id)).send().await?;
+    // todo match on response and turn it into bool!
+    gloo_console::log!("{}", response.body());
+    response.json::<ResponseWithStatusCode>().await
+}
+
+#[derive(Deserialize)]
+pub struct ResponseWithStatusCode {
+    pub http_status_code: HttpStatusCode,
+    pub details: String,
+}
+
+/*
+pub struct EntryUpdateProps {
+    pub update: EntryUpdateType,
+    pub value:
+}
+*/
+
+// TODO WIP
+pub async fn update_entry(entry_id: u32) -> Result<bool, gloo_net::Error> {
+    let response = Request::put(&format!("{}/post/{}", BACKEND_URL_BASE, entry_id))
+        .json(&json!({
+            "update": "status",
+            "value": "trash"
+        }))?.send().await?;
     // todo match on response and turn it into bool!
     response.json::<bool>().await
 }

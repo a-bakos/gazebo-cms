@@ -31,10 +31,11 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
     let on_form_submit_bin = Callback::from(move |event: SubmitEvent| {
         event.prevent_default();
         spawn_local(async move {
-            match api_delete_entry_by_id(post_id)
+            let response = api_delete_entry_by_id(post_id)
                 .await
-                .unwrap() {
-                true => gloo_console::log!("Successful deletion"),
+                .unwrap();
+            match response.http_status_code {
+                200 => gloo_console::log!("{}, Successful deletion", response.details),
                 _ => gloo_console::log!("Can't delete"),
             }
         });

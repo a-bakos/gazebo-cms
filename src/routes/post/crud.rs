@@ -126,10 +126,24 @@ pub async fn insert_post(
     }
 }
 
-#[allow(dead_code)]
-pub fn update_post(_pool: PgPool, _params: HashMap<String, String>) {
-    // -> Result<impl warp::Reply, warp::Rejection> {
-    todo!(); // w/ card
+pub async fn update_post(_id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
+    let query = format!("UPDATE {} SET status = 'trash' WHERE id = 9", DB_Table::Posts);
+    match sqlx::query(&query).execute(&pool).await {
+        Ok(res) => {
+            if res.rows_affected() == 0 {
+                return Ok(warp::reply::with_status(
+                    String::from("Unknown post ID"),
+                    StatusCode::OK,
+                ));
+            }
+            println!("Post updated!");
+            Ok(warp::reply::with_status(
+                format!("Post updated"),
+                StatusCode::OK,
+            ))
+        }
+        Err(e) => Err(warp::reject::custom(SqlxError(e))),
+    }
 }
 
 pub async fn delete_post(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
