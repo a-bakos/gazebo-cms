@@ -12,18 +12,20 @@ use crate::{
 use yew::prelude::*;
 
 #[derive(Properties, PartialEq)]
-pub struct SimpleButtonProps {
+pub struct ButtonProps {
     pub label: AttrValue,
     // pub class_list: AttrValue,
     pub button_type: AttrValue,
+    pub value: Option<AttrValue>
 }
 
-#[function_component(SimpleButton)]
-pub fn simple_button(props: &SimpleButtonProps) -> Html {
+#[function_component(Button)]
+pub fn simple_button(props: &ButtonProps) -> Html {
     html! {
         <button
             // class={props.class_list.clone()}
-            type={props.button_type.clone()}>
+            type={props.button_type.clone()}
+            value={props.value.clone()}>
             {props.label.clone()}
         </button>
     }
@@ -71,15 +73,10 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
                     <form
                         class={"inline"}
                         onsubmit={on_form_submit_bin}>
-                        <SimpleButton
+                        <Button
                             button_type="submit"
                             label="Bin it!"
                         />
-                        // <button
-                        //     class={"underline mr-1 hover:bg-red-200"}
-                        //     type="submit">
-                        //     {"Bin it"}
-                        // </button>
                     </form>
 
                 </span>
