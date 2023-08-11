@@ -118,7 +118,7 @@ pub async fn insert_post(
                 .fetch_one(&pool)
                 .await
             {
-                Ok(id) => Ok(warp::reply::json(&format!("ID: {}", id))),
+                Ok(id) => Ok(warp::reply::json(&id)),
                 Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
             }
         }
