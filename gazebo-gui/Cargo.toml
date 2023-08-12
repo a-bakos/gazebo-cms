@@ -11,9 +11,9 @@ categories = ["gui", "wasm", "web-programming"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
-yew = { version="0.20", features=["csr"] }
+yew = { version = "0.20", features = ["csr"] }
 yew-router = "0.17.0"
-web-sys = { version="0.3", features=["HtmlInputElement"] }
+web-sys = { version = "0.3", features = ["HtmlInputElement"] }
 gloo-console = "0.2.3"
 gloo-net = "0.2.6"
 serde = "1.0.163"
@@ -21,3 +21,5 @@ serde_json = "1.0.96"
 # from blog
 log = "0.4.6"
 wasm-logger = "0.2.0"
+# Gazebo crates
+gazebo-core-common = { version = "0.1.0", path = "../gazebo-core-common" }

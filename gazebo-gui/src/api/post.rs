@@ -13,12 +13,14 @@ pub struct GB_Post {
     pub date_publish: String,
     pub date_modified: String,
     pub slug: Option<String>,
-    pub status: EntryStatus, // todo
+    pub status: EntryStatus,
+    // todo
     pub title: Option<String>,
     pub excerpt: Option<String>,
     pub content: Option<String>,
     pub password: Option<String>,
 }
+
 // todo - will be added to common lib
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 pub enum EntryStatus {
@@ -26,6 +28,7 @@ pub enum EntryStatus {
     Media(MediaStatus),
     Unknown,
 }
+
 // todo - will be added to common lib
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 pub enum ContentStatus {
@@ -37,6 +40,7 @@ pub enum ContentStatus {
     // Future
     // Pending
 }
+
 // todo - will be added to common lib
 impl From<String> for ContentStatus {
     fn from(value: String) -> Self {
@@ -49,6 +53,7 @@ impl From<String> for ContentStatus {
         }
     }
 }
+
 // todo - will be added to common lib
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 pub enum MediaStatus {
@@ -88,18 +93,29 @@ pub struct ResponseWithStatusCode {
 pub enum EntryUpdateType {
     Status,
 }
+
+use gazebo_core_common::entry::entry_type::EntryType;
+
 #[derive(Serialize)]
 pub struct EntryUpdateProps<'a> {
-    pub to_update: &'a str, //EntryUpdateType,
+    pub to_update: &'a str,
+    //EntryUpdateType,
     pub value: &'a str,
+    pub entry_type: EntryType,
 }
+
 pub async fn update_entry_single_param<'a>(
     entry_id: u32,
     update_props: EntryUpdateProps<'a>,
 ) -> Result<String, gloo_net::Error> {
-    let response = Request::put(&format!("{}/post/{}", BACKEND_URL_BASE, entry_id))
-        .json(&json!(update_props))?
-        .send()
-        .await?;
+    let response = Request::put(&format!(
+        "{}/{}/{}",
+        BACKEND_URL_BASE,
+        update_props.entry_type.to_string(),
+        entry_id
+    ))
+    .json(&json!(update_props))?
+    .send()
+    .await?;
     response.text().await
 }

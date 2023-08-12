@@ -11,6 +11,9 @@ use crate::{
         input::Input,
     },
 };
+
+use gazebo_core_common::entry::entry_type::EntryType;
+
 use gloo_console::__macro::JsValue;
 use std::panic;
 use yew::html::IntoPropValue;
@@ -39,6 +42,7 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
             let update_props = EntryUpdateProps {
                 to_update: "status",
                 value: "trash",
+                entry_type: EntryType::Post,
             };
             let response = update_entry_single_param(post_id.clone(), update_props).await;
             match response {
@@ -54,6 +58,7 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
             let update_props = EntryUpdateProps {
                 to_update: "status",
                 value: "publish",
+                entry_type: EntryType::Post,
             };
             let response = update_entry_single_param(post_id, update_props).await;
             match response {
