@@ -14,16 +14,18 @@ use crate::{
 
 use gazebo_core_common::entry::entry_type::EntryType;
 
-use gloo_console::__macro::JsValue;
-use std::panic;
 use yew::html::IntoPropValue;
 use yew::{platform::spawn_local, prelude::*};
-use yew_router::prelude::Link;
+use yew_router::prelude::*;
 
-use yew::prelude::*;
+#[derive(Properties, PartialEq)]
+pub struct PostTableRowProps {
+    pub row_data: GB_Post,
+}
 
-fn table_entry_row(row_data: &GB_Post) -> Html {
-    let (status_label, status_label_class) = match row_data.status.clone() {
+#[function_component(PostTableRow)]
+pub fn table_entry_row(props: &PostTableRowProps) -> Html {
+    let (status_label, status_label_class) = match props.row_data.status.clone() {
         // todo - will be added to common lib
         EntryStatus::Post(content_status) => match content_status {
             ContentStatus::Draft => ("draft".to_string(), "bg-pink-200"),
@@ -35,11 +37,13 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
         _ => ("unknown".to_string(), "bg-white-100"),
     };
 
-    let post_id = row_data.id.clone();
+    let post_id = props.row_data.id.clone();
+    let navigator = use_navigator();
 
     // Button event: Move post to bin // TODO reload after callback completion
     let on_form_submit_bin = Callback::from(move |event: SubmitEvent| {
         event.prevent_default();
+        let clone_navigator = navigator.clone();
         spawn_local(async move {
             match update_entry_single_param(
                 EntryType::Post,
@@ -51,7 +55,13 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
             )
             .await
             {
-                Ok(response) => gloo_console::log!(response),
+                Ok(response) => {
+                    gloo_console::log!(response);
+                    // TODO
+                    if let Some(nav) = clone_navigator {
+                        nav.push(&MainNavigationRoute::Admin)
+                    }
+                }
                 Err(err) => gloo_console::log!(format!("{:?}", err)),
             }
         });
@@ -83,7 +93,7 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
                 <Link<MainNavigationRoute>
                     to={MainNavigationRoute::EntryEdit}
                     classes="font-bold text-blue-600">
-                    {row_data.title.clone()}
+                    {props.row_data.title.clone()}
                 </Link<MainNavigationRoute>>
                 <span class="block">
                     <a class="underline mr-1">{ "?view" }</a>
@@ -102,7 +112,7 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
                 </span>
             </td>
             <td>{"cat 1, cat 2"}</td>
-            <td>{row_data.id_author.clone()}</td>
+            <td>{props.row_data.id_author.clone()}</td>
             <td>
                 <span class={ format!("{} px-2 rounded-md", status_label_class) }>
                     { status_label.clone() }
@@ -125,11 +135,11 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
                 }
             </td>
             <td>
-                <p>{ row_data.date_publish.clone() }</p>
+                <p>{ props.row_data.date_publish.clone() }</p>
                 <p>{ "?by admin" }</p>
             </td>
             <td>
-                <p>{ row_data.date_modified.clone() }</p>
+                <p>{ props.row_data.date_modified.clone() }</p>
                 <p>{ "?by editor" }</p>
             </td>
         </tr>
@@ -172,7 +182,8 @@ pub fn table_entries() -> Html {
                 <tbody>
                     {
                         for row_titles.iter().map(|entry_row| html! {
-                            table_entry_row(entry_row)
+                            // table_entry_row(entry_row)
+                            <PostTableRow row_data={entry_row.clone()} />
                         } )
                     }
                 </tbody>
