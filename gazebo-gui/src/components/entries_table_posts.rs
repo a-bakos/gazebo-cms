@@ -1,18 +1,21 @@
-use std::panic;
-use gloo_console::__macro::JsValue;
-use crate::api::post::{ContentStatus, EntryStatus, EntryUpdateProps, EntryUpdateType, GB_Post, update_entry_single_param};
+use crate::api::post::{
+    update_entry_single_param, ContentStatus, EntryStatus, EntryUpdateProps, EntryUpdateType,
+    GB_Post,
+};
 use crate::app::MainNavigationRoute;
-use yew::{platform::spawn_local, prelude::*};
-use yew::html::IntoPropValue;
-use yew_router::prelude::Link;
 use crate::{
     api::post::api_delete_entry_by_id,
     components::{
         button::Button,
-        button::{FormWithButton,ButtonProps},
-        input::Input
-    }
+        button::{ButtonProps, FormWithButton},
+        input::Input,
+    },
 };
+use gloo_console::__macro::JsValue;
+use std::panic;
+use yew::html::IntoPropValue;
+use yew::{platform::spawn_local, prelude::*};
+use yew_router::prelude::Link;
 
 use yew::prelude::*;
 
@@ -37,12 +40,25 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
                 to_update: "status",
                 value: "trash",
             };
-            let response = update_entry_single_param(post_id, update_props)
-                .await;
-
+            let response = update_entry_single_param(post_id.clone(), update_props).await;
             match response {
                 Ok(response) => gloo_console::log!(response),
-                Err(err) => gloo_console::log!(format!("{:?}", err))
+                Err(err) => gloo_console::log!(format!("{:?}", err)),
+            }
+        });
+    });
+
+    let on_form_submit_publish = Callback::from(move |event: SubmitEvent| {
+        event.prevent_default();
+        spawn_local(async move {
+            let update_props = EntryUpdateProps {
+                to_update: "status",
+                value: "publish",
+            };
+            let response = update_entry_single_param(post_id, update_props).await;
+            match response {
+                Ok(response) => gloo_console::log!(response),
+                Err(err) => gloo_console::log!(format!("{:?}", err)),
             }
         });
     });
@@ -80,11 +96,14 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
                 {
                     if status_label == "draft" {
                         html! {
-                            <span class="block">
-                                <a href="" class="underline">
-                                    { "publish now" }
-                                </a>
-                            </span>
+                            <form
+                                class={"block"}
+                                onsubmit={on_form_submit_publish}>
+                                <Button
+                                    button_type="submit"
+                                    label="publish now"
+                                />
+                            </form>
                         }
                     } else {
                         html! {}

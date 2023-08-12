@@ -1,4 +1,4 @@
-use crate::api::{BACKEND_URL_BASE, HttpStatusCode};
+use crate::api::{HttpStatusCode, BACKEND_URL_BASE};
 use gloo_net::http::Request;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
@@ -65,8 +65,12 @@ pub async fn api_get_all_posts() -> Result<Vec<GB_Post>, gloo_net::Error> {
     response.json::<Vec<GB_Post>>().await
 }
 
-pub async fn api_delete_entry_by_id(entry_id: u32) -> Result<ResponseWithStatusCode, gloo_net::Error> {
-    let response = Request::delete(&format!("{}/post/{}", BACKEND_URL_BASE, entry_id)).send().await?;
+pub async fn api_delete_entry_by_id(
+    entry_id: u32,
+) -> Result<ResponseWithStatusCode, gloo_net::Error> {
+    let response = Request::delete(&format!("{}/post/{}", BACKEND_URL_BASE, entry_id))
+        .send()
+        .await?;
     // todo match on response and turn it into bool!
     gloo_console::log!("{}", response.body());
     response.json::<ResponseWithStatusCode>().await
@@ -78,24 +82,24 @@ pub struct ResponseWithStatusCode {
     pub details: String,
 }
 
-
 // TODO WIP
-
 
 #[derive(Serialize)]
 pub enum EntryUpdateType {
-    Status
+    Status,
 }
 #[derive(Serialize)]
 pub struct EntryUpdateProps<'a> {
-    pub to_update: &'a str,//EntryUpdateType,
+    pub to_update: &'a str, //EntryUpdateType,
     pub value: &'a str,
 }
-pub async fn update_entry_single_param<'a>(entry_id: u32, update_props: EntryUpdateProps<'a>) -> Result<String, gloo_net::Error> {
+pub async fn update_entry_single_param<'a>(
+    entry_id: u32,
+    update_props: EntryUpdateProps<'a>,
+) -> Result<String, gloo_net::Error> {
     let response = Request::put(&format!("{}/post/{}", BACKEND_URL_BASE, entry_id))
-        .json(&json!({
-            "update": update_props.to_update,
-            "value": update_props.value
-        }))?.send().await?;
+        .json(&json!(update_props))?
+        .send()
+        .await?;
     response.text().await
 }
