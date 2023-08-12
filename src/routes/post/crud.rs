@@ -134,27 +134,23 @@ pub struct UpdateEntryParams {
     pub value: String,
 }
 
-// TODO - temp fn
-fn get_column_name_by_update_params(_params: &UpdateEntryParams) -> String {
-    COL_INDEX_POST_STATUS.to_string()
+fn get_table_and_column_name(_params: &UpdateEntryParams) -> (String, String) {
+    (
+        DB_Table::Posts.to_string(),
+        COL_INDEX_POST_STATUS.to_string(),
+    )
 }
 
-// todo - temp fn
-fn get_table_name_by_update_params(_params: &UpdateEntryParams) -> String {
-    DB_Table::Posts.to_string()
-}
-
-pub async fn update_post(
+pub async fn update_entry_single_param(
     id: i32,
     pool: PgPool,
     params: UpdateEntryParams,
 ) -> Result<impl warp::Reply, warp::Rejection> {
-    let column_to_update = get_column_name_by_update_params(&params);
-    let table_name = get_table_name_by_update_params(&params);
+    let (table, column) = get_table_and_column_name(&params);
     let query = format!(
         "UPDATE {} SET {} = $1 WHERE id = $2",
-        table_name,
-        column_to_update.clone()
+        table.clone(),
+        column.clone()
     );
     match sqlx::query(&query)
         .bind(params.value.clone())
@@ -167,8 +163,8 @@ pub async fn update_post(
                 return Ok(warp::reply::with_status(false.to_string(), StatusCode::OK));
             }
             println!(
-                "Post updated! ID: {}, Param: {}, Value: {}",
-                id, column_to_update, params.value
+                "Entry updated! Type: {}, ID: {}, Param: {}, Value: {}",
+                table, id, column, params.value
             );
             Ok(warp::reply::with_status(true.to_string(), StatusCode::OK))
         }
