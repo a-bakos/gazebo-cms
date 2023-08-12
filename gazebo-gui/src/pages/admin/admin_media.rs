@@ -2,7 +2,7 @@
 
 use yew::prelude::*;
 
-use crate::components::{admin_bar::AdminBar};
+use crate::components::admin_bar::AdminBar;
 
 #[function_component(AdminMedia)]
 pub fn admin_media() -> Html {

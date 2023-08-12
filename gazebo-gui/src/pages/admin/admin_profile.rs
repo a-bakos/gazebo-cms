@@ -1,9 +1,6 @@
 use yew::prelude::*;
 
-use crate::components::{
-    admin_bar::AdminBar, 
-    admin::profile_editor::ProfileEditor
-};
+use crate::components::{admin::profile_editor::ProfileEditor, admin_bar::AdminBar};
 
 #[function_component(AdminProfile)]
 pub fn admin_profile() -> Html {

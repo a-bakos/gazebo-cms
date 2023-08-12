@@ -3,8 +3,7 @@
 use yew::prelude::*;
 
 use crate::components::{
-    admin_bar::AdminBar, button_add_new_entry::ButtonAddNewEntry,
-    entries_table_posts::EntriesTable,
+    admin_bar::AdminBar, button_add_new_entry::ButtonAddNewEntry, entries_table_posts::EntriesTable,
 };
 
 #[function_component(AdminPosts)]

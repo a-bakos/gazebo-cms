@@ -12,6 +12,7 @@ use crate::{
 };
 use gazebo_core_common::entry::gb_post::GB_Post;
 
+use crate::database::consts::DB_TABLE_POSTS;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
 use std::collections::HashMap;
@@ -75,8 +76,6 @@ pub async fn insert_post(
     let author_id = params.author_id;
     let slug = params.slug.clone();
     let status = params.status.clone();
-
-    let post_type = "post".to_string();
     let title = params.title.clone();
     let content = params.content.clone();
 
@@ -85,27 +84,25 @@ pub async fn insert_post(
     let excerpt = params.excerpt.clone();
 
     let query = format!(
-        "INSERT INTO {} ({}, {}, {}, {}, {}, {}, {}, {}) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+        "INSERT INTO {} ({}, {}, {}, {}, {}, {}, {}) VALUES ($1, $2, $3, $4, $5, $6, $7)",
         DB_Table::Posts,
         COL_INDEX_POST_ID_AUTHOR,
-        COL_INDEX_POST_TITLE,
-        COL_INDEX_POST_CONTENT,
-        COL_INDEX_POST_TYPE,
         COL_INDEX_POST_SLUG,
-        COL_INDEX_POST_STATUS,
+        COL_INDEX_POST_TITLE,
         COL_INDEX_POST_EXCERPT,
-        COL_INDEX_POST_PASSWORD
+        COL_INDEX_POST_CONTENT,
+        COL_INDEX_POST_PASSWORD,
+        COL_INDEX_POST_STATUS
     );
 
     match sqlx::query(&query)
         .bind(author_id)
-        .bind(title.clone())
-        .bind(content)
-        .bind(post_type)
         .bind(slug.clone())
-        .bind(status)
+        .bind(title.clone())
         .bind(excerpt)
+        .bind(content)
         .bind(password)
+        .bind(status)
         .execute(&pool)
         .await
     {
@@ -122,7 +119,7 @@ pub async fn insert_post(
                 .fetch_one(&pool)
                 .await
             {
-                Ok(id) => Ok(warp::reply::json(&format!("ID: {}", id))),
+                Ok(id) => Ok(warp::reply::json(&id)),
                 Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
             }
         }
@@ -130,10 +127,49 @@ pub async fn insert_post(
     }
 }
 
-#[allow(dead_code)]
-pub fn update_post(_pool: PgPool, _params: HashMap<String, String>) {
-    // -> Result<impl warp::Reply, warp::Rejection> {
-    todo!(); // w/ card
+// todo - common data structure will be used
+#[derive(Deserialize, Serialize)]
+pub struct UpdateEntryParams {
+    pub to_update: String,
+    pub value: String,
+}
+
+fn get_table_and_column_name(_params: &UpdateEntryParams) -> (String, String) {
+    (
+        DB_Table::Posts.to_string(),
+        COL_INDEX_POST_STATUS.to_string(),
+    )
+}
+
+pub async fn update_entry_single_param(
+    id: i32,
+    pool: PgPool,
+    params: UpdateEntryParams,
+) -> Result<impl warp::Reply, warp::Rejection> {
+    let (table, column) = get_table_and_column_name(&params);
+    let query = format!(
+        "UPDATE {} SET {} = $1 WHERE id = $2",
+        table.clone(),
+        column.clone()
+    );
+    match sqlx::query(&query)
+        .bind(params.value.clone())
+        .bind(id)
+        .execute(&pool)
+        .await
+    {
+        Ok(res) => {
+            if res.rows_affected() == 0 {
+                return Ok(warp::reply::with_status(false.to_string(), StatusCode::OK));
+            }
+            println!(
+                "Entry updated! Type: {}, ID: {}, Param: {}, Value: {}",
+                table, id, column, params.value
+            );
+            Ok(warp::reply::with_status(true.to_string(), StatusCode::OK))
+        }
+        Err(e) => Err(warp::reject::custom(SqlxError(e))),
+    }
 }
 
 pub async fn delete_post(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {

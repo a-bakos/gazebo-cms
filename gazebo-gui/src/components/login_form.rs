@@ -4,10 +4,7 @@ use yew_router::prelude::*;
 use crate::{
     api::user::{api_login_request, LoginResponseWithStatusCode},
     app::MainNavigationRoute,
-    components::{
-        input::Input,
-        lost_password::LostPassword,
-    },
+    components::{input::Input, lost_password::LostPassword},
     context::{CurrentUserContext, CurrentUserDispatchActions, UserAction::LoginSuccess},
 };
 
