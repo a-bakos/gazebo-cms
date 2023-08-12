@@ -1,7 +1,7 @@
 use crate::api::user::{AccountRole, GB_Account};
-use yew::prelude::*;
-use yew::{platform::spawn_local};
 use crate::app::MainNavigationRoute;
+use yew::platform::spawn_local;
+use yew::prelude::*;
 use yew_router::prelude::Link;
 
 fn table_account_row(row_data: &GB_Account) -> Html {

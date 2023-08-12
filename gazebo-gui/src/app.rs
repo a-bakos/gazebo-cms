@@ -1,18 +1,15 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-use crate::{
-    pages::{
-        admin::{
-            admin_accounts::AdminAccounts, admin_dashboard::AdminDashboard,
-            admin_media::AdminMedia, admin_posts::AdminPosts, admin_settings::AdminSettings,
-            admin_profile::AdminProfile,
-        },
-        edit_entry::EntryEdit,
-        home::Home,
-        login::Login,
-        not_found::NotFound,
+use crate::pages::{
+    admin::{
+        admin_accounts::AdminAccounts, admin_dashboard::AdminDashboard, admin_media::AdminMedia,
+        admin_posts::AdminPosts, admin_profile::AdminProfile, admin_settings::AdminSettings,
     },
+    edit_entry::EntryEdit,
+    home::Home,
+    login::Login,
+    not_found::NotFound,
 };
 
 #[derive(Clone, PartialEq, Routable)]

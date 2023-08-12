@@ -5,7 +5,7 @@ pub struct ButtonProps {
     pub label: AttrValue,
     // pub class_list: AttrValue,
     pub button_type: AttrValue,
-    pub value: Option<AttrValue>
+    pub value: Option<AttrValue>,
 }
 
 #[function_component(Button)]
@@ -25,7 +25,6 @@ pub struct FormWithButtonProps {
     pub on_submit: Callback<SubmitEvent>,
     pub button_props: ButtonProps,
 }
-
 
 #[function_component(FormWithButton)]
 pub fn form_with_button(props: &FormWithButtonProps) -> Html {

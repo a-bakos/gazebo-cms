@@ -1,6 +1,6 @@
 // Login page
 
-use crate::components::{login_form::LoginForm};
+use crate::components::login_form::LoginForm;
 use yew::prelude::*;
 
 #[function_component(Login)]
