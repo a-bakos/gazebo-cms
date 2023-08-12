@@ -101,17 +101,18 @@ pub struct EntryUpdateProps<'a> {
     pub to_update: &'a str,
     //EntryUpdateType,
     pub value: &'a str,
-    pub entry_type: EntryType,
 }
 
+/// Update a single entry parameter
 pub async fn update_entry_single_param<'a>(
+    entry_type: EntryType,
     entry_id: u32,
     update_props: EntryUpdateProps<'a>,
 ) -> Result<String, gloo_net::Error> {
     let response = Request::put(&format!(
         "{}/{}/{}",
         BACKEND_URL_BASE,
-        update_props.entry_type.to_string(),
+        entry_type.to_string(),
         entry_id
     ))
     .json(&json!(update_props))?

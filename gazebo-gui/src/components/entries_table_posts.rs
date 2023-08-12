@@ -36,32 +36,41 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
     };
 
     let post_id = row_data.id.clone();
+
+    // Button event: Move post to bin // TODO reload after callback completion
     let on_form_submit_bin = Callback::from(move |event: SubmitEvent| {
         event.prevent_default();
         spawn_local(async move {
-            let update_props = EntryUpdateProps {
-                to_update: "status",
-                value: "trash",
-                entry_type: EntryType::Post,
-            };
-            let response = update_entry_single_param(post_id.clone(), update_props).await;
-            match response {
+            match update_entry_single_param(
+                EntryType::Post,
+                post_id.clone(),
+                EntryUpdateProps {
+                    to_update: "status",
+                    value: "trash",
+                },
+            )
+            .await
+            {
                 Ok(response) => gloo_console::log!(response),
                 Err(err) => gloo_console::log!(format!("{:?}", err)),
             }
         });
     });
 
+    // Button event: Publish draft post // TODO reload after callback completion
     let on_form_submit_publish = Callback::from(move |event: SubmitEvent| {
         event.prevent_default();
         spawn_local(async move {
-            let update_props = EntryUpdateProps {
-                to_update: "status",
-                value: "publish",
-                entry_type: EntryType::Post,
-            };
-            let response = update_entry_single_param(post_id, update_props).await;
-            match response {
+            match update_entry_single_param(
+                EntryType::Post,
+                post_id,
+                EntryUpdateProps {
+                    to_update: "status",
+                    value: "publish",
+                },
+            )
+            .await
+            {
                 Ok(response) => gloo_console::log!(response),
                 Err(err) => gloo_console::log!(format!("{:?}", err)),
             }
@@ -77,8 +86,8 @@ fn table_entry_row(row_data: &GB_Post) -> Html {
                     {row_data.title.clone()}
                 </Link<MainNavigationRoute>>
                 <span class="block">
-                    <button class="underline mr-1">{ "?view" }</button>
-                    <button class="underline mr-1">{ "?edit" }</button>
+                    <a class="underline mr-1">{ "?view" }</a>
+                    <a class="underline mr-1">{ "?edit" }</a>
                     <button class="underline mr-1">{ "?clone" }</button>
 
                     <form

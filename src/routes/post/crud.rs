@@ -12,6 +12,7 @@ use crate::{
 };
 use gazebo_core_common::entry::gb_post::GB_Post;
 
+use crate::database::consts::DB_TABLE_POSTS;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
 use std::collections::HashMap;
@@ -133,9 +134,14 @@ pub struct UpdateEntryParams {
     pub value: String,
 }
 
-// TODO
-fn get_column_name_by_update_params(params: &UpdateEntryParams) -> String {
+// TODO - temp fn
+fn get_column_name_by_update_params(_params: &UpdateEntryParams) -> String {
     COL_INDEX_POST_STATUS.to_string()
+}
+
+// todo - temp fn
+fn get_table_name_by_update_params(_params: &UpdateEntryParams) -> String {
+    DB_Table::Posts.to_string()
 }
 
 pub async fn update_post(
@@ -144,9 +150,10 @@ pub async fn update_post(
     params: UpdateEntryParams,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     let column_to_update = get_column_name_by_update_params(&params);
+    let table_name = get_table_name_by_update_params(&params);
     let query = format!(
         "UPDATE {} SET {} = $1 WHERE id = $2",
-        DB_Table::Posts,
+        table_name,
         column_to_update.clone()
     );
     match sqlx::query(&query)
