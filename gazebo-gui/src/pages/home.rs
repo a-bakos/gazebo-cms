@@ -1,10 +1,11 @@
 // Homepage
 
-use crate::api::post::GB_Post;
+use crate::api::post::{ContentStatus, EntryStatus, GB_Post};
 use yew::platform::spawn_local;
 use yew::prelude::*;
 
 use crate::components::{admin_bar::AdminBar, footer::Footer, nav::Nav};
+use gazebo_core_common::consts::{ENTRY_TYPE_POST, POST_UNTITLED_DEFAULT_TITLE};
 
 #[function_component(Home)]
 pub fn home() -> Html {
@@ -41,13 +42,45 @@ pub fn home() -> Html {
                 <h1 class={"text-3xl"}>{"Hello, "}{name.clone()}</h1>
                 <section class={"mx-auto max-w-6xl"}>
                     {
-                        for row_titles.iter().map(|entry_row| html! {
-                            <article class={"bg-yellow-100 mb-3"}>
-                                <h2 class={"bold text-xl"}>{entry_row.title.clone()}</h2>
-                                <p>{"Published: "} {entry_row.date_publish.clone()}</p>
-                                <p>{"By: "} {entry_row.id_author}</p>
-                                <p>{entry_row.content.clone()}</p>
-                            </article>
+                        for row_titles.iter().filter(|entry_row|
+                            // entry_row.status != EntryStatus::Post(ContentStatus::Draft) &&
+                            entry_row.status != EntryStatus::Post(ContentStatus::Trash) //&&
+                            // entry_row.status != EntryStatus::Post(ContentStatus::Private)
+                        )
+                        .map(|entry_row| {
+                            let entry_prefix_title = match entry_row.status {
+                                EntryStatus::Post(ContentStatus::Draft) => "Draft: ",
+                                EntryStatus::Post(ContentStatus::Private) => "Private: ",
+                                _ => "",
+                            };
+                            let entry_title = match entry_row.title.clone() {
+                                Some(title) => title,
+                                None => POST_UNTITLED_DEFAULT_TITLE.to_string(),
+                            };
+
+                            html! {
+                                <article class={"bg-yellow-100 mb-3"}>
+                                    <h2 class={"bold text-xl"}>
+                                        <a
+                                            title={entry_title.clone()}
+                                            class={"hover:underline"}
+                                            href={format!{"/{}?id={}", ENTRY_TYPE_POST, entry_row.id}}>
+                                            {format!{"{}{}", entry_prefix_title, entry_title.clone()}}
+                                        </a>
+                                    </h2>
+                                    <p>{"Published: "} {entry_row.date_publish.clone()}</p>
+                                    <p>{"By: "} {entry_row.id_author}</p>
+                                    <p>{entry_row.excerpt.clone()}</p>
+                                    <p>{entry_row.content.clone()}</p>
+                                    <hr />
+                                    <a
+                                        class={"underline"}
+                                        href={format!{"/{}?id={}", ENTRY_TYPE_POST, entry_row.id}}
+                                        title={entry_title.clone()}>
+                                        {"Read more"}
+                                    </a>
+                                </article>
+                            }
                         } )
                     }
                 </section>
