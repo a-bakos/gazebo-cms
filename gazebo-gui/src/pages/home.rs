@@ -1,11 +1,18 @@
 // Homepage
 
-use crate::api::post::{ContentStatus, EntryStatus, GB_Post};
 use yew::platform::spawn_local;
 use yew::prelude::*;
 
-use crate::components::{admin_bar::AdminBar, footer::Footer, nav::Nav};
-use gazebo_core_common::consts::{ENTRY_TYPE_POST, POST_UNTITLED_DEFAULT_TITLE};
+use gazebo_core_common::{
+    consts::{ENTRY_TYPE_POST, POST_UNTITLED_DEFAULT_TITLE},
+    entry::entry_type::EntryType,
+    helpers::get_permalink,
+};
+
+use crate::{
+    api::post::{ContentStatus, EntryStatus, GB_Post},
+    components::{admin_bar::AdminBar, footer::Footer, nav::Nav},
+};
 
 #[function_component(Home)]
 pub fn home() -> Html {
@@ -64,7 +71,7 @@ pub fn home() -> Html {
                                         <a
                                             title={entry_title.clone()}
                                             class={"hover:underline"}
-                                            href={format!{"/{}?id={}", ENTRY_TYPE_POST, entry_row.id}}>
+                                            href={get_permalink(EntryType::Post, entry_row.id)}>
                                             {format!{"{}{}", entry_prefix_title, entry_title.clone()}}
                                         </a>
                                     </h2>
@@ -75,7 +82,7 @@ pub fn home() -> Html {
                                     <hr />
                                     <a
                                         class={"underline"}
-                                        href={format!{"/{}?id={}", ENTRY_TYPE_POST, entry_row.id}}
+                                        href={get_permalink(EntryType::Post, entry_row.id)}
                                         title={entry_title.clone()}>
                                         {"Read more"}
                                     </a>

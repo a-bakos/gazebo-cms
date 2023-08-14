@@ -1,3 +1,5 @@
+use crate::entry::entry_type::EntryType;
+
 /// Checks if a string contains any special characters.
 ///
 /// A special character is considered any character that is not a lowercase or uppercase letter,
@@ -86,6 +88,19 @@ pub fn str_contains_number(str_to_check: &str) -> bool {
         }
         false
     })
+}
+
+pub fn get_permalink(entry_type: EntryType, entry_id: u32) -> String {
+    let entry_type = match entry_type {
+        EntryType::Post => EntryType::Post.to_string(),
+        EntryType::Page => EntryType::Page.to_string(),
+        EntryType::Log => EntryType::Log.to_string(),
+        EntryType::Media => EntryType::Media.to_string(),
+        EntryType::Search => EntryType::Search.to_string(),
+        EntryType::Unknown => "".to_string(),
+    };
+
+    format! {"/{}?id={}", entry_type, entry_id}
 }
 
 #[cfg(test)]
