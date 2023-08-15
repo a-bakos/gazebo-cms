@@ -6,11 +6,11 @@
 This is a side-project for myself to practice and grow my Rust (and related) skills. The main idea behind this project is to explore and
 re-create some parts of WordPress using Rust in order to pick up new things, solidify what I've learnt already, understand and commit to muscle memory.
 
-**The main tech stack so far:** Rust, obviosuly. Warp for the web server; PostgreSQL for the database; Yew (w/ router) for the front-end; Sass for styling (w/ a CSS framework TBD); Trunk to build the front-end assets & WebAssembly
+**The main tech stack so far:** Rust, obviosuly. Warp for the web server; PostgreSQL for the database; Yew (w/ router) for the front-end; Tailwind CSS; Trunk; WebAssembly
 
 **Project state:** Active development (not ready for public use)
 
-Why WordPress? Because I love WordPress and I know it like the back of my hand. It's that simple. I also work in the publishing industry, building tools and platforms for editors and marketers, so _content management_ has a deeper meaning for me. However, I don't consider WP to "just" be a blogging platform (I don't think that's appropriate anymore), but a framework. _Gazebo_ enables me to combine my technical expertise with my industry experience.
+Why WordPress? Because I love WordPress and I know it like the back of my hand. It's that simple. I also work in the publishing industry, building tools and platforms for editors and marketers, so _content management_ has a deeper meaning for me. I don't consider WP to "just" be a blogging platform (I don't think that's appropriate anymore), but a framework instead. _Gazebo_ enables me to combine my technical expertise with my industry experience.
 
 > **Why _Gazebo_?**
 >
