@@ -35,7 +35,7 @@ pub enum MainNavigationRoute {
     #[at("/entry-edit")]
     EntryEdit,
     #[at("/entry-edit/:entry_type/:id")]
-    EntryEditExisting { entry_type: String, id: String },
+    EntryEditExisting { entry_type: String, id: String }, // todo this has to work with permalink too
     //#[at("/entry/post/:id")]
     //ViewEntry { id: String },
     #[at("/lost-password")]
