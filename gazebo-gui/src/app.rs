@@ -34,8 +34,10 @@ pub enum MainNavigationRoute {
     AdminProfile,
     #[at("/entry-edit")]
     EntryEdit,
-    #[at("/entry-edit/:id")]
-    EntryEditExisting { id: String },
+    #[at("/entry-edit/:entry_type/:id")]
+    EntryEditExisting { entry_type: String, id: String },
+    //#[at("/entry/post/:id")]
+    //ViewEntry { id: String },
     #[at("/lost-password")]
     LostPassword,
     #[not_found]
@@ -58,8 +60,8 @@ pub fn main_nav_switch(route: MainNavigationRoute) -> Html {
         MainNavigationRoute::AdminPosts => html! { <AdminPosts /> },
         // Admin entry editor
         MainNavigationRoute::EntryEdit => html! { <EntryEdit />},
-        MainNavigationRoute::EntryEditExisting { id } => {
-            html! { <EntryEditExisting entry_id={id} /> }
+        MainNavigationRoute::EntryEditExisting { entry_type, id } => {
+            html! { <EntryEditExisting entry_type={entry_type} entry_id={id} /> }
         }
         // Admin media lib
         MainNavigationRoute::AdminMedia => html! { <AdminMedia />},
