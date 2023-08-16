@@ -35,11 +35,11 @@ pub fn nav() -> Html {
         ]
     });
     html! {
-        <nav>
+        <nav class={"border-b"}>
             // <Link<MainNavigationRoute> classes={classes!("testclass")} to={MainNavigationRoute::Home}>
             //     <h1>{"standalone menu item"}</h1>
             // </Link<MainNavigationRoute>>
-            <ul class={"flex bg-purple-100"}>
+            <ul class={"flex justify-center"}>
                 {
                     nav_items.iter().map(|nav_item| {
                         html!{
