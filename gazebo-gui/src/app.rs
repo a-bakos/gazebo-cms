@@ -1,3 +1,4 @@
+use yew::html::IntoPropValue;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
@@ -7,6 +8,7 @@ use crate::pages::{
         admin_posts::AdminPosts, admin_profile::AdminProfile, admin_settings::AdminSettings,
     },
     edit_entry::EntryEdit,
+    edit_entry_existing::EntryEditExisting,
     home::Home,
     login::Login,
     not_found::NotFound,
@@ -32,6 +34,8 @@ pub enum MainNavigationRoute {
     AdminProfile,
     #[at("/entry-edit")]
     EntryEdit,
+    #[at("/entry-edit/:id")]
+    EntryEditExisting { id: String },
     #[at("/lost-password")]
     LostPassword,
     #[not_found]
@@ -54,6 +58,9 @@ pub fn main_nav_switch(route: MainNavigationRoute) -> Html {
         MainNavigationRoute::AdminPosts => html! { <AdminPosts /> },
         // Admin entry editor
         MainNavigationRoute::EntryEdit => html! { <EntryEdit />},
+        MainNavigationRoute::EntryEditExisting { id } => {
+            html! { <EntryEditExisting entry_id={id} /> }
+        }
         // Admin media lib
         MainNavigationRoute::AdminMedia => html! { <AdminMedia />},
         MainNavigationRoute::AdminSettings => html! { <AdminSettings />},
