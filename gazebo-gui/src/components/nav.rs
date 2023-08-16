@@ -36,17 +36,18 @@ pub fn nav() -> Html {
     });
     html! {
         <nav class={"border-b"}>
-            // <Link<MainNavigationRoute> classes={classes!("testclass")} to={MainNavigationRoute::Home}>
-            //     <h1>{"standalone menu item"}</h1>
-            // </Link<MainNavigationRoute>>
-            <ul class={"flex justify-center"}>
+            <ul class={"flex justify-center p-3"}>
                 {
                     nav_items.iter().map(|nav_item| {
                         html!{
                             <li
                                 key={nav_item.id}
-                                class={classes!("bg-green-100","mx-3", "nav_item", if nav_item.is_active {"active"} else {""} )}>
-                                <Link<MainNavigationRoute> to={nav_item.link.clone()}>{nav_item.label.clone()}</Link<MainNavigationRoute>>
+                                class={""}>
+                                <Link<MainNavigationRoute>
+                                    classes={"inline-block px-4 py-1 hover:text-red-400 hover:underline"}
+                                    to={nav_item.link.clone()}>
+                                    {nav_item.label.clone()}
+                                </Link<MainNavigationRoute>>
                             </li>
                         }
                     }).collect::<Html>()
