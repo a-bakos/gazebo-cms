@@ -26,19 +26,6 @@ use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, Row};
 
-#[derive(Debug)]
-#[allow(dead_code)]
-pub enum PostSpecific {
-    Title,
-    Permalink,
-    AuthorID,
-    ParentID,
-    // DatePublished,
-    Excerpt,
-    Content,
-    Password,
-}
-
 impl RowTransformer<PgRow> for GB_Post {
     type Output = GB_Post;
 

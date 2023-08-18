@@ -1,3 +1,4 @@
+use crate::entry::entry_id::EntryID;
 use crate::entry::entry_type::EntryType;
 
 /// Checks if a string contains any special characters.
@@ -90,7 +91,7 @@ pub fn str_contains_number(str_to_check: &str) -> bool {
     })
 }
 
-pub fn get_permalink(entry_type: EntryType, entry_id: u32) -> String {
+pub fn get_permalink(entry_type: EntryType, entry_id: EntryID) -> String {
     let entry_type = match entry_type {
         EntryType::Post => EntryType::Post.to_string(),
         EntryType::Page => EntryType::Page.to_string(),

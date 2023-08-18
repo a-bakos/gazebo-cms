@@ -1,12 +1,11 @@
 use crate::account::gb_account::AccountID;
-use crate::consts::POST_UNTITLED_DEFAULT_TITLE;
 use crate::datetime::functions::get_current_date;
 use crate::entry::entry_id::{get_entry_parent_id, EntryID};
 use crate::entry::status::{ContentStatus, EntryStatus};
 use serde::{Deserialize, Serialize};
 
 #[allow(non_camel_case_types)]
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct GB_Post {
     pub id: EntryID,
     pub id_author: AccountID,
