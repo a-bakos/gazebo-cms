@@ -9,7 +9,6 @@ use gazebo_core_common::{
 };
 
 pub async fn api_get_all_posts() -> Result<Vec<GB_Post>, gloo_net::Error> {
-    // gloo-net
     let response = Request::get(&format!("{}/posts", BACKEND_URL_BASE))
         .send()
         .await?;
@@ -22,7 +21,6 @@ pub async fn api_delete_entry_by_id(
     let response = Request::delete(&format!("{}/post/{}", BACKEND_URL_BASE, entry_id))
         .send()
         .await?;
-    // todo match on response and turn it into bool!
     gloo_console::log!("{}", response.body());
     response.json::<ResponseWithStatusCode>().await
 }

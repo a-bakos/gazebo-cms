@@ -1,4 +1,3 @@
-pub mod consts;
 pub mod functions;
 pub mod gb_log;
 pub mod gb_media;

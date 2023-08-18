@@ -1,15 +1,11 @@
-use gazebo_core_common::{account::gb_account::AccountID, entry::entry_id::EntryID};
+use crate::traits::RowTransformer;
+use gazebo_core_common::entry::gb_media::GB_Media;
+use sqlx::postgres::PgRow;
 
-#[allow(dead_code)]
-#[allow(non_camel_case_types)]
-struct GB_Media {
-    id: EntryID,
-    uploader: AccountID,
-    attached_to: Vec<EntryID>,
-    date_publish: String,
-    date_modified: String,
-    slug: String,
-    title: String,
-    description: Option<String>,
-    alt_text: Option<String>,
+impl RowTransformer<PgRow> for GB_Media {
+    type Output = GB_Media;
+
+    fn transform(row: &PgRow) -> Self::Output {
+        todo!()
+    }
 }

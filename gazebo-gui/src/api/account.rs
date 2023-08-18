@@ -25,7 +25,7 @@ pub async fn api_login_request(
     username: String,
     password: String,
 ) -> Result<LoginResponseWithStatusCode, gloo_net::Error> {
-    let response = gloo_net::http::Request::post(&format!("{}/login", BACKEND_URL_BASE))
+    let response = Request::post(&format!("{}/login", BACKEND_URL_BASE))
         .json(&json!({
             "login": username,
             "password": password
