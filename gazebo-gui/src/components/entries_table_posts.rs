@@ -15,6 +15,7 @@ use crate::{
 use gazebo_core_common::entry::entry_type::EntryType;
 
 use yew::html::IntoPropValue;
+use yew::prelude::*;
 use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::*;
 
@@ -91,7 +92,7 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
         <tr class="bg-white rounded-xl border hover:bg-yellow-100">
             <td>
                 <Link<MainNavigationRoute>
-                    to={MainNavigationRoute::EntryEdit}
+                    to={MainNavigationRoute::EntryEditExisting { entry_type: EntryType::Post.to_string(), id: post_id.to_string() }}
                     classes="font-bold text-blue-600">
                     {props.row_data.title.clone()}
                 </Link<MainNavigationRoute>>

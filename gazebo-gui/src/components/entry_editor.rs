@@ -2,6 +2,7 @@ use yew::prelude::*;
 
 #[function_component(EntryEditor)]
 pub fn entry_editor() -> Html {
+    // todo api call to get post data by ID
     html! {
         <>
             <p class="font-bold ">{"Title:"}</p>
