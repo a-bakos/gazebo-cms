@@ -19,23 +19,25 @@ pub const ENTRY_STATUS_MEDIA_ATTACHED: &str = "attached";
 /// Media entry "unattached" status
 pub const ENTRY_STATUS_MEDIA_UNATTACHED: &str = "unattached";
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum EntryStatus {
     Post(ContentStatus),
     Media(MediaStatus),
     Unknown,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum ContentStatus {
     Draft,
     Publish,
     Private,
     Trash,
     Unknown,
+    // Future
+    // Pending
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum MediaStatus {
     Attached,
     Unattached,
@@ -86,6 +88,18 @@ impl From<ContentStatus> for String {
             ContentStatus::Private => ENTRY_STATUS_CONTENT_PRIVATE.to_string(),
             ContentStatus::Trash => ENTRY_STATUS_CONTENT_TRASH.to_string(),
             ContentStatus::Unknown => ENTRY_STATUS_UNKNOWN.to_string(),
+        }
+    }
+}
+
+impl From<String> for ContentStatus {
+    fn from(value: String) -> Self {
+        match value.as_str() {
+            ENTRY_STATUS_CONTENT_DRAFT => ContentStatus::Draft,
+            ENTRY_STATUS_CONTENT_PUBLISH => ContentStatus::Publish,
+            ENTRY_STATUS_CONTENT_PRIVATE => ContentStatus::Private,
+            ENTRY_STATUS_CONTENT_TRASH => ContentStatus::Trash,
+            _ => ContentStatus::Unknown,
         }
     }
 }

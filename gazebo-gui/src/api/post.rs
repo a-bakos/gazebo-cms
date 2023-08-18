@@ -3,6 +3,8 @@ use gloo_net::http::Request;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
+use gazebo_core_common::entry::status::EntryStatus;
+
 // todo - will be added to common lib
 #[allow(non_camel_case_types)]
 #[derive(Deserialize, Clone, Debug, PartialEq)]
@@ -20,47 +22,34 @@ pub struct GB_Post {
     pub content: Option<String>,
     pub password: Option<String>,
 }
-
-// todo - will be added to common lib
-#[derive(Debug, Clone, PartialEq, Deserialize)]
-pub enum EntryStatus {
-    Post(ContentStatus),
-    Media(MediaStatus),
-    Unknown,
-}
-
-// todo - will be added to common lib
-#[derive(Debug, Clone, PartialEq, Deserialize)]
-pub enum ContentStatus {
-    Draft,
-    Publish,
-    Private,
-    Trash,
-    Unknown,
-    // Future
-    // Pending
-}
-
-// todo - will be added to common lib
-impl From<String> for ContentStatus {
-    fn from(value: String) -> Self {
-        match value.as_str() {
-            "draft" => ContentStatus::Draft,
-            "publish" => ContentStatus::Publish,
-            "private" => ContentStatus::Private,
-            "trash" => ContentStatus::Trash,
-            _ => ContentStatus::Unknown,
-        }
-    }
-}
-
-// todo - will be added to common lib
-#[derive(Debug, Clone, PartialEq, Deserialize)]
-pub enum MediaStatus {
-    Attached,
-    Unattached,
-    Unknown,
-}
+//
+// // todo - will be added to common lib
+// #[derive(Debug, Clone, PartialEq, Deserialize)]
+// pub enum EntryStatus {
+//     Post(ContentStatus),
+//     Media(MediaStatus),
+//     Unknown,
+// }
+//
+// // todo - will be added to common lib
+// #[derive(Debug, Clone, PartialEq, Deserialize)]
+// pub enum ContentStatus {
+//     Draft,
+//     Publish,
+//     Private,
+//     Trash,
+//     Unknown,
+//     // Future
+//     // Pending
+// }
+//
+// // todo - will be added to common lib
+// #[derive(Debug, Clone, PartialEq, Deserialize)]
+// pub enum MediaStatus {
+//     Attached,
+//     Unattached,
+//     Unknown,
+// }
 
 pub async fn api_get_all_posts() -> Result<Vec<GB_Post>, gloo_net::Error> {
     // gloo-net

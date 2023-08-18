@@ -1,7 +1,4 @@
-use crate::api::post::{
-    update_entry_single_param, ContentStatus, EntryStatus, EntryUpdateProps, EntryUpdateType,
-    GB_Post,
-};
+use crate::api::post::{update_entry_single_param, EntryUpdateProps, EntryUpdateType, GB_Post};
 use crate::app::MainNavigationRoute;
 use crate::{
     api::post::api_delete_entry_by_id,
@@ -12,7 +9,10 @@ use crate::{
     },
 };
 
-use gazebo_core_common::entry::entry_type::EntryType;
+use gazebo_core_common::entry::{
+    entry_type::EntryType,
+    status::{ContentStatus, EntryStatus},
+};
 
 use yew::html::IntoPropValue;
 use yew::prelude::*;

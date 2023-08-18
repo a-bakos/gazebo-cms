@@ -6,11 +6,12 @@ use yew::prelude::*;
 use gazebo_core_common::{
     consts::{ENTRY_TYPE_POST, POST_UNTITLED_DEFAULT_TITLE},
     entry::entry_type::EntryType,
+    entry::status::{ContentStatus, EntryStatus},
     helpers::get_permalink,
 };
 
 use crate::{
-    api::post::{ContentStatus, EntryStatus, GB_Post},
+    api::post::GB_Post,
     components::{admin_bar::AdminBar, footer::Footer, nav::Nav},
 };
 
