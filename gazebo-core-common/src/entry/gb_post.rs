@@ -1,5 +1,4 @@
 use crate::account::gb_account::AccountID;
-use crate::consts::POST_UNTITLED_DEFAULT_TITLE;
 use crate::datetime::functions::get_current_date;
 use crate::entry::entry_id::{get_entry_parent_id, EntryID};
 use crate::entry::status::{ContentStatus, EntryStatus};

@@ -1,4 +1,4 @@
-use crate::consts::{
+use crate::account::consts::{
     ACCOUNT_ROLE_ADMIN, ACCOUNT_ROLE_CONTRIBUTOR, ACCOUNT_ROLE_EDITOR, ACCOUNT_ROLE_NOT_FOUND,
 };
 use serde::{Deserialize, Serialize};

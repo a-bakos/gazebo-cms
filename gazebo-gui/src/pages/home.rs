@@ -1,11 +1,10 @@
 // Homepage
 
-use yew::platform::spawn_local;
-use yew::prelude::*;
+use yew::{platform::spawn_local, prelude::*};
 
 use gazebo_core_common::{
-    consts::{ENTRY_TYPE_POST, POST_UNTITLED_DEFAULT_TITLE},
     entry::{
+        consts::POST_UNTITLED_DEFAULT_TITLE,
         entry_type::EntryType,
         gb_post::GB_Post,
         status::{ContentStatus, EntryStatus},
