@@ -22,3 +22,12 @@ pub struct GB_Account {
     pub registered: String,
     pub last_login: String,
 }
+
+#[allow(non_camel_case_types)]
+#[derive(PartialEq)]
+pub struct GB_CurrentAccount {
+    pub id: u32,
+    pub username: String,
+    pub email: String,
+    pub role: String,
+}

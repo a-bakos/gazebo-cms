@@ -1,4 +1,5 @@
-use crate::api::user::{LoginResponseAccountDetails, User};
+use crate::api::user::LoginResponseAccountDetails;
+use gazebo_core_common::account::gb_account::GB_CurrentAccount;
 use std::rc::Rc;
 use yew::{context::ContextProvider, prelude::*, Reducible, UseReducerHandle};
 
@@ -6,7 +7,7 @@ pub type CurrentUserContext = UseReducerHandle<CurrentUser>;
 
 #[derive(Default, PartialEq)]
 pub struct CurrentUser {
-    pub user: Option<User>,
+    pub user: Option<GB_CurrentAccount>,
 }
 
 pub enum UserAction {
@@ -22,7 +23,7 @@ impl Reducible for CurrentUser {
             UserAction::LoginSuccess => {
                 let login_response = action.login_response.expect("Missing login response");
                 Self {
-                    user: Some(User {
+                    user: Some(GB_CurrentAccount {
                         id: login_response.id,
                         username: login_response.login_name,
                         email: login_response.email,

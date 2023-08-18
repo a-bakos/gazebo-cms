@@ -15,14 +15,6 @@ pub struct LoginResponseWithStatusCode {
     pub account_details: LoginResponseAccountDetails,
 }
 
-#[derive(PartialEq)]
-pub struct User {
-    pub id: u32,
-    pub username: String,
-    pub email: String,
-    pub role: String,
-}
-
 #[derive(Deserialize, Debug, PartialEq)]
 pub struct LoginResponseAccountDetails {
     pub id: u32,
@@ -45,20 +37,6 @@ pub async fn api_login_request(
 
     response.json::<LoginResponseWithStatusCode>().await
 }
-
-//////////////////
-/*
-#[allow(non_camel_case_types)]
-#[derive(Deserialize, Clone, Debug, PartialEq)]
-pub struct GB_Account {
-    pub login_name: String,
-    pub email: String,
-    pub id: AccountID,
-    pub role: AccountRole,
-    pub password: String,
-    pub registered: String,
-    pub last_login: Option<String>,
-}*/
 
 pub async fn api_get_all_accounts() -> Result<Vec<GB_Account>, gloo_net::Error> {
     let response = Request::get(&format!("{}/accounts", BACKEND_URL_BASE))
