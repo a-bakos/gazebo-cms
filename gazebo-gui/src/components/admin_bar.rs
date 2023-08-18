@@ -1,5 +1,6 @@
 use crate::app::MainNavigationRoute;
 use crate::components::admin_menu::AdminMenu;
+use gazebo_core_common::consts::DEFAULT_APP_NAME;
 use yew::prelude::*;
 use yew_router::prelude::{Link, Redirect};
 
@@ -33,7 +34,7 @@ pub fn admin_bar() -> Html {
                                 </Link<MainNavigationRoute>>
                             </li>
                             <li class="flex-1 text-center">
-                                <p class="text-xl font-bold">{"SITETITLE"}</p>
+                                <p class="text-xl font-bold">{DEFAULT_APP_NAME}</p>
                                 <p>{"www.siteaddress.com"}</p>
                             </li>
                             // <li>
@@ -52,7 +53,7 @@ pub fn admin_bar() -> Html {
             </>
         },
         None => html! {
-            //<p>{"NOT LOGGED IN"}</p>
+            // Not logged in
             <Redirect<MainNavigationRoute> to={MainNavigationRoute::Home} />
         },
     }

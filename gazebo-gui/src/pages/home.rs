@@ -66,8 +66,8 @@ pub fn home() -> Html {
                             };
 
                             html! {
-                                <article class={"bg-yellow-100 mb-3"}>
-                                    <h2 class={"bold text-xl"}>
+                                <article class={"border mb-3 p-3"}>
+                                    <h2 class={"bold text-xl mb-2"}>
                                         <a
                                             title={entry_title.clone()}
                                             class={"hover:underline"}
@@ -75,13 +75,14 @@ pub fn home() -> Html {
                                             {format!{"{}{}", entry_prefix_title, entry_title.clone()}}
                                         </a>
                                     </h2>
-                                    <p>{"Published: "} {entry_row.date_publish.clone()}</p>
-                                    <p>{"By: "} {entry_row.id_author.clone()}</p>
-                                    <p>{entry_row.excerpt.clone()}</p>
-                                    <p>{entry_row.content.clone()}</p>
-                                    <hr />
+                                    <div class={"mb-2"}>
+                                        <p>{"Published: "} {entry_row.date_publish.clone()}</p>
+                                        <p>{"By: "} {entry_row.id_author.clone()}</p>
+                                    </div>
+                                    <p class={"pb-2"}>{entry_row.excerpt.clone()}</p>
+                                    <p class={"pb-2 border-b"}>{entry_row.content.clone()}</p>
                                     <a
-                                        class={"underline"}
+                                        class={"inline-block mt-2 p-3 bg-gray-100 underline text-bold hover:text-red-400"}
                                         href={get_permalink(EntryType::Post, entry_row.id)}
                                         title={entry_title.clone()}>
                                         {"Read more"}
