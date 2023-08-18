@@ -1,4 +1,5 @@
 use crate::database::db::GBDB;
+use gazebo_core_common::consts::{DEFAULT_APP_ADMIN_EMAIL, DEFAULT_APP_NAME, VERSION};
 use std::{
     fmt::{Debug, Formatter},
     time::SystemTime,
@@ -31,9 +32,9 @@ impl Debug for App {
 impl App {
     fn new() -> Self {
         Self {
-            name: crate::consts::DEFAULT_APP_NAME.to_string(),
-            admin_email: crate::consts::DEFAULT_APP_ADMIN_EMAIL.to_string(),
-            version: crate::consts::VERSION.to_string(),
+            name: DEFAULT_APP_NAME.to_string(),
+            admin_email: DEFAULT_APP_ADMIN_EMAIL.to_string(),
+            version: VERSION.to_string(),
             db: GBDB::new(
                 "database".to_string(),
                 "accounts".to_string(),

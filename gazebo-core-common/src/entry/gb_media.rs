@@ -1,11 +1,15 @@
+use crate::{account::gb_account::AccountID, entry::entry_id::EntryID};
+
+#[allow(dead_code)]
+#[allow(non_camel_case_types)]
 pub struct GB_Media {
-    id: u32,
-    uploader: u32,
-    attached_to: Vec<u32>,
-    date_publish: String,
-    date_modified: String,
-    slug: String,
-    title: String,
-    description: Option<String>,
-    alt_text: Option<String>,
+    pub id: EntryID,
+    pub uploader: AccountID,
+    pub attached_to: Vec<EntryID>,
+    pub date_publish: String,
+    pub date_modified: String,
+    pub slug: String,
+    pub title: String,
+    pub description: Option<String>,
+    pub alt_text: Option<String>,
 }

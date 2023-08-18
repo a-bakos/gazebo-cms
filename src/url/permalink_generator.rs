@@ -1,4 +1,4 @@
-use crate::consts;
+use crate::{consts, url};
 
 use regex::Regex;
 use std::collections::HashSet;
@@ -21,7 +21,6 @@ use urlencoding::encode;
  * - [done] Limited to 50-60 characters in length
  * - Unique with an appended number, if needed
  */
-
 #[derive(Debug)]
 pub enum PermalinkTruncationMethod {
     // Simply cut the string at the end
@@ -29,7 +28,8 @@ pub enum PermalinkTruncationMethod {
     CutOffEnd,
     // Remove the least significant words
     #[allow(dead_code)]
-    RemoveLeastSignificantWords, // w/ card
+    RemoveLeastSignificantWords,
+    // w/ card
     // Remove longest words
     #[allow(dead_code)]
     RemoveLongestWords, // w/ card
@@ -50,7 +50,7 @@ impl PermalinksConfig {
     #[allow(dead_code)]
     fn new() -> Self {
         Self {
-            length_limit: consts::DEFAULT_PERMALINK_LIMIT,
+            length_limit: url::consts::DEFAULT_PERMALINK_LIMIT,
             allow_unlimited_length: false,
             allow_stop_words: false,
             truncation_method: PermalinkTruncationMethod::CutOffEnd, // todo this is test only for now,
@@ -71,22 +71,22 @@ impl<'a> PermalinkGenerator<'a> {
     #[allow(dead_code)]
     pub fn new(use_dash_as_separator: bool) -> Self {
         let separator = if use_dash_as_separator {
-            consts::DEFAULT_PERMALINK_SEPARATOR
+            url::consts::DEFAULT_PERMALINK_SEPARATOR
         } else {
             "_"
         };
 
         Self {
             separator,
-            stop_words: consts::DEFAULT_PERMALINK_STOP_WORDS
+            stop_words: url::consts::DEFAULT_PERMALINK_STOP_WORDS
                 .iter()
                 .cloned()
                 .collect(),
-            not_allowed_characters: consts::DEFAULT_PERMALINK_NOT_ALLOWED_CHARS
+            not_allowed_characters: url::consts::DEFAULT_PERMALINK_NOT_ALLOWED_CHARS
                 .iter()
                 .cloned()
                 .collect(),
-            length_limit: consts::DEFAULT_PERMALINK_LIMIT,
+            length_limit: url::consts::DEFAULT_PERMALINK_LIMIT,
             config: PermalinksConfig::new(),
         }
     }
@@ -100,7 +100,7 @@ impl<'a> PermalinkGenerator<'a> {
 
     #[allow(dead_code)]
     pub fn set_max_length(&mut self, length: usize) {
-        if length < consts::PERMALINK_MAX_ALLOWED_LENGTH && length > 0 {
+        if length < url::consts::PERMALINK_MAX_ALLOWED_LENGTH && length > 0 {
             self.config.length_limit = length;
             self.config.allow_unlimited_length = false;
         }
@@ -155,8 +155,12 @@ impl<'a> PermalinkGenerator<'a> {
         let permalink: String = permalink
             .chars()
             .fold(String::new(), |mut accumulator, ch| {
-                if ch == consts::DEFAULT_PERMALINK_SEPARATOR.chars().next().unwrap()
-                    && accumulator.ends_with(consts::DEFAULT_PERMALINK_SEPARATOR)
+                if ch
+                    == url::consts::DEFAULT_PERMALINK_SEPARATOR
+                        .chars()
+                        .next()
+                        .unwrap()
+                    && accumulator.ends_with(url::consts::DEFAULT_PERMALINK_SEPARATOR)
                 {
                     // Skip adding the separator to `accumulator`
                     accumulator
@@ -221,7 +225,7 @@ impl<'a> PermalinkGenerator<'a> {
                                         .to_string();
                                     new_permalink.push_str(&format!(
                                         "{}{}",
-                                        crate::consts::DEFAULT_PERMALINK_SEPARATOR,
+                                        crate::url::consts::DEFAULT_PERMALINK_SEPARATOR,
                                         the_permalink_num
                                     ));
                                     return new_permalink;
@@ -233,7 +237,7 @@ impl<'a> PermalinkGenerator<'a> {
                         let mut new_permalink = permalink;
                         new_permalink.push_str(&format!(
                             "{}{}",
-                            crate::consts::DEFAULT_PERMALINK_SEPARATOR,
+                            crate::url::consts::DEFAULT_PERMALINK_SEPARATOR,
                             1
                         ));
                         return new_permalink;

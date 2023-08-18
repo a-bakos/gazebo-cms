@@ -1,18 +1,18 @@
 // Homepage
 
-use yew::platform::spawn_local;
-use yew::prelude::*;
+use yew::{platform::spawn_local, prelude::*};
 
 use gazebo_core_common::{
-    consts::{ENTRY_TYPE_POST, POST_UNTITLED_DEFAULT_TITLE},
-    entry::entry_type::EntryType,
+    entry::{
+        consts::POST_UNTITLED_DEFAULT_TITLE,
+        entry_type::EntryType,
+        gb_post::GB_Post,
+        status::{ContentStatus, EntryStatus},
+    },
     helpers::get_permalink,
 };
 
-use crate::{
-    api::post::{ContentStatus, EntryStatus, GB_Post},
-    components::{admin_bar::AdminBar, footer::Footer, nav::Nav},
-};
+use crate::components::{admin_bar::AdminBar, footer::Footer, nav::Nav};
 
 #[function_component(Home)]
 pub fn home() -> Html {
@@ -76,7 +76,7 @@ pub fn home() -> Html {
                                         </a>
                                     </h2>
                                     <p>{"Published: "} {entry_row.date_publish.clone()}</p>
-                                    <p>{"By: "} {entry_row.id_author}</p>
+                                    <p>{"By: "} {entry_row.id_author.clone()}</p>
                                     <p>{entry_row.excerpt.clone()}</p>
                                     <p>{entry_row.content.clone()}</p>
                                     <hr />

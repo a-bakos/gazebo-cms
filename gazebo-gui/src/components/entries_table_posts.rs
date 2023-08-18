@@ -1,7 +1,4 @@
-use crate::api::post::{
-    update_entry_single_param, ContentStatus, EntryStatus, EntryUpdateProps, EntryUpdateType,
-    GB_Post,
-};
+use crate::api::post::{update_entry_single_param, EntryUpdateProps, EntryUpdateType};
 use crate::app::MainNavigationRoute;
 use crate::{
     api::post::api_delete_entry_by_id,
@@ -12,9 +9,15 @@ use crate::{
     },
 };
 
-use gazebo_core_common::entry::entry_type::EntryType;
+use gazebo_core_common::entry::{
+    entry_id::EntryID,
+    entry_type::EntryType,
+    gb_post::GB_Post,
+    status::{ContentStatus, EntryStatus},
+};
 
 use yew::html::IntoPropValue;
+use yew::prelude::*;
 use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::*;
 
@@ -91,7 +94,7 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
         <tr class="bg-white rounded-xl border hover:bg-yellow-100">
             <td>
                 <Link<MainNavigationRoute>
-                    to={MainNavigationRoute::EntryEdit}
+                    to={MainNavigationRoute::EntryEditExisting { entry_type: EntryType::Post.to_string(), id: post_id.to_string() }}
                     classes="font-bold text-blue-600">
                     {props.row_data.title.clone()}
                 </Link<MainNavigationRoute>>
