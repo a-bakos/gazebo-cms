@@ -1,5 +1,3 @@
-// todo: rename this module to accounts
-
 use crate::api::{HttpStatusCode, BACKEND_URL_BASE};
 use gazebo_core_common::account::{
     gb_account::{AccountID, GB_Account},

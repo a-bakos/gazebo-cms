@@ -2,7 +2,7 @@ use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::*;
 
 use crate::{
-    api::user::{api_login_request, LoginResponseWithStatusCode},
+    api::account::{api_login_request, LoginResponseWithStatusCode},
     app::MainNavigationRoute,
     components::{input::Input, lost_password::LostPassword},
     context::{CurrentUserContext, CurrentUserDispatchActions, UserAction::LoginSuccess},

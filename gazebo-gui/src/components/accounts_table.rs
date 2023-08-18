@@ -43,7 +43,7 @@ pub fn table_accounts() -> Html {
         move |_| {
             spawn_local(async move {
                 let mut accounts_rows: Vec<GB_Account> = vec![];
-                let response = crate::api::user::api_get_all_accounts().await.unwrap();
+                let response = crate::api::account::api_get_all_accounts().await.unwrap();
                 for response_gb_account in response.iter() {
                     gloo_console::log!("response: ", response_gb_account.email.clone());
                     accounts_rows.push(response_gb_account.clone());

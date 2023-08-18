@@ -1,4 +1,4 @@
-use crate::api::user::LoginResponseAccountDetails;
+use crate::api::account::LoginResponseAccountDetails;
 use gazebo_core_common::account::gb_account::GB_CurrentAccount;
 use std::rc::Rc;
 use yew::{context::ContextProvider, prelude::*, Reducible, UseReducerHandle};
