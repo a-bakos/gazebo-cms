@@ -1,16 +1,21 @@
 use crate::api::user::GB_Account;
 use crate::app::MainNavigationRoute;
-use gazebo_core_common::account::role::AccountRole;
+use gazebo_core_common::{
+    account::role::AccountRole,
+    consts::{
+        ACCOUNT_ROLE_ADMIN, ACCOUNT_ROLE_CONTRIBUTOR, ACCOUNT_ROLE_EDITOR, ACCOUNT_ROLE_NOT_FOUND,
+    },
+};
 use yew::platform::spawn_local;
 use yew::prelude::*;
 use yew_router::prelude::Link;
 
 fn table_account_row(row_data: &GB_Account) -> Html {
     let role = match row_data.role.clone() {
-        AccountRole::Admin => "admin".to_string(),
-        AccountRole::Editor => "editor".to_string(),
-        AccountRole::Contributor => "contributor".to_string(),
-        _ => "unknown".to_string(),
+        AccountRole::Admin => ACCOUNT_ROLE_ADMIN.to_string(),
+        AccountRole::Editor => ACCOUNT_ROLE_EDITOR.to_string(),
+        AccountRole::Contributor => ACCOUNT_ROLE_CONTRIBUTOR.to_string(),
+        _ => ACCOUNT_ROLE_NOT_FOUND.to_string(),
     };
 
     html! {
