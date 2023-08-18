@@ -6,7 +6,7 @@ use crate::entry::status::{ContentStatus, EntryStatus};
 use serde::{Deserialize, Serialize};
 
 #[allow(non_camel_case_types)]
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct GB_Post {
     pub id: EntryID,
     pub id_author: AccountID,

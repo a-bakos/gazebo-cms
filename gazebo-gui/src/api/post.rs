@@ -1,55 +1,12 @@
 use crate::api::{HttpStatusCode, BACKEND_URL_BASE};
+use gazebo_core_common::account::gb_account::AccountID;
 use gloo_net::http::Request;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
-use gazebo_core_common::entry::status::EntryStatus;
-
-// todo - will be added to common lib
-#[allow(non_camel_case_types)]
-#[derive(Deserialize, Clone, Debug, PartialEq)]
-pub struct GB_Post {
-    pub id: u32,
-    pub id_author: u32,
-    pub id_parent: Option<u32>,
-    pub date_publish: String,
-    pub date_modified: String,
-    pub slug: Option<String>,
-    pub status: EntryStatus,
-    // todo
-    pub title: Option<String>,
-    pub excerpt: Option<String>,
-    pub content: Option<String>,
-    pub password: Option<String>,
-}
-//
-// // todo - will be added to common lib
-// #[derive(Debug, Clone, PartialEq, Deserialize)]
-// pub enum EntryStatus {
-//     Post(ContentStatus),
-//     Media(MediaStatus),
-//     Unknown,
-// }
-//
-// // todo - will be added to common lib
-// #[derive(Debug, Clone, PartialEq, Deserialize)]
-// pub enum ContentStatus {
-//     Draft,
-//     Publish,
-//     Private,
-//     Trash,
-//     Unknown,
-//     // Future
-//     // Pending
-// }
-//
-// // todo - will be added to common lib
-// #[derive(Debug, Clone, PartialEq, Deserialize)]
-// pub enum MediaStatus {
-//     Attached,
-//     Unattached,
-//     Unknown,
-// }
+use gazebo_core_common::entry::{
+    entry_id::EntryID, entry_type::EntryType, gb_post::GB_Post, status::EntryStatus,
+};
 
 pub async fn api_get_all_posts() -> Result<Vec<GB_Post>, gloo_net::Error> {
     // gloo-net
@@ -83,8 +40,6 @@ pub enum EntryUpdateType {
     Status,
 }
 
-use gazebo_core_common::entry::entry_type::EntryType;
-
 #[derive(Serialize)]
 pub struct EntryUpdateProps<'a> {
     pub to_update: &'a str,
@@ -95,7 +50,7 @@ pub struct EntryUpdateProps<'a> {
 /// Update a single entry parameter
 pub async fn update_entry_single_param<'a>(
     entry_type: EntryType,
-    entry_id: u32,
+    entry_id: EntryID,
     update_props: EntryUpdateProps<'a>,
 ) -> Result<String, gloo_net::Error> {
     let response = Request::put(&format!(

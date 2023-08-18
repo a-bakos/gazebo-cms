@@ -2,7 +2,7 @@ use crate::account::role::AccountRole;
 use serde::{Deserialize, Serialize};
 use std::fmt::{Display, Formatter};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct AccountID(pub u32);
 
 impl Display for AccountID {
