@@ -1,5 +1,6 @@
-use crate::api::user::{AccountRole, GB_Account};
+use crate::api::user::GB_Account;
 use crate::app::MainNavigationRoute;
+use gazebo_core_common::account::role::AccountRole;
 use yew::platform::spawn_local;
 use yew::prelude::*;
 use yew_router::prelude::Link;

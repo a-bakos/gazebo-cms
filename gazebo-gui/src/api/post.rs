@@ -1,11 +1,11 @@
 use crate::api::{HttpStatusCode, BACKEND_URL_BASE};
-use gazebo_core_common::account::gb_account::AccountID;
 use gloo_net::http::Request;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
-use gazebo_core_common::entry::{
-    entry_id::EntryID, entry_type::EntryType, gb_post::GB_Post, status::EntryStatus,
+use gazebo_core_common::{
+    account::gb_account::AccountID,
+    entry::{entry_id::EntryID, entry_type::EntryType, gb_post::GB_Post, status::EntryStatus},
 };
 
 pub async fn api_get_all_posts() -> Result<Vec<GB_Post>, gloo_net::Error> {

@@ -1,6 +1,8 @@
 // todo: rename this module to accounts
 
 use crate::api::{HttpStatusCode, BACKEND_URL_BASE};
+use gazebo_core_common::account::gb_account::AccountID;
+use gazebo_core_common::account::role::AccountRole;
 use gloo_net::http::Request;
 use serde::Deserialize;
 use serde_json::json;
@@ -44,20 +46,12 @@ pub async fn api_login_request(
 
 //////////////////
 
-#[derive(Debug, Clone, Deserialize, PartialEq)]
-pub enum AccountRole {
-    Admin,       // read, write, delete, add ??
-    Editor,      // read, write, delete
-    Contributor, // read
-    NotFound,    // missing or incorrect role
-}
-
 #[allow(non_camel_case_types)]
 #[derive(Deserialize, Clone, Debug, PartialEq)]
 pub struct GB_Account {
     pub login_name: String,
     pub email: String,
-    pub id: u32, //UserID,
+    pub id: AccountID,
     pub role: AccountRole,
     pub password: String,
     pub registered: String,

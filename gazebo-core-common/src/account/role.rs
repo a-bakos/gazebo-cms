@@ -4,7 +4,7 @@ use crate::consts::{
 use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
 
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum AccountRole {
     Admin,       // read, write, delete, add ??
     Editor,      // read, write, delete

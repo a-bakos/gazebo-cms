@@ -12,7 +12,7 @@ impl Display for AccountID {
 }
 
 #[allow(non_camel_case_types)]
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GB_Account {
     pub login_name: String,
     pub email: String,
