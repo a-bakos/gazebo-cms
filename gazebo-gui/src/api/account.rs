@@ -8,9 +8,9 @@ use serde::Deserialize;
 use serde_json::json;
 
 #[derive(Deserialize)]
-pub struct LoginResponseWithStatusCode {
-    pub http_status_code: HttpStatusCode,
-    pub account_details: LoginResponseAccountDetails,
+pub(crate) struct LoginResponseWithStatusCode {
+    pub(crate) http_status_code: HttpStatusCode,
+    pub(crate) account_details: LoginResponseAccountDetails,
 }
 
 #[derive(Deserialize, Debug, PartialEq)]
@@ -21,7 +21,7 @@ pub struct LoginResponseAccountDetails {
     pub role: String,
 }
 
-pub async fn api_login_request(
+pub(crate) async fn api_login_request(
     username: String,
     password: String,
 ) -> Result<LoginResponseWithStatusCode, gloo_net::Error> {
@@ -36,7 +36,7 @@ pub async fn api_login_request(
     response.json::<LoginResponseWithStatusCode>().await
 }
 
-pub async fn api_get_all_accounts() -> Result<Vec<GB_Account>, gloo_net::Error> {
+pub(crate) async fn api_get_all_accounts() -> Result<Vec<GB_Account>, gloo_net::Error> {
     let response = Request::get(&format!("{}/accounts", BACKEND_URL_BASE))
         .send()
         .await?;

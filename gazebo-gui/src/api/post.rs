@@ -8,14 +8,14 @@ use gazebo_core_common::{
     entry::{entry_id::EntryID, entry_type::EntryType, gb_post::GB_Post, status::EntryStatus},
 };
 
-pub async fn api_get_all_posts() -> Result<Vec<GB_Post>, gloo_net::Error> {
+pub(crate) async fn api_get_all_posts() -> Result<Vec<GB_Post>, gloo_net::Error> {
     let response = Request::get(&format!("{}/posts", BACKEND_URL_BASE))
         .send()
         .await?;
     response.json::<Vec<GB_Post>>().await
 }
 
-pub async fn api_delete_entry_by_id(
+pub(crate) async fn api_delete_entry_by_id(
     entry_id: u32,
 ) -> Result<ResponseWithStatusCode, gloo_net::Error> {
     let response = Request::delete(&format!("{}/post/{}", BACKEND_URL_BASE, entry_id))
@@ -26,9 +26,9 @@ pub async fn api_delete_entry_by_id(
 }
 
 #[derive(Deserialize)]
-pub struct ResponseWithStatusCode {
-    pub http_status_code: HttpStatusCode,
-    pub details: String,
+pub(crate) struct ResponseWithStatusCode {
+    pub(crate) http_status_code: HttpStatusCode,
+    pub(crate) details: String,
 }
 
 // TODO WIP
@@ -39,14 +39,14 @@ pub enum EntryUpdateType {
 }
 
 #[derive(Serialize)]
-pub struct EntryUpdateProps<'a> {
-    pub to_update: &'a str,
+pub(crate) struct EntryUpdateProps<'a> {
+    pub(crate) to_update: &'a str,
     //EntryUpdateType,
-    pub value: &'a str,
+    pub(crate) value: &'a str,
 }
 
 /// Update a single entry parameter
-pub async fn update_entry_single_param<'a>(
+pub(crate) async fn update_entry_single_param<'a>(
     entry_type: EntryType,
     entry_id: EntryID,
     update_props: EntryUpdateProps<'a>,
