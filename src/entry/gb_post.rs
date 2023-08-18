@@ -13,7 +13,6 @@ use crate::{
 
 use gazebo_core_common::{
     account::gb_account::AccountID,
-    consts::POST_UNTITLED_DEFAULT_TITLE,
     entry::{
         entry_id::EntryID,
         entry_type::EntryType,
