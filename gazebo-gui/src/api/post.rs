@@ -15,6 +15,16 @@ pub(crate) async fn api_get_all_posts() -> Result<Vec<GB_Post>, gloo_net::Error>
     response.json::<Vec<GB_Post>>().await
 }
 
+pub(crate) async fn api_get_single_post(
+    entry_type: String,
+    entry_id: String,
+) -> Result<GB_Post, gloo_net::Error> {
+    let response = Request::get(&format!("{}/post/{}", BACKEND_URL_BASE, entry_id))
+        .send()
+        .await?;
+    response.json::<GB_Post>().await
+}
+
 pub(crate) async fn api_delete_entry_by_id(
     entry_id: u32,
 ) -> Result<ResponseWithStatusCode, gloo_net::Error> {

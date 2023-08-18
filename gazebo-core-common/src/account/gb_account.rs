@@ -11,6 +11,12 @@ impl Display for AccountID {
     }
 }
 
+impl Into<u32> for AccountID {
+    fn into(self) -> u32 {
+        self.0
+    }
+}
+
 #[allow(non_camel_case_types)]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GB_Account {

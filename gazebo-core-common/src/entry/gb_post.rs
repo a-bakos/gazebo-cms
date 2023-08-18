@@ -20,4 +20,20 @@ pub struct GB_Post {
     pub password: Option<String>,
 }
 
-impl GB_Post {}
+impl GB_Post {
+    pub fn new() -> Self {
+        Self {
+            id: EntryID(0),
+            id_author: AccountID(0),
+            id_parent: None,
+            date_publish: "".to_string(),
+            date_modified: "".to_string(),
+            slug: None,
+            status: EntryStatus::Unknown,
+            title: None,
+            excerpt: None,
+            content: None,
+            password: None,
+        }
+    }
+}
