@@ -1,8 +1,10 @@
 // todo: rename this module to accounts
 
 use crate::api::{HttpStatusCode, BACKEND_URL_BASE};
-use gazebo_core_common::account::gb_account::AccountID;
-use gazebo_core_common::account::role::AccountRole;
+use gazebo_core_common::account::{
+    gb_account::{AccountID, GB_Account},
+    role::AccountRole,
+};
 use gloo_net::http::Request;
 use serde::Deserialize;
 use serde_json::json;
@@ -45,7 +47,7 @@ pub async fn api_login_request(
 }
 
 //////////////////
-
+/*
 #[allow(non_camel_case_types)]
 #[derive(Deserialize, Clone, Debug, PartialEq)]
 pub struct GB_Account {
@@ -56,7 +58,7 @@ pub struct GB_Account {
     pub password: String,
     pub registered: String,
     pub last_login: Option<String>,
-}
+}*/
 
 pub async fn api_get_all_accounts() -> Result<Vec<GB_Account>, gloo_net::Error> {
     let response = Request::get(&format!("{}/accounts", BACKEND_URL_BASE))
