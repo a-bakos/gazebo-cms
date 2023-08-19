@@ -8,9 +8,15 @@ fn get_classes_for_route(
     target_route: MainNavigationRoute,
 ) -> Classes {
     if current_route == target_route {
-        classes!("inline-block", "p-4", "hover:bg-red-500", "bg-green-100")
+        classes!(
+            "inline-block",
+            "p-4",
+            "bg-red-400",
+            "hover:bg-red-400",
+            "text-white"
+        )
     } else {
-        classes!("inline-block", "p-4", "hover:bg-red-500")
+        classes!("inline-block", "p-4", "hover:bg-red-200")
     }
 }
 
@@ -22,6 +28,7 @@ pub fn admin_menu() -> Html {
         get_classes_for_route(current_route.clone(), MainNavigationRoute::Admin);
     let classes_posts =
         get_classes_for_route(current_route.clone(), MainNavigationRoute::AdminPosts);
+    //let classes_pages = get_classes_for_route(current_route.clone(), MainNavigationRoute::AdminPages);
     let classes_media =
         get_classes_for_route(current_route.clone(), MainNavigationRoute::AdminMedia);
     let classes_accounts =
@@ -33,13 +40,17 @@ pub fn admin_menu() -> Html {
         <nav class={"bg-gray-200 w-full sticky"}>
             <ul class="flex justify-center">
                 <li>
-                    <Link<MainNavigationRoute> to={MainNavigationRoute::Admin} classes={classes_dashboard}>
-                        {"Dashboard"}
+                    <Link<MainNavigationRoute>
+                        to={ MainNavigationRoute::Admin }
+                        classes={ classes_dashboard }>
+                        { "Dashboard" }
                     </Link<MainNavigationRoute>>
                 </li>
                 <li>
-                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminPosts} classes={classes_posts}>
-                        {"Posts"}
+                    <Link<MainNavigationRoute>
+                        to={ MainNavigationRoute::AdminPosts }
+                        classes={ classes_posts }>
+                        { "Posts" }
                     </Link<MainNavigationRoute>>
                 </li>
                 <li>
@@ -50,19 +61,23 @@ pub fn admin_menu() -> Html {
                     //</Link<MainNavigationRoute>>
                 </li>
                 <li>
-                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminMedia} classes={classes_media}>
-                        {"Media"}
+                    <Link<MainNavigationRoute>
+                        to={ MainNavigationRoute::AdminMedia }
+                        classes={ classes_media }>
+                        { "Media" }
                     </Link<MainNavigationRoute>>
                 </li>
                 <li>
-                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminAccounts} classes={classes_accounts}>
-                        {"Accounts"}
+                    <Link<MainNavigationRoute>
+                        to={ MainNavigationRoute::AdminAccounts }
+                        classes={ classes_accounts }>
+                        { "Accounts" }
                     </Link<MainNavigationRoute>>
                 </li>
                 <li>
                     // <Link<MainNavigationRoute> to={MainNavigationRoute::AdminAccounts}>
                     <a>
-                        {"Search"}
+                        {  "Search" }
                     </a>
                     // </Link<MainNavigationRoute>>
                 </li>
@@ -74,8 +89,10 @@ pub fn admin_menu() -> Html {
                     // </Link<MainNavigationRoute>>
                 </li>
                 <li>
-                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminSettings} classes={classes_settings}>
-                        {"Settings"}
+                    <Link<MainNavigationRoute>
+                        to={ MainNavigationRoute::AdminSettings }
+                        classes={ classes_settings }>
+                        { "Settings" }
                     </Link<MainNavigationRoute>>
                 </li>
             </ul>
