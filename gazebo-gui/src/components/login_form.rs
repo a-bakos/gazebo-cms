@@ -4,7 +4,7 @@ use yew_router::prelude::*;
 use crate::{
     api::account::{api_login_request, LoginResponseWithStatusCode},
     app::MainNavigationRoute,
-    components::{input::Input, lost_password::LostPassword},
+    components::input::Input,
     context::{CurrentUserContext, CurrentUserDispatchActions, UserAction::LoginSuccess},
 };
 
@@ -122,7 +122,11 @@ pub fn login_form() -> Html {
                     {"Login"}
                 </button>
             </form>
-            <LostPassword />
+            <div class={"gb-login-lost-password"}>
+                <Link<MainNavigationRoute> to={MainNavigationRoute::LostPassword}>
+                    {"Lost Password"}
+                </Link<MainNavigationRoute>>
+            </div>
         </>
     }
 }

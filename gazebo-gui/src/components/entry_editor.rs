@@ -25,14 +25,18 @@ pub fn entry_editor(props: &EntryEditorProps) -> Html {
         <>
             <p class="font-bold ">{"Title:"}</p>
             <input type={"text"} value={title} placeholder={"TITLE EDITOR"} class={"border-2 block w-full"} />
+
+            <p class="font-bold">
+                {"Permalink: "}
+                <input type={"text"} value={props.slug.clone()} placeholder={"permalink"} class={"border-2 w-full block"} />
+            </p>
+
             <p class="font-bold ">{"Excerpt:"}</p>
             <textarea placeholder={"EXCERPT EDITOR"} value={ props.excerpt.clone() } class={"border-2 block w-full"}></textarea>
             <p class="font-bold ">{"Content:"}</p>
             <textarea placeholder={"POST CONTENT EDITOR"} value={ props.content.clone() } class={"border-2 block w-full"}></textarea>
             <p class="font-bold ">{"Password:"}</p>
             <input type={"text"} value={props.password.clone()} placeholder={"PASSWORD"} class={"border-2 block w-full"} />
-
-            <button class={"mt-3 bg-gray-200 p-2"}>{"Save changes"}</button>
         </>
     }
 }
