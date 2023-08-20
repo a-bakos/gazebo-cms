@@ -76,8 +76,9 @@ pub fn current_user_provider(props: &Props) -> Html {
                         cloned_user.dispatch(CurrentUserDispatchActions {
                             action_type: UserAction::LoginSuccess,
                             login_response: Some(LoginResponseAccountDetails {
+                                // todo!
                                 id: 0,
-                                login_name: "".to_string(),
+                                login_name: "LOIGNNAME".to_string(),
                                 email: "".to_string(),
                                 role: "".to_string(),
                                 token: token.to_string(),

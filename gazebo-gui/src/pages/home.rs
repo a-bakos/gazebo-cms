@@ -20,8 +20,8 @@ pub fn home() -> Html {
         .expect("Current accounts context missing");
 
     let name = match &current_user_ctx.user {
-        Some(user) => &user.username,
-        None => "Logged out",
+        Some(user) => format!("TEST {}", &user.username),
+        None => "Logged out".to_string(),
     };
 
     let row_titles_handle = use_state(|| Vec::<GB_Post>::new());

@@ -52,5 +52,6 @@ pub(crate) async fn api_me(token: &str) -> Result<String, gloo_net::Error> {
         .send()
         .await?;
 
+    // return GB Account here
     response.json::<String>().await
 }

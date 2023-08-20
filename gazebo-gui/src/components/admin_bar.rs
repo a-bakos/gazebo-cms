@@ -9,7 +9,7 @@ pub fn admin_bar() -> Html {
     let current_user_ctx = use_context::<crate::context::CurrentUserContext>()
         .expect("Current accounts context missing");
     match &current_user_ctx.user {
-        Some(_user) => html! {
+        Some(user) => html! {
             <>
                 <div class="sticky top-0">
                     <nav class="bg-gray-400 w-full">
@@ -29,7 +29,7 @@ pub fn admin_bar() -> Html {
                                 <Link<MainNavigationRoute>
                                     to={MainNavigationRoute::AdminProfile}>
                                     <p>{"[USER]"}</p>
-                                    <p>{"User Name"}</p>
+                                    <p>{user.username.clone()}</p>
                                     <p>{"administrator"}</p>
                                 </Link<MainNavigationRoute>>
                             </li>
