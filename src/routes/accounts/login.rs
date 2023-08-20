@@ -257,3 +257,16 @@ pub async fn update_last_login_timestamp(
         Err(_e) => println!("Last login datetime update error!"),
     }
 }
+
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct TokenAuthParams {
+    pub token: String,
+}
+pub async fn token_auth(
+    pool: PgPool,
+    params: TokenAuthParams,
+) -> Result<impl warp::Reply, warp::Rejection> {
+    println!("TOKEN FROM FRONTEND: {}", params.token);
+    let response = "RESPONSE FROM SERVER";
+    Ok(warp::reply::json(&response))
+}

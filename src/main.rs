@@ -80,6 +80,13 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(warp::body::json())
         .and_then(routes::accounts::login::login);
 
+    let auth_token = warp::post()
+        .and(warp::path(url::path::PATH_USER_AUTH_TOKEN))
+        .and(warp::path::end())
+        .and(pool_filter.clone())
+        .and(warp::body::json())
+        .and_then(routes::accounts::login::token_auth);
+
     let get_post = warp::get()
         .and(warp::path(url::path::PATH_POST))
         .and(warp::path::param::<i32>())
@@ -137,6 +144,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .or(get_users)
         .or(registration)
         .or(login)
+        .or(auth_token)
         .or(delete_user)
         .or(get_post)
         .or(get_posts)

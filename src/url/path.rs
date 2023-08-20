@@ -4,6 +4,7 @@ pub const PATH_POSTS: &str = "posts";
 pub const PATH_USER: &str = "accounts";
 pub const PATH_USER_LOGIN: &str = "login";
 pub const PATH_TITLE: &str = "title";
+pub const PATH_USER_AUTH_TOKEN: &str = "auth";
 
 // Second level paths
 pub const PATH_USER_REGISTRATION: &str = "registration"; // todo use the add below instead of reg
