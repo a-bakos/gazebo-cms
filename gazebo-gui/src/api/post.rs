@@ -72,3 +72,11 @@ pub(crate) async fn update_entry_single_param<'a>(
     .await?;
     response.text().await
 }
+
+pub(crate) async fn update_entry_properties<'a>(
+    entry_type: EntryType,
+    entry_id: EntryID,
+    update_props: EntryUpdateProps<'a>,
+) -> Result<String, gloo_net::Error> {
+    todo!()
+}

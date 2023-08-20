@@ -8,6 +8,8 @@ use yew::prelude::*;
 use crate::components::button::Button;
 use crate::components::{admin_bar::AdminBar, entry_editor::EntryEditor};
 
+use crate::components::input::Input;
+
 #[derive(Properties, PartialEq)]
 pub struct EntryEditorProps {
     pub entry_type: AttrValue,
@@ -39,14 +41,20 @@ pub fn entry_edit_existing(props: &EntryEditorProps) -> Html {
             <AdminBar />
 
             <form>
+                <input
+                    type={"hidden"}
+                    name={"gb_author_id"}
+                    value={"1000"}
+                />
+
                 <div class={"flex"}>
                     <nav class="bg-gray-300 w-1/6">
-                        <ul class="w-max">
-                            <li><button class="w-full bg-blue-400 px-4 block" href="">{"?MenuItem"}</button></li>
-                            <li><button class="w-full bg-blue-400 px-4 block" href="">{"?MenuItem"}</button></li>
-                            <li><button class="w-full bg-blue-400 px-4 block" href="">{ "3" }</button></li>
-                            <li><button class="w-full bg-blue-400 px-4 block" href="">{ "Publish" }</button></li>
-                            <li><button class="w-full bg-blue-400 px-4 block" href="">{ "Bin" }</button></li>
+                        <ul class="w-full">
+                            <li><button class="w-full bg-blue-400 px-4 block hover:bg-red-200" href="">{"?MenuItem"}</button></li>
+                            <li><button class="w-full bg-blue-400 px-4 block hover:bg-red-200" href="">{"?MenuItem"}</button></li>
+                            <li><button class="w-full bg-blue-400 px-4 block hover:bg-red-200" href="">{ "3" }</button></li>
+                            <li><button class="w-full bg-blue-400 px-4 block hover:bg-red-200" href="">{ "Publish" }</button></li>
+                            <li><button class="w-full bg-blue-400 px-4 block hover:bg-red-200" href="">{ "Bin" }</button></li>
                         </ul>
                     </nav>
                     <section class="bg-white w-5/6 p-4">

@@ -1,5 +1,7 @@
+use crate::account::consts::NEW_ACCOUNT_TEMP_ID;
 use crate::account::gb_account::AccountID;
 use crate::datetime::functions::get_current_date;
+use crate::entry::consts::NEW_ENTRY_TEMP_ID;
 use crate::entry::entry_id::{get_entry_parent_id, EntryID};
 use crate::entry::status::{ContentStatus, EntryStatus};
 use serde::{Deserialize, Serialize};
@@ -23,11 +25,11 @@ pub struct GB_Post {
 impl GB_Post {
     pub fn new() -> Self {
         Self {
-            id: EntryID(0),
-            id_author: AccountID(0),
+            id: NEW_ENTRY_TEMP_ID,
+            id_author: NEW_ACCOUNT_TEMP_ID,
             id_parent: None,
-            date_publish: "".to_string(),
-            date_modified: "".to_string(),
+            date_publish: String::new(),
+            date_modified: String::new(),
             slug: None,
             status: EntryStatus::Unknown,
             title: None,
