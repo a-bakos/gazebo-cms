@@ -40,7 +40,7 @@ pub fn entry_edit_existing(props: &EntryEditorProps) -> Html {
 
             <form>
                 <div class={"flex"}>
-                    <nav class="bg-gray-300">
+                    <nav class="bg-gray-300 w-1/6">
                         <ul class="w-max">
                             <li><button class="w-full bg-blue-400 px-4 block" href="">{"?MenuItem"}</button></li>
                             <li><button class="w-full bg-blue-400 px-4 block" href="">{"?MenuItem"}</button></li>
@@ -49,7 +49,7 @@ pub fn entry_edit_existing(props: &EntryEditorProps) -> Html {
                             <li><button class="w-full bg-blue-400 px-4 block" href="">{ "Bin" }</button></li>
                         </ul>
                     </nav>
-                    <section class="bg-white w-full p-4">
+                    <section class="bg-white w-5/6 p-4">
                         <h2 class="font-bold ">{ single_entry.title.clone() }</h2>
                         <p class="font-bold ">{"Permalink: "}{ single_entry.slug.clone() }</p>
                         <hr />

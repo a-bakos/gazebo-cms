@@ -13,7 +13,7 @@ pub fn admin_posts() -> Html {
             <AdminBar />
 
             <div class={"flex"}>
-                <nav class="bg-gray-300">
+                <nav class="bg-gray-300 w-1/6">
                     <ul class="w-max">
                         <li><button class="w-full bg-blue-400 px-4 block" href="">{"?Category"}</button></li>
                         <li><button class="w-full bg-blue-400 px-4 block" href="">{"?Settings"}</button></li>
@@ -22,7 +22,7 @@ pub fn admin_posts() -> Html {
                         <li><button class="w-full bg-blue-400 px-4 block" href="">{ "5" }</button></li>
                     </ul>
                 </nav>
-                <section class="bg-white w-full p-4">
+                <section class="bg-white w-5/6 p-4">
                     <h2 class="font-bold ">{"POST ENTRIES"}</h2>
                     <div class="flex w-full bg-gray-100 border">
                         <ButtonAddNewEntry />
