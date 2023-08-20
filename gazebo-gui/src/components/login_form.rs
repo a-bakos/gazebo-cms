@@ -69,7 +69,8 @@ pub fn login_form() -> Html {
                         "Successful login: ",
                         response.http_status_code,
                         response.account_details.id.clone(),
-                        response.account_details.login_name.clone()
+                        response.account_details.login_name.clone(),
+                        response.account_details.token.clone()
                     );
 
                     clone_current_user_ctx.dispatch(CurrentUserDispatchActions {

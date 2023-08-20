@@ -8,6 +8,7 @@ pub type CurrentUserContext = UseReducerHandle<CurrentUser>;
 #[derive(Default, PartialEq)]
 pub struct CurrentUser {
     pub user: Option<GB_CurrentAccount>,
+    pub token: Option<String>,
 }
 
 pub enum UserAction {
@@ -29,11 +30,16 @@ impl Reducible for CurrentUser {
                         email: login_response.email,
                         role: login_response.role,
                     }),
+                    token: Some(login_response.token),
                 }
                 .into()
             }
 
-            UserAction::LoginFailure => Self { user: None }.into(),
+            UserAction::LoginFailure => Self {
+                user: None,
+                token: None,
+            }
+            .into(),
         }
     }
 }

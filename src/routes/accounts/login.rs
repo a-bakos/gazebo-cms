@@ -32,6 +32,7 @@ pub struct LoginResponseAccountDetails {
     pub login_name: String,
     pub email: String,
     pub role: String,
+    pub token: String,
 }
 
 /// Login status variants
@@ -96,6 +97,7 @@ pub async fn try_login(
                 login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
                 email: row.get(COL_INDEX_ACCOUNT_EMAIL),
                 role: row.get::<&str, _>(COL_INDEX_ACCOUNT_ROLE).to_string(),
+                token: "HARDCODED_TOKEN".to_string(),
             }
         })
         .fetch_one(&pool)

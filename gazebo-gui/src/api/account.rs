@@ -19,6 +19,7 @@ pub struct LoginResponseAccountDetails {
     pub login_name: String,
     pub email: String,
     pub role: String,
+    pub token: String,
 }
 
 pub(crate) async fn api_login_request(
