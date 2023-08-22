@@ -267,6 +267,10 @@ pub async fn token_auth(
     params: TokenAuthParams,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     println!("TOKEN FROM FRONTEND: {}", params.token);
+
+    // Think about UUID
+    // and bearer tokens
+
     let response = "RESPONSE FROM SERVER";
     Ok(warp::reply::json(&response))
 }
