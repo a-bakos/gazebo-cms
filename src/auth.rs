@@ -67,25 +67,25 @@ impl Token {
     }
 }
 
-pub fn generate_session_id() -> String {
-    Uuid::new_v4().to_string()
+pub fn generate_session_id() -> Uuid {
+    Uuid::new_v4()
 }
 
 pub fn token_gen() -> String {
+    let uuid = generate_session_id();
+    let uuid_string = uuid.to_string();
     let token_header = TokenHeader::new(TokenSigningAlgorithm::HS256, TokenType::JWT);
     let token_claims = TokenClaims::new(
         "100".to_string(),
         "admin".to_string(),
-        generate_session_id(),
+        uuid_string,
         "none",
         0,
     );
-    let token_claims_as_string =
-        serde_json::to_string(&token_claims).expect("Failed to serialise claims");
-    println!("{:?}", token_claims_as_string);
-    let token = Token {
+
+    Token {
         claims: token_claims,
         header: token_header,
-    };
-    token.generate()
+    }
+    .generate()
 }

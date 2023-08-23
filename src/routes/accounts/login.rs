@@ -82,6 +82,10 @@ pub async fn try_login(
         AccountIdentifier::Email => COL_INDEX_ACCOUNT_EMAIL,
         AccountIdentifier::Login => COL_INDEX_ACCOUNT_LOGIN,
     };
+
+    // todo
+    // Maybe here allocate tokens??
+
     let query = format!(
         "SELECT * FROM {} WHERE {} = $1 AND password = $2",
         DB_Table::Accounts,
@@ -245,17 +249,19 @@ pub async fn update_last_login_timestamp(
     value: String,
 ) {
     let update_last_login_query = format!(
-        "UPDATE {} SET last_login = CURRENT_TIMESTAMP WHERE {} = $1",
+        "UPDATE {} SET last_login = CURRENT_TIMESTAMP, uuid = $1 WHERE {} = $2",
         DB_Table::Accounts,
         get_column_name_by_login_variant(login_variant) // email or username
     );
+    let uuid: uuid::Uuid = crate::auth::generate_session_id();
     match sqlx::query(&update_last_login_query)
+        .bind(uuid)
         .bind(value)
         .execute(&pool)
         .await
     {
         Ok(_) => println!("Last login datetime updated!"),
-        Err(_e) => println!("Last login datetime update error!"),
+        Err(e) => println!("Last login datetime update error! {:?}", e),
     }
 }
 
