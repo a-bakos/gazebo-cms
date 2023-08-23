@@ -1,6 +1,7 @@
 extern crate core;
 
 mod app;
+mod auth;
 mod consts;
 mod database;
 mod entry;
@@ -15,6 +16,8 @@ mod users;
 use sqlx::postgres::PgPoolOptions;
 use warp::{http::Method, Filter};
 
+use crate::auth::token_gen;
+
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {
     // Start the App
@@ -24,6 +27,10 @@ async fn main() -> Result<(), sqlx::Error> {
     //app.change_admin_email("admin@example.com");
     //app.change_app_name("Gazebo CMS");
     dbg!(&app);
+
+    println!("TOKEN");
+    let the_token = token_gen();
+    println!("{}", the_token);
 
     // DB Setup
     // let pool = db_setup(...).await;

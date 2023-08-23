@@ -1,40 +1,39 @@
-struct UUID {
-    user_id: String,
-    nonce: String,
-    mac: String,
-}
+use uuid::Uuid;
 
 // algorithm used for signing
-enum TokenSigningAlgorithm {
+pub enum TokenSigningAlgorithm {
     HS256,
 }
 
 // token type - eg. JWT
-enum TokenType {
+pub enum TokenType {
     JWT,
 }
 
-struct TokenHeader {
-    alg: TokenSigningAlgorithm,
-    typ: TokenType,
+pub struct TokenHeader {
+    pub alg: TokenSigningAlgorithm,
+    pub typ: TokenType,
 }
 
 impl TokenHeader {
-    fn new(alg: TokenSigningAlgorithm, typ: TokenType) -> Self {
+    pub fn new(alg: TokenSigningAlgorithm, typ: TokenType) -> Self {
         Self { alg, typ }
     }
 }
 
-struct TokenClaims {
-    user_id: String,
-    role: String,
-    uuid: String,
-    nonce: String,
-    expiry: i64, // timestamp of expiration
+use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct TokenClaims {
+    pub user_id: String,
+    pub role: String,
+    pub uuid: String,
+    pub nonce: String,
+    pub expiry: i64, // timestamp of expiration
 }
 
 impl TokenClaims {
-    fn new(user_id: String, role: String, uuid: String, nonce: &str, expiry: i64) -> Self {
+    pub fn new(user_id: String, role: String, uuid: String, nonce: &str, expiry: i64) -> Self {
         Self {
             user_id,
             role,
@@ -45,25 +44,50 @@ impl TokenClaims {
     }
 }
 
-struct Token {
-    claims: TokenClaims,
-    header: TokenHeader,
+pub struct Token {
+    pub claims: TokenClaims,
+    pub header: TokenHeader,
 }
 
 impl Token {
-    fn generate() -> String {
-        todo!()
+    pub fn generate(&self) -> String {
+        let token = jsonwebtoken::encode(
+            &Header::default(),
+            &self.claims,
+            &EncodingKey::from_secret("secret".as_ref()),
+        )
+        .unwrap();
+
+        if token.is_empty() {
+            "NONE".to_string()
+        } else {
+            token
+        }
     }
 }
 
-fn token_gen() -> String {
+pub fn generate_session_id() -> String {
+    Uuid::new_v4().to_string()
+}
+
+use serde::{Deserialize, Serialize};
+use serde_json::Result;
+
+pub fn token_gen() -> String {
     let token_header = TokenHeader::new(TokenSigningAlgorithm::HS256, TokenType::JWT);
     let token_claims = TokenClaims::new(
         "100".to_string(),
         "admin".to_string(),
-        "uuid".to_string(),
+        generate_session_id(),
         "none",
         0,
     );
-    let token = Token::generate();
+    let token_claims_as_string =
+        serde_json::to_string(&token_claims).expect("Failed to serialise claims");
+    println!("{:?}", token_claims_as_string);
+    let token = Token {
+        claims: token_claims,
+        header: token_header,
+    };
+    token.generate()
 }
