@@ -1,3 +1,6 @@
+use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
+use serde::{Deserialize, Serialize};
+use serde_json::Result;
 use uuid::Uuid;
 
 // algorithm used for signing
@@ -20,8 +23,6 @@ impl TokenHeader {
         Self { alg, typ }
     }
 }
-
-use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct TokenClaims {
@@ -54,7 +55,7 @@ impl Token {
         let token = jsonwebtoken::encode(
             &Header::default(),
             &self.claims,
-            &EncodingKey::from_secret("secret".as_ref()),
+            &EncodingKey::from_secret(crate::private::JWT_SECRET.as_ref()),
         )
         .unwrap();
 
@@ -69,9 +70,6 @@ impl Token {
 pub fn generate_session_id() -> String {
     Uuid::new_v4().to_string()
 }
-
-use serde::{Deserialize, Serialize};
-use serde_json::Result;
 
 pub fn token_gen() -> String {
     let token_header = TokenHeader::new(TokenSigningAlgorithm::HS256, TokenType::JWT);
