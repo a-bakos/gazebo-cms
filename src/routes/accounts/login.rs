@@ -48,6 +48,7 @@ pub struct LoginResponseWithStatusCode {
     pub http_status_code: u32,
     pub account_details: LoginResponseAccountDetails,
 }
+
 impl LoginResponseWithStatusCode {
     fn response(
         login_status: LoginStatus,
@@ -262,6 +263,7 @@ pub async fn update_last_login_timestamp(
 pub struct TokenAuthParams {
     pub token: String,
 }
+
 pub async fn token_auth(
     pool: PgPool,
     params: TokenAuthParams,
