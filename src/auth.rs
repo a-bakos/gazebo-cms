@@ -40,7 +40,7 @@ impl TokenClaims {
             user_id,
             role,
             uuid,
-            nonce: nonce.to_string(),
+            nonce: nonce.to_string(), // TODO see if we need this nonce here...
             expiry,
         }
     }
