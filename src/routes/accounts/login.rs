@@ -109,7 +109,7 @@ pub async fn try_login(
         .await
     {
         Ok(user) => {
-            update_last_login_timestamp(pool.clone(), login_variant, binding).await;
+            update_login_timestamp_and_session_id(pool.clone(), login_variant, binding).await;
 
             Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
                 LoginStatus::Authorized,
@@ -242,19 +242,19 @@ fn get_column_name_by_login_variant<'a>(login_variant: AccountIdentifier) -> &'a
     }
 }
 
-/// Update Last Login timestamp for accounts
-pub async fn update_last_login_timestamp(
+/// Update Last Login timestamp and UUID/Session ID for accounts
+pub async fn update_login_timestamp_and_session_id(
     pool: PgPool,
     login_variant: AccountIdentifier,
     value: String,
 ) {
-    let update_last_login_query = format!(
+    let update_query = format!(
         "UPDATE {} SET last_login = CURRENT_TIMESTAMP, uuid = $1 WHERE {} = $2",
         DB_Table::Accounts,
         get_column_name_by_login_variant(login_variant) // email or username
     );
     let uuid: uuid::Uuid = crate::auth::generate_session_id();
-    match sqlx::query(&update_last_login_query)
+    match sqlx::query(&update_query)
         .bind(uuid)
         .bind(value)
         .execute(&pool)
