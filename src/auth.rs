@@ -1,3 +1,4 @@
+use crate::routes::accounts::login::LoginResponseAccountDetails;
 use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
@@ -60,7 +61,7 @@ impl Token {
         .unwrap();
 
         if token.is_empty() {
-            "NONE".to_string()
+            "empty".to_string()
         } else {
             token
         }
@@ -71,15 +72,14 @@ pub fn generate_session_id() -> Uuid {
     Uuid::new_v4()
 }
 
-pub fn token_gen() -> String {
-    let uuid = generate_session_id();
+pub fn generate_token(user_data: &LoginResponseAccountDetails, uuid: &Uuid, nonce: &str) -> String {
     let uuid_string = uuid.to_string();
     let token_header = TokenHeader::new(TokenSigningAlgorithm::HS256, TokenType::JWT);
     let token_claims = TokenClaims::new(
-        "100".to_string(),
-        "admin".to_string(),
+        user_data.id.to_string(),
+        user_data.role.to_string(),
         uuid_string,
-        "none",
+        nonce,
         0,
     );
 

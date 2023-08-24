@@ -83,9 +83,6 @@ pub async fn try_login(
         AccountIdentifier::Login => COL_INDEX_ACCOUNT_LOGIN,
     };
 
-    // todo
-    // Maybe here allocate tokens??
-
     let query = format!(
         "SELECT * FROM {} WHERE {} = $1 AND password = $2",
         DB_Table::Accounts,
@@ -102,14 +99,26 @@ pub async fn try_login(
                 login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
                 email: row.get(COL_INDEX_ACCOUNT_EMAIL),
                 role: row.get::<&str, _>(COL_INDEX_ACCOUNT_ROLE).to_string(),
-                token: "HARDCODED_TOKEN".to_string(),
+                token: "empty".to_string(),
             }
         })
         .fetch_one(&pool)
         .await
     {
-        Ok(user) => {
-            update_login_timestamp_and_session_id(pool.clone(), login_variant, binding).await;
+        Ok(mut user) => {
+            let uuid: Option<uuid::Uuid> =
+                update_login_timestamp_and_session_id(pool.clone(), login_variant, binding).await;
+
+            if uuid.is_none() {
+                unreachable!();
+                return Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                    LoginStatus::Unauthorized,
+                    None,
+                )));
+            }
+
+            // Generate user access token and attach to response
+            user.token = crate::auth::generate_token(&user, &uuid.unwrap(), "NONCE");
 
             Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
                 LoginStatus::Authorized,
@@ -243,11 +252,15 @@ fn get_column_name_by_login_variant<'a>(login_variant: AccountIdentifier) -> &'a
 }
 
 /// Update Last Login timestamp and UUID/Session ID for accounts
+///
+/// While login timestamp and UUIDs are technically different things, they are kept together here.
+/// We only need to generate a new session ID when a user logs in, and then we need to update the
+/// login timestamp anyway. This way, we can do both in the same query.
 pub async fn update_login_timestamp_and_session_id(
     pool: PgPool,
     login_variant: AccountIdentifier,
     value: String,
-) {
+) -> Option<uuid::Uuid> {
     let update_query = format!(
         "UPDATE {} SET last_login = CURRENT_TIMESTAMP, uuid = $1 WHERE {} = $2",
         DB_Table::Accounts,
@@ -255,13 +268,19 @@ pub async fn update_login_timestamp_and_session_id(
     );
     let uuid: uuid::Uuid = crate::auth::generate_session_id();
     match sqlx::query(&update_query)
-        .bind(uuid)
+        .bind(uuid.clone())
         .bind(value)
         .execute(&pool)
         .await
     {
-        Ok(_) => println!("Last login datetime updated!"),
-        Err(e) => println!("Last login datetime update error! {:?}", e),
+        Ok(_) => {
+            println!("Last login datetime + UUID updated!");
+            Some(uuid)
+        }
+        Err(e) => {
+            println!("Last login datetime update or UUID error! {:?}", e);
+            None
+        }
     }
 }
 
