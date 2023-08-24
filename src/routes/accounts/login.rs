@@ -118,7 +118,15 @@ pub async fn try_login(
             }
 
             // Generate user access token and attach to response
-            user.token = crate::auth::generate_token(&user, &uuid.unwrap(), "NONCE");
+            let the_token: Option<String> =
+                crate::auth::generate_token(&user, &uuid.unwrap(), "NONCE");
+            if the_token.is_none() {
+                return Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                    LoginStatus::Unauthorized,
+                    None,
+                )));
+            }
+            user.token = the_token.unwrap();
 
             Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
                 LoginStatus::Authorized,

@@ -52,7 +52,7 @@ pub struct Token {
 }
 
 impl Token {
-    pub fn generate(&self) -> String {
+    pub fn generate(&self) -> Option<String> {
         let token = jsonwebtoken::encode(
             &Header::default(),
             &self.claims,
@@ -61,9 +61,9 @@ impl Token {
         .unwrap();
 
         if token.is_empty() {
-            "empty".to_string()
+            None
         } else {
-            token
+            Some(token)
         }
     }
 }
@@ -72,7 +72,11 @@ pub fn generate_session_id() -> Uuid {
     Uuid::new_v4()
 }
 
-pub fn generate_token(user_data: &LoginResponseAccountDetails, uuid: &Uuid, nonce: &str) -> String {
+pub fn generate_token(
+    user_data: &LoginResponseAccountDetails,
+    uuid: &Uuid,
+    nonce: &str,
+) -> Option<String> {
     let uuid_string = uuid.to_string();
     let token_header = TokenHeader::new(TokenSigningAlgorithm::HS256, TokenType::JWT);
     let token_claims = TokenClaims::new(
