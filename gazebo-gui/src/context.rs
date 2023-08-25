@@ -10,7 +10,6 @@ pub type CurrentUserContext = UseReducerHandle<CurrentUser>;
 #[derive(Default, PartialEq)]
 pub struct CurrentUser {
     pub user: Option<GB_CurrentAccount>,
-    pub token: Option<String>,
 }
 
 pub enum UserAction {
@@ -37,15 +36,10 @@ impl Reducible for CurrentUser {
                         email: login_response.email,
                         role: login_response.role,
                     }),
-                    token: Some(login_response.token),
                 }
                 .into()
             }
-            UserAction::LoginFailure => Self {
-                user: None,
-                token: None,
-            }
-            .into(),
+            UserAction::LoginFailure => Self { user: None }.into(),
         }
     }
 }
@@ -71,18 +65,9 @@ pub fn current_user_provider(props: &Props) -> Html {
             spawn_local(async move {
                 match api_me(&token).await {
                     Ok(me_response) => {
-                        gloo_console::log!("SERVER RESPONSE: {}!", me_response.clone());
-                        // gloo_console::log!("TOKEN {}!", token.clone());
                         cloned_user.dispatch(CurrentUserDispatchActions {
                             action_type: UserAction::LoginSuccess,
-                            login_response: Some(LoginResponseAccountDetails {
-                                // todo!
-                                id: 0,
-                                login_name: "LOIGNNAME".to_string(),
-                                email: "".to_string(),
-                                role: "".to_string(),
-                                token: token.to_string(),
-                            }),
+                            login_response: Some(me_response),
                         });
                     }
                     Err(_) => SessionStorage::clear(),

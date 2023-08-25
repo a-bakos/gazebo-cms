@@ -5,15 +5,18 @@ use serde_json::Result;
 use uuid::Uuid;
 
 // algorithm used for signing
+#[derive(Debug, Serialize, Deserialize)]
 pub enum TokenSigningAlgorithm {
     HS256,
 }
 
 // token type - eg. JWT
+#[derive(Debug, Serialize, Deserialize)]
 pub enum TokenType {
     JWT,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct TokenHeader {
     pub alg: TokenSigningAlgorithm,
     pub typ: TokenType,
@@ -46,16 +49,22 @@ impl TokenClaims {
     }
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Token {
-    pub claims: TokenClaims,
-    pub header: TokenHeader,
+    // pub claims: TokenClaims,
+    // pub header: TokenHeader,
+    pub user_id: String,
+    pub role: String,
+    pub uuid: String,
+    pub nonce: String,
+    pub exp: i64, // timestamp of expiration
 }
 
 impl Token {
     pub fn generate(&self) -> Option<String> {
         let token = jsonwebtoken::encode(
             &Header::default(),
-            &self.claims,
+            &self,
             &EncodingKey::from_secret(crate::private::JWT_SECRET.as_ref()),
         )
         .unwrap();
@@ -78,18 +87,23 @@ pub fn generate_token(
     nonce: &str,
 ) -> Option<String> {
     let uuid_string = uuid.to_string();
-    let token_header = TokenHeader::new(TokenSigningAlgorithm::HS256, TokenType::JWT);
-    let token_claims = TokenClaims::new(
-        user_data.id.to_string(),
-        user_data.role.to_string(),
-        uuid_string,
-        nonce,
-        0,
-    );
+    //let token_header = TokenHeader::new(TokenSigningAlgorithm::HS256, TokenType::JWT);
+    // let token_claims = TokenClaims::new(
+    //     user_data.id.to_string(),
+    //     user_data.role.to_string(),
+    //     uuid_string,
+    //     nonce,
+    //     1672563600,
+    // );
 
     Token {
-        claims: token_claims,
-        header: token_header,
+        // claims: token_claims,
+        // header: token_header,
+        user_id: user_data.id.to_string(),
+        role: user_data.role.to_string(),
+        uuid: uuid_string,
+        nonce: nonce.to_string(),
+        exp: 1672563600,
     }
     .generate()
 }

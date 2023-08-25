@@ -30,7 +30,7 @@ pub fn admin_bar() -> Html {
                                     to={MainNavigationRoute::AdminProfile}>
                                     <p>{"[USER]"}</p>
                                     <p>{user.username.clone()}</p>
-                                    <p>{"administrator"}</p>
+                                    <p>{user.role.clone()}</p>
                                 </Link<MainNavigationRoute>>
                             </li>
                             <li class="flex-1 text-center">

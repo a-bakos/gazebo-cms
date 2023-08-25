@@ -1,3 +1,4 @@
+use crate::auth::{Token, TokenClaims};
 use crate::users::credentials::{is_email_valid, is_password_valid, is_username_valid};
 use crate::{
     database::{
@@ -14,6 +15,7 @@ use crate::{
         credentials::{find_account_by_identifier, AccountIdentifier},
     },
 };
+use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
 
@@ -306,6 +308,47 @@ pub async fn token_auth(
     // Think about UUID
     // and bearer tokens
 
-    let response = "RESPONSE FROM SERVER";
+    // decode params.token to get uuid
+    // check uuid if matches construct response
+
+    let token = params.token.clone();
+    // Claims is a struct that implements Deserialize
+    let token_message = decode::<Token>(
+        &token,
+        &DecodingKey::from_secret(crate::private::JWT_SECRET.as_ref()),
+        &Validation::new(Algorithm::HS256),
+    );
+    println!("{:?}", token_message);
+
+    /*
+        let update_query = format!(
+            "UPDATE {} SET last_login = CURRENT_TIMESTAMP, uuid = $1 WHERE {} = $2",
+            DB_Table::Accounts,
+            get_column_name_by_login_variant(login_variant) // email or username
+        );
+        let uuid: uuid::Uuid = crate::auth::generate_session_id();
+        match sqlx::query(&update_query)
+            .bind(uuid.clone())
+            .bind(value)
+            .execute(&pool)
+            .await
+        {
+            Ok(_) => {
+                println!("Last login datetime + UUID updated!");
+                Some(uuid)
+            }
+            Err(e) => {
+                println!("Last login datetime update or UUID error! {:?}", e);
+                None
+            }
+        }
+    */
+    let response = LoginResponseAccountDetails {
+        id: 9000,
+        login_name: "THELOGINNAME".to_string(),
+        email: "".to_string(),
+        role: "admin".to_string(),
+        token: params.token,
+    };
     Ok(warp::reply::json(&response))
 }

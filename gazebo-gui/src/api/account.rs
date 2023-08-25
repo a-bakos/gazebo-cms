@@ -44,7 +44,7 @@ pub(crate) async fn api_get_all_accounts() -> Result<Vec<GB_Account>, gloo_net::
     response.json::<Vec<GB_Account>>().await
 }
 
-pub(crate) async fn api_me(token: &str) -> Result<String, gloo_net::Error> {
+pub(crate) async fn api_me(token: &str) -> Result<LoginResponseAccountDetails, gloo_net::Error> {
     let response = Request::post(&format!("{}/auth", BACKEND_URL_BASE))
         .json(&json!({
             "token": token,
@@ -53,5 +53,5 @@ pub(crate) async fn api_me(token: &str) -> Result<String, gloo_net::Error> {
         .await?;
 
     // return GB Account here
-    response.json::<String>().await
+    response.json::<LoginResponseAccountDetails>().await
 }
