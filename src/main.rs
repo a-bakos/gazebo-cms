@@ -84,11 +84,11 @@ async fn main() -> Result<(), sqlx::Error> {
         .and_then(routes::accounts::login::login);
 
     let auth_token = warp::post()
-        .and(warp::path(url::path::PATH_USER_AUTH_TOKEN))
+        .and(warp::path(url::path::PATH_USER_AUTH))
         .and(warp::path::end())
         .and(pool_filter.clone())
         .and(warp::body::json())
-        .and_then(routes::accounts::login::token_auth);
+        .and_then(routes::accounts::token::auth);
 
     let get_post = warp::get()
         .and(warp::path(url::path::PATH_POST))
