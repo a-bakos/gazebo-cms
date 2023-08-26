@@ -25,6 +25,7 @@ impl TokenClaims {
         if token.is_empty() {
             None
         } else {
+            println!("{:?}", token);
             Some(token)
         }
     }

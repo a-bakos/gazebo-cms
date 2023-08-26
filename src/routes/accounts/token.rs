@@ -1,7 +1,12 @@
 use crate::auth::TokenClaims;
+use crate::database::db::DB_Table;
+use crate::routes::accounts::crud::get_user_by_id;
 use crate::routes::accounts::login::LoginResponseAccountDetails;
+use crate::traits::RowTransformer;
+use gazebo_core_common::account::gb_account::GB_Account;
 use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 use serde::{Deserialize, Serialize};
+use sqlx::postgres::PgRow;
 use sqlx::PgPool;
 
 #[derive(Serialize, Deserialize, Debug, Default)]
@@ -13,59 +18,48 @@ pub async fn auth(
     pool: PgPool,
     params: TokenAuthParams,
 ) -> Result<impl warp::Reply, warp::Rejection> {
-    // Think about UUID
-    // and bearer tokens
-
-    // decode params.token to get uuid
-    // check uuid if matches construct response
-
-    let token_encoded = params.token.clone();
-    // Claims is a struct that implements Deserialize
-    let token_decoded = decode::<TokenClaims>(
-        &token_encoded,
+    match decode::<TokenClaims>(
+        &params.token.clone(), // decoded token
         &DecodingKey::from_secret(crate::private::JWT_SECRET.as_ref()),
         &Validation::new(Algorithm::HS256),
-    );
-
-    match token_decoded {
+    ) {
         Ok(token) => {
-            // todo do something with claims
             println!("{:?}", token.claims);
+
+            // TODO get info from DB
+            // - get user by id
+            // - check uuid is valid
+            // - check role
+
+            let user_id = token.claims.user_id;
+            let uuid = token.claims.uuid;
+
+            // TODO WIP HERE!
+            // ERR: error returned from database: operator does not exist: integer = text
+            let query = format!("SELECT * FROM {} WHERE id = $1", DB_Table::Accounts);
+            match sqlx::query(&query)
+                .bind(user_id.clone())
+                .map(|row: PgRow| GB_Account::transform(&row))
+                .fetch_one(&pool)
+                .await
+            {
+                Ok(res) => {
+                    let response = LoginResponseAccountDetails {
+                        id: res.id.0,
+                        login_name: res.login_name.to_string(),
+                        email: res.email.to_string(),
+                        role: res.role.to_string(),
+                        token: params.token,
+                    };
+                    println!("Auth successful");
+                    Ok(warp::reply::json(&response))
+                }
+                Err(e) => {
+                    println!("Error: {}", e);
+                    Ok(warp::reply::json(&false))
+                }
+            }
         }
-        Err(_) => {}
+        Err(_) => Ok(warp::reply::json(&false)),
     }
-
-    // TODO get info from DB
-
-    /*
-        let update_query = format!(
-            "UPDATE {} SET last_login = CURRENT_TIMESTAMP, uuid = $1 WHERE {} = $2",
-            DB_Table::Accounts,
-            get_column_name_by_login_variant(login_variant) // email or username
-        );
-        let uuid: uuid::Uuid = crate::auth::generate_session_id();
-        match sqlx::query(&update_query)
-            .bind(uuid.clone())
-            .bind(value)
-            .execute(&pool)
-            .await
-        {
-            Ok(_) => {
-                println!("Last login datetime + UUID updated!");
-                Some(uuid)
-            }
-            Err(e) => {
-                println!("Last login datetime update or UUID error! {:?}", e);
-                None
-            }
-        }
-    */
-    let response = LoginResponseAccountDetails {
-        id: 9000,
-        login_name: "THELOGINNAME".to_string(),
-        email: "".to_string(),
-        role: "admin".to_string(),
-        token: params.token,
-    };
-    Ok(warp::reply::json(&response))
 }
