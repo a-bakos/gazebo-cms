@@ -1,4 +1,4 @@
-use crate::auth::{Token, TokenClaims};
+use crate::auth::TokenClaims;
 use crate::users::credentials::{is_email_valid, is_password_valid, is_username_valid};
 use crate::{
     database::{
@@ -120,8 +120,7 @@ pub async fn try_login(
             }
 
             // Generate user access token and attach to response
-            let the_token: Option<String> =
-                crate::auth::generate_token(&user, &uuid.unwrap(), "NONCE");
+            let the_token: Option<String> = crate::auth::generate_token(&user, &uuid.unwrap());
             if the_token.is_none() {
                 return Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
                     LoginStatus::Unauthorized,
@@ -311,14 +310,21 @@ pub async fn token_auth(
     // decode params.token to get uuid
     // check uuid if matches construct response
 
-    let token = params.token.clone();
+    let token_encoded = params.token.clone();
     // Claims is a struct that implements Deserialize
-    let token_message = decode::<Token>(
-        &token,
+    let token_decoded = decode::<TokenClaims>(
+        &token_encoded,
         &DecodingKey::from_secret(crate::private::JWT_SECRET.as_ref()),
         &Validation::new(Algorithm::HS256),
     );
-    println!("{:?}", token_message);
+
+    match token_decoded {
+        Ok(token) => {
+            // todo do something with claims
+            println!("{:?}", token.claims);
+        }
+        Err(_) => {}
+    }
 
     /*
         let update_query = format!(
