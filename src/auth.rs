@@ -37,8 +37,6 @@ pub fn generate_session_id() -> Uuid {
     Uuid::new_v4()
 }
 
-// Todo: this fn does not need to know the entire AuthResponsePayload. Maybe extract the necessary
-// info into separate params, or a custom struct
 pub fn generate_token(user_data: &AuthResponseAccountInfo, uuid: &Uuid) -> Option<String> {
     let uuid_string = uuid.to_string();
     TokenClaims {

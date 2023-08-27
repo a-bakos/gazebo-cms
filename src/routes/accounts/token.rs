@@ -69,31 +69,29 @@ pub async fn auth(
             match sqlx::query(&query)
                 .bind(user_id)
                 .map(|row: PgRow| {
-                    let id = AccountID(row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32);
                     let uuid_from_db: Uuid = row.get(COL_INDEX_ACCOUNT_UUID);
-                    let role: String = row.get(COL_INDEX_ACCOUNT_ROLE);
-                    let role: AccountRole = get_role_variant(&role);
-                    let login_name: String = row.get(COL_INDEX_ACCOUNT_LOGIN);
-
-                    let account = AuthResponseAccountInfo {
-                        id,
-                        role,
-                        login_name,
-                    };
-
                     // Check if UUIDs match
-                    let status = if uuid_from_db == uuid_from_token {
-                        HttpStatusCode::Ok
+                    return if uuid_from_db == uuid_from_token {
+                        AuthResponsePayload {
+                            http_status_code: HttpStatusCode::Ok.code(),
+                            account_details: AuthResponseAccountInfo {
+                                id: AccountID(row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32),
+                                role: {
+                                    let role: String = row.get(COL_INDEX_ACCOUNT_ROLE);
+                                    let role: AccountRole = get_role_variant(&role);
+                                    role
+                                },
+                                login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
+                            },
+                            token: Some(params.token.clone()),
+                        }
                     } else {
-                        HttpStatusCode::Unauthorized
+                        AuthResponsePayload {
+                            http_status_code: HttpStatusCode::Unauthorized.code(),
+                            account_details: AuthResponseAccountInfo::default(),
+                            token: None,
+                        }
                     };
-
-                    // TODO refactor: ONLY return account details if status code is OK!
-                    AuthResponsePayload {
-                        http_status_code: status.code(),
-                        account_details: account,
-                        token: Some(params.token.clone()),
-                    }
                 })
                 .fetch_one(&pool)
                 .await
