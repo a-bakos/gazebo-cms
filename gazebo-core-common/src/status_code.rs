@@ -2,8 +2,10 @@
 // let status_code = HttpStatusCode::Unauthorized.code();
 // let status_message = HttpStatusCode::Unauthorized.message();
 
+use serde::{Deserialize, Serialize};
+
 #[allow(dead_code)]
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum HttpStatusCode {
     Continue,
     SwitchingProtocols,
