@@ -7,8 +7,8 @@ use crate::pages::{
         admin_accounts::AdminAccounts, admin_dashboard::AdminDashboard, admin_media::AdminMedia,
         admin_posts::AdminPosts, admin_profile::AdminProfile, admin_settings::AdminSettings,
     },
-    edit_entry::EntryEdit,
-    edit_entry_existing::EntryEditExisting,
+    edit_entry::EntryEditExisting,
+    edit_entry_new::EntryEdit,
     home::Home,
     login::Login,
     not_found::NotFound,
@@ -35,7 +35,8 @@ pub enum MainNavigationRoute {
     #[at("/entry-edit")]
     EntryEdit,
     #[at("/entry-edit/:entry_type/:id")]
-    EntryEditExisting { entry_type: String, id: String }, // todo this has to work with permalink too
+    EntryEditExisting { entry_type: String, id: String },
+    // todo this has to work with permalink too
     //#[at("/entry/post/:id")]
     //ViewEntry { id: String },
     #[at("/lost-password")]

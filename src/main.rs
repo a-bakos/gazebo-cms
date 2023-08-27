@@ -1,11 +1,11 @@
 extern crate core;
 
 mod app;
+mod auth;
 mod consts;
 mod database;
 mod entry;
 mod errors;
-mod http;
 mod private;
 mod routes;
 mod traits;
@@ -14,6 +14,8 @@ mod users;
 
 use sqlx::postgres::PgPoolOptions;
 use warp::{http::Method, Filter};
+
+use crate::auth::generate_token;
 
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {
@@ -80,6 +82,13 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(warp::body::json())
         .and_then(routes::accounts::login::login);
 
+    let auth_token = warp::post()
+        .and(warp::path(url::path::PATH_USER_AUTH))
+        .and(warp::path::end())
+        .and(pool_filter.clone())
+        .and(warp::body::json())
+        .and_then(routes::accounts::token::auth);
+
     let get_post = warp::get()
         .and(warp::path(url::path::PATH_POST))
         .and(warp::path::param::<i32>())
@@ -137,6 +146,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .or(get_users)
         .or(registration)
         .or(login)
+        .or(auth_token)
         .or(delete_user)
         .or(get_post)
         .or(get_posts)

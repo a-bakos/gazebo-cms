@@ -12,7 +12,11 @@ regex = "1.7.3"
 serde = { version = "1.0", features = ["derive"] }
 tokio = { version = "1.28.1", features = ["full"] }
 warp = "0.3.5"
-sqlx = { version = "0.6.3", features = ["runtime-tokio-rustls", "migrate", "postgres", "chrono"] }
+sqlx = { version = "0.6.3", features = ["runtime-tokio-rustls", "migrate", "postgres", "chrono", "uuid"] }
+uuid = { version = "1.4.1", features = ["v4", "fast-rng", "macro-diagnostics"] }
+serde_json = "1.0.105"
+jsonwebtoken = "8"
+
 # Gazebo crates
 gazebo-core-common = { version = "0.1.0", path = "gazebo-core-common" }
 

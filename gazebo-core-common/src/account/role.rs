@@ -14,6 +14,11 @@ pub enum AccountRole {
     Contributor,
     NotFound, // missing or incorrect role
 }
+impl Default for AccountRole {
+    fn default() -> Self {
+        Self::NotFound
+    }
+}
 
 pub fn get_role_variant(role: &str) -> AccountRole {
     match role {

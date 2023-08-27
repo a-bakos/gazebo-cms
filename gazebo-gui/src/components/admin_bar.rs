@@ -1,5 +1,4 @@
-use crate::app::MainNavigationRoute;
-use crate::components::admin_menu::AdminMenu;
+use crate::{app::MainNavigationRoute, components::admin_menu::AdminMenu};
 use gazebo_core_common::consts::DEFAULT_APP_NAME;
 use yew::prelude::*;
 use yew_router::prelude::{Link, Redirect};
@@ -9,7 +8,7 @@ pub fn admin_bar() -> Html {
     let current_user_ctx = use_context::<crate::context::CurrentUserContext>()
         .expect("Current accounts context missing");
     match &current_user_ctx.user {
-        Some(_user) => html! {
+        Some(user) => html! {
             <>
                 <div class="sticky top-0">
                     <nav class="bg-gray-400 w-full">
@@ -29,8 +28,8 @@ pub fn admin_bar() -> Html {
                                 <Link<MainNavigationRoute>
                                     to={MainNavigationRoute::AdminProfile}>
                                     <p>{"[USER]"}</p>
-                                    <p>{"User Name"}</p>
-                                    <p>{"administrator"}</p>
+                                    <p>{user.username.clone()}</p>
+                                    <p>{user.role.clone()}</p>
                                 </Link<MainNavigationRoute>>
                             </li>
                             <li class="flex-1 text-center">

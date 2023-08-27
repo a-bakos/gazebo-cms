@@ -1,10 +1,12 @@
 use crate::app::MainNavigationRoute;
-use gazebo_core_common::account::consts::{
-    ACCOUNT_ROLE_ADMIN, ACCOUNT_ROLE_CONTRIBUTOR, ACCOUNT_ROLE_EDITOR, ACCOUNT_ROLE_NOT_FOUND,
+use gazebo_core_common::account::{
+    consts::{
+        ACCOUNT_ROLE_ADMIN, ACCOUNT_ROLE_CONTRIBUTOR, ACCOUNT_ROLE_EDITOR, ACCOUNT_ROLE_NOT_FOUND,
+    },
+    gb_account::GB_Account,
+    role::AccountRole,
 };
-use gazebo_core_common::account::{gb_account::GB_Account, role::AccountRole};
-use yew::platform::spawn_local;
-use yew::prelude::*;
+use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::Link;
 
 fn table_account_row(row_data: &GB_Account) -> Html {

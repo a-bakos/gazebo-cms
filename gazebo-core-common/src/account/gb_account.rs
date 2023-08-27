@@ -2,12 +2,23 @@ use crate::account::role::AccountRole;
 use serde::{Deserialize, Serialize};
 use std::fmt::{Display, Formatter};
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize, PartialEq)]
 pub struct AccountID(pub u32);
 
 impl Display for AccountID {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.0)
+    }
+}
+
+impl From<AccountID> for u32 {
+    fn from(value: AccountID) -> Self {
+        value.0
+    }
+}
+impl From<AccountID> for i32 {
+    fn from(value: AccountID) -> Self {
+        value.0 as i32
     }
 }
 
@@ -26,8 +37,7 @@ pub struct GB_Account {
 #[allow(non_camel_case_types)]
 #[derive(PartialEq)]
 pub struct GB_CurrentAccount {
-    pub id: u32,
+    pub id: AccountID,
     pub username: String,
-    pub email: String,
-    pub role: String,
+    pub role: AccountRole,
 }
