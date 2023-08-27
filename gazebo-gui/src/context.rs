@@ -66,6 +66,8 @@ pub fn current_user_provider(props: &Props) -> Html {
             spawn_local(async move {
                 match api_auth_me(&token).await {
                     Ok(me_response) => {
+                        // TODO refactor: currently, every successful auth me request end with re-setting the token in storage
+                        // think about how we can avoid sending the token back from the backend after the initial login has succeeded
                         cloned_user.dispatch(CurrentUserDispatchActions {
                             action_type: UserAction::LoginSuccess,
                             login_response: Some(me_response),

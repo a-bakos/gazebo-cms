@@ -88,6 +88,7 @@ pub async fn auth(
                         HttpStatusCode::Unauthorized
                     };
 
+                    // TODO refactor: ONLY return account details if status code is OK!
                     AuthResponsePayload {
                         http_status_code: status.code(),
                         account_details: account,
