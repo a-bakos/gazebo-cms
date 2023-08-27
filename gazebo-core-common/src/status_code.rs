@@ -205,3 +205,9 @@ impl HttpStatusCode {
         }
     }
 }
+
+impl Default for HttpStatusCode {
+    fn default() -> Self {
+        Self::Ok
+    }
+}

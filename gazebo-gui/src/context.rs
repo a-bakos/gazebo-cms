@@ -1,6 +1,6 @@
-use crate::api::account::api_me;
+use crate::api::account::api_auth_me;
+use gazebo_core_common::account::auth::AuthResponsePayload;
 use gazebo_core_common::account::gb_account::GB_CurrentAccount;
-use gazebo_core_common::account::login::LoginResponseAccountDetails;
 use gloo_storage::{SessionStorage, Storage};
 use std::rc::Rc;
 use yew::platform::spawn_local;
@@ -29,13 +29,13 @@ impl Reducible for CurrentUser {
                 let login_response = action.login_response.expect("Missing login response");
                 // Set session token on successful login
                 let _ = SessionStorage::set(GB_TOKEN_KEY, login_response.token.clone());
+                gloo_console::log!("session storage set!");
                 Self {
                     // CurrentUser
                     user: Some(GB_CurrentAccount {
-                        id: login_response.id,
-                        username: login_response.login_name,
-                        email: login_response.email,
-                        role: login_response.role,
+                        id: login_response.account_details.id,
+                        username: login_response.account_details.login_name,
+                        role: login_response.account_details.role,
                     }),
                 }
                 .into()
@@ -47,7 +47,7 @@ impl Reducible for CurrentUser {
 
 pub struct CurrentUserDispatchActions {
     pub action_type: UserAction,
-    pub login_response: Option<LoginResponseAccountDetails>,
+    pub login_response: Option<AuthResponsePayload>,
 }
 
 #[derive(Properties, PartialEq)]
@@ -64,7 +64,7 @@ pub fn current_user_provider(props: &Props) -> Html {
         if let Ok(token) = SessionStorage::get::<String>(GB_TOKEN_KEY) {
             let cloned_user = user.clone();
             spawn_local(async move {
-                match api_me(&token).await {
+                match api_auth_me(&token).await {
                     Ok(me_response) => {
                         cloned_user.dispatch(CurrentUserDispatchActions {
                             action_type: UserAction::LoginSuccess,

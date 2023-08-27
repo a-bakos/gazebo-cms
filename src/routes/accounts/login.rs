@@ -17,12 +17,10 @@ use crate::{
     },
 };
 
-use gazebo_core_common::account::{
-    gb_account::AccountID,
-    login::{LoginResponseAccountDetails, LoginResponseWithStatusCode, LoginStatus},
-    role::AccountRole,
-};
+use gazebo_core_common::account::{gb_account::AccountID, login::LoginStatus, role::AccountRole};
 
+use gazebo_core_common::account::auth::{AuthResponseAccountInfo, AuthResponsePayload};
+use gazebo_core_common::status_code::HttpStatusCode;
 use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
@@ -54,14 +52,12 @@ pub async fn try_login(
         .bind(binding.clone())
         .bind(password)
         .map(|row: PgRow| {
-            LoginResponseAccountDetails {
+            AuthResponseAccountInfo {
                 // Underscores' meaning in row.get():
                 // we don't need to specify a default/fallback value because the cell will never be empty
                 id: AccountID(row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32),
-                login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
-                email: row.get(COL_INDEX_ACCOUNT_EMAIL),
                 role: row.get::<&str, _>(COL_INDEX_ACCOUNT_ROLE).into(),
-                token: "empty".to_string(),
+                login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
             }
         })
         .fetch_one(&pool)
@@ -73,29 +69,27 @@ pub async fn try_login(
 
             if uuid.is_none() {
                 unreachable!();
-                return Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
-                    LoginStatus::Unauthorized,
-                    None,
-                )));
             }
 
             // Generate user access token and attach to response
             let the_token: Option<String> = crate::auth::generate_token(&user, &uuid.unwrap());
             if the_token.is_none() {
-                return Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                return Ok(warp::reply::json(&AuthResponsePayload::response(
                     LoginStatus::Unauthorized,
+                    None,
                     None,
                 )));
             }
-            user.token = the_token.unwrap();
 
-            Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+            Ok(warp::reply::json(&AuthResponsePayload::response(
                 LoginStatus::Authorized,
                 Some(user),
+                the_token,
             )))
         }
-        Err(_e) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+        Err(_e) => Ok(warp::reply::json(&AuthResponsePayload::response(
             LoginStatus::Unauthorized,
+            None,
             None,
         ))),
     }
@@ -112,8 +106,9 @@ pub async fn login(
     if let Some(email) = params.email {
         // If email or password format is invalid, terminate, don't even go to the database
         if !is_email_valid(&email) || !is_password_valid(&params.password) {
-            return Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+            return Ok(warp::reply::json(&AuthResponsePayload::response(
                 LoginStatus::Unauthorized,
+                None,
                 None,
             )));
         }
@@ -139,18 +134,21 @@ pub async fn login(
                     try_login(pool.clone(), password, binding, AccountIdentifier::Email).await
                 } else {
                     println!("Wrong password used for: {}", &binding);
-                    Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                    Ok(warp::reply::json(&AuthResponsePayload::response(
                         LoginStatus::Unauthorized,
+                        None,
                         None,
                     )))
                 }
             }
-            Ok(false) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+            Ok(false) => Ok(warp::reply::json(&AuthResponsePayload::response(
                 LoginStatus::Unauthorized,
                 None,
+                None,
             ))),
-            Err(_e) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+            Err(_e) => Ok(warp::reply::json(&AuthResponsePayload::response(
                 LoginStatus::ServerError,
+                None,
                 None,
             ))),
         };
@@ -159,8 +157,9 @@ pub async fn login(
     if let Some(login) = params.login {
         // If username or password format is invalid, terminate, don't even go to the database
         if !is_username_valid(&login) || !is_password_valid(&params.password) {
-            return Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+            return Ok(warp::reply::json(&AuthResponsePayload::response(
                 LoginStatus::Unauthorized,
+                None,
                 None,
             )));
         }
@@ -187,21 +186,24 @@ pub async fn login(
                 } else {
                     // Account exists, but wrong creds
                     println!("Wrong password used for: {}", &binding);
-                    Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                    Ok(warp::reply::json(&AuthResponsePayload::response(
                         LoginStatus::Unauthorized,
+                        None,
                         None,
                     )))
                 }
             }
             Ok(false) => {
                 // No accounts
-                Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                Ok(warp::reply::json(&AuthResponsePayload::response(
                     LoginStatus::Unauthorized,
+                    None,
                     None,
                 )))
             }
-            Err(_e) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+            Err(_e) => Ok(warp::reply::json(&AuthResponsePayload::response(
                 LoginStatus::ServerError,
+                None,
                 None,
             ))),
         };

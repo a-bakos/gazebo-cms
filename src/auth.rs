@@ -1,5 +1,6 @@
+use gazebo_core_common::account::auth::AuthResponseAccountInfo;
+use gazebo_core_common::account::auth::AuthResponsePayload;
 use gazebo_core_common::account::gb_account::AccountID;
-use gazebo_core_common::account::login::LoginResponseAccountDetails;
 use gazebo_core_common::datetime::GB_DateTime_Variant;
 use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
@@ -36,7 +37,9 @@ pub fn generate_session_id() -> Uuid {
     Uuid::new_v4()
 }
 
-pub fn generate_token(user_data: &LoginResponseAccountDetails, uuid: &Uuid) -> Option<String> {
+// Todo: this fn does not need to know the entire AuthResponsePayload. Maybe extract the necessary
+// info into separate params, or a custom struct
+pub fn generate_token(user_data: &AuthResponseAccountInfo, uuid: &Uuid) -> Option<String> {
     let uuid_string = uuid.to_string();
     TokenClaims {
         user_id: user_data.id.clone(),

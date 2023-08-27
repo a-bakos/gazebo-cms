@@ -1,13 +1,14 @@
 use crate::auth::TokenClaims;
 use crate::database::columns::{
-    COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_ROLE, COL_INDEX_ACCOUNT_UUID,
+    COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LOGIN, COL_INDEX_ACCOUNT_ROLE, COL_INDEX_ACCOUNT_UUID,
 };
 use crate::database::db::DB_Table;
 use crate::entry::functions::get_the_author;
 use crate::routes::accounts::crud::get_user_by_id;
 use crate::traits::RowTransformer;
+use gazebo_core_common::account::auth::AuthResponseAccountInfo;
+use gazebo_core_common::account::auth::AuthResponsePayload;
 use gazebo_core_common::account::gb_account::{AccountID, GB_Account};
-use gazebo_core_common::account::login::LoginResponseAccountDetails;
 use gazebo_core_common::account::role::{get_role_variant, AccountRole};
 use gazebo_core_common::status_code::HttpStatusCode;
 use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
@@ -19,12 +20,6 @@ use uuid::{uuid, Error, Uuid};
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct TokenAuthParams {
     pub token: String,
-}
-#[derive(Serialize, Deserialize, Debug)]
-struct ResponsePayload {
-    account_id: AccountID,
-    role: AccountRole,
-    status: HttpStatusCode,
 }
 
 pub async fn auth(
@@ -40,7 +35,6 @@ pub async fn auth(
             println!("{:?}", token.claims);
 
             // TODO get info from DB
-            // - check uuid is valid
             // - check role
 
             // Single-step verification vs Two-step verification
@@ -65,8 +59,9 @@ pub async fn auth(
             };
 
             let query = format!(
-                "SELECT {}, {}, {} FROM {} WHERE id = $1",
+                "SELECT {}, {}, {}, {} FROM {} WHERE id = $1",
                 COL_INDEX_ACCOUNT_ID,
+                COL_INDEX_ACCOUNT_LOGIN,
                 COL_INDEX_ACCOUNT_ROLE,
                 COL_INDEX_ACCOUNT_UUID,
                 DB_Table::Accounts
@@ -74,25 +69,29 @@ pub async fn auth(
             match sqlx::query(&query)
                 .bind(user_id)
                 .map(|row: PgRow| {
-                    let account_id = AccountID(row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32);
-
-                    // todo: let's check UUID compare to what's inside the token
+                    let id = AccountID(row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32);
                     let uuid_from_db: Uuid = row.get(COL_INDEX_ACCOUNT_UUID);
                     let role: String = row.get(COL_INDEX_ACCOUNT_ROLE);
                     let role: AccountRole = get_role_variant(&role);
+                    let login_name: String = row.get(COL_INDEX_ACCOUNT_LOGIN);
 
-                    if uuid_from_db == uuid_from_token {
-                        ResponsePayload {
-                            account_id,
-                            role,
-                            status: HttpStatusCode::Ok,
-                        }
+                    let account = AuthResponseAccountInfo {
+                        id,
+                        role,
+                        login_name,
+                    };
+
+                    // Check if UUIDs match
+                    let status = if uuid_from_db == uuid_from_token {
+                        HttpStatusCode::Ok
                     } else {
-                        ResponsePayload {
-                            account_id,
-                            role,
-                            status: HttpStatusCode::Unauthorized,
-                        }
+                        HttpStatusCode::Unauthorized
+                    };
+
+                    AuthResponsePayload {
+                        http_status_code: status.code(),
+                        account_details: account,
+                        token: Some(params.token.clone()),
                     }
                 })
                 .fetch_one(&pool)
@@ -100,19 +99,8 @@ pub async fn auth(
             {
                 Ok(res) => {
                     println!("{:?}", res);
-                    Ok(warp::reply::json(&res))
-                    /*
-                    // TODO think about this response structure (maybe a more generic ResponsePayload would be better)
-                    // Also, we may not want to reconstruct the response, but use the existing token payload
-                    let response = LoginResponseAccountDetails {
-                        id: token.claims.user_id,
-                        login_name: "TEST".to_string(),
-                        email: "EMAIL".to_string(),
-                        role: token.claims.role.into(),
-                        token: params.token,
-                    };
                     println!("Auth successful");
-                    Ok(warp::reply::json(&response))*/
+                    Ok(warp::reply::json(&res))
                 }
                 Err(e) => {
                     println!("Error user not found: {}", e);

@@ -1,8 +1,8 @@
 use crate::api::BACKEND_URL_BASE;
+use gazebo_core_common::account::auth::AuthResponsePayload;
 use gazebo_core_common::{
     account::{
         gb_account::{AccountID, GB_Account},
-        login::{LoginResponseAccountDetails, LoginResponseWithStatusCode},
         role::AccountRole,
     },
     status_code::HttpStatusCode,
@@ -14,7 +14,7 @@ use serde_json::json;
 pub(crate) async fn api_login_request(
     username: String,
     password: String,
-) -> Result<LoginResponseWithStatusCode, gloo_net::Error> {
+) -> Result<AuthResponsePayload, gloo_net::Error> {
     let response = Request::post(&format!("{}/login", BACKEND_URL_BASE))
         .json(&json!({
             "login": username,
@@ -23,7 +23,7 @@ pub(crate) async fn api_login_request(
         .send()
         .await?;
 
-    response.json::<LoginResponseWithStatusCode>().await
+    response.json::<AuthResponsePayload>().await
 }
 
 pub(crate) async fn api_get_all_accounts() -> Result<Vec<GB_Account>, gloo_net::Error> {
@@ -33,14 +33,12 @@ pub(crate) async fn api_get_all_accounts() -> Result<Vec<GB_Account>, gloo_net::
     response.json::<Vec<GB_Account>>().await
 }
 
-pub(crate) async fn api_me(token: &str) -> Result<LoginResponseAccountDetails, gloo_net::Error> {
+pub(crate) async fn api_auth_me(token: &str) -> Result<AuthResponsePayload, gloo_net::Error> {
     let response = Request::post(&format!("{}/auth", BACKEND_URL_BASE))
         .json(&json!({
             "token": token,
         }))?
         .send()
         .await?;
-
-    // return GB Account here
-    response.json::<LoginResponseAccountDetails>().await
+    response.json::<AuthResponsePayload>().await
 }

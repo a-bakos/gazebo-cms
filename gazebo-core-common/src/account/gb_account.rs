@@ -39,6 +39,5 @@ pub struct GB_Account {
 pub struct GB_CurrentAccount {
     pub id: AccountID,
     pub username: String,
-    pub email: String,
     pub role: AccountRole,
 }
