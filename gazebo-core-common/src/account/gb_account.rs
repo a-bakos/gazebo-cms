@@ -11,6 +11,17 @@ impl Display for AccountID {
     }
 }
 
+impl From<AccountID> for u32 {
+    fn from(value: AccountID) -> Self {
+        value.0
+    }
+}
+impl From<AccountID> for i32 {
+    fn from(value: AccountID) -> Self {
+        value.0 as i32
+    }
+}
+
 #[allow(non_camel_case_types)]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GB_Account {

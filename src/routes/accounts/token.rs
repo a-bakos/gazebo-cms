@@ -27,18 +27,15 @@ pub async fn auth(
             println!("{:?}", token.claims);
 
             // TODO get info from DB
-            // - get user by id
             // - check uuid is valid
             // - check role
 
-            let user_id = token.claims.user_id;
+            let user_id: i32 = token.claims.user_id.into();
             let uuid = token.claims.uuid;
 
-            // TODO WIP HERE!
-            // ERR: error returned from database: operator does not exist: integer = text
             let query = format!("SELECT * FROM {} WHERE id = $1", DB_Table::Accounts);
             match sqlx::query(&query)
-                .bind(1)
+                .bind(user_id)
                 .map(|row: PgRow| GB_Account::transform(&row))
                 .fetch_one(&pool)
                 .await
