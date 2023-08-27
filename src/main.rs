@@ -6,7 +6,6 @@ mod consts;
 mod database;
 mod entry;
 mod errors;
-mod http;
 mod private;
 mod routes;
 mod traits;

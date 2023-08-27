@@ -1,4 +1,5 @@
-use crate::routes::accounts::login::LoginResponseAccountDetails;
+use gazebo_core_common::account::gb_account::AccountID;
+use gazebo_core_common::account::login::LoginResponseAccountDetails;
 use gazebo_core_common::datetime::GB_DateTime_Variant;
 use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
@@ -7,7 +8,7 @@ use uuid::Uuid;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct TokenClaims {
-    pub user_id: String,
+    pub user_id: AccountID,
     pub role: String,
     pub uuid: String,
     pub exp: i64, // unix timestamp of expiration
@@ -38,7 +39,7 @@ pub fn generate_session_id() -> Uuid {
 pub fn generate_token(user_data: &LoginResponseAccountDetails, uuid: &Uuid) -> Option<String> {
     let uuid_string = uuid.to_string();
     TokenClaims {
-        user_id: user_data.id.to_string(),
+        user_id: user_data.id.clone(),
         role: user_data.role.to_string(),
         uuid: uuid_string,
         exp: gazebo_core_common::datetime::GB_DateTime::new(GB_DateTime_Variant::NextDaySameTime)

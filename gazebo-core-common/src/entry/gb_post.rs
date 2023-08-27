@@ -1,7 +1,11 @@
-use crate::account::gb_account::AccountID;
-use crate::datetime::get_current_date;
-use crate::entry::entry_id::{get_entry_parent_id, EntryID};
-use crate::entry::status::{ContentStatus, EntryStatus};
+use crate::{
+    account::gb_account::AccountID,
+    datetime::get_current_date,
+    entry::{
+        entry_id::{get_entry_parent_id, EntryID},
+        status::{ContentStatus, EntryStatus},
+    },
+};
 use serde::{Deserialize, Serialize};
 
 #[allow(non_camel_case_types)]

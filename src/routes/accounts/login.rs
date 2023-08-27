@@ -1,6 +1,5 @@
-use crate::auth::TokenClaims;
-use crate::users::credentials::{is_email_valid, is_password_valid, is_username_valid};
 use crate::{
+    auth::TokenClaims,
     database::{
         columns::{
             COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LOGIN,
@@ -9,12 +8,21 @@ use crate::{
         db::DB_Table,
     },
     errors::error_handler::ErrorResponse,
-    http::status_code::HttpStatusCode,
     users::{
         credentials,
-        credentials::{find_account_by_identifier, AccountIdentifier},
+        credentials::{
+            find_account_by_identifier, is_email_valid, is_password_valid, is_username_valid,
+            AccountIdentifier,
+        },
     },
 };
+
+use gazebo_core_common::account::{
+    gb_account::AccountID,
+    login::{LoginResponseAccountDetails, LoginResponseWithStatusCode, LoginStatus},
+    role::AccountRole,
+};
+
 use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
@@ -24,54 +32,6 @@ pub struct LoginRequest {
     pub login: Option<String>,
     pub email: Option<String>,
     pub password: String,
-}
-
-/// Account details to send back on login request
-/// Default() is used with error cases
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct LoginResponseAccountDetails {
-    pub id: u32,
-    pub login_name: String,
-    pub email: String,
-    pub role: String,
-    pub token: String,
-}
-
-/// Login status variants
-enum LoginStatus {
-    Authorized,
-    Unauthorized,
-    ServerError,
-}
-
-/// This is the final structure that is returned on a login request
-#[derive(Deserialize, Serialize)]
-pub struct LoginResponseWithStatusCode {
-    pub http_status_code: u32,
-    pub account_details: LoginResponseAccountDetails,
-}
-
-impl LoginResponseWithStatusCode {
-    fn response(
-        login_status: LoginStatus,
-        account_details: Option<LoginResponseAccountDetails>,
-    ) -> Self {
-        let (http_status_code, account_details) = match login_status {
-            LoginStatus::Authorized => (HttpStatusCode::Ok.code(), account_details.unwrap()),
-            LoginStatus::Unauthorized => (
-                HttpStatusCode::Unauthorized.code(),
-                LoginResponseAccountDetails::default(),
-            ),
-            LoginStatus::ServerError => (
-                HttpStatusCode::InternalServerError.code(),
-                LoginResponseAccountDetails::default(),
-            ),
-        };
-        Self {
-            http_status_code,
-            account_details,
-        }
-    }
 }
 
 pub async fn try_login(
@@ -97,10 +57,10 @@ pub async fn try_login(
             LoginResponseAccountDetails {
                 // Underscores' meaning in row.get():
                 // we don't need to specify a default/fallback value because the cell will never be empty
-                id: row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32,
+                id: AccountID(row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32),
                 login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
                 email: row.get(COL_INDEX_ACCOUNT_EMAIL),
-                role: row.get::<&str, _>(COL_INDEX_ACCOUNT_ROLE).to_string(),
+                role: row.get::<&str, _>(COL_INDEX_ACCOUNT_ROLE).into(),
                 token: "empty".to_string(),
             }
         })

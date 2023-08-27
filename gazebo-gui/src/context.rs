@@ -1,5 +1,6 @@
-use crate::api::account::{api_me, LoginResponseAccountDetails};
+use crate::api::account::api_me;
 use gazebo_core_common::account::gb_account::GB_CurrentAccount;
+use gazebo_core_common::account::login::LoginResponseAccountDetails;
 use gloo_storage::{SessionStorage, Storage};
 use std::rc::Rc;
 use yew::platform::spawn_local;

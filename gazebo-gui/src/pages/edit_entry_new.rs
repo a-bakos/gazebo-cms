@@ -4,14 +4,8 @@ use yew::prelude::*;
 
 use crate::components::{admin_bar::AdminBar, entry_editor::EntryEditor};
 
-#[derive(Properties, PartialEq)]
-pub struct EntryEditorProps {
-    pub entry_type: AttrValue,
-    pub entry_id: AttrValue,
-}
-
-#[function_component(EntryEditExisting)]
-pub fn entry_edit_existing(props: &EntryEditorProps) -> Html {
+#[function_component(EntryEdit)]
+pub fn entry_edit() -> Html {
     html! {
          <main id={crate::consts::CSS_ID_ADMIN_AREA}>
             <AdminBar />

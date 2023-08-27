@@ -1,7 +1,8 @@
-use crate::api::post::{update_entry_single_param, EntryUpdateProps, EntryUpdateType};
-use crate::app::MainNavigationRoute;
 use crate::{
-    api::post::api_delete_entry_by_id,
+    api::post::{
+        api_delete_entry_by_id, update_entry_single_param, EntryUpdateProps, EntryUpdateType,
+    },
+    app::MainNavigationRoute,
     components::{
         button::Button,
         button::{ButtonProps, FormWithButton},
@@ -16,9 +17,7 @@ use gazebo_core_common::entry::{
     status::{ContentStatus, EntryStatus},
 };
 
-use yew::html::IntoPropValue;
-use yew::prelude::*;
-use yew::{platform::spawn_local, prelude::*};
+use yew::{html::IntoPropValue, platform::spawn_local, prelude::*};
 use yew_router::prelude::*;
 
 #[derive(Properties, PartialEq)]

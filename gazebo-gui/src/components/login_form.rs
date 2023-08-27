@@ -1,15 +1,14 @@
-use yew::{platform::spawn_local, prelude::*};
-use yew_router::prelude::*;
-
-use crate::context::GB_TOKEN_KEY;
 use crate::{
-    api::account::{api_login_request, LoginResponseWithStatusCode},
+    api::account::api_login_request,
     app::MainNavigationRoute,
     components::{input::Input, lost_password::LostPassword},
-    context::{CurrentUserContext, CurrentUserDispatchActions, UserAction::LoginSuccess},
+    context::{
+        CurrentUserContext, CurrentUserDispatchActions, UserAction::LoginSuccess, GB_TOKEN_KEY,
+    },
 };
-
-// todo look into web_sys
+use gazebo_core_common::account::login::LoginResponseWithStatusCode;
+use yew::{platform::spawn_local, prelude::*};
+use yew_router::prelude::*;
 
 #[function_component(LoginForm)]
 pub fn login_form() -> Html {
@@ -69,7 +68,7 @@ pub fn login_form() -> Html {
                     gloo_console::log!(
                         "Successful login: ",
                         response.http_status_code,
-                        response.account_details.id.clone(),
+                        response.account_details.id.0.clone(),
                         response.account_details.login_name.clone(),
                         response.account_details.token.clone()
                     );
