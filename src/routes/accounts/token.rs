@@ -30,6 +30,16 @@ pub async fn auth(
             // - check uuid is valid
             // - check role
 
+            // Single-step verification vs Two-step verification
+            //
+            // Two-step verification involves first finding the user by their ID, verifying the UUID,
+            // and then making an additional call to the database to retrieve all required user information.
+            //
+            // Single-step verification retrieves all user information in a single step and then
+            // proceeds to verify the UUID. I prefer this approach here for better performance,
+            // as it involves only one database call. Additionally, since we're not including highly sensitive
+            // data in the token's payload, even if the token is compromised, the potential harm is limited.
+
             let user_id: i32 = token.claims.user_id.into();
             let uuid = token.claims.uuid;
 
@@ -42,8 +52,11 @@ pub async fn auth(
             {
                 Ok(res) => {
                     println!("{:?}", res);
+
+                    // TODO think about this response structure (maybe a more generic ResponsePayload would be better)
+                    // Also, we may not want to reconstruct the response, but use the existing token payload
                     let response = LoginResponseAccountDetails {
-                        id: res.id,
+                        id: token.claims.user_id,
                         login_name: res.login_name.to_string(),
                         email: res.email.to_string(),
                         role: res.role.into(),

@@ -3,17 +3,6 @@ use crate::account::role::AccountRole;
 use crate::status_code::HttpStatusCode;
 use serde::{Deserialize, Serialize};
 
-/// Account details to send back on login request
-/// Default() is used with error cases
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct LoginResponseAccountDetails {
-    pub id: AccountID,
-    pub login_name: String,
-    pub email: String,
-    pub role: AccountRole,
-    pub token: String,
-}
-
 /// Login status variants
 pub enum LoginStatus {
     Authorized,
@@ -21,7 +10,19 @@ pub enum LoginStatus {
     ServerError,
 }
 
-/// This is the final structure that is returned on a login request
+/// Account details to send back on login request
+/// Default() is used with error cases
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct LoginResponseAccountDetails {
+    pub id: AccountID,
+    pub login_name: String,
+    // Todo: do we really need email here?
+    pub email: String,
+    pub role: AccountRole,
+    pub token: String,
+}
+
+/// This is the final wrapper structure that is returned on a login request
 #[derive(Deserialize, Serialize)]
 pub struct LoginResponseWithStatusCode {
     pub http_status_code: u32,

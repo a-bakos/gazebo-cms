@@ -3,6 +3,8 @@ pub const DEFAULT_APP_NAME: &str = "Gazebo CMS";
 pub const DEFAULT_APP_ADMIN_EMAIL: &str = "change_this@gazebocms.email";
 pub const VERSION: &str = "0.0.402";
 
+pub const MSG_HIDDEN_INFO: &str = "[ hidden information ]";
+
 pub const MIN_PASSWORD_LENGTH: usize = 8;
 pub const MIN_USER_NAME_LENGTH: usize = 4;
 

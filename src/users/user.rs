@@ -3,13 +3,12 @@ use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, Row};
 use std::fmt::{Display, Formatter};
 
-use crate::traits::IntoSqlQuery;
 use crate::{
     database::columns::{
         COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LAST_LOGIN,
         COL_INDEX_ACCOUNT_LOGIN, COL_INDEX_ACCOUNT_REGISTERED, COL_INDEX_ACCOUNT_ROLE,
     },
-    traits::RowTransformer,
+    traits::{IntoSqlQuery, RowTransformer},
 };
 
 use gazebo_core_common::{
@@ -17,7 +16,7 @@ use gazebo_core_common::{
         gb_account::{AccountID, GB_Account},
         role::{get_role_variant, AccountRole},
     },
-    consts::LABEL_NONE,
+    consts::{LABEL_NONE, MSG_HIDDEN_INFO},
 };
 
 impl RowTransformer<PgRow> for GB_Account {
@@ -44,7 +43,7 @@ impl RowTransformer<PgRow> for GB_Account {
             email: row.get(COL_INDEX_ACCOUNT_EMAIL),
             id: AccountID(row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32),
             role,
-            password: "hidden".to_string(),
+            password: MSG_HIDDEN_INFO.to_string(),
             registered,
             last_login,
         }
