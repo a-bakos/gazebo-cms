@@ -5,14 +5,20 @@ use serde::{Deserialize, Serialize};
 //#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[allow(non_camel_case_types)]
 pub struct GB_Log {
-    pub entry_id: EntryID,
+    // The account ID and email associated with this event - email optional for system events
     pub account_id: AccountID,
-    pub account_email: String,
-    pub entry_url: Option<String>,
-    pub entry_title: Option<String>,
+    pub account_email: Option<String>,
+    // Event meta data:
     pub event_code: GB_EventCode,
     pub event_date: String,
-    pub description: Option<String>,
+    // Affected item details:
+    pub subject_id: u32,
+    pub subject_url: Option<String>,
+    pub subject_title: Option<String>,
+    pub subject_description: Option<String>,
+    // From/To fields where applicable
+    pub subject_from: Option<String>,
+    pub subject_to: Option<String>,
 }
 
 pub enum GB_EventCode {
