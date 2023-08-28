@@ -100,6 +100,34 @@ pub const COLUMNS_MEDIA: [(&str, &str); 9] = [
     ("ALT_TEXT", COL_INDEX_MEDIA_ALT_TEXT),
 ];
 
+// Log table
+pub const COL_INDEX_LOG_ID: &str = "id";
+pub const COL_INDEX_LOG_ACCOUNT_ID: &str = "account_id";
+pub const COL_INDEX_LOG_ACCOUNT_EMAIL: &str = "account_email";
+pub const COL_INDEX_LOG_EVENT_CODE: &str = "event_code";
+pub const COL_INDEX_LOG_EVENT_DATE: &str = "event_date";
+pub const COL_INDEX_LOG_SUBJECT_ID: &str = "subject_id";
+pub const COL_INDEX_LOG_SUBJECT_URL: &str = "subject_url";
+pub const COL_INDEX_LOG_SUBJECT_TITLE: &str = "subject_title";
+pub const COL_INDEX_LOG_SUBJECT_DESCRIPTION: &str = "subject_description";
+pub const COL_INDEX_LOG_SUBJECT_FROM: &str = "subject_from";
+pub const COL_INDEX_LOG_SUBJECT_TO: &str = "subject_to";
+
+#[allow(dead_code)]
+pub const COLUMNS_LOG: [(&str, &str); 11] = [
+    (COL_INDEX_LOG_ID, "id"),
+    (COL_INDEX_LOG_ACCOUNT_ID, "account_id"),
+    (COL_INDEX_LOG_ACCOUNT_EMAIL, "account_email"),
+    (COL_INDEX_LOG_EVENT_CODE, "event_code"),
+    (COL_INDEX_LOG_EVENT_DATE, "event_date"),
+    (COL_INDEX_LOG_SUBJECT_ID, "subject_id"),
+    (COL_INDEX_LOG_SUBJECT_URL, "subject_url"),
+    (COL_INDEX_LOG_SUBJECT_TITLE, "subject_title"),
+    (COL_INDEX_LOG_SUBJECT_DESCRIPTION, "subject_description"),
+    (COL_INDEX_LOG_SUBJECT_FROM, "subject_from"),
+    (COL_INDEX_LOG_SUBJECT_TO, "subject_to"),
+];
+
 //
 // #[allow(dead_code)]
 // pub fn get_columns(table: DB_Table) -> HashMap<String, usize> {
