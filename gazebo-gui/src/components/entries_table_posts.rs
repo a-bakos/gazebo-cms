@@ -30,10 +30,10 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
     let (status_label, status_label_class) = match props.row_data.status.clone() {
         // todo - will be added to common lib
         EntryStatus::Post(content_status) => match content_status {
-            ContentStatus::Draft => ("draft".to_string(), "bg-pink-200"),
-            ContentStatus::Publish => ("publish".to_string(), "bg-green-200"),
-            ContentStatus::Private => ("private".to_string(), "bg-yellow-200"),
-            ContentStatus::Trash => ("trash".to_string(), "bg-gray-200"),
+            ContentStatus::Draft => ("draft".to_string(), "bg-[#eda52d]"),
+            ContentStatus::Publish => ("publish".to_string(), "bg-[#607a4b]"),
+            ContentStatus::Private => ("private".to_string(), "bg-[#cf743d]"),
+            ContentStatus::Trash => ("trash".to_string(), "bg-[#b72224]"),
             _ => ("unknown".to_string(), "bg-white-100"),
         },
         _ => ("unknown".to_string(), "bg-white-100"),
@@ -90,11 +90,11 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
     });
 
     html! {
-        <tr class="bg-white rounded-xl border hover:bg-yellow-100">
-            <td>
+        <tr class="rounded-xl border border-[#f4e4d4] hover:bg-[#f4e4d4]">
+            <td class="p-2">
                 <Link<MainNavigationRoute>
                     to={MainNavigationRoute::EntryEditExisting { entry_type: EntryType::Post.to_string(), id: post_id.to_string() }}
-                    classes="font-bold text-blue-600">
+                    classes="font-bold text-[#47837b]">
                     {props.row_data.title.clone()}
                 </Link<MainNavigationRoute>>
                 <span class="block">
@@ -116,7 +116,7 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
             <td>{"cat 1, cat 2"}</td>
             <td>{props.row_data.id_author.clone()}</td>
             <td>
-                <span class={ format!("{} px-2 rounded-md", status_label_class) }>
+                <span class={ format!("{} px-2 rounded-md text-white uppercase text-xs font-bold tracking-wide ", status_label_class) }>
                     { status_label.clone() }
                 </span>
                 {
@@ -170,7 +170,7 @@ pub fn table_entries() -> Html {
 
     html! {
         <>
-            <table class={"text-left w-full border"}>
+            <table class={"text-left w-full border border-[#f4e4d4]"}>
                 <thead>
                     <tr>
                         <th>{"Title"}</th>

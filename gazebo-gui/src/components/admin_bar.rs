@@ -11,7 +11,7 @@ pub fn admin_bar() -> Html {
         Some(user) => html! {
             <>
                 <div class="sticky top-0">
-                    <nav class="bg-gray-400 w-full">
+                    <nav class="bg-[#3c352d] text-white w-full">
                         <ul class="flex items-center">
                             // If admin, show front end link
                             <li class="bg-black text-white">
@@ -24,7 +24,7 @@ pub fn admin_bar() -> Html {
                                     {"Admin"}
                                 </Link<MainNavigationRoute>>
                             </li>
-                            <li class="bg-gray-500 text-center text-white">
+                            <li class="text-center text-white">
                                 <Link<MainNavigationRoute>
                                     to={MainNavigationRoute::AdminProfile}>
                                     <p>{"[USER]"}</p>
