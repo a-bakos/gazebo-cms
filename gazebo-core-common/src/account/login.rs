@@ -1,7 +1,7 @@
-use crate::account::auth::AuthResponseAccountInfo;
-use crate::account::gb_account::AccountID;
-use crate::account::role::AccountRole;
-use crate::status_code::HttpStatusCode;
+use crate::{
+    account::{auth::AuthResponseAccountInfo, gb_account::AccountID, role::AccountRole},
+    status_code::HttpStatusCode,
+};
 use serde::{Deserialize, Serialize};
 
 /// Login status variants

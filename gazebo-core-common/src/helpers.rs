@@ -1,5 +1,4 @@
-use crate::entry::entry_id::EntryID;
-use crate::entry::entry_type::EntryType;
+use crate::entry::{entry_id::EntryID, entry_type::EntryType};
 
 /// Checks if a string contains any special characters.
 ///

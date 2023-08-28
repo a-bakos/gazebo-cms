@@ -1,7 +1,7 @@
-use crate::account::gb_account::AccountID;
-use crate::account::login::LoginStatus;
-use crate::account::role::AccountRole;
-use crate::status_code::HttpStatusCode;
+use crate::{
+    account::{gb_account::AccountID, login::LoginStatus, role::AccountRole},
+    status_code::HttpStatusCode,
+};
 use serde::{Deserialize, Serialize};
 
 /// Account details to send back on login request

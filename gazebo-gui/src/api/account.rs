@@ -1,7 +1,7 @@
 use crate::api::BACKEND_URL_BASE;
-use gazebo_core_common::account::auth::AuthResponsePayload;
 use gazebo_core_common::{
     account::{
+        auth::AuthResponsePayload,
         gb_account::{AccountID, GB_Account},
         role::AccountRole,
     },

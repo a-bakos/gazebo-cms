@@ -1,7 +1,6 @@
 // Login page
 
-use crate::app::MainNavigationRoute;
-use crate::components::login_form::LoginForm;
+use crate::{app::MainNavigationRoute, components::login_form::LoginForm};
 use yew::prelude::*;
 use yew_router::prelude::Redirect;
 

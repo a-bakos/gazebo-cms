@@ -5,6 +5,7 @@ use crate::{
             COL_INDEX_POST_ID_AUTHOR, COL_INDEX_POST_PASSWORD, COL_INDEX_POST_SLUG,
             COL_INDEX_POST_STATUS, COL_INDEX_POST_TITLE, COL_INDEX_POST_TYPE,
         },
+        consts::DB_TABLE_POSTS,
         db::DB_Table,
     },
     errors::error_handler::SqlxError,
@@ -12,7 +13,6 @@ use crate::{
 };
 use gazebo_core_common::entry::gb_post::GB_Post;
 
-use crate::database::consts::DB_TABLE_POSTS;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
 use std::collections::HashMap;

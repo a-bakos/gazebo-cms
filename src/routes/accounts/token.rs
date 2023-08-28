@@ -1,20 +1,28 @@
-use crate::auth::TokenClaims;
-use crate::database::columns::{
-    COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LOGIN, COL_INDEX_ACCOUNT_ROLE, COL_INDEX_ACCOUNT_UUID,
+use crate::{
+    auth::TokenClaims,
+    database::{
+        columns::{
+            COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LOGIN, COL_INDEX_ACCOUNT_ROLE,
+            COL_INDEX_ACCOUNT_UUID,
+        },
+        db::DB_Table,
+    },
+    entry::functions::get_the_author,
+    routes::accounts::crud::get_user_by_id,
+    traits::RowTransformer,
 };
-use crate::database::db::DB_Table;
-use crate::entry::functions::get_the_author;
-use crate::routes::accounts::crud::get_user_by_id;
-use crate::traits::RowTransformer;
-use gazebo_core_common::account::auth::AuthResponseAccountInfo;
-use gazebo_core_common::account::auth::AuthResponsePayload;
-use gazebo_core_common::account::gb_account::{AccountID, GB_Account};
-use gazebo_core_common::account::role::{get_role_variant, AccountRole};
-use gazebo_core_common::status_code::HttpStatusCode;
+
+use gazebo_core_common::{
+    account::{
+        auth::{AuthResponseAccountInfo, AuthResponsePayload},
+        gb_account::{AccountID, GB_Account},
+        role::{get_role_variant, AccountRole},
+    },
+    status_code::HttpStatusCode,
+};
 use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 use serde::{Deserialize, Serialize};
-use sqlx::postgres::PgRow;
-use sqlx::{PgPool, Row};
+use sqlx::{postgres::PgRow, PgPool, Row};
 use uuid::{uuid, Error, Uuid};
 
 #[derive(Serialize, Deserialize, Debug, Default)]

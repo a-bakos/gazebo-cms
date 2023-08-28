@@ -1,5 +1,4 @@
-use yew::html::IntoPropValue;
-use yew::prelude::*;
+use yew::{html::IntoPropValue, prelude::*};
 use yew_router::prelude::*;
 
 use crate::pages::{

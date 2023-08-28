@@ -1,10 +1,11 @@
 use crate::api::account::api_auth_me;
-use gazebo_core_common::account::auth::AuthResponsePayload;
-use gazebo_core_common::account::gb_account::GB_CurrentAccount;
+use gazebo_core_common::account::{auth::AuthResponsePayload, gb_account::GB_CurrentAccount};
+
 use gloo_storage::{SessionStorage, Storage};
 use std::rc::Rc;
-use yew::platform::spawn_local;
-use yew::{context::ContextProvider, prelude::*, Reducible, UseReducerHandle};
+use yew::{
+    context::ContextProvider, platform::spawn_local, prelude::*, Reducible, UseReducerHandle,
+};
 
 pub type CurrentUserContext = UseReducerHandle<CurrentUser>;
 

@@ -17,10 +17,16 @@ use crate::{
     },
 };
 
-use gazebo_core_common::account::{gb_account::AccountID, login::LoginStatus, role::AccountRole};
+use gazebo_core_common::{
+    account::{
+        auth::{AuthResponseAccountInfo, AuthResponsePayload},
+        gb_account::AccountID,
+        login::LoginStatus,
+        role::AccountRole,
+    },
+    status_code::HttpStatusCode,
+};
 
-use gazebo_core_common::account::auth::{AuthResponseAccountInfo, AuthResponsePayload};
-use gazebo_core_common::status_code::HttpStatusCode;
 use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};

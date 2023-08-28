@@ -1,7 +1,10 @@
-use gazebo_core_common::account::auth::AuthResponseAccountInfo;
-use gazebo_core_common::account::auth::AuthResponsePayload;
-use gazebo_core_common::account::gb_account::AccountID;
-use gazebo_core_common::datetime::GB_DateTime_Variant;
+use gazebo_core_common::{
+    account::{
+        auth::{AuthResponseAccountInfo, AuthResponsePayload},
+        gb_account::AccountID,
+    },
+    datetime::GB_DateTime_Variant,
+};
 use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
