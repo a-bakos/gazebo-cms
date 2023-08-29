@@ -1,5 +1,4 @@
-use yew::html::IntoPropValue;
-use yew::prelude::*;
+use yew::{html::IntoPropValue, prelude::*};
 use yew_router::prelude::*;
 
 use crate::pages::{
@@ -7,8 +6,8 @@ use crate::pages::{
         admin_accounts::AdminAccounts, admin_dashboard::AdminDashboard, admin_media::AdminMedia,
         admin_posts::AdminPosts, admin_profile::AdminProfile, admin_settings::AdminSettings,
     },
-    edit_entry::EntryEdit,
-    edit_entry_existing::EntryEditExisting,
+    edit_entry::EntryEditExisting,
+    edit_entry_new::EntryEdit,
     home::Home,
     login::Login,
     not_found::NotFound,
@@ -35,7 +34,8 @@ pub enum MainNavigationRoute {
     #[at("/entry-edit")]
     EntryEdit,
     #[at("/entry-edit/:entry_type/:id")]
-    EntryEditExisting { entry_type: String, id: String }, // todo this has to work with permalink too
+    EntryEditExisting { entry_type: String, id: String },
+    // todo this has to work with permalink too
     //#[at("/entry/post/:id")]
     //ViewEntry { id: String },
     #[at("/lost-password")]
@@ -59,14 +59,14 @@ pub fn main_nav_switch(route: MainNavigationRoute) -> Html {
         // Admin all posts
         MainNavigationRoute::AdminPosts => html! { <AdminPosts /> },
         // Admin entry editor
-        MainNavigationRoute::EntryEdit => html! { <EntryEdit />},
+        MainNavigationRoute::EntryEdit => html! { <EntryEdit /> },
         MainNavigationRoute::EntryEditExisting { entry_type, id } => {
             html! { <EntryEditExisting entry_type={entry_type} entry_id={id} /> }
         }
         // Admin media lib
-        MainNavigationRoute::AdminMedia => html! { <AdminMedia />},
-        MainNavigationRoute::AdminSettings => html! { <AdminSettings />},
-        MainNavigationRoute::AdminAccounts => html! { <AdminAccounts />},
+        MainNavigationRoute::AdminMedia => html! { <AdminMedia /> },
+        MainNavigationRoute::AdminSettings => html! { <AdminSettings /> },
+        MainNavigationRoute::AdminAccounts => html! { <AdminAccounts /> },
         MainNavigationRoute::AdminProfile => html! { <AdminProfile /> },
 
         // 404

@@ -1,14 +1,14 @@
-use yew::{platform::spawn_local, prelude::*};
-use yew_router::prelude::*;
-
 use crate::{
-    api::account::{api_login_request, LoginResponseWithStatusCode},
+    api::account::api_login_request,
     app::MainNavigationRoute,
     components::input::Input,
-    context::{CurrentUserContext, CurrentUserDispatchActions, UserAction::LoginSuccess},
+    context::{
+        CurrentUserContext, CurrentUserDispatchActions, UserAction::LoginSuccess, GB_TOKEN_KEY,
+    },
 };
-
-// todo look into web_sys
+use gazebo_core_common::account::auth::AuthResponsePayload;
+use yew::{platform::spawn_local, prelude::*};
+use yew_router::prelude::*;
 
 #[function_component(LoginForm)]
 pub fn login_form() -> Html {
@@ -55,10 +55,9 @@ pub fn login_form() -> Html {
 
         spawn_local(async move {
             // we can match on response instead
-            let response: LoginResponseWithStatusCode =
-                api_login_request(cloned_username, cloned_password)
-                    .await
-                    .unwrap();
+            let response: AuthResponsePayload = api_login_request(cloned_username, cloned_password)
+                .await
+                .unwrap();
 
             // Check status code
             // Todo create type for statuscode
@@ -68,13 +67,14 @@ pub fn login_form() -> Html {
                     gloo_console::log!(
                         "Successful login: ",
                         response.http_status_code,
-                        response.account_details.id.clone(),
-                        response.account_details.login_name.clone()
+                        response.account_details.id.0.clone(),
+                        response.account_details.login_name.clone(),
+                        response.token.clone()
                     );
 
                     clone_current_user_ctx.dispatch(CurrentUserDispatchActions {
                         action_type: LoginSuccess,
-                        login_response: Some(response.account_details),
+                        login_response: Some(response.clone()),
                     });
 
                     // Redirect to Home

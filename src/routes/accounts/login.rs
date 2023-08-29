@@ -1,5 +1,5 @@
-use crate::users::credentials::{is_email_valid, is_password_valid, is_username_valid};
 use crate::{
+    auth::TokenClaims,
     database::{
         columns::{
             COL_INDEX_ACCOUNT_EMAIL, COL_INDEX_ACCOUNT_ID, COL_INDEX_ACCOUNT_LOGIN,
@@ -8,12 +8,26 @@ use crate::{
         db::DB_Table,
     },
     errors::error_handler::ErrorResponse,
-    http::status_code::HttpStatusCode,
     users::{
         credentials,
-        credentials::{find_account_by_identifier, AccountIdentifier},
+        credentials::{
+            find_account_by_identifier, is_email_valid, is_password_valid, is_username_valid,
+            AccountIdentifier,
+        },
     },
 };
+
+use gazebo_core_common::{
+    account::{
+        auth::{AuthResponseAccountInfo, AuthResponsePayload},
+        gb_account::AccountID,
+        login::LoginStatus,
+        role::AccountRole,
+    },
+    status_code::HttpStatusCode,
+};
+
+use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
 
@@ -22,52 +36,6 @@ pub struct LoginRequest {
     pub login: Option<String>,
     pub email: Option<String>,
     pub password: String,
-}
-
-/// Account details to send back on login request
-/// Default() is used with error cases
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct LoginResponseAccountDetails {
-    pub id: u32,
-    pub login_name: String,
-    pub email: String,
-    pub role: String,
-}
-
-/// Login status variants
-enum LoginStatus {
-    Authorized,
-    Unauthorized,
-    ServerError,
-}
-
-/// This is the final structure that is returned on a login request
-#[derive(Deserialize, Serialize)]
-pub struct LoginResponseWithStatusCode {
-    pub http_status_code: u32,
-    pub account_details: LoginResponseAccountDetails,
-}
-impl LoginResponseWithStatusCode {
-    fn response(
-        login_status: LoginStatus,
-        account_details: Option<LoginResponseAccountDetails>,
-    ) -> Self {
-        let (http_status_code, account_details) = match login_status {
-            LoginStatus::Authorized => (HttpStatusCode::Ok.code(), account_details.unwrap()),
-            LoginStatus::Unauthorized => (
-                HttpStatusCode::Unauthorized.code(),
-                LoginResponseAccountDetails::default(),
-            ),
-            LoginStatus::ServerError => (
-                HttpStatusCode::InternalServerError.code(),
-                LoginResponseAccountDetails::default(),
-            ),
-        };
-        Self {
-            http_status_code,
-            account_details,
-        }
-    }
 }
 
 pub async fn try_login(
@@ -80,6 +48,7 @@ pub async fn try_login(
         AccountIdentifier::Email => COL_INDEX_ACCOUNT_EMAIL,
         AccountIdentifier::Login => COL_INDEX_ACCOUNT_LOGIN,
     };
+
     let query = format!(
         "SELECT * FROM {} WHERE {} = $1 AND password = $2",
         DB_Table::Accounts,
@@ -89,28 +58,44 @@ pub async fn try_login(
         .bind(binding.clone())
         .bind(password)
         .map(|row: PgRow| {
-            LoginResponseAccountDetails {
+            AuthResponseAccountInfo {
                 // Underscores' meaning in row.get():
                 // we don't need to specify a default/fallback value because the cell will never be empty
-                id: row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32,
+                id: AccountID(row.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32),
+                role: row.get::<&str, _>(COL_INDEX_ACCOUNT_ROLE).into(),
                 login_name: row.get(COL_INDEX_ACCOUNT_LOGIN),
-                email: row.get(COL_INDEX_ACCOUNT_EMAIL),
-                role: row.get::<&str, _>(COL_INDEX_ACCOUNT_ROLE).to_string(),
             }
         })
         .fetch_one(&pool)
         .await
     {
-        Ok(user) => {
-            update_last_login_timestamp(pool.clone(), login_variant, binding).await;
+        Ok(mut user) => {
+            let uuid: Option<uuid::Uuid> =
+                update_login_timestamp_and_session_id(pool.clone(), login_variant, binding).await;
 
-            Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+            if uuid.is_none() {
+                unreachable!();
+            }
+
+            // Generate user access token and attach to response
+            let the_token: Option<String> = crate::auth::generate_token(&user, &uuid.unwrap());
+            if the_token.is_none() {
+                return Ok(warp::reply::json(&AuthResponsePayload::response(
+                    LoginStatus::Unauthorized,
+                    None,
+                    None,
+                )));
+            }
+
+            Ok(warp::reply::json(&AuthResponsePayload::response(
                 LoginStatus::Authorized,
                 Some(user),
+                the_token,
             )))
         }
-        Err(_e) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+        Err(_e) => Ok(warp::reply::json(&AuthResponsePayload::response(
             LoginStatus::Unauthorized,
+            None,
             None,
         ))),
     }
@@ -127,8 +112,9 @@ pub async fn login(
     if let Some(email) = params.email {
         // If email or password format is invalid, terminate, don't even go to the database
         if !is_email_valid(&email) || !is_password_valid(&params.password) {
-            return Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+            return Ok(warp::reply::json(&AuthResponsePayload::response(
                 LoginStatus::Unauthorized,
+                None,
                 None,
             )));
         }
@@ -154,18 +140,21 @@ pub async fn login(
                     try_login(pool.clone(), password, binding, AccountIdentifier::Email).await
                 } else {
                     println!("Wrong password used for: {}", &binding);
-                    Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                    Ok(warp::reply::json(&AuthResponsePayload::response(
                         LoginStatus::Unauthorized,
+                        None,
                         None,
                     )))
                 }
             }
-            Ok(false) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+            Ok(false) => Ok(warp::reply::json(&AuthResponsePayload::response(
                 LoginStatus::Unauthorized,
                 None,
+                None,
             ))),
-            Err(_e) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+            Err(_e) => Ok(warp::reply::json(&AuthResponsePayload::response(
                 LoginStatus::ServerError,
+                None,
                 None,
             ))),
         };
@@ -174,8 +163,9 @@ pub async fn login(
     if let Some(login) = params.login {
         // If username or password format is invalid, terminate, don't even go to the database
         if !is_username_valid(&login) || !is_password_valid(&params.password) {
-            return Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+            return Ok(warp::reply::json(&AuthResponsePayload::response(
                 LoginStatus::Unauthorized,
+                None,
                 None,
             )));
         }
@@ -202,21 +192,24 @@ pub async fn login(
                 } else {
                     // Account exists, but wrong creds
                     println!("Wrong password used for: {}", &binding);
-                    Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                    Ok(warp::reply::json(&AuthResponsePayload::response(
                         LoginStatus::Unauthorized,
+                        None,
                         None,
                     )))
                 }
             }
             Ok(false) => {
                 // No accounts
-                Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+                Ok(warp::reply::json(&AuthResponsePayload::response(
                     LoginStatus::Unauthorized,
+                    None,
                     None,
                 )))
             }
-            Err(_e) => Ok(warp::reply::json(&LoginResponseWithStatusCode::response(
+            Err(_e) => Ok(warp::reply::json(&AuthResponsePayload::response(
                 LoginStatus::ServerError,
+                None,
                 None,
             ))),
         };
@@ -235,23 +228,35 @@ fn get_column_name_by_login_variant<'a>(login_variant: AccountIdentifier) -> &'a
     }
 }
 
-/// Update Last Login timestamp for accounts
-pub async fn update_last_login_timestamp(
+/// Update Last Login timestamp and UUID/Session ID for accounts
+///
+/// While login timestamp and UUIDs are technically different things, they are kept together here.
+/// We only need to generate a new session ID when a user logs in, and then we need to update the
+/// login timestamp anyway. This way, we can do both in the same query.
+pub async fn update_login_timestamp_and_session_id(
     pool: PgPool,
     login_variant: AccountIdentifier,
     value: String,
-) {
-    let update_last_login_query = format!(
-        "UPDATE {} SET last_login = CURRENT_TIMESTAMP WHERE {} = $1",
+) -> Option<uuid::Uuid> {
+    let update_query = format!(
+        "UPDATE {} SET last_login = CURRENT_TIMESTAMP, uuid = $1 WHERE {} = $2",
         DB_Table::Accounts,
         get_column_name_by_login_variant(login_variant) // email or username
     );
-    match sqlx::query(&update_last_login_query)
+    let uuid: uuid::Uuid = crate::auth::generate_session_id();
+    match sqlx::query(&update_query)
+        .bind(uuid.clone())
         .bind(value)
         .execute(&pool)
         .await
     {
-        Ok(_) => println!("Last login datetime updated!"),
-        Err(_e) => println!("Last login datetime update error!"),
+        Ok(_) => {
+            println!("Last login datetime + UUID updated!");
+            Some(uuid)
+        }
+        Err(e) => {
+            println!("Last login datetime update or UUID error! {:?}", e);
+            None
+        }
     }
 }

@@ -37,62 +37,56 @@ pub fn admin_menu() -> Html {
         get_classes_for_route(current_route.clone(), MainNavigationRoute::AdminSettings);
 
     html! {
-        <nav class={"bg-gray-200 w-full sticky"}>
+        <nav class={"bg-[#496551] select-none w-full sticky text-white border-t border-[#688a72]"}>
             <ul class="flex justify-center">
-                <li>
-                    <Link<MainNavigationRoute>
-                        to={ MainNavigationRoute::Admin }
-                        classes={ classes_dashboard }>
-                        { "Dashboard" }
+                <li class={"border-l border-r border-[#688a72]"}>
+                    <Link<MainNavigationRoute> to={MainNavigationRoute::Admin} classes="inline-block p-4 hover:bg-[#688a72] hover:text-white">
+                        {"Dashboard"}
                     </Link<MainNavigationRoute>>
                 </li>
-                <li>
-                    <Link<MainNavigationRoute>
-                        to={ MainNavigationRoute::AdminPosts }
-                        classes={ classes_posts }>
-                        { "Posts" }
+                <li class={"border-r border-[#688a72]"}>
+                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminPosts} classes="inline-block p-4 hover:bg-[#688a72] hover:text-white">
+                        {"Posts"}
                     </Link<MainNavigationRoute>>
                 </li>
-                <li>
+                <li class={"border-r border-[#688a72]"}>
                     //<Link<MainNavigationRoute> to={MainNavigationRoute::AdminPosts}>
-                    <a>
+                    <a class="inline-block p-4 hover:bg-[#688a72] hover:text-white">
                         {"Pages"}
                     </a>
                     //</Link<MainNavigationRoute>>
                 </li>
-                <li>
+                <li class={"border-r border-[#688a72]"}>
                     <Link<MainNavigationRoute>
-                        to={ MainNavigationRoute::AdminMedia }
-                        classes={ classes_media }>
-                        { "Media" }
+                        to={MainNavigationRoute::AdminMedia}
+                        classes="inline-block p-4 hover:bg-[#688a72] hover:text-white">
+                        {"Media"}
                     </Link<MainNavigationRoute>>
                 </li>
-                <li>
+                <li class={"border-r border-[#688a72]"}>
                     <Link<MainNavigationRoute>
-                        to={ MainNavigationRoute::AdminAccounts }
-                        classes={ classes_accounts }>
-                        { "Accounts" }
+                        to={MainNavigationRoute::AdminAccounts}
+                        classes="inline-block p-4 hover:bg-[#688a72] hover:text-white">
+                        {"Accounts"}
                     </Link<MainNavigationRoute>>
                 </li>
-                <li>
+                <li class={"border-r border-[#688a72]"}>
                     // <Link<MainNavigationRoute> to={MainNavigationRoute::AdminAccounts}>
-                    <a>
-                        {  "Search" }
+                    <a class="inline-block p-4 hover:bg-[#688a72] hover:text-white">
+                        {"Search"}
                     </a>
                     // </Link<MainNavigationRoute>>
                 </li>
-                <li>
+                <li class={"border-r border-[#688a72]"}>
                     // <Link<MainNavigationRoute> to={MainNavigationRoute::AdminAccounts}>
-                    <a>
+                    <a class="inline-block p-4 hover:bg-[#688a72] hover:text-white">
                     {"Logs"}
                     </a>
                     // </Link<MainNavigationRoute>>
                 </li>
-                <li>
-                    <Link<MainNavigationRoute>
-                        to={ MainNavigationRoute::AdminSettings }
-                        classes={ classes_settings }>
-                        { "Settings" }
+                <li class={"border-r border-[#688a72]"}>
+                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminSettings} classes="inline-block p-4 hover:bg-[#688a72] hover:text-white">
+                        {"Settings"}
                     </Link<MainNavigationRoute>>
                 </li>
             </ul>
