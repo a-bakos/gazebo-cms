@@ -7,3 +7,5 @@ pub mod gb_page;
 pub mod gb_post;
 pub mod gb_search;
 pub mod status;
+
+pub mod gb_entry;
