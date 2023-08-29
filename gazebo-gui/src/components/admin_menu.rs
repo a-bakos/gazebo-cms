@@ -8,15 +8,9 @@ fn get_classes_for_route(
     target_route: MainNavigationRoute,
 ) -> Classes {
     if current_route == target_route {
-        classes!(
-            "inline-block",
-            "p-4",
-            "bg-red-400",
-            "hover:bg-red-400",
-            "text-white"
-        )
+        classes!("inline-block", "p-4", "bg-[#688a72]",)
     } else {
-        classes!("inline-block", "p-4", "hover:bg-red-200")
+        classes!("inline-block", "p-4", "hover:bg-[#688a72]",)
     }
 }
 
@@ -40,12 +34,12 @@ pub fn admin_menu() -> Html {
         <nav class={"bg-[#496551] select-none w-full sticky text-white border-t border-[#688a72]"}>
             <ul class="flex justify-center">
                 <li class={"border-l border-r border-[#688a72]"}>
-                    <Link<MainNavigationRoute> to={MainNavigationRoute::Admin} classes="inline-block p-4 hover:bg-[#688a72] hover:text-white">
+                    <Link<MainNavigationRoute> to={MainNavigationRoute::Admin} classes={ classes_dashboard }>
                         {"Dashboard"}
                     </Link<MainNavigationRoute>>
                 </li>
                 <li class={"border-r border-[#688a72]"}>
-                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminPosts} classes="inline-block p-4 hover:bg-[#688a72] hover:text-white">
+                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminPosts} classes={ classes_posts }>
                         {"Posts"}
                     </Link<MainNavigationRoute>>
                 </li>
@@ -59,14 +53,14 @@ pub fn admin_menu() -> Html {
                 <li class={"border-r border-[#688a72]"}>
                     <Link<MainNavigationRoute>
                         to={MainNavigationRoute::AdminMedia}
-                        classes="inline-block p-4 hover:bg-[#688a72] hover:text-white">
+                        classes={ classes_media }>
                         {"Media"}
                     </Link<MainNavigationRoute>>
                 </li>
                 <li class={"border-r border-[#688a72]"}>
                     <Link<MainNavigationRoute>
                         to={MainNavigationRoute::AdminAccounts}
-                        classes="inline-block p-4 hover:bg-[#688a72] hover:text-white">
+                        classes={ classes_accounts }>
                         {"Accounts"}
                     </Link<MainNavigationRoute>>
                 </li>
@@ -85,7 +79,7 @@ pub fn admin_menu() -> Html {
                     // </Link<MainNavigationRoute>>
                 </li>
                 <li class={"border-r border-[#688a72]"}>
-                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminSettings} classes="inline-block p-4 hover:bg-[#688a72] hover:text-white">
+                    <Link<MainNavigationRoute> to={MainNavigationRoute::AdminSettings} classes={ classes_settings }>
                         {"Settings"}
                     </Link<MainNavigationRoute>>
                 </li>
