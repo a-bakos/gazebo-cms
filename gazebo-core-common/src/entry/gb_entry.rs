@@ -14,6 +14,8 @@ pub trait GB_EntryCommon {
 
     fn get_author_id(&self) -> AccountID;
 
+    // fn get_author(&self) -> String;
+
     fn get_date(&self, date_variant: GB_EntryDateVariant) -> String;
 
     fn get_slug(&self) -> String;

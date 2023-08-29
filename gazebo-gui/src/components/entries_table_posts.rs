@@ -13,6 +13,7 @@ use crate::{
 use gazebo_core_common::entry::{
     entry_id::EntryID,
     entry_type::EntryType,
+    gb_entry::{GB_EntryCommon, GB_EntryDateVariant},
     gb_post::GB_Post,
     status::{ContentStatus, EntryStatus},
 };
@@ -27,7 +28,7 @@ pub struct PostTableRowProps {
 
 #[function_component(PostTableRow)]
 pub fn table_entry_row(props: &PostTableRowProps) -> Html {
-    let (status_label, status_label_class) = match props.row_data.status.clone() {
+    let (status_label, status_label_class) = match props.row_data.get_status() {
         // todo - will be added to common lib
         EntryStatus::Post(content_status) => match content_status {
             ContentStatus::Draft => ("draft".to_string(), "bg-[#eda52d]"),
@@ -39,7 +40,7 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
         _ => ("unknown".to_string(), "bg-white-100"),
     };
 
-    let post_id = props.row_data.id.clone();
+    let post_id = props.row_data.get_id();
     let navigator = use_navigator();
 
     // Button event: Move post to bin // TODO reload after callback completion
@@ -93,9 +94,9 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
         <tr class="rounded-xl border border-[#f4e4d4] hover:bg-[#f4e4d4]">
             <td class="p-2">
                 <Link<MainNavigationRoute>
-                    to={MainNavigationRoute::EntryEditExisting { entry_type: EntryType::Post.to_string(), id: post_id.to_string() }}
-                    classes="font-bold text-[#47837b]">
-                    {props.row_data.title.clone()}
+                    to={ MainNavigationRoute::EntryEditExisting { entry_type: EntryType::Post.to_string(), id: post_id.to_string() } }
+                    classes={ "font-bold text-[#47837b]" }>
+                    { props.row_data.get_title() }
                 </Link<MainNavigationRoute>>
                 <span class="block">
                     <a class="underline mr-1">{ "?view" }</a>
@@ -103,8 +104,8 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
                     <button class="underline mr-1">{ "?clone" }</button>
 
                     <form
-                        class={"inline"}
-                        onsubmit={on_form_submit_bin}>
+                        class={ "inline" }
+                        onsubmit={ on_form_submit_bin }>
                         <Button
                             button_type="submit"
                             label="Bin it!"
@@ -113,8 +114,8 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
 
                 </span>
             </td>
-            <td>{"cat 1, cat 2"}</td>
-            <td>{props.row_data.id_author.clone()}</td>
+            <td>{ "cat 1, cat 2" }</td>
+            <td>{ props.row_data.get_author_id() }</td>
             <td>
                 <span class={ format!("{} px-2 rounded-md text-white uppercase text-xs font-bold tracking-wide ", status_label_class) }>
                     { status_label.clone() }
@@ -124,7 +125,7 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
                         html! {
                             <form
                                 class={"block"}
-                                onsubmit={on_form_submit_publish}>
+                                onsubmit={ on_form_submit_publish }>
                                 <Button
                                     button_type="submit"
                                     label="publish now"
@@ -137,11 +138,11 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
                 }
             </td>
             <td>
-                <p>{ props.row_data.date_publish.clone() }</p>
+                <p>{ props.row_data.get_date( GB_EntryDateVariant::Publish ) }</p>
                 <p>{ "?by admin" }</p>
             </td>
             <td>
-                <p>{ props.row_data.date_modified.clone() }</p>
+                <p>{ props.row_data.get_date( GB_EntryDateVariant::Modified ) }</p>
                 <p>{ "?by editor" }</p>
             </td>
         </tr>
@@ -184,8 +185,7 @@ pub fn table_entries() -> Html {
                 <tbody>
                     {
                         for row_titles.iter().map(|entry_row| html! {
-                            // table_entry_row(entry_row)
-                            <PostTableRow row_data={entry_row.clone()} />
+                            <PostTableRow row_data={ entry_row.clone() } />
                         } )
                     }
                 </tbody>
