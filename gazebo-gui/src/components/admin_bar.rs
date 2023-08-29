@@ -11,7 +11,7 @@ pub fn admin_bar() -> Html {
         Some(user) => html! {
             <>
                 <div class="sticky top-0">
-                    <nav class="bg-[#3c352d] text-white w-full">
+                    <nav class="bg-[#1e1612] text-white w-full">
                         <ul class="flex items-center">
                             // If admin, show front end link
                             <li class="bg-black text-white">
