@@ -14,6 +14,7 @@ pub trait GB_EntryCommon {
 
     fn get_author_id(&self) -> AccountID;
 
+    // todo
     // fn get_author(&self) -> String;
 
     fn get_date(&self, date_variant: GB_EntryDateVariant) -> String;
@@ -30,6 +31,8 @@ fn get_id<T: GB_EntryCommon>(entry: &T) -> EntryID {
     entry.get_id()
 }
 
+// temp example for later - this way, we can keep different entry types in a collection
+// eg. entry search for matching items such as same "editor" or same publish date
 fn temp() {
     let entries: Vec<Box<dyn GB_EntryCommon>> = vec![
         Box::new(GB_Post {
