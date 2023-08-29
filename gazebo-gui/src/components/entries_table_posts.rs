@@ -99,13 +99,15 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
                     { props.row_data.get_title() }
                 </Link<MainNavigationRoute>>
                 <span class="block">
-                    <a class="underline mr-1">{ "?view" }</a>
-                    <a class="underline mr-1">{ "?edit" }</a>
-                    <button class="underline mr-1">{ "?clone" }</button>
+                    <a class="underline select-none mr-1">{ "?view" }</a>
+                    <a class="underline select-none mr-1">{ "?edit" }</a>
+                    <button class="underline select-none mr-1">{ "?clone" }</button>
 
                     <form
-                        class={ "inline" }
-                        onsubmit={ on_form_submit_bin }>
+
+                        class={"select-none inline"}
+                        onsubmit={on_form_submit_bin}>
+
                         <Button
                             button_type="submit"
                             label="Bin it!"
@@ -117,7 +119,7 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
             <td>{ "cat 1, cat 2" }</td>
             <td>{ props.row_data.get_author_id() }</td>
             <td>
-                <span class={ format!("{} px-2 rounded-md text-white uppercase text-xs font-bold tracking-wide ", status_label_class) }>
+                <span class={ format!("{} px-2 rounded-md text-white uppercase text-xs font-bold tracking-wide select-none ", status_label_class) }>
                     { status_label.clone() }
                 </span>
                 {

@@ -5,7 +5,7 @@ use yew_router::prelude::Link;
 #[function_component(AdminMenu)]
 pub fn admin_menu() -> Html {
     html! {
-        <nav class={"bg-[#496551] w-full sticky text-white border-t border-[#688a72]"}>
+        <nav class={"bg-[#496551] select-none w-full sticky text-white border-t border-[#688a72]"}>
             <ul class="flex justify-center">
                 <li class={"border-l border-r border-[#688a72]"}>
                     <Link<MainNavigationRoute> to={MainNavigationRoute::Admin} classes="inline-block p-4 hover:bg-[#688a72] hover:text-white">
