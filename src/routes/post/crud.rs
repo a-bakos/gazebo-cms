@@ -13,6 +13,8 @@ use crate::{
 };
 use gazebo_core_common::entry::gb_post::GB_Post;
 
+use gazebo_core_common::entry::entry_id::EntryID;
+use gazebo_core_common::entry::gb_entry::{GB_EntryInsertRequest, GB_EntryInsertResponse};
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
 use std::collections::HashMap;
@@ -50,20 +52,9 @@ pub async fn get_posts(pool: PgPool) -> Result<impl warp::Reply, warp::Rejection
     }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
-pub struct NewPostInsertRequest {
-    pub author_id: i32,
-    pub slug: String,
-    pub title: String,
-    pub content: String,
-    pub status: String,
-    pub excerpt: Option<String>,
-    pub password: Option<String>,
-}
-
 pub async fn insert_post(
     pool: PgPool,
-    params: NewPostInsertRequest,
+    params: GB_EntryInsertRequest,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     println!("{:?}", params);
 
@@ -119,8 +110,11 @@ pub async fn insert_post(
                 .fetch_one(&pool)
                 .await
             {
-                Ok(id) => Ok(warp::reply::json(&id)),
-                Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+                Ok(id) => Ok(warp::reply::json(&GB_EntryInsertResponse {
+                    http_status_code: 200,
+                    entry_id: EntryID(id as u32),
+                })),
+                Err(e) => Ok(warp::reply::json(&format!("Error: {:?}", e))),
             }
         }
         Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
@@ -199,7 +193,10 @@ pub async fn delete_post(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp
 }
 
 // Get post title
-pub async fn get_the_title(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
+pub(crate) async fn get_the_title(
+    id: i32,
+    pool: PgPool,
+) -> Result<impl warp::Reply, warp::Rejection> {
     println!("Title requested of post: {:?}", id);
 
     let query = format!(

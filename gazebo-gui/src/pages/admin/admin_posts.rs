@@ -29,7 +29,7 @@ pub fn admin_posts() -> Html {
                         <button class="px-4 py-2 mr-px bg-[#eda52d] hover:bg-blue-500">{"Draft"}</button>
                         <button class="px-4 py-2 mr-px bg-[#cf743d] hover:bg-blue-500">{"Private"}</button>
                         <button class="px-4 py-2 mr-px bg-[#b72224] hover:bg-blue-500">{"Bin"}</button>
-                        <input type="text" class="px-4 py-2 mr-px" />
+                        <input type="text" class="px-4 py-2 mr-px placeholder:italic placeholder:text-slate-400" placeholder="Search within Posts..." />
                         <button class="bg-blue-200 px-4 py-2 mr-px hover:bg-blue-500">{"Search"}</button>
                         <button class="bg-blue-200 px-4 py-2 mr-px hover:bg-blue-500">{"Export"}</button>
                     </div>

@@ -4,6 +4,8 @@ use crate::entry::gb_media::GB_Media;
 use crate::entry::gb_post::GB_Post;
 use crate::entry::status::{EntryStatus, MediaStatus};
 
+use serde::{Deserialize, Serialize};
+
 pub enum GB_EntryDateVariant {
     Publish,
     Modified,
@@ -64,4 +66,21 @@ fn temp() {
     for entry in entries.iter() {
         println!("{}", entry.get_id());
     }
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GB_EntryInsertRequest {
+    pub author_id: i32,
+    pub slug: String,
+    pub title: String,
+    pub content: String,
+    pub status: String,
+    pub excerpt: Option<String>,
+    pub password: Option<String>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GB_EntryInsertResponse {
+    pub http_status_code: u32,
+    pub entry_id: EntryID,
 }
