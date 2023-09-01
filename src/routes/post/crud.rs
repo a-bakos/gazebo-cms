@@ -75,7 +75,7 @@ pub async fn insert_post(
     let excerpt = params.excerpt.clone();
 
     let query = format!(
-        "INSERT INTO {} ({}, {}, {}, {}, {}, {}, {}) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+        "INSERT INTO {} ({}, {}, {}, {}, {}, {}, {}) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id",
         DB_Table::Posts,
         COL_INDEX_POST_ID_AUTHOR,
         COL_INDEX_POST_SLUG,
@@ -94,30 +94,17 @@ pub async fn insert_post(
         .bind(content)
         .bind(password)
         .bind(status)
-        .execute(&pool)
+        .fetch_one(&pool)
         .await
     {
-        Ok(_) => {
-            let select_query = format!(
-                "SELECT id FROM {} WHERE title = $1 AND slug = $2",
-                DB_Table::Posts
-            );
-            // Retrieve the post_id with a subsequent select query
-            match sqlx::query(&select_query)
-                .bind(title.clone())
-                .bind(slug.clone())
-                .map(|row: PgRow| row.get::<i32, _>(COL_INDEX_POST_ID))
-                .fetch_one(&pool)
-                .await
-            {
-                Ok(id) => Ok(warp::reply::json(&GB_EntryInsertResponse {
-                    http_status_code: 200,
-                    entry_id: EntryID(id as u32),
-                })),
-                Err(e) => Ok(warp::reply::json(&format!("Error: {:?}", e))),
-            }
+        Ok(result) => {
+            let post_id = result.get::<i32, _>(COL_INDEX_POST_ID) as u32;
+            Ok(warp::reply::json(&GB_EntryInsertResponse {
+                http_status_code: 200,
+                entry_id: EntryID(post_id),
+            }))
         }
-        Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+        Err(e) => Ok(warp::reply::json(&format!("Error: {:?}", e))),
     }
 }
 
