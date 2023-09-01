@@ -8,6 +8,7 @@ use gazebo_core_common::entry::gb_post::GB_Post;
 
 use crate::api::post::api_new_entry_insert_request;
 use crate::app::MainNavigationRoute;
+use crate::components::entry_editor::EntryEditorProps;
 use gazebo_core_common::account::gb_account::AccountID;
 use gazebo_core_common::entry::entry_id::EntryID;
 use gazebo_core_common::entry::entry_type::EntryType;
@@ -108,17 +109,6 @@ pub fn entry_edit() -> Html {
         });
     });
 
-    // let editor_props = {
-    //     title,
-    //     title_changed,
-    //     permalink,
-    //     permalink_changed,
-    //     excerpt,
-    //     excerpt_changed,
-    //     password,
-    //     password_changed,
-    // };
-
     html! {
          <main id={crate::consts::CSS_ID_ADMIN_AREA}>
             <AdminBar />
@@ -135,56 +125,18 @@ pub fn entry_edit() -> Html {
                         </ul>
                     </nav>
                     <section class="bg-white w-full p-4">
-                        <p class="font-bold ">{"Title:"}</p>
 
-                        //<EntryEditor props={ editor_props } />
-
-                        <Input
-                            label={"Title"}
-                            id={""}
-                            name={""}
-                            input_type={"text"}
-                            value={ title }
-                            onchange={ title_changed }
-                        />
-
-                        <Input
-                            label={"Permalink"}
-                            id={""}
-                            name={""}
-                            input_type={"text"}
-                            value={ permalink }
-                            onchange={ permalink_changed }
-                        />
-
-                        <p class="font-bold ">{"Excerpt:"}</p>
-                        <Input
-                            label={"Excerpt"}
-                            id={""}
-                            name={""}
-                            input_type={"text"}
-                            value={ excerpt }
-                            onchange={ excerpt_changed }
-                        />
-
-                        <p class="font-bold ">{"Content:"}</p>
-                        <Input
-                            label={"Content"}
-                            id={""}
-                            name={""}
-                            input_type={"text"}
-                            value={ content }
-                            onchange={ content_changed }
-                        />
-
-
-                        <Input
-                            label={"Password"}
-                            id={""}
-                            name={""}
-                            input_type={"text"}
-                            value={ password }
-                            onchange={ password_changed }
+                        <EntryEditor
+                            title={ title }
+                            title_changed={ title_changed }
+                            permalink={ permalink }
+                            permalink_changed={ permalink_changed }
+                            excerpt={ excerpt }
+                            excerpt_changed={ excerpt_changed }
+                            content={ content }
+                            content_changed={ content_changed }
+                            password={ password }
+                            password_changed={ password_changed }
                         />
 
                         <Button

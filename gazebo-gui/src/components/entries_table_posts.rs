@@ -99,7 +99,12 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
                     { props.row_data.get_title() }
                 </Link<MainNavigationRoute>>
                 <span class="block">
-                    <a class="underline select-none mr-1">{ "?view" }</a>
+                    <Link<MainNavigationRoute>
+                        to={ MainNavigationRoute::EntryView { id: post_id.to_string() } }
+                        classes={ "underline select-none mr-1" }>
+                        { "View" }
+                    </Link<MainNavigationRoute>>
+
                     <a class="underline select-none mr-1">{ "?edit" }</a>
                     <button class="underline select-none mr-1">{ "?clone" }</button>
 

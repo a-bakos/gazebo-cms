@@ -6,8 +6,9 @@ use crate::pages::{
         admin_accounts::AdminAccounts, admin_dashboard::AdminDashboard, admin_media::AdminMedia,
         admin_posts::AdminPosts, admin_profile::AdminProfile, admin_settings::AdminSettings,
     },
-    edit_entry::EntryEditExisting,
+    // edit_entry::EntryEditExisting,
     edit_entry_new::EntryEdit,
+    entry::EntryView,
     home::Home,
     login::Login,
     not_found::NotFound,
@@ -36,8 +37,8 @@ pub enum MainNavigationRoute {
     #[at("/entry-edit/:entry_type/:id")]
     EntryEditExisting { entry_type: String, id: String },
     // todo this has to work with permalink too
-    //#[at("/entry/post/:id")]
-    //ViewEntry { id: String },
+    #[at("/entry/post/:id")]
+    EntryView { id: String },
     #[at("/lost-password")]
     LostPassword,
     #[not_found]
@@ -54,6 +55,10 @@ pub fn main_nav_switch(route: MainNavigationRoute) -> Html {
         // Lost password page
         MainNavigationRoute::LostPassword => html! { <h1>{ "Soon." }</h1> },
 
+        MainNavigationRoute::EntryView { id } => {
+            html! { <EntryView entry_id={id} /> }
+        }
+
         // Admin dashboard
         MainNavigationRoute::Admin => html! { <AdminDashboard /> },
         // Admin all posts
@@ -61,7 +66,8 @@ pub fn main_nav_switch(route: MainNavigationRoute) -> Html {
         // Admin entry editor
         MainNavigationRoute::EntryEdit => html! { <EntryEdit /> },
         MainNavigationRoute::EntryEditExisting { entry_type, id } => {
-            html! { <EntryEditExisting entry_type={entry_type} entry_id={id} /> }
+            // html! { <EntryEditExisting entry_type={entry_type} entry_id={id} /> }
+            html! { <EntryEdit /> }
         }
         // Admin media lib
         MainNavigationRoute::AdminMedia => html! { <AdminMedia /> },
