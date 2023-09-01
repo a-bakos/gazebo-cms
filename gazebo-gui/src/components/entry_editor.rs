@@ -1,6 +1,17 @@
 use gazebo_core_common::entry::gb_post::GB_Post;
 use yew::prelude::*;
 
+// struct EditorProps {
+//     title: String,
+//     title_changed: Callback<>,
+//     permalink: String,
+//     permalink_changed:Callback<>,
+//     excerpt: String,
+//     excerpt_changed:Callback<>,
+//     password: String,
+//     password_changed:Callback<>,
+// }
+
 #[derive(Properties, PartialEq)]
 pub struct EntryEditorProps {
     pub title: Option<AttrValue>,

@@ -21,7 +21,7 @@ use yew_router::prelude::use_navigator;
 
 #[function_component(EntryEdit)]
 pub fn entry_edit() -> Html {
-    let change_handler = (|handle: UseStateHandle<String>| {
+    let input_change_handler = (|handle: UseStateHandle<String>| {
         let value = (*handle).clone();
         let value_changed = Callback::from(move |event: Event| {
             let target = event.target_dyn_into::<web_sys::HtmlInputElement>();
@@ -33,20 +33,20 @@ pub fn entry_edit() -> Html {
         (value, cloned_value, value_changed)
     });
 
-    let title_handle = use_state(|| String::default());
-    let (title, cloned_title, title_changed) = change_handler(title_handle);
+    let (title, cloned_title, title_changed) =
+        input_change_handler(use_state(|| String::default()));
 
-    let permalink_handle = use_state(|| String::default());
-    let (permalink, cloned_permalink, permalink_changed) = change_handler(permalink_handle);
+    let (permalink, cloned_permalink, permalink_changed) =
+        input_change_handler(use_state(|| String::default()));
 
-    let excerpt_handle = use_state(|| String::default());
-    let (excerpt, cloned_excerpt, excerpt_changed) = change_handler(excerpt_handle);
+    let (excerpt, cloned_excerpt, excerpt_changed) =
+        input_change_handler(use_state(|| String::default()));
 
-    let content_handle = use_state(|| String::default());
-    let (content, cloned_content, content_changed) = change_handler(content_handle);
+    let (content, cloned_content, content_changed) =
+        input_change_handler(use_state(|| String::default()));
 
-    let password_handle = use_state(|| String::default());
-    let (password, cloned_password, password_changed) = change_handler(password_handle);
+    let (password, cloned_password, password_changed) =
+        input_change_handler(use_state(|| String::default()));
 
     let navigator = use_navigator();
 
@@ -68,6 +68,8 @@ pub fn entry_edit() -> Html {
         let cloned_excerpt = cloned_excerpt.clone();
         let cloned_content = cloned_content.clone();
         let cloned_password = cloned_password.clone();
+
+        gloo_console::log!("{}", cloned_excerpt.clone());
 
         let insert_entry_data = GB_EntryInsertRequest {
             author_id: account_id as i32, // get_current_account_id()
@@ -106,6 +108,17 @@ pub fn entry_edit() -> Html {
         });
     });
 
+    // let editor_props = {
+    //     title,
+    //     title_changed,
+    //     permalink,
+    //     permalink_changed,
+    //     excerpt,
+    //     excerpt_changed,
+    //     password,
+    //     password_changed,
+    // };
+
     html! {
          <main id={crate::consts::CSS_ID_ADMIN_AREA}>
             <AdminBar />
@@ -123,13 +136,16 @@ pub fn entry_edit() -> Html {
                     </nav>
                     <section class="bg-white w-full p-4">
                         <p class="font-bold ">{"Title:"}</p>
+
+                        //<EntryEditor props={ editor_props } />
+
                         <Input
                             label={"Title"}
                             id={""}
                             name={""}
                             input_type={"text"}
-                            value={title}
-                            onchange={title_changed}
+                            value={ title }
+                            onchange={ title_changed }
                         />
 
                         <Input
@@ -137,31 +153,38 @@ pub fn entry_edit() -> Html {
                             id={""}
                             name={""}
                             input_type={"text"}
-                            value={permalink}
-                            onchange={permalink_changed}
+                            value={ permalink }
+                            onchange={ permalink_changed }
                         />
 
+                        <p class="font-bold ">{"Excerpt:"}</p>
                         <Input
                             label={"Excerpt"}
                             id={""}
                             name={""}
                             input_type={"text"}
-                            value={excerpt}
-                            onchange={excerpt_changed}
+                            value={ excerpt }
+                            onchange={ excerpt_changed }
                         />
 
-                        <p class="font-bold ">{"Excerpt:"}</p>
-                        <textarea placeholder={"EXCERPT EDITOR"} value={"EXCERPT"} class={"border-2 block w-full"}></textarea>
                         <p class="font-bold ">{"Content:"}</p>
-                        <textarea placeholder={"POST CONTENT EDITOR"} value={"CONTENT"} class={"border-2 block w-full"}></textarea>
+                        <Input
+                            label={"Content"}
+                            id={""}
+                            name={""}
+                            input_type={"text"}
+                            value={ content }
+                            onchange={ content_changed }
+                        />
+
 
                         <Input
                             label={"Password"}
                             id={""}
                             name={""}
                             input_type={"text"}
-                            value={password}
-                            onchange={password_changed}
+                            value={ password }
+                            onchange={ password_changed }
                         />
 
                         <Button
