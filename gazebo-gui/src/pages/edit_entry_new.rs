@@ -49,10 +49,19 @@ pub fn entry_edit() -> Html {
     let (password, cloned_password, password_changed) = change_handler(password_handle);
 
     let navigator = use_navigator();
+
+    let current_user_ctx = use_context::<crate::context::CurrentUserContext>()
+        .expect("Current accounts context missing");
+    let account_id = match &current_user_ctx.user {
+        Some(user) => user.id.clone(),
+        None => AccountID(0),
+    };
+
     let on_form_submit = Callback::from(move |event: SubmitEvent| {
         event.prevent_default();
 
         let clone_navigator = navigator.clone();
+        let account_id = account_id.clone().0;
 
         let cloned_title = cloned_title.clone();
         let cloned_permalink = cloned_permalink.clone();
@@ -60,11 +69,8 @@ pub fn entry_edit() -> Html {
         let cloned_content = cloned_content.clone();
         let cloned_password = cloned_password.clone();
 
-        // Console logging for now
-        gloo_console::log!("Saving new post: ");
-        gloo_console::log!("{}", cloned_title.clone());
         let insert_entry_data = GB_EntryInsertRequest {
-            author_id: 1001, // get_current_account_id()
+            author_id: account_id as i32, // get_current_account_id()
             slug: cloned_permalink,
             title: cloned_title,
             content: cloned_content,
