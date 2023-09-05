@@ -4,6 +4,7 @@
 // Admin post/entry editor screen // move to admin/
 
 use crate::api::post::api_get_single_post;
+use crate::components::footer::Footer;
 use crate::components::{admin_bar::AdminBar, entry_editor::EntryEditor};
 use gazebo_core_common::account::gb_account::AccountID;
 use gazebo_core_common::entry::entry_id::EntryID;
@@ -39,14 +40,31 @@ pub fn entry_view(props: &EntryViewProps) -> Html {
     );
 
     html! {
-         <main>
-            <AdminBar />
-                <section class="bg-white w-full p-4">
-                    <article class="w-3/6 mx-auto">
-                        <h2 class="text-center font-black text-3xl mb-12 mt-6 ">{ single_entry.title.clone() }</h2>
-                        { single_entry.content.clone() }
-                    </article>
-                </section>
-        </main>
+        <>
+             <main>
+                <AdminBar />
+                    <section class="bg-white w-full p-4">
+                        <article>
+                            <h2 class="w-4/6 mx-auto text-center font-black text-3xl my-6 ">{ single_entry.title.clone() }</h2>
+                            <header class="w-4/6 mx-auto border-y py-3 mb-6">
+                                { "Posted on: " } { single_entry.date_publish.clone() }
+                                { "Written by: " } { single_entry.id_author.clone() }
+                                { "Category: xxx" }
+                            </header>
+                            <div class="w-3/6 mx-auto">
+                                { single_entry.content.clone() }
+                            </div>
+                            <footer class="w-4/6 mx-auto p-6 mt-12 bg-gray-100">
+                                <a>{ "Edit entry" }</a>
+                                <span>{ "Status: XXX" }</span>
+                                <span>{ "Last modified: " } { single_entry.date_publish.clone() }</span>
+                                <span>{ "Entry ID: " } { single_entry.id.0.to_string() }</span>
+                            </footer>
+                        </article>
+                        <a class="block w-4/6 mx-auto">{ "Back to homepage" }</a>
+                    </section>
+            </main>
+            <Footer />
+        </>
     }
 }
