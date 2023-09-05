@@ -1,7 +1,5 @@
 // Homepage
 
-use yew::{platform::spawn_local, prelude::*};
-
 use gazebo_core_common::{
     entry::{
         consts::POST_UNTITLED_DEFAULT_TITLE,
@@ -11,6 +9,10 @@ use gazebo_core_common::{
     },
     helpers::get_permalink,
 };
+use yew::{platform::spawn_local, prelude::*};
+use yew_router::prelude::*;
+
+use crate::app::MainNavigationRoute;
 
 use crate::components::{admin_bar::AdminBar, footer::Footer, nav::Nav};
 
@@ -81,12 +83,12 @@ pub fn home() -> Html {
                                     </div>
                                     <p class={"pb-2"}>{entry_row.excerpt.clone()}</p>
                                     <p class={"pb-2 border-b"}>{entry_row.content.clone()}</p>
-                                    <a
-                                        class={"inline-block mt-2 p-3 bg-gray-100 underline text-bold hover:text-red-400"}
-                                        href={get_permalink(EntryType::Post, entry_row.id)}
-                                        title={entry_title.clone()}>
+
+                                    <Link<MainNavigationRoute>
+                                        to={ MainNavigationRoute::EntryView { id: entry_row.id.0.to_string() } }
+                                        classes={ "inline-block mt-2 p-3 bg-gray-100 underline text-bold hover:text-red-400" }>
                                         {"Read more"}
-                                    </a>
+                                    </Link<MainNavigationRoute>>
                                 </article>
                             }
                         } )

@@ -42,7 +42,10 @@ pub fn entry_view(props: &EntryViewProps) -> Html {
          <main>
             <AdminBar />
                 <section class="bg-white w-full p-4">
-                    <p>{ single_entry.title.clone() }</p>
+                    <article class="w-3/6 mx-auto">
+                        <h2 class="text-center font-black text-3xl mb-12 mt-6 ">{ single_entry.title.clone() }</h2>
+                        { single_entry.content.clone() }
+                    </article>
                 </section>
         </main>
     }
