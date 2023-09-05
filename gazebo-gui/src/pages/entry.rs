@@ -9,7 +9,11 @@ use crate::components::{admin_bar::AdminBar, entry_editor::EntryEditor};
 use gazebo_core_common::account::gb_account::AccountID;
 use gazebo_core_common::entry::entry_id::EntryID;
 use gazebo_core_common::entry::entry_type::EntryType;
+use gazebo_core_common::entry::gb_entry::GB_EntryCommon;
 use gazebo_core_common::entry::gb_post::GB_Post;
+use gazebo_core_common::entry::status::{
+    get_entry_status_as_string, get_entry_status_variant, ContentStatus, EntryStatus,
+};
 use yew::platform::spawn_local;
 use yew::prelude::*;
 
@@ -39,6 +43,13 @@ pub fn entry_view(props: &EntryViewProps) -> Html {
         (),
     );
 
+    // todo need an extractor method for this
+    let entry_status = single_entry.status.clone();
+    let status_string = match entry_status {
+        EntryStatus::Post(content_status) => content_status.to_string(),
+        _ => "".to_string(),
+    };
+
     html! {
         <>
              <main>
@@ -56,7 +67,7 @@ pub fn entry_view(props: &EntryViewProps) -> Html {
                             </div>
                             <footer class="w-4/6 mx-auto p-6 mt-12 bg-gray-100">
                                 <a>{ "Edit entry" }</a>
-                                <span>{ "Status: XXX" }</span>
+                                <span>{ "Status: " } { status_string.clone() }</span>
                                 <span>{ "Last modified: " } { single_entry.date_publish.clone() }</span>
                                 <span>{ "Entry ID: " } { single_entry.id.0.to_string() }</span>
                             </footer>
