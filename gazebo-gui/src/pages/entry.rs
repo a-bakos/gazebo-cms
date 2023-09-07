@@ -24,8 +24,8 @@ pub struct EntryViewProps {
 
 #[function_component(EntryView)]
 pub fn entry_view(props: &EntryViewProps) -> Html {
-    let current_user_ctx = use_context::<crate::context::CurrentUserContext>()
-        .expect("Current accounts context missing");
+    //let current_user_ctx = use_context::<crate::context::CurrentUserContext>()
+    //.expect("Current accounts context missing");
     let entry_id = props.entry_id.clone().to_string();
     let single_entry_viewer_handle = use_state(|| GB_Post::new());
     let single_entry = single_entry_viewer_handle.clone();
