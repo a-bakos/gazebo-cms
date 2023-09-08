@@ -160,7 +160,7 @@ pub async fn update_entry(
     pool: PgPool,
     params: GB_EntryUpdateRequest,
 ) -> Result<impl warp::Reply, warp::Rejection> {
-    println!("update_entry request");
+    // todo -- currently only one item gets updated
     //let (table, column) = get_table_and_column_name(&params);
     let query = format!(
         "UPDATE {} SET {} = $1 WHERE id = $2",

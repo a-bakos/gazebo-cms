@@ -14,6 +14,7 @@ use gazebo_core_common::entry::gb_post::GB_Post;
 use yew::platform::spawn_local;
 use yew::prelude::*;
 use yew_router::prelude::use_navigator;
+use yew_router::prelude::Redirect;
 
 #[derive(Properties, PartialEq)]
 pub struct EntryEditorProps {
@@ -79,7 +80,6 @@ pub fn entry_edit_existing(props: &EntryEditorProps) -> Html {
     let entry_id = props.entry_id.clone();
 
     let on_form_submit = Callback::from(move |event: SubmitEvent| {
-        gloo_console::log!(" inside callback ");
         event.prevent_default();
 
         let entry_id = entry_id.clone().parse::<u32>().unwrap();
@@ -107,7 +107,6 @@ pub fn entry_edit_existing(props: &EntryEditorProps) -> Html {
         };
 
         spawn_local(async move {
-            gloo_console::log!("ARE WE HERE HERE?");
             let response: GB_EntryUpdateResponse =
                 api_entry_update_request(update_entry_data).await.unwrap();
             match response.http_status_code {
@@ -118,6 +117,7 @@ pub fn entry_edit_existing(props: &EntryEditorProps) -> Html {
                         response.entry_id.0.clone()
                     );
 
+                    // todo This doesnt work
                     if let Some(nav) = clone_navigator {
                         // Redirect to post edit page using the returned ID
                         nav.push(&MainNavigationRoute::EntryEditExisting {
