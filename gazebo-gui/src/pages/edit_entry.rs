@@ -2,11 +2,18 @@
 
 // Admin post/entry editor screen // move to admin/
 
+use crate::api::post::api_entry_update_request;
+use crate::app::MainNavigationRoute;
 use crate::components::button::Button;
 use crate::components::{admin_bar::AdminBar, entry_editor::EntryEditor};
+use gazebo_core_common::account::gb_account::AccountID;
+use gazebo_core_common::entry::entry_id::EntryID;
+use gazebo_core_common::entry::entry_type::EntryType;
+use gazebo_core_common::entry::gb_entry::{GB_EntryUpdateRequest, GB_EntryUpdateResponse};
 use gazebo_core_common::entry::gb_post::GB_Post;
 use yew::platform::spawn_local;
 use yew::prelude::*;
+use yew_router::prelude::use_navigator;
 
 #[derive(Properties, PartialEq)]
 pub struct EntryEditorProps {
@@ -18,6 +25,7 @@ pub struct EntryEditorProps {
 pub fn entry_edit_existing(props: &EntryEditorProps) -> Html {
     let entry_type = props.entry_type.clone().to_string();
     let entry_id = props.entry_id.clone().to_string();
+    let navigator = use_navigator();
 
     let single_entry_editor_handle = use_state(|| GB_Post::new());
     let single_entry = single_entry_editor_handle.clone();
@@ -68,8 +76,13 @@ pub fn entry_edit_existing(props: &EntryEditorProps) -> Html {
         None => AccountID(0),
     };
 
+    let entry_id = props.entry_id.clone();
+
     let on_form_submit = Callback::from(move |event: SubmitEvent| {
+        gloo_console::log!(" inside callback ");
         event.prevent_default();
+
+        let entry_id = entry_id.clone().parse::<u32>().unwrap();
 
         let clone_navigator = navigator.clone();
         let account_id = account_id.clone().0;
@@ -83,25 +96,35 @@ pub fn entry_edit_existing(props: &EntryEditorProps) -> Html {
         gloo_console::log!("{}", cloned_excerpt.clone());
 
         let update_entry_data = GB_EntryUpdateRequest {
-            author_id: account_id as i32, // get_current_account_id()
+            author_id: AccountID(account_id), // todo: get_current_account_id()
+            entry_id: EntryID(entry_id),
             slug: cloned_permalink,
             title: cloned_title,
             content: cloned_content,
             status: "draft".to_string(),
-            excerpt: Some(cloned_excerpt),
-            password: Some(cloned_password),
+            excerpt: None,
+            password: None,
         };
 
         spawn_local(async move {
+            gloo_console::log!("ARE WE HERE HERE?");
             let response: GB_EntryUpdateResponse =
                 api_entry_update_request(update_entry_data).await.unwrap();
             match response.http_status_code {
                 200 => {
                     gloo_console::log!(
-                        "Entry successfully added: ",
+                        "Entry successfully updated: ",
                         response.http_status_code,
-                        response.entry_id.0
+                        response.entry_id.0.clone()
                     );
+
+                    if let Some(nav) = clone_navigator {
+                        // Redirect to post edit page using the returned ID
+                        nav.push(&MainNavigationRoute::EntryEditExisting {
+                            entry_type: EntryType::Post.to_string(),
+                            id: response.entry_id.0.to_string(),
+                        })
+                    }
                 }
                 _ => {
                     gloo_console::log!("Error during saving entry!");
@@ -114,13 +137,7 @@ pub fn entry_edit_existing(props: &EntryEditorProps) -> Html {
          <main id={crate::consts::CSS_ID_ADMIN_AREA}>
             <AdminBar />
 
-            <form>
-                <input
-                    type={"hidden"}
-                    name={"gb_author_id"}
-                    value={"1000"}
-                />
-
+            <form onsubmit={ on_form_submit }>
                 <div class={"flex"}>
                     <nav class="bg-gray-300 w-1/6">
                         <ul class="w-full">

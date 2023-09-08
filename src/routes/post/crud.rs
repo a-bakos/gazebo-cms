@@ -14,7 +14,9 @@ use crate::{
 use gazebo_core_common::entry::gb_post::GB_Post;
 
 use gazebo_core_common::entry::entry_id::EntryID;
-use gazebo_core_common::entry::gb_entry::{GB_EntryInsertRequest, GB_EntryInsertResponse};
+use gazebo_core_common::entry::gb_entry::{
+    GB_EntryInsertRequest, GB_EntryInsertResponse, GB_EntryUpdateRequest, GB_EntryUpdateResponse,
+};
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
 use std::collections::HashMap;
@@ -148,6 +150,41 @@ pub async fn update_entry_single_param(
                 table, id, column, params.value
             );
             Ok(warp::reply::with_status(true.to_string(), StatusCode::OK))
+        }
+        Err(e) => Err(warp::reject::custom(SqlxError(e))),
+    }
+}
+
+pub async fn update_entry(
+    id: i32,
+    pool: PgPool,
+    params: GB_EntryUpdateRequest,
+) -> Result<impl warp::Reply, warp::Rejection> {
+    println!("update_entry request");
+    //let (table, column) = get_table_and_column_name(&params);
+    let query = format!(
+        "UPDATE {} SET {} = $1 WHERE id = $2",
+        DB_Table::Posts.to_string(),
+        COL_INDEX_POST_TITLE.to_string()
+    );
+    match sqlx::query(&query)
+        .bind(params.title.clone())
+        .bind(id.clone())
+        .execute(&pool)
+        .await
+    {
+        Ok(res) => {
+            if res.rows_affected() == 0 {
+                return Ok(warp::reply::json(&GB_EntryUpdateResponse {
+                    http_status_code: 403, // todo find better status code
+                    entry_id: EntryID(id as u32),
+                }));
+            }
+            println!("Entry updated!");
+            Ok(warp::reply::json(&GB_EntryUpdateResponse {
+                http_status_code: 200,
+                entry_id: EntryID(identry_id as u32),
+            }))
         }
         Err(e) => Err(warp::reject::custom(SqlxError(e))),
     }

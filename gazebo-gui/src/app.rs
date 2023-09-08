@@ -6,7 +6,7 @@ use crate::pages::{
         admin_accounts::AdminAccounts, admin_dashboard::AdminDashboard, admin_media::AdminMedia,
         admin_posts::AdminPosts, admin_profile::AdminProfile, admin_settings::AdminSettings,
     },
-    // edit_entry::EntryEditExisting,
+    edit_entry::EntryEditExisting,
     edit_entry_new::EntryEdit,
     entry::EntryView,
     home::Home,
@@ -66,8 +66,7 @@ pub fn main_nav_switch(route: MainNavigationRoute) -> Html {
         // Admin entry editor
         MainNavigationRoute::EntryEdit => html! { <EntryEdit /> },
         MainNavigationRoute::EntryEditExisting { entry_type, id } => {
-            // html! { <EntryEditExisting entry_type={entry_type} entry_id={id} /> }
-            html! { <EntryEdit /> }
+            html! { <EntryEditExisting entry_type={entry_type} entry_id={id} /> }
         }
         // Admin media lib
         MainNavigationRoute::AdminMedia => html! { <AdminMedia /> },

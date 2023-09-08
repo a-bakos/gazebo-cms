@@ -3,7 +3,9 @@ use gloo_net::http::Request;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
-use gazebo_core_common::entry::gb_entry::{GB_EntryInsertRequest, GB_EntryInsertResponse};
+use gazebo_core_common::entry::gb_entry::{
+    GB_EntryInsertRequest, GB_EntryInsertResponse, GB_EntryUpdateRequest, GB_EntryUpdateResponse,
+};
 use gazebo_core_common::{
     account::gb_account::AccountID,
     entry::{entry_id::EntryID, entry_type::EntryType, gb_post::GB_Post, status::EntryStatus},
@@ -90,4 +92,16 @@ pub(crate) async fn api_new_entry_insert_request(
         .send()
         .await?;
     response.json::<GB_EntryInsertResponse>().await
+}
+
+pub(crate) async fn api_entry_update_request(
+    entry_data: GB_EntryUpdateRequest,
+) -> Result<GB_EntryUpdateResponse, gloo_net::Error> {
+    gloo_console::log!("ARE WE HERE?");
+    let entry_id = entry_data.entry_id.0 as i32;
+    let response = Request::put(&format!("{}/{}/{}", BACKEND_URL_BASE, "post", entry_id))
+        .json(&json!(entry_data))?
+        .send()
+        .await?;
+    response.json::<GB_EntryUpdateResponse>().await
 }

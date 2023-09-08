@@ -84,3 +84,20 @@ pub struct GB_EntryInsertResponse {
     pub http_status_code: u32,
     pub entry_id: EntryID,
 }
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GB_EntryUpdateRequest {
+    pub author_id: AccountID,
+    pub entry_id: EntryID,
+    pub slug: String,
+    pub title: String,
+    pub content: String,
+    pub status: String,
+    pub excerpt: Option<String>,
+    pub password: Option<String>,
+}
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GB_EntryUpdateResponse {
+    pub http_status_code: u32,
+    pub entry_id: EntryID,
+}
