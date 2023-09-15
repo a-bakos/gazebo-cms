@@ -3,7 +3,6 @@ pub mod admin;
 pub mod admin_bar;
 pub mod admin_menu;
 pub mod button;
-pub mod button_add_new_entry;
 pub mod entries_table_posts;
 pub mod entry_editor;
 pub mod footer;
