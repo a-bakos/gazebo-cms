@@ -183,7 +183,7 @@ pub async fn update_entry(
             println!("Entry updated!");
             Ok(warp::reply::json(&GB_EntryUpdateResponse {
                 http_status_code: 200,
-                entry_id: EntryID(identry_id as u32),
+                entry_id: EntryID(id as u32),
             }))
         }
         Err(e) => Err(warp::reject::custom(SqlxError(e))),
