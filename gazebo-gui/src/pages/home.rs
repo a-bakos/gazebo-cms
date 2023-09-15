@@ -70,12 +70,11 @@ pub fn home() -> Html {
                             html! {
                                 <article class={"border mb-3 p-3"}>
                                     <h2 class={"bold text-xl mb-2"}>
-                                        <a
-                                            title={entry_title.clone()}
-                                            class={"hover:underline"}
-                                            href={get_permalink(EntryType::Post, entry_row.id)}>
+                                        <Link<MainNavigationRoute>
+                                            to={ MainNavigationRoute::EntryView { id: entry_row.id.0.to_string() } }
+                                            classes={ "hover:underline" }>
                                             {format!{"{}{}", entry_prefix_title, entry_title.clone()}}
-                                        </a>
+                                        </Link<MainNavigationRoute>>
                                     </h2>
                                     <div class={"mb-2"}>
                                         <p>{"Published: "} {entry_row.date_publish.clone()}</p>
