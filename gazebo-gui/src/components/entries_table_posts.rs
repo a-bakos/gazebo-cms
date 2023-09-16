@@ -105,7 +105,12 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
                         { "View" }
                     </Link<MainNavigationRoute>>
 
-                    <a class="underline select-none mr-1">{ "?edit" }</a>
+                    <Link<MainNavigationRoute>
+                        to={ MainNavigationRoute::EntryEditExisting { entry_type: EntryType::Post.to_string(), id: post_id.to_string() } }
+                        classes={ "underline select-none mr-1" }>
+                        { "Edit" }
+                    </Link<MainNavigationRoute>>
+
                     <button class="underline select-none mr-1">{ "?clone" }</button>
 
                     <form
