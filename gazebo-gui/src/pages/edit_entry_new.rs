@@ -1,23 +1,20 @@
 // Admin post/entry editor screen // move to admin/
 
-use crate::components::button::Button;
-use crate::components::input::Input;
-use crate::components::{admin_bar::AdminBar, entry_editor::EntryEditor};
+use crate::{
+    api::post::api_new_entry_insert_request,
+    app::MainNavigationRoute,
+    components::{admin_bar::AdminBar, button::Button, entry_editor::EntryEditor},
+};
 
-use gazebo_core_common::entry::gb_post::GB_Post;
+use gazebo_core_common::{
+    account::gb_account::AccountID,
+    entry::{
+        entry_type::EntryType,
+        gb_entry::{GB_EntryInsertRequest, GB_EntryInsertResponse},
+    },
+};
 
-use crate::api::post::api_new_entry_insert_request;
-use crate::app::MainNavigationRoute;
-use crate::components::entry_editor::EntryEditorProps;
-use gazebo_core_common::account::gb_account::AccountID;
-use gazebo_core_common::entry::entry_id::EntryID;
-use gazebo_core_common::entry::entry_type::EntryType;
-use gazebo_core_common::entry::gb_entry::{GB_EntryInsertRequest, GB_EntryInsertResponse};
-use gazebo_core_common::entry::status::ContentStatus::Draft;
-use gazebo_core_common::entry::status::EntryStatus;
-use yew::html::IntoPropValue;
-use yew::platform::spawn_local;
-use yew::prelude::*;
+use yew::{html::IntoPropValue, platform::spawn_local, prelude::*};
 use yew_router::prelude::use_navigator;
 
 #[function_component(EntryEdit)]
@@ -69,8 +66,6 @@ pub fn entry_edit() -> Html {
         let cloned_excerpt = cloned_excerpt.clone();
         let cloned_content = cloned_content.clone();
         let cloned_password = cloned_password.clone();
-
-        gloo_console::log!("{}", cloned_excerpt.clone());
 
         let insert_entry_data = GB_EntryInsertRequest {
             author_id: account_id as i32, // get_current_account_id()

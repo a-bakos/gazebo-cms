@@ -14,7 +14,6 @@ use gazebo_core_common::entry::gb_post::GB_Post;
 use yew::platform::spawn_local;
 use yew::prelude::*;
 use yew_router::prelude::use_navigator;
-use yew_router::prelude::Redirect;
 
 #[derive(Properties, PartialEq)]
 pub struct EntryEditorProps {
@@ -29,7 +28,8 @@ pub fn entry_edit_existing(props: &EntryEditorProps) -> Html {
     let navigator = use_navigator();
 
     let single_entry_editor_handle = use_state(|| GB_Post::new());
-    let single_entry = single_entry_editor_handle.clone();
+    let single_entry = (*single_entry_editor_handle).clone();
+
     use_effect_with_deps(
         move |_| {
             spawn_local(async move {
@@ -55,8 +55,12 @@ pub fn entry_edit_existing(props: &EntryEditorProps) -> Html {
         (value, cloned_value, value_changed)
     });
 
-    let (title, cloned_title, title_changed) =
-        input_change_handler(use_state(|| String::default()));
+    let (title, cloned_title, title_changed) = input_change_handler(use_state(|| {
+        single_entry
+            .title
+            .clone()
+            .unwrap_or("UNWRAP OR : CANNOT FIND".to_string())
+    }));
 
     let (permalink, cloned_permalink, permalink_changed) =
         input_change_handler(use_state(|| String::default()));
@@ -133,6 +137,12 @@ pub fn entry_edit_existing(props: &EntryEditorProps) -> Html {
         });
     });
 
+    let current_title = single_entry.title.clone().unwrap_or(String::new());
+    let current_slug = single_entry.slug.clone().unwrap_or(String::new());
+    let current_content = single_entry.content.clone().unwrap_or(String::new());
+    let current_excerpt = single_entry.excerpt.clone().unwrap_or(String::new());
+    let current_password = single_entry.password.clone().unwrap_or(String::new());
+
     html! {
          <main id={crate::consts::CSS_ID_ADMIN_AREA}>
             <AdminBar />
@@ -153,15 +163,15 @@ pub fn entry_edit_existing(props: &EntryEditorProps) -> Html {
                         <p class="font-bold ">{"Permalink: "}{ single_entry.slug.clone() }</p>
                         <hr />
                         <EntryEditor
-                            title={ title }
+                            title={ current_title }
                             title_changed={ title_changed }
-                            permalink={ permalink }
+                            permalink={ current_slug }
                             permalink_changed={ permalink_changed }
-                            excerpt={ excerpt }
+                            excerpt={ current_excerpt }
                             excerpt_changed={ excerpt_changed }
-                            content={ content }
+                            content={ current_content }
                             content_changed={ content_changed }
-                            password={ password }
+                            password={ current_password }
                             password_changed={ password_changed }
                         />
 
