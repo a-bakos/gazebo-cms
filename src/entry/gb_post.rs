@@ -21,6 +21,7 @@ use gazebo_core_common::{
     },
 };
 
+use crate::database::columns::COL_INDEX_POST_PASSWORD;
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, Row};
@@ -64,7 +65,7 @@ impl RowTransformer<PgRow> for GB_Post {
             title: row.get(COL_INDEX_POST_TITLE),
             excerpt: row.get(COL_INDEX_POST_EXCERPT),
             content: row.get(COL_INDEX_POST_CONTENT),
-            password: None,
+            password: row.get(COL_INDEX_POST_PASSWORD),
         }
     }
 }

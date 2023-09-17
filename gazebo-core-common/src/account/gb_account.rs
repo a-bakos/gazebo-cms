@@ -16,6 +16,7 @@ impl From<AccountID> for u32 {
         value.0
     }
 }
+
 impl From<AccountID> for i32 {
     fn from(value: AccountID) -> Self {
         value.0 as i32

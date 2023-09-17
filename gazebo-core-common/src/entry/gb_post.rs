@@ -1,7 +1,8 @@
 use crate::{
-    account::gb_account::AccountID,
+    account::{consts::NEW_ACCOUNT_TEMP_ID, gb_account::AccountID},
     datetime::get_current_date,
     entry::{
+        consts::NEW_ENTRY_TEMP_ID,
         entry_id::{get_entry_parent_id, EntryID},
         gb_entry::{GB_EntryCommon, GB_EntryDateVariant},
         status::{ContentStatus, EntryStatus},
@@ -25,7 +26,23 @@ pub struct GB_Post {
     pub password: Option<String>,
 }
 
-impl GB_Post {}
+impl GB_Post {
+    pub fn new() -> Self {
+        Self {
+            id: NEW_ENTRY_TEMP_ID,
+            id_author: NEW_ACCOUNT_TEMP_ID,
+            id_parent: None,
+            date_publish: String::new(),
+            date_modified: String::new(),
+            slug: None,
+            status: EntryStatus::Unknown,
+            title: None,
+            excerpt: None,
+            content: None,
+            password: None,
+        }
+    }
+}
 
 impl GB_EntryCommon for GB_Post {
     fn get_id(&self) -> EntryID {

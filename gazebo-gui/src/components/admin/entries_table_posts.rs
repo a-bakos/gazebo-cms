@@ -1,17 +1,10 @@
 use crate::{
-    api::post::{
-        api_delete_entry_by_id, update_entry_single_param, EntryUpdateProps, EntryUpdateType,
-    },
+    api::post::{update_entry_single_param, EntryUpdateProps, EntryUpdateType},
     app::MainNavigationRoute,
-    components::{
-        button::Button,
-        button::{ButtonProps, FormWithButton},
-        input::Input,
-    },
+    components::button::Button,
 };
 
 use gazebo_core_common::entry::{
-    entry_id::EntryID,
     entry_type::EntryType,
     gb_entry::{GB_EntryCommon, GB_EntryDateVariant},
     gb_post::GB_Post,
@@ -99,8 +92,18 @@ pub fn table_entry_row(props: &PostTableRowProps) -> Html {
                     { props.row_data.get_title() }
                 </Link<MainNavigationRoute>>
                 <span class="block">
-                    <a class="underline select-none mr-1">{ "?view" }</a>
-                    <a class="underline select-none mr-1">{ "?edit" }</a>
+                    <Link<MainNavigationRoute>
+                        to={ MainNavigationRoute::EntryView { id: post_id.to_string() } }
+                        classes={ "underline select-none mr-1" }>
+                        { "View" }
+                    </Link<MainNavigationRoute>>
+
+                    <Link<MainNavigationRoute>
+                        to={ MainNavigationRoute::EntryEditExisting { entry_type: EntryType::Post.to_string(), id: post_id.to_string() } }
+                        classes={ "underline select-none mr-1" }>
+                        { "Edit" }
+                    </Link<MainNavigationRoute>>
+
                     <button class="underline select-none mr-1">{ "?clone" }</button>
 
                     <form
