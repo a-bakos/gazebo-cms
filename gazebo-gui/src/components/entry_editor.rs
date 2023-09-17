@@ -1,5 +1,4 @@
 use crate::components::input::Input;
-use gazebo_core_common::entry::gb_post::GB_Post;
 use yew::prelude::*;
 
 #[derive(Properties, PartialEq)]
@@ -15,22 +14,7 @@ pub struct EntryEditorProps {
     pub password: Option<AttrValue>,
     pub password_changed: Option<Callback<Event>>,
 }
-/*
-#[derive(Properties, PartialEq)]
-pub struct EntryEditorProps {
-    pub title: Option<AttrValue>,
-    // pub id: AttrValue,
-    // pub id_author: AttrValue,
-    // pub id_parent: Option<AttrValue>,
-    // pub date_publish: AttrValue,
-    pub date_modified: Option<AttrValue>,
-    pub slug: Option<AttrValue>,
-    // pub status: AttrValue,
-    pub excerpt: Option<AttrValue>,
-    pub content: Option<AttrValue>,
-    pub password: Option<AttrValue>,
-}
-*/
+
 #[function_component(EntryEditor)]
 pub fn entry_editor(props: &EntryEditorProps) -> Html {
     html! {

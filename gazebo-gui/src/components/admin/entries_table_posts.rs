@@ -1,17 +1,10 @@
 use crate::{
-    api::post::{
-        api_delete_entry_by_id, update_entry_single_param, EntryUpdateProps, EntryUpdateType,
-    },
+    api::post::{update_entry_single_param, EntryUpdateProps, EntryUpdateType},
     app::MainNavigationRoute,
-    components::{
-        button::Button,
-        button::{ButtonProps, FormWithButton},
-        input::Input,
-    },
+    components::button::Button,
 };
 
 use gazebo_core_common::entry::{
-    entry_id::EntryID,
     entry_type::EntryType,
     gb_entry::{GB_EntryCommon, GB_EntryDateVariant},
     gb_post::GB_Post,

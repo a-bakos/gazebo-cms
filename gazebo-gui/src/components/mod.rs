@@ -1,9 +1,6 @@
-pub mod accounts_table;
 pub mod admin;
 pub mod admin_bar;
-pub mod admin_menu;
 pub mod button;
-pub mod entries_table_posts;
 pub mod entry_editor;
 pub mod footer;
 pub mod header;

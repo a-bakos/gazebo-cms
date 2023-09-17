@@ -2,17 +2,21 @@
 
 // Admin post/entry editor screen // move to admin/
 
-use crate::api::post::api_entry_update_request;
-use crate::app::MainNavigationRoute;
-use crate::components::button::Button;
-use crate::components::{admin_bar::AdminBar, entry_editor::EntryEditor};
-use gazebo_core_common::account::gb_account::AccountID;
-use gazebo_core_common::entry::entry_id::EntryID;
-use gazebo_core_common::entry::entry_type::EntryType;
-use gazebo_core_common::entry::gb_entry::{GB_EntryUpdateRequest, GB_EntryUpdateResponse};
-use gazebo_core_common::entry::gb_post::GB_Post;
-use yew::platform::spawn_local;
-use yew::prelude::*;
+use crate::{
+    api::post::api_entry_update_request,
+    app::MainNavigationRoute,
+    components::{admin_bar::AdminBar, button::Button, entry_editor::EntryEditor},
+};
+use gazebo_core_common::{
+    account::gb_account::AccountID,
+    entry::{
+        entry_id::EntryID,
+        entry_type::EntryType,
+        gb_entry::{GB_EntryUpdateRequest, GB_EntryUpdateResponse},
+        gb_post::GB_Post,
+    },
+};
+use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::use_navigator;
 
 #[derive(Properties, PartialEq)]

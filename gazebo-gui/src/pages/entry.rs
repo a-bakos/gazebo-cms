@@ -1,21 +1,10 @@
 // view entry
 // /entry/post/:id
+// Front end entry view screen
 
-// Admin post/entry editor screen // move to admin/
-
-use crate::api::post::api_get_single_post;
-use crate::components::footer::Footer;
-use crate::components::{admin_bar::AdminBar, entry_editor::EntryEditor};
-use gazebo_core_common::account::gb_account::AccountID;
-use gazebo_core_common::entry::entry_id::EntryID;
-use gazebo_core_common::entry::entry_type::EntryType;
-use gazebo_core_common::entry::gb_entry::GB_EntryCommon;
-use gazebo_core_common::entry::gb_post::GB_Post;
-use gazebo_core_common::entry::status::{
-    get_entry_status_as_string, get_entry_status_variant, ContentStatus, EntryStatus,
-};
-use yew::platform::spawn_local;
-use yew::prelude::*;
+use crate::components::{admin_bar::AdminBar, footer::Footer};
+use gazebo_core_common::entry::{gb_entry::GB_EntryCommon, gb_post::GB_Post, status::EntryStatus};
+use yew::{platform::spawn_local, prelude::*};
 
 #[derive(Properties, PartialEq)]
 pub struct EntryViewProps {

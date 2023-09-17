@@ -5,9 +5,8 @@ use crate::pages::{
     admin::{
         admin_accounts::AdminAccounts, admin_dashboard::AdminDashboard, admin_media::AdminMedia,
         admin_posts::AdminPosts, admin_profile::AdminProfile, admin_settings::AdminSettings,
+        edit_entry::EntryEditExisting, edit_entry_new::EntryEdit,
     },
-    edit_entry::EntryEditExisting,
-    edit_entry_new::EntryEdit,
     entry::EntryView,
     home::Home,
     login::Login,

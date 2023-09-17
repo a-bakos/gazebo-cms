@@ -2,7 +2,7 @@
 
 use yew::prelude::*;
 
-use crate::components::{accounts_table::AccountsTable, admin_bar::AdminBar};
+use crate::components::{admin::accounts_table::AccountsTable, admin_bar::AdminBar};
 
 #[function_component(AdminAccounts)]
 pub fn admin_accounts() -> Html {
