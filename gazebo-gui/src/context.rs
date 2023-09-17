@@ -1,6 +1,7 @@
 use crate::api::account::api_auth_me;
 use gazebo_core_common::account::{auth::AuthResponsePayload, gb_account::GB_CurrentAccount};
 
+use gazebo_core_common::account::gb_account::AccountID;
 use gloo_storage::{SessionStorage, Storage};
 use std::rc::Rc;
 use yew::{
@@ -74,12 +75,15 @@ pub fn current_user_provider(props: &Props) -> Html {
                             login_response: Some(me_response),
                         });
                     }
-                    Err(_) => SessionStorage::clear(),
+                    Err(_) => {
+                        SessionStorage::clear();
+                    }
                 }
             });
-        }
-    } else {
-    }
+        };
+    };
+    //else {
+    //}
 
     html! {
         <ContextProvider<CurrentUserContext> context={user}>

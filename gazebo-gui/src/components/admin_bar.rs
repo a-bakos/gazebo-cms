@@ -1,4 +1,4 @@
-use crate::{app::MainNavigationRoute, components::admin_menu::AdminMenu};
+use crate::{app::MainNavigationRoute, components::admin::admin_menu::AdminMenu};
 use gazebo_core_common::consts::DEFAULT_APP_NAME;
 use yew::prelude::*;
 use yew_router::prelude::{Link, Redirect};
@@ -11,7 +11,7 @@ pub fn admin_bar() -> Html {
         Some(user) => html! {
             <>
                 <div class="sticky top-0">
-                    <nav class="bg-gray-400 w-full">
+                    <nav class="bg-[#1e1612] text-white w-full">
                         <ul class="flex items-center">
                             // If admin, show front end link
                             <li class="bg-black text-white">
@@ -24,7 +24,7 @@ pub fn admin_bar() -> Html {
                                     {"Admin"}
                                 </Link<MainNavigationRoute>>
                             </li>
-                            <li class="bg-gray-500 text-center text-white">
+                            <li class="text-center text-white">
                                 <Link<MainNavigationRoute>
                                     to={MainNavigationRoute::AdminProfile}>
                                     <p>{"[USER]"}</p>
@@ -53,6 +53,7 @@ pub fn admin_bar() -> Html {
         },
         None => html! {
             // Not logged in
+            // todo this is preventing viewing entries on the front end without logging in
             <Redirect<MainNavigationRoute> to={MainNavigationRoute::Home} />
         },
     }

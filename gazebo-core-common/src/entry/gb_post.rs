@@ -1,8 +1,10 @@
 use crate::{
-    account::gb_account::AccountID,
+    account::{consts::NEW_ACCOUNT_TEMP_ID, gb_account::AccountID},
     datetime::get_current_date,
     entry::{
+        consts::NEW_ENTRY_TEMP_ID,
         entry_id::{get_entry_parent_id, EntryID},
+        gb_entry::{GB_EntryCommon, GB_EntryDateVariant},
         status::{ContentStatus, EntryStatus},
     },
 };
@@ -24,4 +26,55 @@ pub struct GB_Post {
     pub password: Option<String>,
 }
 
-impl GB_Post {}
+impl GB_Post {
+    pub fn new() -> Self {
+        Self {
+            id: NEW_ENTRY_TEMP_ID,
+            id_author: NEW_ACCOUNT_TEMP_ID,
+            id_parent: None,
+            date_publish: String::new(),
+            date_modified: String::new(),
+            slug: None,
+            status: EntryStatus::Unknown,
+            title: None,
+            excerpt: None,
+            content: None,
+            password: None,
+        }
+    }
+}
+
+impl GB_EntryCommon for GB_Post {
+    fn get_id(&self) -> EntryID {
+        self.id
+    }
+
+    fn get_author_id(&self) -> AccountID {
+        self.id_author.clone()
+    }
+
+    fn get_date(&self, date_variant: GB_EntryDateVariant) -> String {
+        match date_variant {
+            GB_EntryDateVariant::Publish => self.date_publish.clone(),
+            GB_EntryDateVariant::Modified => self.date_modified.clone(),
+        }
+    }
+
+    fn get_slug(&self) -> String {
+        if self.slug.is_some() {
+            return self.slug.clone().unwrap();
+        }
+        "".to_string()
+    }
+
+    fn get_status(&self) -> EntryStatus {
+        self.status.clone()
+    }
+
+    fn get_title(&self) -> String {
+        if self.title.is_some() {
+            return self.title.clone().unwrap();
+        }
+        "".to_string()
+    }
+}

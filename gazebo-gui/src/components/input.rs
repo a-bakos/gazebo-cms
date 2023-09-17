@@ -2,8 +2,8 @@ use yew::prelude::*;
 
 #[derive(Properties, PartialEq)]
 pub struct InputProps {
-    pub label: AttrValue,
-    pub id: AttrValue,
+    pub label: Option<AttrValue>,
+    pub id: Option<AttrValue>,
     pub name: AttrValue,
     pub input_type: AttrValue,
     pub value: AttrValue,

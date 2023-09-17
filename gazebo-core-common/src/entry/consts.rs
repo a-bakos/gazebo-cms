@@ -1,7 +1,11 @@
+use crate::entry::entry_id::EntryID;
+
 pub const POST_UNTITLED_DEFAULT_TITLE: &str = "Untitled Gazebo Post";
 pub const POST_UNTITLED_DEFAULT_PERMALINK: &str = "untitled-gazebo-post";
 pub const PAGE_UNTITLED_DEFAULT_TITLE: &str = "Untitled Gazebo Page";
 pub const PAGE_UNTITLED_DEFAULT_PERMALINK: &str = "untitled-gazebo-page";
+
+pub const NEW_ENTRY_TEMP_ID: EntryID = EntryID(0);
 
 /// Entry type for blog-like posts
 pub const ENTRY_TYPE_POST: &str = "post";

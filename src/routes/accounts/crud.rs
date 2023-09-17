@@ -75,17 +75,24 @@ pub async fn add(
                 .bind(password)
                 .bind(email)
                 .bind(role)
-                .execute(&pool)
+                .fetch_one(&pool)
                 .await
             {
-                Ok(_) => {
+                Ok(result) => {
+                    let account_id = result.get::<i32, _>(COL_INDEX_ACCOUNT_ID) as u32;
+
                     // User notification to go out.
                     // new_user_notification(accounts.id);
                     // send_notification_to_admin( NOTIFICATION::NEW_USER_ADDED)
 
+                    // todo: work on response
+                    // Ok(warp::reply::json(&GB_AccountInsertResponse {
+                    //     http_status_code: 200,
+                    //     account_id: AccountID(account_id),
+                    // }))
                     Ok(warp::reply::json(&"Registration successful"))
                 }
-                Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+                Err(e) => Ok(warp::reply::json(&format!("Error: {:?}", e))),
             }
         }
         Ok(true) => Ok(warp::reply::json(&"Email address already in use")),

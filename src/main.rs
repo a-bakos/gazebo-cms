@@ -124,7 +124,8 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(warp::path::end())
         .and(pool_filter.clone())
         .and(warp::body::json())
-        .and_then(routes::post::crud::update_entry_single_param);
+        // .and_then(routes::post::crud::update_entry_single_param);
+        .and_then(routes::post::crud::update_entry);
 
     // todo
     //let create_post = warp::post()

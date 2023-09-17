@@ -13,6 +13,10 @@ use crate::{
 };
 use gazebo_core_common::entry::gb_post::GB_Post;
 
+use gazebo_core_common::entry::entry_id::EntryID;
+use gazebo_core_common::entry::gb_entry::{
+    GB_EntryInsertRequest, GB_EntryInsertResponse, GB_EntryUpdateRequest, GB_EntryUpdateResponse,
+};
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
 use std::collections::HashMap;
@@ -50,20 +54,9 @@ pub async fn get_posts(pool: PgPool) -> Result<impl warp::Reply, warp::Rejection
     }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
-pub struct NewPostInsertRequest {
-    pub author_id: i32,
-    pub slug: String,
-    pub title: String,
-    pub content: String,
-    pub status: String,
-    pub excerpt: Option<String>,
-    pub password: Option<String>,
-}
-
 pub async fn insert_post(
     pool: PgPool,
-    params: NewPostInsertRequest,
+    params: GB_EntryInsertRequest,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     println!("{:?}", params);
 
@@ -84,7 +77,7 @@ pub async fn insert_post(
     let excerpt = params.excerpt.clone();
 
     let query = format!(
-        "INSERT INTO {} ({}, {}, {}, {}, {}, {}, {}) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+        "INSERT INTO {} ({}, {}, {}, {}, {}, {}, {}) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id",
         DB_Table::Posts,
         COL_INDEX_POST_ID_AUTHOR,
         COL_INDEX_POST_SLUG,
@@ -103,27 +96,17 @@ pub async fn insert_post(
         .bind(content)
         .bind(password)
         .bind(status)
-        .execute(&pool)
+        .fetch_one(&pool)
         .await
     {
-        Ok(_) => {
-            let select_query = format!(
-                "SELECT id FROM {} WHERE title = $1 AND slug = $2",
-                DB_Table::Posts
-            );
-            // Retrieve the post_id with a subsequent select query
-            match sqlx::query(&select_query)
-                .bind(title.clone())
-                .bind(slug.clone())
-                .map(|row: PgRow| row.get::<i32, _>(COL_INDEX_POST_ID))
-                .fetch_one(&pool)
-                .await
-            {
-                Ok(id) => Ok(warp::reply::json(&id)),
-                Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
-            }
+        Ok(result) => {
+            let post_id = result.get::<i32, _>(COL_INDEX_POST_ID) as u32;
+            Ok(warp::reply::json(&GB_EntryInsertResponse {
+                http_status_code: 200,
+                entry_id: EntryID(post_id),
+            }))
         }
-        Err(e) => Ok(warp::reply::json(&format!("Error: {}", e))),
+        Err(e) => Ok(warp::reply::json(&format!("Error: {:?}", e))),
     }
 }
 
@@ -172,6 +155,41 @@ pub async fn update_entry_single_param(
     }
 }
 
+pub async fn update_entry(
+    id: i32,
+    pool: PgPool,
+    params: GB_EntryUpdateRequest,
+) -> Result<impl warp::Reply, warp::Rejection> {
+    // todo -- currently only one item gets updated
+    //let (table, column) = get_table_and_column_name(&params);
+    let query = format!(
+        "UPDATE {} SET {} = $1 WHERE id = $2",
+        DB_Table::Posts.to_string(),
+        COL_INDEX_POST_TITLE.to_string()
+    );
+    match sqlx::query(&query)
+        .bind(params.title.clone())
+        .bind(id.clone())
+        .execute(&pool)
+        .await
+    {
+        Ok(res) => {
+            if res.rows_affected() == 0 {
+                return Ok(warp::reply::json(&GB_EntryUpdateResponse {
+                    http_status_code: 403, // todo find better status code
+                    entry_id: EntryID(id as u32),
+                }));
+            }
+            println!("Entry updated!");
+            Ok(warp::reply::json(&GB_EntryUpdateResponse {
+                http_status_code: 200,
+                entry_id: EntryID(id as u32),
+            }))
+        }
+        Err(e) => Err(warp::reject::custom(SqlxError(e))),
+    }
+}
+
 pub async fn delete_post(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
     println!("Post to be deleted ID: {}", id);
 
@@ -199,7 +217,10 @@ pub async fn delete_post(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp
 }
 
 // Get post title
-pub async fn get_the_title(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
+pub(crate) async fn get_the_title(
+    id: i32,
+    pool: PgPool,
+) -> Result<impl warp::Reply, warp::Rejection> {
     println!("Title requested of post: {:?}", id);
 
     let query = format!(
