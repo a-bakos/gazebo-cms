@@ -143,6 +143,13 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(pool_filter.clone())
         .and_then(routes::post::crud::get_the_title);
 
+    let get_event = warp::get()
+        .and(warp::path(url::path::PATH_LOG))
+        .and(warp::path::param::<i32>())
+        .and(warp::path::end()) // ::end() closes the URI path
+        .and(pool_filter.clone())
+        .and_then(routes::log::crud::get_event_by_id);
+
     let routes = get_user
         .or(get_users)
         .or(registration)
@@ -155,6 +162,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .or(delete_post)
         .or(update_post)
         .or(get_post_title)
+        .or(get_event)
         .with(cors);
     warp::serve(routes).run(([127, 0, 0, 1], 1337)).await;
 
