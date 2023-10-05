@@ -1,6 +1,25 @@
 use crate::account::gb_account::AccountID;
+use std::collections::HashMap;
 
-pub enum GB_EventCode {
+// Define a procedural macro to generate the enum variants and values.
+macro_rules! generate_enum {
+    ($enum_name:ident { $($variant:ident = $value:expr),* }) => {
+        pub enum $enum_name {
+            $($variant = $value),*
+        }
+
+        impl $enum_name {
+            pub fn from_value(value: u32) -> Self {
+                match value {
+                    $($value => $enum_name::$variant),*,
+                    _ => $enum_name::Unknown,
+                }
+            }
+        }
+    };
+}
+
+generate_enum!(GB_EventCode {
     // Account events
     AccountRegistered = 100,
     AccountLogin = 101,
@@ -24,8 +43,8 @@ pub enum GB_EventCode {
     FileUploaded = 400,
     FileDeleted = 401,
     // Other
-    Unknown = 999,
-}
+    Unknown = 999
+});
 
 //#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[allow(non_camel_case_types)]

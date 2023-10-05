@@ -6,6 +6,7 @@ use crate::database::columns::{
 };
 use crate::traits::RowTransformer;
 use chrono::{NaiveDate, NaiveDateTime};
+use gazebo_core_common::account::gb_account::AccountID;
 use gazebo_core_common::entry::gb_log::{GB_EventCode, GB_Log};
 use sqlx::postgres::PgRow;
 use sqlx::Row;
@@ -23,7 +24,7 @@ impl RowTransformer<PgRow> for GB_Log {
         let account_email = row.get(COL_INDEX_LOG_ACCOUNT_EMAIL);
 
         let event_code = row.get::<i32, _>(COL_INDEX_LOG_EVENT_CODE) as u32; // GB_EventCode,
-        let event_code: GB_EventCode = event_code.into(); // TODO .into()
+        let event_code = GB_EventCode::from_value(event_code);
 
         // Date
         let event_date: NaiveDateTime = row.get::<NaiveDateTime, _>(COL_INDEX_LOG_EVENT_DATE);
@@ -36,28 +37,23 @@ impl RowTransformer<PgRow> for GB_Log {
         let subject_from = row.get(COL_INDEX_LOG_SUBJECT_FROM); // Option<String>,
         let subject_to = row.get(COL_INDEX_LOG_SUBJECT_TO); // Option<String>,
 
-        /* todo here // placeholder transformer
-        let parent_id = row
+        // todo here // placeholder transformer
+        /*let parent_id = row
             .try_get(COL_INDEX_POST_PARENT)
             .ok()
             .unwrap_or(consts::ENTRY_ID_NO_PARENT) as u32;
-
+        */
         Self {
-            // The account ID and email associated with this event - email optional for system events
-            pub account_id: AccountID,
-            pub account_email: Option<String>,
-            // Event meta data:
-            pub event_code: GB_EventCode,
-            pub event_date: String,
-            // Affected item details:
-            pub subject_id: u32,
-            pub subject_url: Option<String>,
-            pub subject_title: Option<String>,
-            pub subject_description: Option<String>,
-            // From/To fields where applicable
-            pub subject_from: Option<String>,
-            pub subject_to: Option<String>,
+            account_id: AccountID(account_id),
+            account_email,
+            event_code,
+            event_date,
+            subject_id,
+            subject_url,
+            subject_title,
+            subject_description,
+            subject_from,
+            subject_to,
         }
-         */
     }
 }
