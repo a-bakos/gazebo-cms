@@ -150,6 +150,12 @@ async fn main() -> Result<(), sqlx::Error> {
         .and(pool_filter.clone())
         .and_then(routes::log::crud::get_event_by_id);
 
+    let get_events = warp::get()
+        .and(warp::path(url::path::PATH_LOGS))
+        .and(warp::path::end()) // ::end() closes the URI path
+        .and(pool_filter.clone())
+        .and_then(routes::log::crud::get_events);
+
     let routes = get_user
         .or(get_users)
         .or(registration)

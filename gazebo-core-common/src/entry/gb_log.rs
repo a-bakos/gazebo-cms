@@ -1,9 +1,10 @@
 use crate::account::gb_account::AccountID;
-use std::collections::HashMap;
+use serde::{Deserialize, Serialize};
 
 // Define a procedural macro to generate the enum variants and values.
 macro_rules! generate_enum {
     ($enum_name:ident { $($variant:ident = $value:expr),* }) => {
+        #[derive(Serialize, Deserialize)]
         pub enum $enum_name {
             $($variant = $value),*
         }
@@ -46,14 +47,14 @@ generate_enum!(GB_EventCode {
     Unknown = 999
 });
 
-//#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Serialize, Deserialize)]
 #[allow(non_camel_case_types)]
 pub struct GB_Log {
     // The account ID and email associated with this event - email optional for system events
     pub account_id: AccountID,
     pub account_email: Option<String>,
     // Event meta data:
-    pub event_code: GB_EventCode,
+    pub event_code: u32, //GB_EventCode,
     pub event_date: String,
     // Affected item details:
     pub subject_id: u32,
@@ -66,8 +67,8 @@ pub struct GB_Log {
 }
 
 impl GB_Log {
-    pub fn get_event_description(&self) -> String {
-        match self.event_code {
+    pub fn get_event_description(event_code: u32) -> String {
+        match GB_EventCode::from_value(event_code) {
             GB_EventCode::AccountRegistered => "Registered an account".to_string(),
             GB_EventCode::AccountLogin => "Logged in".to_string(),
             GB_EventCode::AccountLogout => "Logged out".to_string(),
@@ -89,28 +90,28 @@ impl GB_Log {
             GB_EventCode::Unknown => "Unknown event".to_string(),
         }
     }
-}
 
-fn is_admin_only_event(event_code: GB_EventCode) -> bool {
-    match event_code {
-        GB_EventCode::AccountRegistered => true,
-        GB_EventCode::AccountLogin => false,
-        GB_EventCode::AccountLogout => false,
-        GB_EventCode::AccountKicked => true,
-        GB_EventCode::AccountRemoved => true,
-        GB_EventCode::AccountRoleChanged => true,
-        GB_EventCode::AccountEmailChanged => true,
-        GB_EventCode::AccountPasswordChanged => true,
-        GB_EventCode::EntryAdded => false,
-        GB_EventCode::EntryStatusChanged => false,
-        GB_EventCode::EntryTrashed => false,
-        GB_EventCode::EntryUntrashed => false,
-        GB_EventCode::EntryDeleted => false,
-        GB_EventCode::CategoryAdded => false,
-        GB_EventCode::CategoryChanged => false,
-        GB_EventCode::CategoryRemoved => false,
-        GB_EventCode::FileUploaded => false,
-        GB_EventCode::FileDeleted => false,
-        GB_EventCode::Unknown => false,
+    pub fn is_admin_only_event(event_code: GB_EventCode) -> bool {
+        match event_code {
+            GB_EventCode::AccountRegistered => true,
+            GB_EventCode::AccountLogin => false,
+            GB_EventCode::AccountLogout => false,
+            GB_EventCode::AccountKicked => true,
+            GB_EventCode::AccountRemoved => true,
+            GB_EventCode::AccountRoleChanged => true,
+            GB_EventCode::AccountEmailChanged => true,
+            GB_EventCode::AccountPasswordChanged => true,
+            GB_EventCode::EntryAdded => false,
+            GB_EventCode::EntryStatusChanged => false,
+            GB_EventCode::EntryTrashed => false,
+            GB_EventCode::EntryUntrashed => false,
+            GB_EventCode::EntryDeleted => false,
+            GB_EventCode::CategoryAdded => false,
+            GB_EventCode::CategoryChanged => false,
+            GB_EventCode::CategoryRemoved => false,
+            GB_EventCode::FileUploaded => false,
+            GB_EventCode::FileDeleted => false,
+            GB_EventCode::Unknown => false,
+        }
     }
 }
