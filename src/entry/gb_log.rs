@@ -8,10 +8,7 @@ use crate::{
     traits::RowTransformer,
 };
 use chrono::NaiveDateTime;
-use gazebo_core_common::{
-    account::gb_account::AccountID,
-    entry::gb_log::{GB_EventCode, GB_Log},
-};
+use gazebo_core_common::{account::gb_account::AccountID, entry::gb_log::GB_Log};
 use sqlx::{postgres::PgRow, Row};
 
 impl RowTransformer<PgRow> for GB_Log {

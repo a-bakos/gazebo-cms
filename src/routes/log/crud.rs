@@ -1,9 +1,6 @@
-use crate::database::db::DB_Table;
-use crate::errors::error_handler::SqlxError;
-use crate::traits::RowTransformer;
+use crate::{database::db::DB_Table, errors::error_handler::SqlxError, traits::RowTransformer};
 use gazebo_core_common::entry::gb_log::GB_Log;
-use sqlx::postgres::PgRow;
-use sqlx::PgPool;
+use sqlx::{postgres::PgRow, PgPool};
 
 pub async fn get_event_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
     println!("Event requested: {}", id);
@@ -25,7 +22,7 @@ pub async fn get_events(pool: PgPool) -> Result<impl warp::Reply, warp::Rejectio
 
     let query = format!("SELECT * FROM {}", DB_Table::Log);
     match sqlx::query(&query)
-        .map(|row: PgRow| /*GB_Log::transform(&row)*/ "HELLO".to_string())
+        .map(|row: PgRow| GB_Log::transform(&row))
         .fetch_all(&pool)
         .await
     {

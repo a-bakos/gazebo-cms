@@ -169,6 +169,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .or(update_post)
         .or(get_post_title)
         .or(get_event)
+        .or(get_events)
         .with(cors);
     warp::serve(routes).run(([127, 0, 0, 1], 1337)).await;
 
