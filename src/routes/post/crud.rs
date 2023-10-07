@@ -19,7 +19,6 @@ use gazebo_core_common::entry::gb_entry::{
 };
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, PgPool, Row};
-use std::collections::HashMap;
 use warp::http::StatusCode;
 
 pub async fn get_post_by_id(id: i32, pool: PgPool) -> Result<impl warp::Reply, warp::Rejection> {
